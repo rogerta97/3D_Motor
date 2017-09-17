@@ -20,6 +20,7 @@ public:
 	bool CleanUp();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
+	void ImGuiUpdate(); 
 
 public:
 	/*

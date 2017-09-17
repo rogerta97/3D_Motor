@@ -3,7 +3,7 @@
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
 #include "PhysBody3D.h"
-
+#include "imgui.h"
 
 #include <stdlib.h>
 #include <time.h>
@@ -26,6 +26,16 @@ bool ModuleSceneIntro::Start()
 	srand(time(NULL));
 
 	//App->audio->PlayMusic("F-Zero_-_Mute_City.ogg");
+
+	ImGuiIO& io = ImGui::GetIO();
+	io.DisplaySize.x = 1920.0f;
+	io.DisplaySize.y = 1280.0f;
+	io.RenderDrawListsFn = NULL;
+
+	//unsigned char* pixels;
+	//int width, height;
+	//io.Fonts->GetTexDataAsRGBA32(pixels, &width, &height);
+
 	
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
@@ -52,9 +62,29 @@ update_status ModuleSceneIntro::Update(float dt)
 		aux->data.Render();
 	}
 
+	// ImGui Content ------------
+
+	ImGuiIO& io = ImGui::GetIO();
+	io.DeltaTime = 1.0f / 60.0f;
+	io.MousePos = ImVec2(App->input->GetMouseX(), App->input->GetMouseY());
+
+	io.MouseDown[0] = App->input->GetKey(0);
+	io.MouseDown[1] = App->input->GetKey(1);
+
+	ImGuiUpdate(); 
+
+	// -------------------------
+
+
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 }
+
+void ModuleSceneIntro::ImGuiUpdate()
+{
+	
+}
+
