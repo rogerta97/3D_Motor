@@ -1,35 +1,11 @@
-version: v0.4.autorelease-{build}
-branches:
-  only:
-  - master
-  - development
-skip_tags: true
-configuration:
-- Debug
-- Release
-build:
-  project: 3DEngine.sln
-  verbosity: normal
-before_package:
-- ps: Copy-Item C:\projects\project2-zelda\$env:CONFIGURATION\2DEngine.exe C:\projects\project2-zelda\Game\.
-artifacts:
-- path: Game
-  name: game_files
 deploy:
-- provider: GitHub
-  description: Auto-generated Release
+  release: myproduct-v$(appveyor_build_version)
+  description: 'Auto-generated release'
+  provider: GitHub
   auth_token:
-    secure: GeYx4HYpDpN6dKUH00nJz0Yzbe9g98uB74ulCIMOCcsPighlNM5m/E5mGnCuLo+r
-  artifact: game_files
+    secure: b149bcebd7f275cf9ed184192bf50fcc14892648 
   draft: true
   prerelease: true
-  force_update: true
   on:
-    CONFIGURATION: Release
-notifications:
-- provider: Slack
-  incoming_webhook: https://hooks.slack.com/services/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
-  channel: catpad
-  on_build_success: true
-  on_build_failure: true
-  on_build_status_changed: true
+    branch: master                
+    appveyor_repo_tag: true     
