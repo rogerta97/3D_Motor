@@ -1,14 +1,16 @@
-deploy:
-  release: myproduct-v$(appveyor_build_version)
-  description: 'Auto-generated release'
-  provider: GitHub
-  artifacts:
+version: '{branch}- 0.0.{build}'
+skip_tags: true
+build:
+  verbosity: normal
+before_package:
+- ps: Copy-Item C:\projects\3D_Motor\Source\$env:CONFIGURATION\3DEngine.exe C:\projects\3D_Motors\Game\.
+artifacts:
 - path: Game
-  name: game_files
+  name: Release
+deploy:
+- provider: GitHub
   auth_token:
-    secure: 4190fb08ed7c990e36428ebf89cbfa03d76e784e
+    secure: TTSVGqQ2AwzvL6lROWpObpmbm99AIwvsAd9DVs7C+wttC15wftjIle7G1gjAJGyQ
+  artifact: Release
   draft: true
-  prerelease: true
-  on:
-    branch: master                
-    appveyor_repo_tag: true     
+  prerelease: false
