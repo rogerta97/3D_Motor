@@ -1,5 +1,8 @@
 version: '{branch}- 0.0.{build}'
 skip_tags: true
+configuration:
+- Debug
+- Release
 build:
   verbosity: normal
 before_package:
@@ -14,3 +17,5 @@ deploy:
   artifact: Release
   draft: true
   prerelease: false
+  on:
+    CONFIGURATION: Release
