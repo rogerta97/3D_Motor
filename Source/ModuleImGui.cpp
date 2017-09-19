@@ -26,16 +26,24 @@ update_status ModuleImGui::PreUpdate(float dt)
 update_status ModuleImGui::Update(float dt)
 {
 
-	ImGui::Begin("Close App"); 
+	// Main menu bar -----------------------------
 
-	if (ImGui::Button("QUIT"))
-	{		
-		ImGui::End();
-		return UPDATE_STOP; 
+	ImGui::BeginMainMenuBar();
+
+	if (ImGui::BeginMenu("Files"))
+	{
+		if (ImGui::MenuItem("Exit"))
+		{
+			return UPDATE_STOP;
+		}
+
+		ImGui::EndMenu(); 
 	}
-	
-	ImGui::End(); 
 
+	ImGui::EndMainMenuBar(); 
+
+	// -------------------------------------------
+ 
 	ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
 	ImGui::ShowTestWindow(&show_test_window);
 
