@@ -2,6 +2,9 @@ deploy:
   release: myproduct-v$(appveyor_build_version)
   description: 'Auto-generated release'
   provider: GitHub
+  artifacts:
+- path: Game
+  name: game_files
   auth_token:
     secure: 4190fb08ed7c990e36428ebf89cbfa03d76e784e
   draft: true
