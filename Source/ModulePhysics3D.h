@@ -27,10 +27,10 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	PhysBody3D* AddBody(const Sphere& sphere, float mass = 1.0f);
-	PhysBody3D* AddBody(const Cube& cube, float mass = 1.0f);
-	PhysBody3D* AddBody(const Cylinder& cylinder, float mass = 1.0f);
-	PhysVehicle3D* AddVehicle(const VehicleInfo& info);
+	//PhysBody3D* AddBody(const Sphere& sphere, float mass = 1.0f);
+	//PhysBody3D* AddBody(const Cube& cube, float mass = 1.0f);
+	//PhysBody3D* AddBody(const Cylinder& cylinder, float mass = 1.0f);
+	//PhysVehicle3D* AddVehicle(const VehicleInfo& info);
 	PhysBody3D* AddTorus(btVector3& pos, float inner_radius, float outer_radius, float subdivisions = 16.0f);
 
 	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
@@ -58,8 +58,7 @@ private:
 class DebugDrawer : public btIDebugDraw
 {
 public:
-	DebugDrawer() : line(0,0,0)
-	{}
+	/*DebugDrawer();*/
 
 	void drawLine(const btVector3& from, const btVector3& to, const btVector3& color);
 	void drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color);
@@ -69,6 +68,5 @@ public:
 	int	 getDebugMode() const;
 
 	DebugDrawModes mode;
-	Line line;
-	Primitive point;
+	//Line line;
 };

@@ -116,13 +116,6 @@ update_status ModulePhysics3D::Update(float dt)
 	if(debug == true)
 	{
 		world->debugDrawWorld();
-		if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-		{
-			Sphere s(1);
-			s.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-			float force = 30.0f;
-			AddBody(s)->Push(-(App->camera->Z.x * force), -(App->camera->Z.y * force), -(App->camera->Z.z * force));
-		}
 	}
 
 	return UPDATE_CONTINUE;
@@ -181,86 +174,86 @@ bool ModulePhysics3D::CleanUp()
 }
 
 // ---------------------------------------------------------
-PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass)
-{
-	btCollisionShape* colShape = new btSphereShape(sphere.radius);
-	shapes.add(colShape);
+//PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass)
+//{
+//	btCollisionShape* colShape = new btSphereShape(sphere.r);
+//	shapes.add(colShape);
+//
+//	btTransform startTransform;
+//	startTransform.setFromOpenGLMatrix(&sphere.Transform);
+//
+//	btVector3 localInertia(0, 0, 0);
+//	if(mass != 0.f)
+//		colShape->calculateLocalInertia(mass, localInertia);
+//
+//	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+//	motions.add(myMotionState);
+//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+//
+//	btRigidBody* body = new btRigidBody(rbInfo);
+//	PhysBody3D* pbody = new PhysBody3D(body);
+//
+//	body->setUserPointer(pbody);
+//	world->addRigidBody(body);
+//	bodies.add(pbody);
+//
+//	return pbody;
+//}
 
-	btTransform startTransform;
-	startTransform.setFromOpenGLMatrix(&sphere.transform);
-
-	btVector3 localInertia(0, 0, 0);
-	if(mass != 0.f)
-		colShape->calculateLocalInertia(mass, localInertia);
-
-	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-	motions.add(myMotionState);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-
-	btRigidBody* body = new btRigidBody(rbInfo);
-	PhysBody3D* pbody = new PhysBody3D(body);
-
-	body->setUserPointer(pbody);
-	world->addRigidBody(body);
-	bodies.add(pbody);
-
-	return pbody;
-}
-
-
-// ---------------------------------------------------------
-PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass)
-{
-	btCollisionShape* colShape = new btBoxShape(btVector3(cube.size.x*0.5f, cube.size.y*0.5f, cube.size.z*0.5f));
-	shapes.add(colShape);
-
-	btTransform startTransform;
-	startTransform.setFromOpenGLMatrix(&cube.transform);
-
-	btVector3 localInertia(0, 0, 0);
-	if(mass != 0.f)
-		colShape->calculateLocalInertia(mass, localInertia);
-
-	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-	motions.add(myMotionState);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-
-	btRigidBody* body = new btRigidBody(rbInfo);
-	PhysBody3D* pbody = new PhysBody3D(body);
-
-	body->setUserPointer(pbody);
-	world->addRigidBody(body);
-	bodies.add(pbody);
-
-	return pbody;
-}
 
 // ---------------------------------------------------------
-PhysBody3D* ModulePhysics3D::AddBody(const Cylinder& cylinder, float mass)
-{
-	btCollisionShape* colShape = new btCylinderShapeX(btVector3(cylinder.height*0.5f, cylinder.radius, 0.0f));
-	shapes.add(colShape);
+//PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass)
+//{
+//	btCollisionShape* colShape = new btBoxShape(btVector3(cube.size.x*0.5f, cube.size.y*0.5f, cube.size.z*0.5f));
+//	shapes.add(colShape);
+//
+//	btTransform startTransform;
+//	startTransform.setFromOpenGLMatrix(&cube.transform);
+//
+//	btVector3 localInertia(0, 0, 0);
+//	if(mass != 0.f)
+//		colShape->calculateLocalInertia(mass, localInertia);
+//
+//	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+//	motions.add(myMotionState);
+//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+//
+//	btRigidBody* body = new btRigidBody(rbInfo);
+//	PhysBody3D* pbody = new PhysBody3D(body);
+//
+//	body->setUserPointer(pbody);
+//	world->addRigidBody(body);
+//	bodies.add(pbody);
+//
+//	return pbody;
+//}
 
-	btTransform startTransform;
-	startTransform.setFromOpenGLMatrix(&cylinder.transform);
-
-	btVector3 localInertia(0, 0, 0);
-	if(mass != 0.f)
-		colShape->calculateLocalInertia(mass, localInertia);
-
-	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-	motions.add(myMotionState);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-
-	btRigidBody* body = new btRigidBody(rbInfo);
-	PhysBody3D* pbody = new PhysBody3D(body);
-
-	body->setUserPointer(pbody);
-	world->addRigidBody(body);
-	bodies.add(pbody);
-
-	return pbody;
-}
+// ---------------------------------------------------------
+//PhysBody3D* ModulePhysics3D::AddBody(const Cylinder& cylinder, float mass)
+//{
+//	btCollisionShape* colShape = new btCylinderShapeX(btVector3(cylinder, cylinder.radius, 0.0f));
+//	shapes.add(colShape);
+//
+//	btTransform startTransform;
+//	startTransform.setFromOpenGLMatrix(&cylinder.transform);
+//
+//	btVector3 localInertia(0, 0, 0);
+//	if(mass != 0.f)
+//		colShape->calculateLocalInertia(mass, localInertia);
+//
+//	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+//	motions.add(myMotionState);
+//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+//
+//	btRigidBody* body = new btRigidBody(rbInfo);
+//	PhysBody3D* pbody = new PhysBody3D(body);
+//
+//	body->setUserPointer(pbody);
+//	world->addRigidBody(body);
+//	bodies.add(pbody);
+//
+//	return pbody;
+//}
 
 // ---------------------------------------------------------
 PhysBody3D * ModulePhysics3D::AddTorus(btVector3& pos, float inner_radius, float outer_radius, float subdivisions)
@@ -338,17 +331,17 @@ void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, c
 // =============================================
 void DebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
 {
-	line.origin.Set(from.getX(), from.getY(), from.getZ());
+	/*line.origin.Set(from.getX(), from.getY(), from.getZ());
 	line.destination.Set(to.getX(), to.getY(), to.getZ());
 	line.color.Set(color.getX(), color.getY(), color.getZ());
-	line.Render();
+	line.Render();*/
 }
 
 void DebugDrawer::drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
 {
-	point.transform.translate(PointOnB.getX(), PointOnB.getY(), PointOnB.getZ());
-	point.color.Set(color.getX(), color.getY(), color.getZ());
-	point.Render();
+	//point.transform.translate(PointOnB.getX(), PointOnB.getY(), PointOnB.getZ());
+	//point.color.Set(color.getX(), color.getY(), color.getZ());
+	//point.Render();
 }
 
 void DebugDrawer::reportErrorWarning(const char* warningString)
