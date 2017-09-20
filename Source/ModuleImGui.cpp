@@ -37,7 +37,19 @@ update_status ModuleImGui::Update(float dt)
 			return UPDATE_STOP;
 		}
 
+		if (ImGui::MenuItem("Console"))
+		{
+			show_console = !show_console;
+		}
+
 		ImGui::EndMenu(); 
+	}
+
+	if (show_console)
+	{
+		ImGui::Begin("Console");
+
+		ImGui::End();
 	}
 
 	ImGui::EndMainMenuBar(); 

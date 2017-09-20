@@ -22,6 +22,10 @@ private:
 
 	bool show_test_window = true;
 	bool show_another_window = false;
+	bool show_console = false; 
+
+	
+
 	ImVec4 clear_color = ImColor(114, 144, 154);
 
 };

@@ -3,6 +3,7 @@
 #include "p2DynArray.h"
 #include "Globals.h"
 #include "Primitive.h"
+#include "MathGeoLib\MathGeoLib.h"
 
 struct PhysBody3D;
 struct PhysMotor3D;
@@ -18,12 +19,11 @@ public:
 	bool CleanUp();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
-
-public:
-
-
-
+	//p2DynArray<p2Point<int>> GetCollisions(); 
 
 private:
+
+	p2DynArray<Sphere> object_list; 
+	PPlane main_plane; 
 	
 };
