@@ -291,6 +291,9 @@
     <ClInclude Include="MathGeoLib\Geometry\TriangleMesh.h">
       <Filter>Sources\MathGeoLib</Filter>
     </ClInclude>
+    <ClInclude Include="iPoint.h">
+      <Filter>Sources\Containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">

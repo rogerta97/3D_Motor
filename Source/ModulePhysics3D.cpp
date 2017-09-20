@@ -41,6 +41,9 @@ bool ModulePhysics3D::Init()
 	LOG("Creating 3D Physics simulation");
 	bool ret = true;
 
+	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
+	App->camera->LookAt(vec3(0, 0, 0));
+
 	return ret;
 }
 
@@ -63,6 +66,42 @@ bool ModulePhysics3D::Start()
 		btRigidBody* body = new btRigidBody(rbInfo);
 		world->addRigidBody(body);
 	}
+
+	// Creating objects 
+
+	main_plane = PPlane(0, 1, 0, 0);
+	main_plane.axis = true;
+
+	Sphere s1;
+	s1.pos = vec(0.0f, 0.0f, 0.0f);
+	s1.r = 5;
+
+	Sphere s2;
+	s2.pos = vec(0.0f, 0.0f, 0.0f);
+	s2.r = 3;
+
+	Sphere s3;
+	s3.pos = vec(0.0f, 20.0f, 0.0f);
+	s3.r = 2;
+
+	Sphere s4;
+	s4.pos = vec(0.0f, 10.0f, 0.0f);
+	s4.r = 7;
+
+	Sphere s5;
+	s5.pos = vec(0.0f, 25.0f, 0.0f);
+	s5.r = 7;
+
+	Sphere s6;
+	s6.pos = vec(0.0f, 0.0f,15.0f);
+	s6.r = 2;
+
+	spheres_list.PushBack(s1);
+	spheres_list.PushBack(s2);
+	spheres_list.PushBack(s3);
+	spheres_list.PushBack(s4);
+	spheres_list.PushBack(s5);
+	spheres_list.PushBack(s6);
 
 	return true;
 }
@@ -118,12 +157,17 @@ update_status ModulePhysics3D::Update(float dt)
 		world->debugDrawWorld();
 	}
 
+	GetCollisions(); 
+
 	return UPDATE_CONTINUE;
 }
 
 // ---------------------------------------------------------
 update_status ModulePhysics3D::PostUpdate(float dt)
 {
+
+	main_plane.Render(); 
+
 	return UPDATE_CONTINUE;
 }
 
@@ -326,6 +370,47 @@ void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, c
 	world->addConstraint(hinge, disable_collision);
 	constraints.add(hinge);
 	hinge->setDbgDrawSize(2.0f);
+}
+
+p2DynArray<iPoint> ModulePhysics3D::GetCollisions()
+{ 
+	p2DynArray<iPoint> tmp_obj_list;
+	
+	int listener = 0, candidate = 0; 
+	bool empty = true; 
+
+	for (listener; listener < spheres_list.Count(); listener++)
+	{
+		CONSOLELOG("Body %d is coliding with:", listener + 1);
+
+		empty = true; 
+
+		for(candidate; candidate < spheres_list.Count(); candidate++)
+		{ 
+			if (listener == candidate) {
+				continue; 
+			}
+
+			bool colision_test = false; 
+			colision_test = spheres_list[listener].Intersects(spheres_list[candidate]);
+
+			if (colision_test)
+			{
+				CONSOLELOG("Body %d.", candidate + 1);
+				tmp_obj_list.PushBack(iPoint(listener, candidate)); 
+				empty = false; 
+			}
+
+		}
+
+		if (empty)
+			CONSOLELOG("This body DONT collide", candidate + 1);
+
+		candidate = 0; 
+		
+	}
+	
+	return tmp_obj_list; 
 }
 
 // =============================================
