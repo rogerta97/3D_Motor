@@ -69,6 +69,8 @@ bool ModuleWindow::Init()
 		}
 	}
 
+	name = "Window"; 
+
 	return ret;
 }
 

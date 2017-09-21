@@ -30,6 +30,8 @@ bool ModuleInput::Init()
 		ret = false;
 	}
 
+	name = "Input"; 
+
 	return ret;
 }
 
@@ -126,4 +128,9 @@ bool ModuleInput::CleanUp()
 	LOG("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
+}
+
+void ModuleInput::PrintConfigData()
+{
+	ImGui::Text("DUMMYCRAZYTEST"); 
 }

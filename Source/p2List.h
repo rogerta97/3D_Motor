@@ -116,6 +116,25 @@ public:
 		return ret;
 	}
 
+	// Returns the content on the index
+	tdata get(unsigned int index) const
+	{
+		bool ret = false;
+		unsigned int i = 0;
+		p2List_item<tdata>*   p_data = start;
+
+		for (unsigned int i = 0; i < index && p_data != NULL; ++i)
+			p_data = p_data->next;
+
+		if (p_data != NULL)
+		{
+			ret = true;
+			return p_data->data;
+		}
+
+		return 0; 
+	}
+
 	/**
 	* Deletes an item from the list
 	*/

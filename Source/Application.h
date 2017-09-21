@@ -41,6 +41,8 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	Module* GetModule(int index);
+
 private:
 
 	void AddModule(Module* mod);

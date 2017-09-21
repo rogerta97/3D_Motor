@@ -133,3 +133,8 @@ void Application::AddModule(Module* mod)
 {
 	list_modules.add(mod);
 }
+
+Module* Application::GetModule(int index)
+{
+	return list_modules.get(index);
+}

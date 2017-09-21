@@ -18,6 +18,13 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 ModuleCamera3D::~ModuleCamera3D()
 {}
 
+bool ModuleCamera3D::Init() 
+{
+	name = "Camera";
+
+	return true; 
+}
+
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
 {

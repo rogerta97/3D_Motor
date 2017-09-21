@@ -15,6 +15,7 @@ private :
 
 public:
 	Application* App;
+	const char* name = ""; 
 
 	Module(Application* parent, bool start_enabled = true) : App(parent)
 	{}
@@ -50,6 +51,11 @@ public:
 	virtual bool CleanUp() 
 	{ 
 		return true; 
+	}
+
+	virtual void PrintConfigData()
+	{
+		
 	}
 
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)

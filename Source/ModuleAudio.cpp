@@ -41,6 +41,8 @@ bool ModuleAudio::Init()
 		ret = false;
 	}
 
+	name = "Audio"; 
+
 	return ret;
 }
 

@@ -23,6 +23,7 @@ private:
 
 	void PrintConsole(); 
 	void ShowAbout(); 
+	void UpdateConfigPanel(); 
 
 private: 
 
@@ -30,6 +31,7 @@ private:
 	bool show_another_window = false;
 	bool show_console = false; 
 	bool show_about = false; 
+	bool show_gui_demo = false; 
 
 	// Console management -----------
 

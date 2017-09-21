@@ -26,6 +26,8 @@ bool ModuleSceneIntro::Start()
 
 	srand(time(NULL));
 
+	name = "TO DELETE"; 
+
 	return ret;
 }
 
@@ -40,8 +42,6 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-
-
 	
 	return UPDATE_CONTINUE;
 }

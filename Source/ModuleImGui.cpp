@@ -13,6 +13,8 @@ bool ModuleImGui::Init()
 {
 	ImGui_ImplSdlGL2_Init(App->window->window);
 
+	name = "ImGui"; 
+
 	return true;
 }
 
@@ -37,8 +39,6 @@ update_status ModuleImGui::Update(float dt)
 			return UPDATE_STOP;
 		}
 
-
-
 		ImGui::EndMenu(); 
 	}
 
@@ -54,31 +54,54 @@ update_status ModuleImGui::Update(float dt)
 
 	if (ImGui::BeginMenu("Help"))
 	{
+
+		if (ImGui::MenuItem("DEMO GUI"))
+		{
+			show_gui_demo = !show_gui_demo;
+		}
+
+		if (ImGui::MenuItem("Documentation"))
+		{
+			ShellExecute(NULL, "open", "https://github.com/rogerta97/3D_Motor", NULL, NULL, SW_SHOWNORMAL);
+		}
+
+		if (ImGui::MenuItem("Download latest"))
+		{
+			ShellExecute(NULL, "open", "https://github.com/rogerta97/3D_Motor/releases", NULL, NULL, SW_SHOWNORMAL);
+		}
+
+		if (ImGui::MenuItem("Report a bug"))
+		{
+			ShellExecute(NULL, "open", "http://yourwebpage.com", NULL, NULL, SW_SHOWNORMAL);
+		}
+
 		if (ImGui::MenuItem("About"))
 		{
-			show_about = !show_about;
+			show_about = !show_about; 
 		}
 
 		ImGui::EndMenu();
 	}
 
-	if (show_console)
-	{
-		PrintConsole();
-	}
-
-	if (show_about)
-	{
-		ShowAbout(); 
-	}
+	if (show_console) PrintConsole();	
+	if (show_about) ShowAbout(); 
 
 	ImGui::EndMainMenuBar(); 
 
+	if (show_gui_demo)
+	{
+		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
+		ImGui::ShowTestWindow();
+	}
+
 	// -------------------------------------------
  
-	ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
-	ImGui::ShowTestWindow(&show_test_window);
+	// Configuration Panel -----------------------
 
+	UpdateConfigPanel(); 
+
+	// -------------------------------------------
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -139,5 +162,20 @@ void ModuleImGui::ShowAbout()
 	ImGui::TextWrapped("");
 	ImGui::TextWrapped("MIT License:");
 
+	ImGui::End();
+}
+
+void ModuleImGui::UpdateConfigPanel()
+{
+	ImGui::Begin("Configuration");
+
+	Module* curr_module = App->GetModule(0);
+
+	for (int i = 1; App->GetModule(i) != nullptr; i++)
+	{
+		ImGui::CollapsingHeader(App->GetModule(i)->name);
+		App->GetModule(i)->PrintConfigData(); 
+	}
+	
 	ImGui::End();
 }
