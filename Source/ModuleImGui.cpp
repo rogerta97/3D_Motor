@@ -75,6 +75,11 @@ update_status ModuleImGui::Update(float dt)
 			ShellExecute(NULL, "open", "http://yourwebpage.com", NULL, NULL, SW_SHOWNORMAL);
 		}
 
+		if (ImGui::MenuItem("License"))
+		{
+			ShellExecute(NULL, "open", "https://github.com/rogerta97/3D_Motor/blob/master/LICENSE", NULL, NULL, SW_SHOWNORMAL);
+		}
+
 		if (ImGui::MenuItem("About"))
 		{
 			show_about = !show_about; 
@@ -159,8 +164,6 @@ void ModuleImGui::ShowAbout()
 	ImGui::TextWrapped(" STL");
 	ImGui::TextWrapped(" Bullet");
 	ImGui::TextWrapped(" ImGui");
-	ImGui::TextWrapped("");
-	ImGui::TextWrapped("MIT License:");
 
 	ImGui::End();
 }
@@ -169,9 +172,7 @@ void ModuleImGui::UpdateConfigPanel()
 {
 	ImGui::Begin("Configuration");
 
-	Module* curr_module = App->GetModule(0);
-
-	for (int i = 1; App->GetModule(i) != nullptr; i++)
+	for (int i = 0; App->GetModule(i) != nullptr; i++)
 	{
 		ImGui::CollapsingHeader(App->GetModule(i)->name);
 		App->GetModule(i)->PrintConfigData(); 
