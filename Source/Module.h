@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Globals.h"
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
 #include "MathGeoLib\MathGeoLib.h"
 
 class Application;

@@ -381,7 +381,11 @@ p2DynArray<iPoint> ModulePhysics3D::GetCollisions()
 
 	for (listener; listener < spheres_list.Count(); listener++)
 	{
-		CONSOLELOG("Body %d is coliding with:", listener + 1);
+		// Here we need to implement String from STL, in order to fill the %d gaps with data and then send it to the console. 
+
+		// WIP 1
+
+		App->imgui->AddToConsole("Body %d is coliding with:"/*, listener + 1*/);
 
 		empty = true; 
 
@@ -396,7 +400,7 @@ p2DynArray<iPoint> ModulePhysics3D::GetCollisions()
 
 			if (colision_test)
 			{
-				CONSOLELOG("Body %d.", candidate + 1);
+				App->imgui->AddToConsole("Body %d."/* candidate + 1*/);
 				tmp_obj_list.PushBack(iPoint(listener, candidate)); 
 				empty = false; 
 			}
@@ -404,7 +408,7 @@ p2DynArray<iPoint> ModulePhysics3D::GetCollisions()
 		}
 
 		if (empty)
-			CONSOLELOG("This body DONT collide", candidate + 1);
+			App->imgui->AddToConsole("This body DONT collide"/* candidate + 1*/);
 
 		candidate = 0; 
 		

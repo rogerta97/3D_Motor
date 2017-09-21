@@ -1,9 +1,7 @@
 #pragma once
 
 #include "Module.h"
-#include "Globals.h"
-#include "imgui.h"
-#include "imgui_impl_sdl.h"
+#include "p2DynArray.h"
 
 class ModuleImGui : public Module
 {
@@ -18,13 +16,28 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp(); 
 
+	void AddToConsole(const char* new_line);
+	void ClearConsole(); 
+
+private:
+
+	void PrintConsole(); 
+	void ShowAbout(); 
+
 private: 
 
 	bool show_test_window = true;
 	bool show_another_window = false;
 	bool show_console = false; 
+	bool show_about = false; 
 
-	
+	// Console management -----------
+
+	p2DynArray<const char*> console_buffer; 
+
+	const char* new_input = ""; 
+
+	// ------
 
 	ImVec4 clear_color = ImColor(114, 144, 154);
 
