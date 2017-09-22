@@ -46,6 +46,14 @@ bool ModuleAudio::Init()
 	return ret;
 }
 
+void ModuleAudio::PrintConfigData()
+{
+	if (ImGui::CollapsingHeader(name))
+	{
+
+	}
+}
+
 // Called before quitting
 bool ModuleAudio::CleanUp()
 {

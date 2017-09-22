@@ -74,12 +74,25 @@ bool Application::Init()
 void Application::PrepareUpdate()
 {
 	dt = (float)ms_timer.Read() / 1000.0f;
-	ms_timer.Start();
+
+	//if (ms_timer.Read() > 1000)
+	//{
+	//	if (framerate_buffer.count() > 50)
+	//		framerate_buffer.getFirst(); 
+
+	//	framerate_buffer.add(frame_counter); 
+
+	//	frame_counter = 0; 
+	//	ms_timer.Start();
+	//}
+	
+	frame_counter++;
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -114,6 +127,24 @@ update_status Application::Update()
 
 	FinishUpdate();
 	return ret;
+}
+
+void Application::PrintConfigData()
+{
+
+	if (ImGui::CollapsingHeader("Application"))
+	{
+
+		char buf[32] = "";
+		ImGui::InputText("Engine name", buf, IM_ARRAYSIZE(buf));
+		ImGui::InputText("Organization", buf, IM_ARRAYSIZE(buf));
+		ImGui::InputText("MAX FPS", buf, IM_ARRAYSIZE(buf));
+
+		ImGui::Text("Limit Framerate: ");
+
+		
+	}
+
 }
 
 bool Application::CleanUp()

@@ -94,3 +94,11 @@ void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);
 }
+
+void ModuleWindow::PrintConfigData()
+{
+	if (ImGui::CollapsingHeader(name))
+	{
+
+	}
+}

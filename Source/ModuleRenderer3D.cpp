@@ -152,3 +152,11 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
+
+void ModuleRenderer3D::PrintConfigData()
+{
+	if (ImGui::CollapsingHeader(name))
+	{
+
+	}
+}

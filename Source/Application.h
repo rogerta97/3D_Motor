@@ -28,9 +28,19 @@ public:
 
 private:
 
-	Timer	ms_timer;
-	float	dt;
+	Timer			ms_timer;
+	float			dt = 0.0f;
 	p2List<Module*> list_modules;
+
+	// Framerate management --------------
+
+	int	frame_counter = 0;
+		
+	p2List<int>	framerate_buffer; 
+	p2List<int>	miliseconds_buffer;
+	int framerate_placer = 0; 
+
+	// -----------------------------------
 
 public:
 
@@ -39,6 +49,7 @@ public:
 
 	bool Init();
 	update_status Update();
+	void PrintConfigData();
 	bool CleanUp();
 
 	Module* GetModule(int index);

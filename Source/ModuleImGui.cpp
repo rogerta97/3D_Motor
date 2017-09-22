@@ -172,9 +172,10 @@ void ModuleImGui::UpdateConfigPanel()
 {
 	ImGui::Begin("Configuration");
 
+	App->PrintConfigData();
+
 	for (int i = 0; App->GetModule(i) != nullptr; i++)
 	{
-		ImGui::CollapsingHeader(App->GetModule(i)->name);
 		App->GetModule(i)->PrintConfigData(); 
 	}
 	

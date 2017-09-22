@@ -419,6 +419,14 @@ p2DynArray<iPoint> ModulePhysics3D::GetCollisions()
 	return tmp_obj_list; 
 }
 
+void ModulePhysics3D::PrintConfigData()
+{
+	if (ImGui::CollapsingHeader(name))
+	{
+
+	}
+}
+
 // =============================================
 void DebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
 {
@@ -454,3 +462,5 @@ int	 DebugDrawer::getDebugMode() const
 {
 	return mode;
 }
+
+

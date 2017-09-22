@@ -132,5 +132,10 @@ bool ModuleInput::CleanUp()
 
 void ModuleInput::PrintConfigData()
 {
-	ImGui::Text("DUMMYCRAZYTEST"); 
+	
+	if (ImGui::CollapsingHeader(name))
+	{
+
+	}
+	
 }
