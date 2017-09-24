@@ -27,6 +27,14 @@ public:
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
+
+private: 
+
+	//Windows management
+	SDL_DisplayMode display_mode; 
+
+	bool fullscreen = false; 
+	bool borderless = false; 
 };
 
 #endif // __ModuleWindow_H__

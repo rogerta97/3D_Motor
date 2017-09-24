@@ -142,6 +142,32 @@ void Application::PrintConfigData()
 
 		ImGui::Text("Limit Framerate: ");
 
+		if (ImGui::TreeNode("Hardware")) 
+		{
+			ImGui::Text("CPU's:"); ImGui::SameLine(); 
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", SDL_GetCPUCount()); ImGui::SameLine(); 
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "(Cache: %d kb)", SDL_GetCPUCacheLineSize());
+
+			ImGui::Text("System RAM:"); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", SDL_GetSystemRAM()); 
+
+			//ImGui::Text("Caps: "); ImGui::SameLine();
+
+			//if (SDL_Has3DNow()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "3DNow, "); ImGui::SameLine();
+			//if (SDL_HasAVX()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "AVX, "); ImGui::SameLine();
+			//if (SDL_HasAVX2()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "AVX2, "); ImGui::SameLine();
+			//if (SDL_HasAltiVec()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "AltiVec, "); ImGui::SameLine();
+			//if (SDL_HasMMX()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "MMX, "); ImGui::SameLine();
+			//if (SDL_HasRDTSC()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "RDTSC, "); ImGui::SameLine();
+			//if (SDL_HasSSE()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE, "); ImGui::SameLine();
+			//if (SDL_HasSSE2()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "3DNow, "); ImGui::SameLine();
+			//if (SDL_HasSSE3()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "3DNow, "); ImGui::SameLine();
+			//if (SDL_HasSSE41()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "3DNow, "); ImGui::SameLine();
+			//if (SDL_HasSSE42()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "3DNow, "); ImGui::SameLine();
+
+			ImGui::TreePop(); 
+		}
+
 		
 	}
 
