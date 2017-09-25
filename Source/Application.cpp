@@ -75,16 +75,20 @@ void Application::PrepareUpdate()
 {
 	dt = (float)ms_timer.Read() / 1000.0f;
 
-	//if (ms_timer.Read() > 1000)
-	//{
-	//	if (framerate_buffer.count() > 50)
-	//		framerate_buffer.getFirst(); 
+	if (ms_timer.Read() > 1000)
+	{
+		if (framerate_buffer.size() > 100)
+			framerate_buffer.pop();
 
-	//	framerate_buffer.add(frame_counter); 
+		if (miliseconds_buffer.size() > 100)
+			miliseconds_buffer.pop();
 
-	//	frame_counter = 0; 
-	//	ms_timer.Start();
-	//}
+		framerate_buffer.push(frame_counter);
+		miliseconds_buffer.push(ms_timer.Read()); 
+
+		frame_counter = 0; 
+		ms_timer.Start();
+	}
 	
 	frame_counter++;
 }
@@ -140,6 +144,10 @@ void Application::PrintConfigData()
 		ImGui::InputText("Organization", buf, IM_ARRAYSIZE(buf));
 		ImGui::InputText("MAX FPS", buf, IM_ARRAYSIZE(buf));
 
+		ImGui::Text("Framerate: "); ImGui::NewLine(); 
+
+		//ImGui::PlotHistogram("##Framerate", framerate_buffer.front(), framerate_buffer.size(), 0, "klk", 0.0f, 100.0f, ImVec2(310, 10));
+
 		if (ImGui::TreeNode("Hardware"))
 		{
 			SDL_version version; 
@@ -171,7 +179,7 @@ void Application::PrintConfigData()
 
 			ImGui::Separator(); 
 
-			ImGui::Text("GUP Vendor: "); ImGui::SameLine(); 
+			ImGui::Text("GPU Vendor: "); ImGui::SameLine(); 
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", renderer3D->GetGraphicsModel("vendor"));
 
 			ImGui::Text("GPU Model: "); ImGui::SameLine(); 

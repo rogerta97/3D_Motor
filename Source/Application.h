@@ -13,7 +13,6 @@
 #include "ModulePhysics3D.h"
 #include "ModuleImGui.h"
 #include "MathGeoLib\MathGeoLib.h"
-#include <iostream>
 #include <queue>
 
 class Application
@@ -38,9 +37,8 @@ private:
 
 	int	frame_counter = 0;
 	
-	
-	p2List<int>	framerate_buffer; 
-	p2List<int>	miliseconds_buffer;
+	std::queue<int>	framerate_buffer; 
+	std::queue<int>	miliseconds_buffer;
 
 	int framerate_placer = 0; 
 
