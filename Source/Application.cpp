@@ -144,7 +144,7 @@ void Application::PrintConfigData()
 		{
 			ImGui::Text("CPU's:"); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", SDL_GetCPUCount()); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "(Cache: %d kb)", SDL_GetCPUCacheLineSize());
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "(Cache: %dkb)", SDL_GetCPUCacheLineSize());
 
 			ImGui::Text("System RAM:"); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", SDL_GetSystemRAM());
@@ -165,7 +165,6 @@ void Application::PrintConfigData()
 
 			ImGui::TreePop(); 
 		}
-
 		
 	}
 

@@ -27,8 +27,8 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH * SCREEN_SIZE;
-		int height = SCREEN_HEIGHT * SCREEN_SIZE;
+		width = SCREEN_WIDTH * SCREEN_SIZE;
+		height = SCREEN_HEIGHT * SCREEN_SIZE;
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
@@ -97,8 +97,43 @@ void ModuleWindow::SetTitle(const char* title)
 
 void ModuleWindow::PrintConfigData()
 {
+
+	SDL_DisplayMode DM; 
+	SDL_GetCurrentDisplayMode(0, &DM);
+	
 	if (ImGui::CollapsingHeader(name))
 	{
 
+		ImGui::Text("Size configuration:"); 
+
+		ImGui::SliderInt("Width", &width, 600, DM.w); 
+		ImGui::SliderInt("Height", &height, 600, DM.h);
+
+		SDL_SetWindowSize(window, width, height);
+
+		if(SDL_UpdateWindowSurface(window)) //(?)
+			screen_surface = SDL_GetWindowSurface(window); 
+
+		if (ImGui::Button("Center Window"))
+		{
+			SDL_SetWindowPosition(window, DM.w/2 - width/2, DM.h/2 - height/2); 
+		}
+
+		// Auto adjustments -----------------------------
+
+		ImGui::Text("Auto adjustments: "); 
+	
+		ImGui::Checkbox("Fullscreen", &fullscreen);
+	
+		if (fullscreen)
+		{
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		}
+		else
+		{
+			SDL_SetWindowFullscreen(window, 0);
+		}
+
+		// ------------------------------------------
 	}
 }
