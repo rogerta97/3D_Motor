@@ -97,49 +97,8 @@ void ModuleWindow::SetTitle(const char* title)
 
 void ModuleWindow::PrintConfigData()
 {
-	int w = 0, h = 0;
-
 	if (ImGui::CollapsingHeader(name))
 	{
-
-		SDL_GetWindowSize(window, &w, &h);
-		SDL_GetCurrentDisplayMode(0, &display_mode);
-
-		int curr_width = w, curr_height = h; 
-
-		ImGui::SliderInt("width", &curr_width, w - 1 , display_mode.w);
-		ImGui::SliderInt("height", &curr_height, h - 1, display_mode.h);
-		ImGui::Text("");
-
-		if (curr_height <= 1061)
-			SDL_SetWindowSize(window, curr_width, curr_height);
-
-		//SDL_SetWindowSize(window, curr_width, curr_height);
-		SDL_SetWindowPosition(window, display_mode.w / 2 - (w/2), display_mode.h / 2 - (h/2)); 
-
-
-		ImGui::Checkbox("Fullscreen", &fullscreen);
-		
-		if	(fullscreen)
-		{
-			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-		}
-		else
-		{
-			SDL_SetWindowFullscreen(window, NULL);
-		}
-
-		ImGui::Checkbox("Borderless", &borderless);
-
-		if (borderless)
-		{
-			SDL_SetWindowBordered(window, (SDL_bool)false); 
-		}
-		else
-		{
-			SDL_SetWindowBordered(window, (SDL_bool)true);
-		}
-
 
 	}
 }
