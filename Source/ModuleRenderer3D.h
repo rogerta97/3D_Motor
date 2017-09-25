@@ -20,6 +20,8 @@ public:
 	void OnResize(int width, int height);
 	void PrintConfigData();
 
+	char* GetGraphicsModel(const char* _module); 
+
 public:
 
 	Light lights[MAX_LIGHTS];

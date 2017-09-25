@@ -142,6 +142,12 @@ void Application::PrintConfigData()
 
 		if (ImGui::TreeNode("Hardware"))
 		{
+			SDL_version version; 
+			SDL_GetVersion(&version);	
+
+			ImGui::Text("SDL Version"); ImGui::SameLine(); 
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d.%d.%d", version.major, version.minor, version.patch); 
+			ImGui::Separator();
 			ImGui::Text("CPU's:"); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", SDL_GetCPUCount()); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "(Cache: %dkb)", SDL_GetCPUCacheLineSize());
@@ -162,6 +168,14 @@ void Application::PrintConfigData()
 			if (SDL_HasSSE3()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE3,"); ImGui::SameLine();
 			if (SDL_HasSSE41()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE41,"); ImGui::SameLine();
 			if (SDL_HasSSE42()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE42,");
+
+			ImGui::Separator(); 
+
+			ImGui::Text("GUP Vendor: "); ImGui::SameLine(); 
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", renderer3D->GetGraphicsModel("vendor"));
+
+			ImGui::Text("GPU Model: "); ImGui::SameLine(); 
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", renderer3D->GetGraphicsModel("model"));
 
 			ImGui::TreePop(); 
 		}

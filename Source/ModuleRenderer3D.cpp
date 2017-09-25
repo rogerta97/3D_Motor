@@ -160,3 +160,16 @@ void ModuleRenderer3D::PrintConfigData()
 
 	}
 }
+
+char * ModuleRenderer3D::GetGraphicsModel(const char* _module)
+{
+	const GLubyte* model; 
+
+	if(_module == "vendor")
+		model = glGetString(GL_VENDOR);
+
+	else if(_module == "model")
+	    model = glGetString(GL_RENDERER);
+		
+	return (char*)model;
+}
