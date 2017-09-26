@@ -43,6 +43,7 @@ private:
 	std::vector<int>	framerate_buffer; 
 	std::vector<int>	miliseconds_buffer;
 
+
 	int framerate_placer = 0; 
 
 	// -----------------------------------

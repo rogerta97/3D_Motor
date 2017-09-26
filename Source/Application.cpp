@@ -93,6 +93,7 @@ void Application::PrepareUpdate()
 			miliseconds_buffer.push_back(ms_timer.Read());
 		}
 		frame_counter = 0;
+
 		ms_timer.Start();
 	}
 	
@@ -155,6 +156,7 @@ void Application::PrintConfigData()
 		ImGui::InputText("MAX FPS", buf, IM_ARRAYSIZE(buf));
 
 		ImGui::Text("Framerate: "); ImGui::NewLine();
+
 		if (ImGui::TreeNode("Hardware"))
 		{
 			SDL_version version; 
