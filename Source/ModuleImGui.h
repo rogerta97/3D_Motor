@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Module.h"
-#include "p2DynArray.h"
-
+#include<vector>
 class ModuleImGui : public Module
 {
 public: 
@@ -35,7 +34,7 @@ private:
 
 	// Console management -----------
 
-	p2DynArray<const char*> console_buffer; 
+	std::vector<const char*> console_buffer; 
 
 	const char* new_input = ""; 
 

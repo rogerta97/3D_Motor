@@ -126,26 +126,26 @@ bool ModuleImGui::CleanUp()
 
 void ModuleImGui::AddToConsole(const char * new_line)
 {
-	console_buffer.PushBack(new_line); 
+	console_buffer.push_back(new_line); 
 }
 
 void ModuleImGui::ClearConsole()
 {
-	console_buffer.Clear(); 
+	console_buffer.clear(); 
 }
 
 void ModuleImGui::PrintConsole()
 {
 	ImGui::Begin("Console"); 
 
-	for (int i = 0; i < console_buffer.Count(); i++)
+	for (int i = 0; i < console_buffer.size(); i++)
 	{
 		ImGui::Text(console_buffer[i]);
 	}
 
 	ImGui::End(); 
 
-	console_buffer.Clear();
+	console_buffer.clear();
 }
 
 void ModuleImGui::ShowAbout()

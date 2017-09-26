@@ -98,12 +98,12 @@ bool ModulePhysics3D::Start()
 	s6.pos = vec(0.0f, 0.0f,15.0f);
 	s6.r = 2;
 
-	spheres_list.PushBack(s1);
-	spheres_list.PushBack(s2);
-	spheres_list.PushBack(s3);
-	spheres_list.PushBack(s4);
-	spheres_list.PushBack(s5);
-	spheres_list.PushBack(s6);
+	spheres_list.push_back(s1);
+	spheres_list.push_back(s2);
+	spheres_list.push_back(s3);
+	spheres_list.push_back(s4);
+	spheres_list.push_back(s5);
+	spheres_list.push_back(s6);
 
 	return true;
 }
@@ -378,14 +378,14 @@ void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, c
 	hinge->setDbgDrawSize(2.0f);
 }
 
-p2DynArray<iPoint> ModulePhysics3D::GetCollisions()
+std::vector<iPoint> ModulePhysics3D::GetCollisions()
 { 
-	p2DynArray<iPoint> tmp_obj_list;
+	std::vector<iPoint> tmp_obj_list;
 	
 	int listener = 0, candidate = 0; 
 	bool empty = true; 
 
-	for (listener; listener < spheres_list.Count(); listener++)
+	for (listener; listener < spheres_list.size(); listener++)
 	{
 		// Here we need to implement String from STL, in order to fill the %d gaps with data and then send it to the console. 
 
@@ -395,7 +395,7 @@ p2DynArray<iPoint> ModulePhysics3D::GetCollisions()
 
 		empty = true; 
 
-		for(candidate; candidate < spheres_list.Count(); candidate++)
+		for(candidate; candidate < spheres_list.size(); candidate++)
 		{ 
 			if (listener == candidate) {
 				continue; 
@@ -407,7 +407,7 @@ p2DynArray<iPoint> ModulePhysics3D::GetCollisions()
 			if (colision_test)
 			{
 				App->imgui->AddToConsole("Body %d."/* candidate + 1*/);
-				tmp_obj_list.PushBack(iPoint(listener, candidate)); 
+				tmp_obj_list.push_back(iPoint(listener, candidate)); 
 				empty = false; 
 			}
 

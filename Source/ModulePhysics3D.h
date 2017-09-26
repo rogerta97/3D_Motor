@@ -38,7 +38,7 @@ public:
 	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
 	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);
 
-	p2DynArray<iPoint> GetCollisions(); 
+	std::vector<iPoint> GetCollisions(); 
 	void PrintConfigData();
 
 private:
@@ -61,8 +61,8 @@ private:
 
 	// GeoMath
 
-	p2DynArray<Sphere> spheres_list; 
-	p2DynArray<AABB> cube_list; 
+	std::vector<Sphere> spheres_list; 
+	std::vector<AABB> cube_list; 
 
 	PPlane main_plane; 
 };
