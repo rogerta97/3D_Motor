@@ -34,13 +34,12 @@ Application::Application()
 
 Application::~Application()
 {
-	p2List_item<Module*>* item = list_modules.getLast();
-
-	while(item != NULL)
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); item++)
 	{
-		delete item->data;
-		item = item->prev;
+		delete (*item);
+
 	}
+	
 }
 
 bool Application::Init()
@@ -48,22 +47,27 @@ bool Application::Init()
 	bool ret = true;
 
 	// Call Init() in all modules
-	p2List_item<Module*>* item = list_modules.getFirst();
 
-	while(item != NULL && ret == true)
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); item++)
 	{
-		ret = item->data->Init();
-		item = item->next;
+		if (ret == true)
+		{
+			ret = (*item)->Init();
+			
+		}
+	
 	}
 
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
-	item = list_modules.getFirst();
 
-	while(item != NULL && ret == true)
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); item++)
 	{
-		ret = item->data->Start();
-		item = item->next;
+		if (ret == true)
+		{
+			ret = (*item)->Start();
+
+		}
 	}
 	
 	ms_timer.Start();
@@ -75,16 +79,22 @@ void Application::PrepareUpdate()
 {
 	dt = (float)ms_timer.Read() / 1000.0f;
 
-	//if (ms_timer.Read() > 1000)
-	//{
-	//	if (framerate_buffer.count() > 50)
-	//		framerate_buffer.getFirst(); 
+	if (ms_timer.Read() > 1000)
+	{
+		if (ms_timer.Read() > 1000)
+		{
+			if (framerate_buffer.size() > 100)
+				framerate_buffer.pop_back();
 
-	//	framerate_buffer.add(frame_counter); 
+			if (miliseconds_buffer.size() > 100)
+				miliseconds_buffer.pop_back();
 
-	//	frame_counter = 0; 
-	//	ms_timer.Start();
-	//}
+			framerate_buffer.push_back(frame_counter);
+			miliseconds_buffer.push_back(ms_timer.Read());
+		}
+		frame_counter = 0;
+		ms_timer.Start();
+	}
 	
 	frame_counter++;
 }
@@ -101,28 +111,32 @@ update_status Application::Update()
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 	
-	p2List_item<Module*>* item = list_modules.getFirst();
 	
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	for(std::list<Module*>::iterator item = list_modules.begin();item!= list_modules.end();item++)
 	{
-		ret = item->data->PreUpdate(dt);
-		item = item->next;
+		if (ret == UPDATE_CONTINUE)
+		{
+			ret = (*item)->PreUpdate(dt);
+		}
+	
 	}
 
-	item = list_modules.getFirst();
-
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); item++)
 	{
-		ret = item->data->Update(dt);
-		item = item->next;
+		if (ret == UPDATE_CONTINUE)
+		{
+			ret = (*item)->Update(dt);
+		}
+
 	}
 
-	item = list_modules.getFirst();
-
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); item++)
 	{
-		ret = item->data->PostUpdate(dt);
-		item = item->next;
+		if (ret == UPDATE_CONTINUE)
+		{
+			ret = (*item)->PostUpdate(dt);
+		}
+
 	}
 
 	FinishUpdate();
@@ -140,6 +154,7 @@ void Application::PrintConfigData()
 		ImGui::InputText("Organization", buf, IM_ARRAYSIZE(buf));
 		ImGui::InputText("MAX FPS", buf, IM_ARRAYSIZE(buf));
 
+		ImGui::Text("Framerate: "); ImGui::NewLine();
 		if (ImGui::TreeNode("Hardware"))
 		{
 			SDL_version version; 
@@ -171,7 +186,7 @@ void Application::PrintConfigData()
 
 			ImGui::Separator(); 
 
-			ImGui::Text("GUP Vendor: "); ImGui::SameLine(); 
+			ImGui::Text("GPU Vendor: "); ImGui::SameLine(); 
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", renderer3D->GetGraphicsModel("vendor"));
 
 			ImGui::Text("GPU Model: "); ImGui::SameLine(); 
@@ -187,22 +202,31 @@ void Application::PrintConfigData()
 bool Application::CleanUp()
 {
 	bool ret = true;
-	p2List_item<Module*>* item = list_modules.getLast();
-
-	while(item != NULL && ret == true)
+	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
 	{
-		ret = item->data->CleanUp();
-		item = item->prev;
+		if (ret == true)
+		{
+			ret = (*item)->CleanUp();
+		}
 	}
+
 	return ret;
 }
 
 void Application::AddModule(Module* mod)
 {
-	list_modules.add(mod);
+	list_modules.push_back(mod);
 }
 
 Module* Application::GetModule(int index)
 {
-	return list_modules.get(index);
+	int i = 0;
+	for (std::list<Module*>::iterator item = list_modules.begin(); item!= list_modules.end(); item++)
+	{
+		if (i == index)
+			return (*item);
+		
+		i++;
+	}
+
 }

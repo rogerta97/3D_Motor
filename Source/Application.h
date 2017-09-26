@@ -1,6 +1,5 @@
 #pragma once
 
-#include "p2List.h"
 #include "Globals.h"
 #include "Timer.h"
 #include "Module.h"
@@ -13,8 +12,10 @@
 #include "ModulePhysics3D.h"
 #include "ModuleImGui.h"
 #include "MathGeoLib\MathGeoLib.h"
-#include <iostream>
 #include <queue>
+#include <string>
+#include <list>
+
 
 class Application
 {
@@ -32,15 +33,15 @@ private:
 
 	Timer			ms_timer;
 	float			dt = 0.0f;
-	p2List<Module*> list_modules;
+	std::list<Module*> list_modules;
 
 	// Framerate management --------------
 
 	int	frame_counter = 0;
 	
 	
-	p2List<int>	framerate_buffer; 
-	p2List<int>	miliseconds_buffer;
+	std::vector<int>	framerate_buffer; 
+	std::vector<int>	miliseconds_buffer;
 
 	int framerate_placer = 0; 
 

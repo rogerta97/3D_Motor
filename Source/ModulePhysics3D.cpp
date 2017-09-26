@@ -128,18 +128,17 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 
 			if(pbodyA && pbodyB)
 			{
-				p2List_item<Module*>* item = pbodyA->collision_listeners.getFirst();
-				while(item)
+				
+				for (std::list<Module*>::iterator item = pbodyA->collision_listeners.begin(); item != pbodyA->collision_listeners.end(); ++item)
 				{
-					item->data->OnCollision(pbodyA, pbodyB);
-					item = item->next;
+					(*item)->OnCollision(pbodyA, pbodyB);
 				}
 
-				item = pbodyB->collision_listeners.getFirst();
-				while(item)
+				
+
+				for (std::list<Module*>::iterator item = pbodyB->collision_listeners.begin(); item != pbodyB->collision_listeners.end(); ++item)
 				{
-					item->data->OnCollision(pbodyB, pbodyA);
-					item = item->next;
+					(*item)->OnCollision(pbodyB, pbodyA);
 				}
 			}
 		}
@@ -157,6 +156,11 @@ update_status ModulePhysics3D::Update(float dt)
 	if(debug == true)
 	{
 		world->debugDrawWorld();
+		//---Render Example---
+	/*	for (std::list<PhysVehicle3D*>::iterator item = vehicles.begin(); item != vehicles.end(); ++item)
+		{
+			(*item)->Render();
+		}*/
 	}
 
 	GetCollisions(); 
@@ -185,31 +189,31 @@ bool ModulePhysics3D::CleanUp()
 		world->removeCollisionObject(obj);
 	}
 
-	for(p2List_item<btTypedConstraint*>* item = constraints.getFirst(); item; item = item->next)
+	for(std::list<btTypedConstraint*>::iterator item = constraints.begin(); item != constraints.end(); item++)
 	{
-		world->removeConstraint(item->data);
-		delete item->data;
+		world->removeConstraint((*item));
+		delete (*item);
 	}
 	
 	constraints.clear();
 
-	for(p2List_item<btDefaultMotionState*>* item = motions.getFirst(); item; item = item->next)
-		delete item->data;
+	for(std::list<btDefaultMotionState*>::iterator item = motions.begin(); item!=motions.end(); item++)
+		delete (*item);
 
 	motions.clear();
 
-	for(p2List_item<btCollisionShape*>* item = shapes.getFirst(); item; item = item->next)
-		delete item->data;
+	for(std::list<btCollisionShape*>::iterator item = shapes.begin(); item!=shapes.end(); item++)
+		delete (*item);
 
 	shapes.clear();
 
-	for(p2List_item<PhysBody3D*>* item = bodies.getFirst(); item; item = item->next)
-		delete item->data;
+	for(std::list<PhysBody3D*>::iterator item = bodies.begin(); item!=bodies.end(); item++)
+		delete(*item);
 
 	bodies.clear();
 
-	for(p2List_item<PhysVehicle3D*>* item = vehicles.getFirst(); item; item = item->next)
-		delete item->data;
+	for(std::list<PhysVehicle3D*>::iterator item = vehicles.begin(); item!=vehicles.end(); item++)
+		delete (*item);
 
 	vehicles.clear();
 
@@ -326,8 +330,8 @@ PhysBody3D * ModulePhysics3D::AddTorus(btVector3& pos, float inner_radius, float
 		t.setRotation(q);
 		torus_shape->addChildShape(t, shape);
 	}
-	shapes.add(shape);
-	shapes.add(torus_shape);
+	shapes.push_back(shape);
+	shapes.push_back(torus_shape);
 	
 	btVector3 localInertia(0, 0, 0);
 	btTransform startTransform;
@@ -340,7 +344,7 @@ PhysBody3D * ModulePhysics3D::AddTorus(btVector3& pos, float inner_radius, float
 	PhysBody3D* pbody = new PhysBody3D(body);
 	body->setUserPointer(pbody);
 	world->addRigidBody(body);
-	bodies.add(pbody);
+	bodies.push_back(pbody);
 
 
 	return pbody;
@@ -355,7 +359,7 @@ void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, con
 		btVector3(anchorA.x, anchorA.y, anchorA.z), 
 		btVector3(anchorB.x, anchorB.y, anchorB.z));
 	world->addConstraint(p2p);
-	constraints.add(p2p);
+	constraints.push_back(p2p);
 	p2p->setDbgDrawSize(2.0f);
 }
 
@@ -370,7 +374,7 @@ void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, c
 		btVector3(axisB.x, axisB.y, axisB.z));
 
 	world->addConstraint(hinge, disable_collision);
-	constraints.add(hinge);
+	constraints.push_back(hinge);
 	hinge->setDbgDrawSize(2.0f);
 }
 
