@@ -32,19 +32,22 @@ public:
 private:
 
 	Timer			ms_timer;
+	Timer			global_timer; 
+	Timer			frame_ms_timer; 
+
 	float			dt = 0.0f;
 	std::list<Module*> list_modules;
 
 	// Framerate management --------------
 
-	int	frame_counter = 0;
+	int	last_sec_frame_counter = 0;
+	int global_frames = 0; 
 	
-	
-	std::vector<int>	framerate_buffer; 
-	std::vector<int>	miliseconds_buffer;
-
+	std::vector<float>	framerate_buffer; 
+	std::vector<float>	miliseconds_buffer;
 
 	int framerate_placer = 0; 
+	int framerate_avg = 0; 
 
 	// -----------------------------------
 

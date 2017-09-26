@@ -1,4 +1,8 @@
 #include "Application.h"
+#include <stdio.h>
+
+#define HISTOGRAM_FR_LENGHT 25
+#define HISTOGRAM_MS_LENGHT 100
 
 Application::Application()
 {
@@ -71,6 +75,8 @@ bool Application::Init()
 	}
 	
 	ms_timer.Start();
+	global_timer.Start();
+	frame_ms_timer.Start();
 	return ret;
 }
 
@@ -79,31 +85,32 @@ void Application::PrepareUpdate()
 {
 	dt = (float)ms_timer.Read() / 1000.0f;
 
+	if (miliseconds_buffer.size() > HISTOGRAM_MS_LENGHT)
+		miliseconds_buffer.erase(miliseconds_buffer.begin()); 
+
+	miliseconds_buffer.push_back(frame_ms_timer.Read()); 
+	frame_ms_timer.Start(); 
+
 	if (ms_timer.Read() > 1000)
 	{
-		if (ms_timer.Read() > 1000)
-		{
-			if (framerate_buffer.size() > 100)
-				framerate_buffer.pop_back();
 
-			if (miliseconds_buffer.size() > 100)
-				miliseconds_buffer.pop_back();
+		framerate_buffer.push_back(last_sec_frame_counter); 
+		last_sec_frame_counter = 0; 
 
-			framerate_buffer.push_back(frame_counter);
-			miliseconds_buffer.push_back(ms_timer.Read());
-		}
-		frame_counter = 0;
+		ms_timer.Start(); 
 
-		ms_timer.Start();
 	}
+
+	if (framerate_buffer.size() > HISTOGRAM_FR_LENGHT)
+		framerate_buffer.erase(framerate_buffer.begin()); 
 	
-	frame_counter++;
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
-
+	last_sec_frame_counter++;
+	global_frames++; 
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -155,7 +162,19 @@ void Application::PrintConfigData()
 		ImGui::InputText("Organization", buf, IM_ARRAYSIZE(buf));
 		ImGui::InputText("MAX FPS", buf, IM_ARRAYSIZE(buf));
 
-		ImGui::Text("Framerate: "); ImGui::NewLine();
+		ImGui::Separator(); 
+		ImGui::NewLine();
+
+		ImGui::Text("Framerate AVG: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.1f", (global_frames / (global_timer.Read() / 1000.0f)));
+
+		char title[25]; 
+
+		sprintf_s(title, 25, "Framerate %.2f", framerate_buffer.back()); 
+		ImGui::PlotHistogram("##Framerate", &framerate_buffer[0], framerate_buffer.size(), 0, title, 0.0f, 100.0f, ImVec2(300, 100));
+
+		sprintf_s(title, 25, "Miliseconds %.2f", miliseconds_buffer.back());
+		ImGui::PlotHistogram("##Frame miliseconds", &miliseconds_buffer[0], miliseconds_buffer.size(), 0, title, 0.0f, 50.0f, ImVec2(300, 100));
 
 		if (ImGui::TreeNode("Hardware"))
 		{
