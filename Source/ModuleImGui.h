@@ -21,6 +21,7 @@ public:
 private:
 
 	void PrintConsole(); 
+	void PrintRandomNumber();
 	void ShowAbout(); 
 	void UpdateConfigPanel(); 
 
@@ -29,13 +30,17 @@ private:
 	bool show_test_window = true;
 	bool show_another_window = false;
 	bool show_console = false; 
+	bool show_random_number = false;
 	bool show_about = false; 
 	bool show_gui_demo = false; 
 
 	// Console management -----------
 
 	std::vector<const char*> console_buffer; 
-
+	int i_rand = 60;
+	int i_max = 100;
+	int i_min = 0;
+	float f_rand = 0.0f;
 	const char* new_input = ""; 
 
 	// ------

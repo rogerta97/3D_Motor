@@ -1,5 +1,6 @@
 #include "ModuleImGui.h"
 #include "Application.h"
+#include <ctime>
 
 ModuleImGui::ModuleImGui(Application * parent, bool start_enabled) : Module(parent, start_enabled)
 {
@@ -48,6 +49,10 @@ update_status ModuleImGui::Update(float dt)
 		{
 			show_console = !show_console;
 		}
+		if (ImGui::MenuItem("RandomNum"))
+		{
+			show_random_number = !show_random_number;
+		}
 
 		ImGui::EndMenu();		
 	}
@@ -88,7 +93,8 @@ update_status ModuleImGui::Update(float dt)
 		ImGui::EndMenu();
 	}
 
-	if (show_console) PrintConsole();	
+	if (show_console) PrintConsole();
+	if (show_random_number)PrintRandomNumber();
 	if (show_about) ShowAbout(); 
 
 	ImGui::EndMainMenuBar(); 
@@ -147,7 +153,29 @@ void ModuleImGui::PrintConsole()
 
 	console_buffer.clear();
 }
+void ModuleImGui::PrintRandomNumber()
+{
+	ImGui::Begin("Random Number Generator");
+	ImGui::Text("Random Generator tool:");
+	ImGui::Text("-Random Integer between the 2 values:");
+	ImGui::DragInt("Minimum", &i_min, 1,0, 100);
+	ImGui::DragInt("Maximum", &i_max, 1, 0, 100);
+	if (ImGui::Button("Generate Int") == true)
+	{
+		i_rand = (rand() % (i_max - i_min)) + i_min;
+	}
+	ImGui::Text("%d", i_rand);
+	ImGui::Text("Random Float Generator:");
+	if (ImGui::Button("Generate float") == true)
+	{
+		//std function
+		f_rand = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	}
+	ImGui::Text("%f", f_rand);
 
+
+	ImGui::End();
+}
 void ModuleImGui::ShowAbout()
 {
 	ImGui::Begin("About");
