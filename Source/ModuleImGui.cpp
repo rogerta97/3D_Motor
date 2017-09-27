@@ -2,6 +2,8 @@
 #include "Application.h"
 #include <ctime>
 
+#define SCANCODE_AMOUNT 284
+
 ModuleImGui::ModuleImGui(Application * parent, bool start_enabled) : Module(parent, start_enabled)
 {
 }
@@ -13,6 +15,8 @@ ModuleImGui::~ModuleImGui()
 bool ModuleImGui::Init()
 {
 	ImGui_ImplSdlGL2_Init(App->window->window);
+
+	ImGuiIO& io = ImGui::GetIO();
 
 	name = "ImGui"; 
 
@@ -28,6 +32,15 @@ update_status ModuleImGui::PreUpdate(float dt)
 
 update_status ModuleImGui::Update(float dt)
 {
+	// Manage ImGui Keyboard input
+
+	ImGuiIO& io = ImGui::GetIO();
+
+	//for (int i = 0; i < SCANCODE_AMOUNT; i++)
+	//{
+	//	if (App->input->GetKey(i) == KEY_DOWN)
+	//		io.KeysDown[i] = true; 
+	//}
 
 	// Main menu bar -----------------------------
 
@@ -208,4 +221,9 @@ void ModuleImGui::UpdateConfigPanel()
 	}
 	
 	ImGui::End();
+}
+
+void ModuleImGui::ImGuiInput(SDL_Event* e)
+{
+	ImGui_ImplSdlGL2_ProcessEvent(e);
 }

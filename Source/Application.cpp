@@ -118,8 +118,7 @@ update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
-	
-	
+		
 	for(std::list<Module*>::iterator item = list_modules.begin();item!= list_modules.end();item++)
 	{
 		if (ret == UPDATE_CONTINUE)
@@ -157,13 +156,17 @@ void Application::PrintConfigData()
 	if (ImGui::CollapsingHeader("Application"))
 	{
 
-		char buf[32] = "";
-		ImGui::InputText("Engine name", buf, IM_ARRAYSIZE(buf));
-		ImGui::InputText("Organization", buf, IM_ARRAYSIZE(buf));
-		ImGui::InputText("MAX FPS", buf, IM_ARRAYSIZE(buf));
+		char engine_name[32] = "3D Engine";
+		ImGui::InputText("Engine name", engine_name, IM_ARRAYSIZE(engine_name));
+		window->SetTitle(engine_name); 
+
+		char organization[32] = "UPC";
+		ImGui::InputText("Organization", organization, IM_ARRAYSIZE(organization));
+
+		char max_fps[32] = "60";
+		ImGui::InputText("MAX FPS", max_fps, IM_ARRAYSIZE(max_fps));
 
 		ImGui::Separator(); 
-		ImGui::NewLine();
 
 		ImGui::Text("Framerate AVG: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.1f", (global_frames / (global_timer.Read() / 1000.0f)));
@@ -206,12 +209,26 @@ void Application::PrintConfigData()
 			if (SDL_HasSSE42()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE42,");
 
 			ImGui::Separator(); 
+	
+			getGraphicsDeviceInfo(&vendorid, &deviceid, &brand, &vm, &vm_curr, &vm_a, &vm_r);
 
 			ImGui::Text("GPU Vendor: "); ImGui::SameLine(); 
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", renderer3D->GetGraphicsModel("vendor"));
 
 			ImGui::Text("GPU Model: "); ImGui::SameLine(); 
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", renderer3D->GetGraphicsModel("model"));
+
+			ImGui::Text("Total VRAM: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", vm);
+
+			ImGui::Text("Using VRAM: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", vm_curr);
+
+			ImGui::Text("Avaliable VRAM: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", vm_a);
+
+			ImGui::Text("Reserved VRAM: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", vm_r);
 
 			ImGui::TreePop(); 
 		}

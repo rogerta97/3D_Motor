@@ -2,6 +2,7 @@
 
 #include "Module.h"
 #include<vector>
+
 class ModuleImGui : public Module
 {
 public: 
@@ -17,6 +18,7 @@ public:
 
 	void AddToConsole(const char* new_line);
 	void ClearConsole(); 
+	void ImGuiInput(SDL_Event* e); 
 
 private:
 
