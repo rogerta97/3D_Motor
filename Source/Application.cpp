@@ -231,10 +231,8 @@ void Application::PrintConfigData()
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", vm_r);
 
 			ImGui::TreePop(); 
-		}
-		
+		}		
 	}
-
 }
 
 bool Application::CleanUp()
