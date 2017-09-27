@@ -54,14 +54,6 @@ private:
 
 	// Hardware ----------------------
 
-	//int vendor;
-	//int devide; 
-	//int brand; 
-	//int total_vram;
-	//int used_vram; 
-	//int avaliable_vram;
-	//int reserved_vram; 
-
 	uint vendorid, deviceid;
 	Uint64 vm, vm_curr, vm_a, vm_r;
 	std::wstring brand;
@@ -86,3 +78,5 @@ private:
 	void PrepareUpdate();
 	void FinishUpdate();
 };
+
+extern Application* App; 

@@ -4,7 +4,7 @@
 
 #define SCANCODE_AMOUNT 284
 
-ModuleImGui::ModuleImGui(Application * parent, bool start_enabled) : Module(parent, start_enabled)
+ModuleImGui::ModuleImGui(bool start_enabled)
 {
 }
 
@@ -139,11 +139,12 @@ update_status ModuleImGui::PostUpdate(float dt)
 bool ModuleImGui::CleanUp()
 {
 	ImGui_ImplSdlGL2_Shutdown();
+	ClearConsole(); 
 
 	return true;
 }
 
-void ModuleImGui::AddToConsole(const char * new_line)
+void ModuleImGui::AddToConsole(std::string new_line)
 {
 	console_buffer.push_back(new_line); 
 }
@@ -159,12 +160,13 @@ void ModuleImGui::PrintConsole()
 
 	for (int i = 0; i < console_buffer.size(); i++)
 	{
-		ImGui::Text(console_buffer[i]);
+	
+		ImGui::Text(console_buffer[i].c_str());
 	}
 
 	ImGui::End(); 
 
-	console_buffer.clear();
+	
 }
 void ModuleImGui::PrintRandomNumber()
 {

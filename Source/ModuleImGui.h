@@ -7,7 +7,7 @@ class ModuleImGui : public Module
 {
 public: 
 
-	ModuleImGui(Application* parent, bool start_enabled = true); 
+	ModuleImGui(bool start_enabled = true); 
 	~ModuleImGui();
 
 	bool Init();
@@ -16,7 +16,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp(); 
 
-	void AddToConsole(const char* new_line);
+	void AddToConsole(std::string new_line);
 	void ClearConsole(); 
 	void ImGuiInput(SDL_Event* e); 
 
@@ -38,7 +38,7 @@ private:
 
 	// Console management -----------
 
-	std::vector<const char*> console_buffer; 
+	std::vector<std::string> console_buffer; 
 	int i_rand = 60;
 	int i_max = 100;
 	int i_min = 0;

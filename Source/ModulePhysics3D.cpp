@@ -14,7 +14,7 @@
 	#pragma comment (lib, "Bullet/libx86/LinearMath.lib")
 #endif
 
-ModulePhysics3D::ModulePhysics3D(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModulePhysics3D::ModulePhysics3D(bool start_enabled)
 {
 	debug = true;
 
@@ -387,11 +387,8 @@ std::vector<iPoint> ModulePhysics3D::GetCollisions()
 
 	for (listener; listener < spheres_list.size(); listener++)
 	{
-		// Here we need to implement String from STL, in order to fill the %d gaps with data and then send it to the console. 
-
-		// WIP 1
-
-		App->imgui->AddToConsole("Body %d is coliding with:"/*, listener + 1*/);
+		
+		//LOG("Body %d is coliding with:" , listener + 1);
 
 		empty = true; 
 
@@ -406,7 +403,7 @@ std::vector<iPoint> ModulePhysics3D::GetCollisions()
 
 			if (colision_test)
 			{
-				App->imgui->AddToConsole("Body %d."/* candidate + 1*/);
+				//LOG("Body %d.", candidate + 1);
 				tmp_obj_list.push_back(iPoint(listener, candidate)); 
 				empty = false; 
 			}
@@ -414,7 +411,7 @@ std::vector<iPoint> ModulePhysics3D::GetCollisions()
 		}
 
 		if (empty)
-			App->imgui->AddToConsole("This body DONT collide"/* candidate + 1*/);
+			//LOG("This body DONT collide");
 
 		candidate = 0; 
 		
