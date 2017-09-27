@@ -70,6 +70,7 @@ bool ModuleWindow::Init()
 	}
 
 	name = "Window"; 
+	SetTitle("3D Engine");
 
 	return ret;
 }

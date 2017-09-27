@@ -25,6 +25,9 @@
     <Filter Include="Sources\Tools\MathGeoLib">
       <UniqueIdentifier>{993f4e0b-bb3c-4d53-9c7e-c59fc497812f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\DevideId">
+      <UniqueIdentifier>{5251124d-be2b-44b4-85c2-63c48b730ebb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -288,6 +291,9 @@
     <ClInclude Include="iPoint.h">
       <Filter>Sources\Containers</Filter>
     </ClInclude>
+    <ClInclude Include="DeviceId.h">
+      <Filter>Sources\Tools\DevideId</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -460,6 +466,9 @@
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\TriangleMesh.cpp">
       <Filter>Sources\Tools\MathGeoLib</Filter>
+    </ClCompile>
+    <ClCompile Include="DevideId.cpp">
+      <Filter>Sources\Tools\DevideId</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

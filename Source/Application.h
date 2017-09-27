@@ -12,6 +12,7 @@
 #include "ModulePhysics3D.h"
 #include "ModuleImGui.h"
 #include "MathGeoLib\MathGeoLib.h"
+#include "DeviceId.h"
 #include <queue>
 #include <string>
 #include <list>
@@ -50,6 +51,22 @@ private:
 	int framerate_avg = 0; 
 
 	// -----------------------------------
+
+	// Hardware ----------------------
+
+	//int vendor;
+	//int devide; 
+	//int brand; 
+	//int total_vram;
+	//int used_vram; 
+	//int avaliable_vram;
+	//int reserved_vram; 
+
+	uint vendorid, deviceid;
+	Uint64 vm, vm_curr, vm_a, vm_r;
+	std::wstring brand;
+
+	// ------------------------------
 
 public:
 

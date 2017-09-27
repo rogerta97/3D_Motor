@@ -30,6 +30,8 @@ bool ModuleInput::Init()
 		ret = false;
 	}
 
+
+
 	name = "Input"; 
 
 	return ret;
@@ -89,7 +91,8 @@ update_status ModuleInput::PreUpdate(float dt)
 	bool quit = false;
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
-	{
+	{		
+		App->imgui->ImGuiInput(&e); 
 		switch(e.type)
 		{
 			case SDL_MOUSEWHEEL:
