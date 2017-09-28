@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "JSON.h"
 
 ModuleWindow::ModuleWindow(bool start_enabled)
 {
@@ -142,4 +143,18 @@ void ModuleWindow::PrintConfigData()
 
 		// ------------------------------------------
 	}
+}
+void ModuleWindow::OnLoadConfig(json_file * config)
+{
+	width = config->GetNumber("window.width", 900);
+	height = config->GetNumber("window.height", 900);
+	fullscreen = config->GetBool("window.fullscreen", false);
+	
+}
+
+void ModuleWindow::OnSaveConfig(json_file * config)
+{
+	config->SetNumber("window.width", width);
+	config->SetNumber("window.height", height);
+	config->SetBool("window.fullscreen", fullscreen);
 }

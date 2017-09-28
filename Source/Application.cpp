@@ -6,6 +6,7 @@
 
 Application::Application()
 {
+	json = new JSON(true);
 	window = new ModuleWindow(true);
 	input = new ModuleInput(true);
 	audio = new ModuleAudio(true);
@@ -20,6 +21,7 @@ Application::Application()
 	// They will CleanUp() in reverse order
 
 	// Main Modules
+	AddModule(json);
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
@@ -50,6 +52,7 @@ bool Application::Init()
 	bool ret = true;
 
 	// Call Init() in all modules
+	LoadConfig();
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); item++)
 	{
@@ -72,7 +75,6 @@ bool Application::Init()
 
 		}
 	}
-	
 	ms_timer.Start();
 	global_timer.Start();
 	frame_ms_timer.Start();
@@ -155,15 +157,12 @@ void Application::PrintConfigData()
 	if (ImGui::CollapsingHeader("Application"))
 	{
 
-		char engine_name[32] = "3D Engine";
-		ImGui::InputText("Engine name", engine_name, IM_ARRAYSIZE(engine_name));
-		window->SetTitle(engine_name); 
+		ImGui::InputText("Engine name", (char*)engine_name.c_str(), IM_ARRAYSIZE(engine_name.c_str()));
+		window->SetTitle(engine_name.c_str()); 
 
-		char organization[32] = "UPC";
-		ImGui::InputText("Organization", organization, IM_ARRAYSIZE(organization));
+		ImGui::InputText("Organization", (char*)organization.c_str(), IM_ARRAYSIZE(organization.c_str()));
 
-		char max_fps[32] = "60";
-		ImGui::InputText("MAX FPS", max_fps, IM_ARRAYSIZE(max_fps));
+		ImGui::InputText("MAX FPS", (char*)max_fps.c_str(), IM_ARRAYSIZE(max_fps.c_str()));
 
 		ImGui::Separator(); 
 
@@ -273,4 +272,54 @@ Module* Application::GetModule(int index)
 
 	return nullptr;
 	
+}
+void Application::LoadConfig()
+{
+	config = json->LoadJSONFile("config.json");
+
+	if (config != nullptr)
+	{
+		engine_name = config->GetString("app.engine_name", "No title");
+		organization = config->GetString("app.organization", "No org");
+		max_fps = config->GetString("app.max_fps", "60");
+
+		
+		for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
+		{
+			(*item)->OnLoadConfig(config);
+		}
+	}
+}
+
+void Application::SaveConfig(Module* module)
+{
+	if (config != nullptr)
+	{
+		config->SetString("app.title", App->GetAppName());
+		config->SetString("app.organization", App->GetOrgName());
+		config->SetString("app.max_fps", App->GetMaxFPS());
+
+		for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
+		{
+			if (module == nullptr)
+				(*item)->OnSaveConfig(config);
+
+			else if (module == (*item))
+				(*item)->OnSaveConfig(config);
+		}
+
+		config->Save();
+	}
+}
+const char * Application::GetAppName()
+{
+	return engine_name.c_str();
+}
+const char * Application::GetOrgName()
+{
+	return organization.c_str();
+}
+const char * Application::GetMaxFPS()
+{
+	return max_fps.c_str();
 }

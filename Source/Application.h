@@ -13,14 +13,15 @@
 #include "ModuleImGui.h"
 #include "MathGeoLib\MathGeoLib.h"
 #include "DeviceId.h"
+#include "JSON.h"
 #include <queue>
 #include <string>
 #include <list>
 
-
 class Application
 {
 public:
+	JSON*		json;
 	ModuleWindow* window;
 	ModuleInput* input;
 	ModuleAudio* audio;
@@ -68,8 +69,13 @@ public:
 	bool Init();
 	update_status Update();
 	void PrintConfigData();
+	void LoadConfig();
+	void SaveConfig(Module* module);
 	bool CleanUp();
-
+	const char* GetAppName();
+	const char* GetOrgName();
+	const char* GetMaxFPS();
+	//add get & set config functions
 	Module* GetModule(int index);
 
 private:
@@ -77,6 +83,12 @@ private:
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
+
+	std::string		   engine_name = "-";
+	std::string		   organization = "-";
+	std::string		   max_fps = "0";
+
+	json_file*			config = nullptr;
 };
 
 extern Application* App; 

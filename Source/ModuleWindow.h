@@ -20,6 +20,9 @@ public:
 	bool CleanUp();
 
 	void SetTitle(const char* title);
+	void OnLoadConfig(json_file * config);
+	void OnSaveConfig(json_file * config);
+
 
 public:
 	//The window we'll be rendering to

@@ -28,6 +28,9 @@
     <Filter Include="Sources\Tools\DevideId">
       <UniqueIdentifier>{5251124d-be2b-44b4-85c2-63c48b730ebb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\JSON">
+      <UniqueIdentifier>{01f5011f-7014-4a37-8351-9ded7d7c6361}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -294,6 +297,12 @@
     <ClInclude Include="DeviceId.h">
       <Filter>Sources\Tools\DevideId</Filter>
     </ClInclude>
+    <ClInclude Include="Parson\parson.h">
+      <Filter>Sources\Tools\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="JSON.h">
+      <Filter>Sources\Tools\JSON</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -470,6 +479,12 @@
     <ClCompile Include="DevideId.cpp">
       <Filter>Sources\Tools\DevideId</Filter>
     </ClCompile>
+    <ClCompile Include="Parson\parson.c">
+      <Filter>Sources\Tools\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="JSON.cpp">
+      <Filter>Sources\Tools\JSON</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">
@@ -493,5 +508,6 @@
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_SSE.inl">
       <Filter>Sources\Tools\MathGeoLib</Filter>
     </None>
+    <None Include="Parson\config.json" />
   </ItemGroup>
 </Project>

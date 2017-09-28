@@ -7,7 +7,7 @@
 
 class Application;
 struct PhysBody3D;
-
+class json_file;
 class Module
 {
 private :
@@ -59,4 +59,6 @@ public:
 
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{}
+	virtual void OnLoadConfig(json_file* config) {};
+	virtual void OnSaveConfig(json_file* config) {};
 };
