@@ -221,7 +221,7 @@ void ModuleImGui::UpdateConfigPanel()
 	{
 		App->GetModule(i)->PrintConfigData(); 
 	}
-	
+
 	ImGui::End();
 }
 

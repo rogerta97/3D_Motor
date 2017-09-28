@@ -258,13 +258,19 @@ void Application::AddModule(Module* mod)
 
 Module* Application::GetModule(int index)
 {
-	int i = 0;
-	for (std::list<Module*>::iterator item = list_modules.begin(); item!= list_modules.end(); item++)
+	if (index <= 7)
 	{
-		if (i == index)
-			return (*item);
-		
-		i++;
+		int i = 0;
+
+		for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); item++)
+		{
+			if (i == index)
+				return (*item);
+
+			i++;
+		}
 	}
 
+	return nullptr;
+	
 }
