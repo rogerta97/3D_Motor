@@ -122,7 +122,7 @@ update_status ModuleImGui::Update(float dt)
  
 	// Configuration Panel -----------------------
 
-	UpdateConfigPanel(); 
+	
 
 	// -------------------------------------------
 	
@@ -131,6 +131,9 @@ update_status ModuleImGui::Update(float dt)
 
 update_status ModuleImGui::PostUpdate(float dt)
 {
+
+	UpdateConfigPanel();
+
 	ImGui::Render();
 
 	return UPDATE_CONTINUE;

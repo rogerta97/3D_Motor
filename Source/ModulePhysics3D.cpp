@@ -156,11 +156,6 @@ update_status ModulePhysics3D::Update(float dt)
 	if(debug == true)
 	{
 		world->debugDrawWorld();
-		//---Render Example---
-	/*	for (std::list<PhysVehicle3D*>::iterator item = vehicles.begin(); item != vehicles.end(); ++item)
-		{
-			(*item)->Render();
-		}*/
 	}
 
 	GetCollisions(); 

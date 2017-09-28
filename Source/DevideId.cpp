@@ -39,6 +39,9 @@
 *
 *****************************************************************************************/
 
+static bool first_time = true; 
+static HMODULE hDXGI = NULL; 
+
 bool getGraphicsDeviceInfo(unsigned int* VendorId,
 	unsigned int* DeviceId,
 	std::wstring* GFXBrand,
@@ -52,9 +55,16 @@ bool getGraphicsDeviceInfo(unsigned int* VendorId,
 	// CreateDXGIFactory function. DXGIFactory1 is supported by Windows Store Apps so
 	// try that first.
 	//
-	HMODULE hDXGI = LoadLibrary("dxgi.dll");
-	if (hDXGI == NULL) {
-		return false;
+
+	if (first_time)
+		{
+		first_time = false; 
+
+		HMODULE hDXGI = LoadLibrary("dxgi.dll");
+		if (hDXGI == NULL) {
+			return false;
+		}
+
 	}
 
 	typedef HRESULT(WINAPI*LPCREATEDXGIFACTORY)(REFIID riid, void** ppFactory);
