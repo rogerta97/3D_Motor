@@ -22,6 +22,14 @@ public:
 
 	char* GetGraphicsModel(const char* _module); 
 
+private: 
+	
+	bool depth_test_ch_b = true; 
+	bool cull_face_ch_b = true;
+	bool lighting_ch_b = true;
+	bool color_ch_b = true;
+	bool texture_ch_b = true;
+
 public:
 
 	Light lights[MAX_LIGHTS];

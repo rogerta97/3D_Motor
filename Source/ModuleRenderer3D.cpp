@@ -1,10 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
-#include "glew\glew-2.1.0\include\GL\glew.h"
-#include "SDL\include\SDL_opengl.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
+#include "OpenGL.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -112,7 +109,7 @@ bool ModuleRenderer3D::Init()
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	name = "Render";
-	
+
 
 	s1.r = 4; 
 	s1.pos = vec(0, 0, 0); 
@@ -143,9 +140,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
-{
-	
-	
+{	
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -168,6 +163,7 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
+
 	glLoadMatrixf(&ProjectionMatrix);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -178,6 +174,20 @@ void ModuleRenderer3D::PrintConfigData()
 {
 	if (ImGui::CollapsingHeader(name))
 	{
+		ImGui::Text("Rendering options:"); ImGui::NewLine(); 
+
+		ImGui::Checkbox("DEPTH_TEST", &depth_test_ch_b);
+		ImGui::Checkbox("CULL_FACE", &cull_face_ch_b);
+		ImGui::Checkbox("LIGHTING", &lighting_ch_b);
+		ImGui::Checkbox("COLOR_MATERIAL", &color_ch_b);
+		ImGui::Checkbox("TEXTURE", &texture_ch_b);
+
+		if (cull_face_ch_b == false)
+		{
+			glDisable(GL_CULL_FACE);
+			LOG("keloke"); 
+		}
+			
 
 	}
 }
