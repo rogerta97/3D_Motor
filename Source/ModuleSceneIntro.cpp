@@ -3,6 +3,7 @@
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
 #include "p2Point.h"
+#include "OpenGL.h"
 
 #include "PhysBody3D.h"
 
@@ -26,7 +27,15 @@ bool ModuleSceneIntro::Start()
 
 	srand(time(NULL));
 
-	name = "TO DELETE"; 
+	name = "Scene"; 
+  
+	first_cube.size = vec3(1,1,1); 
+	first_cube.SetPos(0, 0, 0); 
+	first_cube.color = Color(255, 0, 0); 
+	first_cube.wire = true; 
+
+	first_sphere.radius = 1; 
+	first_sphere.SetPos(0, 0, 5); 
 
 	return ret;
 }
@@ -44,6 +53,15 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	
 	return UPDATE_CONTINUE;
+}
+
+update_status ModuleSceneIntro::PostUpdate(float dt)
+{
+	
+	first_cube.Render(); 
+	first_sphere.Render(); 
+
+	return UPDATE_CONTINUE; 
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)

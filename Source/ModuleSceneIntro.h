@@ -15,11 +15,17 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	update_status PostUpdate(float dt); 
 	bool CleanUp();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	//p2DynArray<p2Point<int>> GetCollisions(); 
 
 private: 
+
+	Sphere s1; 
+
+	PCube first_cube;
+	PSphere first_sphere; 
 
 };

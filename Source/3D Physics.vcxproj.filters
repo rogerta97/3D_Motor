@@ -294,14 +294,25 @@
     <ClInclude Include="iPoint.h">
       <Filter>Sources\Containers</Filter>
     </ClInclude>
-    <ClInclude Include="DeviceId.h">
+    <ClInclude Include="OpenGL.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceId\DeviceId.h">
       <Filter>Sources\Tools\DevideId</Filter>
     </ClInclude>
+    <ClInclude Include="DeviceId\dxgi1_4.h">
+      <Filter>Sources\Tools\DevideId</Filter>
+    </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Parson\parson.h">
       <Filter>Sources\Tools\JSON</Filter>
     </ClInclude>
     <ClInclude Include="JSON.h">
       <Filter>Sources\Tools\JSON</Filter>
+=======
+    <ClInclude Include="Hardware.h">
+      <Filter>Sources\Containers</Filter>
+>>>>>>> bba7ae55ae4eb9eeca910d0c820a7a2a2abfe4a0
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -476,14 +487,19 @@
     <ClCompile Include="MathGeoLib\Geometry\TriangleMesh.cpp">
       <Filter>Sources\Tools\MathGeoLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevideId.cpp">
+    <ClCompile Include="DeviceId\DeviceId.cpp">
       <Filter>Sources\Tools\DevideId</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Parson\parson.c">
       <Filter>Sources\Tools\JSON</Filter>
     </ClCompile>
     <ClCompile Include="JSON.cpp">
       <Filter>Sources\Tools\JSON</Filter>
+=======
+    <ClCompile Include="Hardware.cpp">
+      <Filter>Sources\Containers</Filter>
+>>>>>>> bba7ae55ae4eb9eeca910d0c820a7a2a2abfe4a0
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
