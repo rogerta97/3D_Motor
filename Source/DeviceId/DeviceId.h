@@ -1,5 +1,3 @@
-#pragma once
-
 // Copyright 2010 Intel Corporation
 // All Rights Reserved
 //
@@ -30,11 +28,11 @@
 #define INTEL_VENDOR_ID 0x8086
 
 typedef enum
-{
-	IGFX_UNKNOWN = 0x0,
-	IGFX_SANDYBRIDGE = 0xC,
-	IGFX_IVYBRIDGE,
-	IGFX_HASWELL,
+{ 
+    IGFX_UNKNOWN     = 0x0, 
+    IGFX_SANDYBRIDGE = 0xC, 
+    IGFX_IVYBRIDGE,    
+    IGFX_HASWELL,
 	IGFX_VALLEYVIEW,
 	IGFX_BROADWELL,
 	IGFX_SKYLAKE
@@ -47,8 +45,8 @@ typedef enum
 
 struct IntelDeviceInfoV1
 {
-	DWORD GPUMaxFreq;
-	DWORD GPUMinFreq;
+    DWORD GPUMaxFreq;
+    DWORD GPUMinFreq;
 };
 
 struct IntelDeviceInfoV2
@@ -68,50 +66,50 @@ struct IntelDeviceInfoHeader
 };
 
 /*****************************************************************************************
-* getGraphicsDeviceInfo
-*
-*     Function to get the primary graphics device's Vendor ID and Device ID, either
-*     through the new DXGI interface or through the older D3D9 interfaces.
-*     The function also returns the amount of memory availble for graphics using
-*     the value shared + dedicated video memory returned from DXGI, or, if the DXGI
-*	   interface is not available, the amount of memory returned from WMI.
-*
-*****************************************************************************************/
+ * getGraphicsDeviceInfo
+ *
+ *     Function to get the primary graphics device's Vendor ID and Device ID, either 
+ *     through the new DXGI interface or through the older D3D9 interfaces.
+ *     The function also returns the amount of memory availble for graphics using 
+ *     the value shared + dedicated video memory returned from DXGI, or, if the DXGI
+ *	   interface is not available, the amount of memory returned from WMI.
+ *
+ *****************************************************************************************/
 
-bool getGraphicsDeviceInfo(unsigned int* VendorId,
-	unsigned int* DeviceId,
-	std::wstring* GFXBrand,
-	unsigned __int64* VideoMemoryBudget,
-	unsigned __int64* VideoMemoryCurrentUsage,
-	unsigned __int64* VideoMemoryAvailable,
-	unsigned __int64* VideoMemoryReserved);
-
-/*****************************************************************************************
-* getIntelDeviceInfo
-*
-*     Returns the device info:
-*       GPU Max Frequency (Mhz)
-*       GPU Min Frequency (Mhz)
-*       GT Generation (enum)
-*       EU Count (unsigned int)
-*       Package TDP (Watts)
-*       Max Fill Rate (Pixel/Clk)
-*
-* A return value of GGF_SUCCESS indicates
-*	   the frequency was returned correctly.
-*     This function is only valid on Intel graphics devices SNB and later.
-*****************************************************************************************/
-
-
+bool getGraphicsDeviceInfo( unsigned int* VendorId,
+							unsigned int* DeviceId,
+							std::wstring* GFXBrand,
+							unsigned __int64* VideoMemoryBudget,
+							unsigned __int64* VideoMemoryCurrentUsage,
+							unsigned __int64* VideoMemoryAvailable,
+							unsigned __int64* VideoMemoryReserved);
 
 /*****************************************************************************************
-* checkDxExtensionVersion
-*
-*      Returns the EXTENSION_INTERFACE_VERSION supported by the driver
-*      EXTENSION_INTERFACE_VERSION_1_0 supports extensions for pixel synchronization and
-*      instant access of graphics memory
-*
-*****************************************************************************************/
+ * getIntelDeviceInfo
+ *
+ *     Returns the device info:
+ *       GPU Max Frequency (Mhz)
+ *       GPU Min Frequency (Mhz)
+ *       GT Generation (enum)
+ *       EU Count (unsigned int)
+ *       Package TDP (Watts)
+ *       Max Fill Rate (Pixel/Clk)
+ * 
+ * A return value of GGF_SUCCESS indicates 
+ *	   the frequency was returned correctly. 
+ *     This function is only valid on Intel graphics devices SNB and later.
+ *****************************************************************************************/
+
+
+
+/*****************************************************************************************
+ * checkDxExtensionVersion
+ *
+ *      Returns the EXTENSION_INTERFACE_VERSION supported by the driver
+ *      EXTENSION_INTERFACE_VERSION_1_0 supports extensions for pixel synchronization and
+ *      instant access of graphics memory
+ *
+ *****************************************************************************************/
 
 
 /*****************************************************************************************

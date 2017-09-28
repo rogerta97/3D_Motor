@@ -208,8 +208,6 @@ void Application::PrintConfigData()
 			if (SDL_HasSSE42()) ImGui::TextColored(ImVec4(1, 1, 0, 1), "SSE42,");
 
 			ImGui::Separator(); 
-	
-			getGraphicsDeviceInfo(&vendorid, &deviceid, &brand, &vm, &vm_curr, &vm_a, &vm_r);
 
 			ImGui::Text("GPU Vendor: "); ImGui::SameLine(); 
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", renderer3D->GetGraphicsModel("vendor"));

@@ -32,41 +32,38 @@
 #include <ObjBase.h>
 
 /*****************************************************************************************
-* getGraphicsDeviceInfo
-*
-*     Function to retrieve information about the primary graphics driver. This includes
-*     the device's Vendor ID, Device ID, and available memory.
-*
-*****************************************************************************************/
+ * getGraphicsDeviceInfo
+ *
+ *     Function to retrieve information about the primary graphics driver. This includes
+ *     the device's Vendor ID, Device ID, and available memory.
+ *
+ *****************************************************************************************/
 
-static bool first_time = true; 
-static HMODULE hDXGI = NULL; 
+static bool first_time = true;
+static HMODULE hDXGI = NULL;
 
-bool getGraphicsDeviceInfo(unsigned int* VendorId,
-	unsigned int* DeviceId,
-	std::wstring* GFXBrand,
-	unsigned __int64* VideoMemoryBudget,
-	unsigned __int64* VideoMemoryCurrentUsage,
-	unsigned __int64* VideoMemoryAvailable,
-	unsigned __int64* VideoMemoryReserved)
+bool getGraphicsDeviceInfo( unsigned int* VendorId,
+							unsigned int* DeviceId,
+							std::wstring* GFXBrand,
+							unsigned __int64* VideoMemoryBudget,
+							unsigned __int64* VideoMemoryCurrentUsage,
+							unsigned __int64* VideoMemoryAvailable,
+							unsigned __int64* VideoMemoryReserved)
 {
 	//
 	// DXGI is supported on Windows Vista and later. Define a function pointer to the
 	// CreateDXGIFactory function. DXGIFactory1 is supported by Windows Store Apps so
 	// try that first.
 	//
-
 	if (first_time)
-		{
-		first_time = false; 
+	{
+		first_time = false;
 
-		HMODULE hDXGI = LoadLibrary("dxgi.dll");
+		hDXGI = LoadLibrary("dxgi.dll");
 		if (hDXGI == NULL) {
 			return false;
 		}
-
 	}
-
 	typedef HRESULT(WINAPI*LPCREATEDXGIFACTORY)(REFIID riid, void** ppFactory);
 
 	LPCREATEDXGIFACTORY pCreateDXGIFactory = (LPCREATEDXGIFACTORY)GetProcAddress(hDXGI, "CreateDXGIFactory1");
@@ -78,7 +75,7 @@ bool getGraphicsDeviceInfo(unsigned int* VendorId,
 			return false;
 		}
 	}
-
+	
 	//
 	// We have the CreateDXGIFactory function so use it to actually create the factory and enumerate
 	// through the adapters. Here, we are specifically looking for the Intel gfx adapter. 
@@ -100,7 +97,7 @@ bool getGraphicsDeviceInfo(unsigned int* VendorId,
 	while (pFactory->EnumAdapters(intelAdapterIndex, &pAdapter) != DXGI_ERROR_NOT_FOUND) {
 		pAdapter->GetDesc(&AdapterDesc);
 		//if (AdapterDesc.VendorId == 0x8086) {
-		break;
+			break;
 		//}
 		intelAdapterIndex++;
 	}
@@ -133,11 +130,11 @@ bool getGraphicsDeviceInfo(unsigned int* VendorId,
 		*VideoMemoryReserved = 0;
 	}
 
-	if (VendorId != nullptr)
+	if(VendorId != nullptr)
 		*VendorId = AdapterDesc.VendorId;
-	if (DeviceId != nullptr)
+	if(DeviceId != nullptr)
 		*DeviceId = AdapterDesc.DeviceId;
-	if (GFXBrand != nullptr)
+	if(GFXBrand != nullptr)
 		*GFXBrand = AdapterDesc.Description;
 
 	pAdapter->Release();
@@ -146,26 +143,26 @@ bool getGraphicsDeviceInfo(unsigned int* VendorId,
 }
 
 /******************************************************************************************************************************************
-* getIntelDeviceInfo
-*
-* Description:
-*       Gets device information which is stored in a D3D counter. First, a D3D device must be created, the Intel counter located, and
-*       finally queried.
-*
-*       Supported device info: GPU Max Frequency, GPU Min Frequency, GT Generation, EU Count, Package TDP, Max Fill Rate
-*
-* Parameters:
-*         unsigned int VendorId                         - [in]     - Input:  system's vendor id
-*         IntelDeviceInfoHeader *pIntelDeviceInfoHeader - [in/out] - Input:  allocated IntelDeviceInfoHeader *
-*                                                                    Output: Intel device info header, if found
-*         void *pIntelDeviceInfoBuffer                  - [in/out] - Input:  allocated void *
-*                                                                    Output: IntelDeviceInfoV[#], cast based on IntelDeviceInfoHeader
-* Return:
-*         GGF_SUCCESS: Able to find Data is valid
-*         GGF_E_UNSUPPORTED_HARDWARE: Unsupported hardware, data is invalid
-*         GGF_E_UNSUPPORTED_DRIVER: Unsupported driver on Intel, data is invalid
-*
-*****************************************************************************************************************************************/
+ * getIntelDeviceInfo
+ *
+ * Description:
+ *       Gets device information which is stored in a D3D counter. First, a D3D device must be created, the Intel counter located, and
+ *       finally queried.
+ *
+ *       Supported device info: GPU Max Frequency, GPU Min Frequency, GT Generation, EU Count, Package TDP, Max Fill Rate
+ * 
+ * Parameters:
+ *         unsigned int VendorId                         - [in]     - Input:  system's vendor id
+ *         IntelDeviceInfoHeader *pIntelDeviceInfoHeader - [in/out] - Input:  allocated IntelDeviceInfoHeader *
+ *                                                                    Output: Intel device info header, if found
+ *         void *pIntelDeviceInfoBuffer                  - [in/out] - Input:  allocated void *
+ *                                                                    Output: IntelDeviceInfoV[#], cast based on IntelDeviceInfoHeader
+ * Return:
+ *         GGF_SUCCESS: Able to find Data is valid
+ *         GGF_E_UNSUPPORTED_HARDWARE: Unsupported hardware, data is invalid
+ *         GGF_E_UNSUPPORTED_DRIVER: Unsupported driver on Intel, data is invalid
+ *
+ *****************************************************************************************************************************************/
 /*****************************************************************************************
 * getCPUInfo
 *
@@ -233,12 +230,12 @@ PRODUCT_FAMILY getGTGeneration(unsigned int deviceId)
 	// Device is Sandybridge or Ivybridge
 	//
 	if (maskedDeviceId == 0x0100) {
-		if (
+		if ( 
 			((deviceId & 0x0050) == 0x0050) ||
 			((deviceId & 0x0060) == 0x0060)
-			) {
+		   ) {
 			return IGFX_IVYBRIDGE;
-		}
+			}
 		if (
 			((deviceId & 0x0010) == 0x0010) ||
 			((deviceId & 0x00F0) == 0x0000)
