@@ -20,6 +20,10 @@ ModuleInput::~ModuleInput()
 // Called before render is available
 bool ModuleInput::Init()
 {
+
+	name = "Input";
+	App->performance.InitTimer(name); 
+
 	LOG("Init SDL input event system");
 	bool ret = true;
 	SDL_Init(0);
@@ -30,7 +34,7 @@ bool ModuleInput::Init()
 		ret = false;
 	}
 
-	name = "Input"; 
+	App->performance.SaveInitData(name); 
 
 	return ret;
 }

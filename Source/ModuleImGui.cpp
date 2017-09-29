@@ -14,11 +14,14 @@ ModuleImGui::~ModuleImGui()
 
 bool ModuleImGui::Init()
 {
+	name = "ImGui";
+	App->performance.InitTimer(name);
+
 	ImGui_ImplSdlGL2_Init(App->window->window);
 
 	ImGuiIO& io = ImGui::GetIO();
 
-	name = "ImGui"; 
+	App->performance.SaveInitData(name);
 
 	return true;
 }
@@ -35,12 +38,6 @@ update_status ModuleImGui::Update(float dt)
 	// Manage ImGui Keyboard input
 
 	ImGuiIO& io = ImGui::GetIO();
-
-	//for (int i = 0; i < SCANCODE_AMOUNT; i++)
-	//{
-	//	if (App->input->GetKey(i) == KEY_DOWN)
-	//		io.KeysDown[i] = true; 
-	//}
 
 	// Main menu bar -----------------------------
 
@@ -67,6 +64,13 @@ update_status ModuleImGui::Update(float dt)
 			show_random_number = !show_random_number;
 		}
 
+		ImGui::Separator();
+
+		if (ImGui::MenuItem("Performance"))
+		{
+			show_performance = !show_performance;
+		}
+
 		ImGui::EndMenu();		
 	}
 
@@ -80,22 +84,22 @@ update_status ModuleImGui::Update(float dt)
 
 		if (ImGui::MenuItem("Documentation"))
 		{
-			ShellExecute(NULL, "open", "https://github.com/rogerta97/3D_Motor", NULL, NULL, SW_SHOWNORMAL);
+			App->OpenWebPage("https://github.com/rogerta97/3D_Motor");
 		}
 
 		if (ImGui::MenuItem("Download latest"))
 		{
-			ShellExecute(NULL, "open", "https://github.com/rogerta97/3D_Motor/releases", NULL, NULL, SW_SHOWNORMAL);
+			App->OpenWebPage("https://github.com/rogerta97/3D_Motor/releases");
 		}
 
 		if (ImGui::MenuItem("Report a bug"))
 		{
-			ShellExecute(NULL, "open", "http://yourwebpage.com", NULL, NULL, SW_SHOWNORMAL);
+			App->OpenWebPage("https://github.com/rogerta97/3D_Motor/blob/master/LICENSE");
 		}
 
 		if (ImGui::MenuItem("License"))
 		{
-			ShellExecute(NULL, "open", "https://github.com/rogerta97/3D_Motor/blob/master/LICENSE", NULL, NULL, SW_SHOWNORMAL);
+			App->OpenWebPage("https://github.com/rogerta97/3D_Motor/blob/master/LICENSE");			
 		}
 
 		if (ImGui::MenuItem("About"))
@@ -108,7 +112,8 @@ update_status ModuleImGui::Update(float dt)
 
 	if (show_console) PrintConsole();
 	if (show_random_number)PrintRandomNumber();
-	if (show_about) ShowAbout(); 
+	if (show_about) ShowAbout();
+	if (show_performance) App->performance.Update(); 
 
 	ImGui::EndMainMenuBar(); 
 
@@ -120,11 +125,6 @@ update_status ModuleImGui::Update(float dt)
 
 	// -------------------------------------------
  
-	// Configuration Panel -----------------------
-
-	
-
-	// -------------------------------------------
 	
 	return UPDATE_CONTINUE;
 }

@@ -321,3 +321,8 @@ const char * Application::GetMaxFPS()
 {
 	return max_fps.c_str();
 }
+
+void Application::OpenWebPage(const char * url)
+{
+	ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
+}

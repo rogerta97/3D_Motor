@@ -987,6 +987,9 @@
     <ClInclude Include="PhysBody3D.h">
       <Filter>Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="Performance.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1171,6 +1174,9 @@
     </ClCompile>
     <ClCompile Include="PhysBody3D.cpp">
       <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Performance.cpp">
+      <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

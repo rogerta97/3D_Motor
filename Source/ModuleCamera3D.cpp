@@ -21,6 +21,9 @@ ModuleCamera3D::~ModuleCamera3D()
 bool ModuleCamera3D::Init() 
 {
 	name = "Camera";
+	App->performance.InitTimer(name);
+
+	App->performance.SaveInitData(name);
 
 	return true; 
 }

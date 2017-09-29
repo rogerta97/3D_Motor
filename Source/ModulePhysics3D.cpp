@@ -38,13 +38,16 @@ ModulePhysics3D::~ModulePhysics3D()
 // Render not available yet----------------------------------
 bool ModulePhysics3D::Init()
 {
+	name = "Physics";
+	App->performance.InitTimer(name); 
+
 	LOG("Creating 3D Physics simulation");
 	bool ret = true;
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
-	name = "Physics"; 
+	App->performance.SaveInitData(name);
 
 	return ret;
 }
@@ -69,41 +72,41 @@ bool ModulePhysics3D::Start()
 		world->addRigidBody(body);
 	}
 
-	// Creating objects 
+	//// Creating objects 
 
-	main_plane = PPlane(0, 1, 0, 0);
-	main_plane.axis = true;
+	//main_plane = PPlane(0, 1, 0, 0);
+	//main_plane.axis = true;
 
-	Sphere s1;
-	s1.pos = vec(0.0f, 0.0f, 0.0f);
-	s1.r = 5;
+	//Sphere s1;
+	//s1.pos = vec(0.0f, 0.0f, 0.0f);
+	//s1.r = 5;
 
-	Sphere s2;
-	s2.pos = vec(0.0f, 0.0f, 0.0f);
-	s2.r = 3;
+	//Sphere s2;
+	//s2.pos = vec(0.0f, 0.0f, 0.0f);
+	//s2.r = 3;
 
-	Sphere s3;
-	s3.pos = vec(0.0f, 20.0f, 0.0f);
-	s3.r = 2;
+	//Sphere s3;
+	//s3.pos = vec(0.0f, 20.0f, 0.0f);
+	//s3.r = 2;
 
-	Sphere s4;
-	s4.pos = vec(0.0f, 10.0f, 0.0f);
-	s4.r = 7;
+	//Sphere s4;
+	//s4.pos = vec(0.0f, 10.0f, 0.0f);
+	//s4.r = 7;
 
-	Sphere s5;
-	s5.pos = vec(0.0f, 25.0f, 0.0f);
-	s5.r = 7;
+	//Sphere s5;
+	//s5.pos = vec(0.0f, 25.0f, 0.0f);
+	//s5.r = 7;
 
-	Sphere s6;
-	s6.pos = vec(0.0f, 0.0f,15.0f);
-	s6.r = 2;
+	//Sphere s6;
+	//s6.pos = vec(0.0f, 0.0f,15.0f);
+	//s6.r = 2;
 
-	spheres_list.push_back(s1);
-	spheres_list.push_back(s2);
-	spheres_list.push_back(s3);
-	spheres_list.push_back(s4);
-	spheres_list.push_back(s5);
-	spheres_list.push_back(s6);
+	//spheres_list.push_back(s1);
+	//spheres_list.push_back(s2);
+	//spheres_list.push_back(s3);
+	//spheres_list.push_back(s4);
+	//spheres_list.push_back(s5);
+	//spheres_list.push_back(s6);
 
 	return true;
 }

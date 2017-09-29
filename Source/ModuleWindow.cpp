@@ -17,6 +17,10 @@ ModuleWindow::~ModuleWindow()
 // Called before render is available
 bool ModuleWindow::Init()
 {
+
+	name = "Window";
+	App->performance.InitTimer(name); 
+
 	LOG("Init SDL window & surface");
 	bool ret = true;
 
@@ -75,8 +79,9 @@ bool ModuleWindow::Init()
 		}
 	}
 
-	name = "Window"; 
 	SetTitle("3D Engine");
+
+	App->performance.SaveInitData(name); 
 
 	return ret;
 }

@@ -6,6 +6,7 @@
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
+#include "Performance.h"
 #include "ModuleSceneIntro.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
@@ -60,6 +61,7 @@ private:
 
 	// ------------------------------
 
+
 public:
 
 	Application();
@@ -74,8 +76,15 @@ public:
 	const char* GetAppName();
 	const char* GetOrgName();
 	const char* GetMaxFPS();
+
+	void OpenWebPage(const char* url); 
+
 	//add get & set config functions
 	Module* GetModule(int index);
+
+	//For performance
+
+	PerformanceWindow performance;
 
 private:
 

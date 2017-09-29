@@ -19,6 +19,9 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
+	name = "Render";
+	App->performance.InitTimer(name);
+
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 	
@@ -108,11 +111,10 @@ bool ModuleRenderer3D::Init()
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	name = "Render";
-
-
 	s1.r = 4; 
 	s1.pos = vec(0, 0, 0); 
+
+	App->performance.SaveInitData(name); 
 	
 	return ret;
 }

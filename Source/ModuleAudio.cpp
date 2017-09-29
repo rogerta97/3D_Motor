@@ -14,6 +14,10 @@ ModuleAudio::~ModuleAudio()
 // Called before render is available
 bool ModuleAudio::Init()
 {
+
+	name = "Audio";
+	App->performance.InitTimer(name); 
+
 	LOG("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(0);
@@ -41,7 +45,7 @@ bool ModuleAudio::Init()
 		ret = false;
 	}
 
-	name = "Audio"; 
+	App->performance.SaveInitData(name); 
 
 	return ret;
 }

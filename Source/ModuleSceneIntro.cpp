@@ -22,13 +22,14 @@ ModuleSceneIntro::~ModuleSceneIntro()
 // Load assets
 bool ModuleSceneIntro::Start()
 {
+	name = "Scene"; 
+	App->performance.InitTimer(name);
+
 	LOG("Loading Intro assets");
 	bool ret = true;
 
 	srand(time(NULL));
 
-	name = "Scene"; 
-  
 	first_cube.size = vec3(1,1,1); 
 	first_cube.SetPos(0, 0, 0); 
 	first_cube.color = Color(255, 0, 0); 
@@ -36,6 +37,8 @@ bool ModuleSceneIntro::Start()
 
 	first_sphere.radius = 1; 
 	first_sphere.SetPos(0, 0, 5); 
+
+	App->performance.SaveInitData(name); 
 
 	return ret;
 }
