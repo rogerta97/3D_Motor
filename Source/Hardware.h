@@ -21,11 +21,13 @@ class Hardware
 {
 public:
 
-	bool GetHardwareData(std::string* vendor, std::string* deviceid, std::string* brand, float* tot_vm, float* curr_vm, float* av_vm, float* res_vm);
+	Hardware();
 
-private: 
+	bool GetHardwareData();
 
-	HardwareInfo info; 
+	~Hardware();
+	
+	HardwareInfo info;
 	
 };
 

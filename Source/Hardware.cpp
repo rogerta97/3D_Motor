@@ -1,14 +1,28 @@
 #include "Hardware.h"
 
-bool Hardware::GetHardwareData(std::string * vendor, std::string * deviceid, std::string * brand, float * tot_vm, float * curr_vm, float * av_vm, float * res_vm)
+Hardware::Hardware()
 {
+	GetHardwareData(); 
+}
 
-	//getGraphicsDeviceInfo(vendor, deviceid, brand, &vm, &vm_curr, &vm_a, &vm_r);
+bool Hardware::GetHardwareData()
+{
+	uint64_t tot_vm, curr_vm, av_vm, res_vm; 
 
-	//vm = (float)vm / (1024.0f * 1024.0f);
-	//vm_curr = (float)vm_curr / (1024.0f * 1024.0f);
-	//vm_a = (float)vm_a / (1024.0f * 1024.0f);
-	//vm_r = (float)vm_r / (1024.0f * 1024.0f);
+	if (getGraphicsDeviceInfo(nullptr, nullptr, nullptr, &tot_vm, &curr_vm, &av_vm, &res_vm))
+	{
+
+		info.total_video_mem = (float)tot_vm / (1024.0f * 1024.0f);
+		info.current_video_mem = (float)curr_vm / (1024.0f * 1024.0f);
+		info.available_video_mem = (float)av_vm / (1024.0f * 1024.0f);
+		info.reserved_video_mem = (float)res_vm / (1024.0f * 1024.0f);
+
+		return true;
+	}
 
 	return false;
+}
+
+Hardware::~Hardware()
+{
 }

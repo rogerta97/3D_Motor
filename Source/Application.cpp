@@ -215,16 +215,16 @@ void Application::PrintConfigData()
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", renderer3D->GetGraphicsModel("model"));
 
 			ImGui::Text("Total VRAM: "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", vm);
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.2f", hardware.info.total_video_mem);
 
 			ImGui::Text("Using VRAM: "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", vm_curr);
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.2f", hardware.info.current_video_mem);
 
 			ImGui::Text("Avaliable VRAM: "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", vm_a);
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.2f", hardware.info.available_video_mem);
 
 			ImGui::Text("Reserved VRAM: "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", vm_r);
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.2f", hardware.info.reserved_video_mem);
 
 			ImGui::TreePop(); 
 		}		

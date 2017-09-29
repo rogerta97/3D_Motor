@@ -14,7 +14,7 @@
 #include "MathGeoLib\MathGeoLib.h"
 #include "DeviceId\DeviceId.h"
 #include "JSON.h"
-
+#include "Hardware.h"
 #include <queue>
 #include <string>
 #include <list>
@@ -56,9 +56,7 @@ private:
 
 	// Hardware ----------------------
 
-	uint vendorid, deviceid;
-	Uint64 vm, vm_curr, vm_a, vm_r;
-	std::wstring brand;
+	Hardware hardware; 
 
 	// ------------------------------
 
