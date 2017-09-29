@@ -224,7 +224,8 @@ void ModuleImGui::UpdateConfigPanel()
 	{
 		App->GetModule(i)->PrintConfigData(); 
 	}
-
+	// TODO the for does not print renderer data idk why
+	App->renderer3D->PrintConfigData();//MODIFY THE FOR AND ERASE THIS LINE
 	ImGui::End();
 }
 

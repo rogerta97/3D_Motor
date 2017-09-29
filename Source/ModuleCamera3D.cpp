@@ -52,23 +52,23 @@ update_status ModuleCamera3D::Update(float dt)
 	// Now we can make this movememnt frame rate independant!
 
 	vec3 newPos(0,0,0);
-	float speed = 0.1f;
 
 
-	LOG("%f", speed);
+	LOG("%f", mov_speed);
+	
+	float temporal_speed = mov_speed;
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		temporal_speed=temporal_speed*0.3f;
 	
 
-	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		speed = 3.0f;
+	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += temporal_speed;
+	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= temporal_speed;
 
-	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
-	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
+	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z *temporal_speed;
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z *temporal_speed;
 
-	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
-	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
-
-	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
-	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * temporal_speed;
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * temporal_speed;
 
 	Position += newPos;
 	Reference += newPos;
@@ -80,13 +80,13 @@ update_status ModuleCamera3D::Update(float dt)
 		int dx = -App->input->GetMouseXMotion();
 		int dy = -App->input->GetMouseYMotion();
 
-		float Sensitivity = 0.25f;
+		
 
 		Position -= Reference;
 
 		if(dx != 0)
 		{
-			float DeltaX = (float)dx * Sensitivity;
+			float DeltaX = (float)dx * rot_speed;
 
 			X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
 			Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
@@ -95,7 +95,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 		if(dy != 0)
 		{
-			float DeltaY = (float)dy * Sensitivity;
+			float DeltaY = (float)dy * rot_speed;
 
 			Y = rotate(Y, DeltaY, X);
 			Z = rotate(Z, DeltaY, X);
@@ -172,8 +172,25 @@ void ModuleCamera3D::CalculateViewMatrix()
 
 void ModuleCamera3D::PrintConfigData()
 {
-	if (ImGui::CollapsingHeader(name))
+	if (ImGui::CollapsingHeader("Camera"))
 	{
+		ImGui::DragFloat3("Position", &Position.x, 0.1f);
+		if (ImGui::Button("Original Position") == true)
+		{
+			Position.x = 1.0f;
+			Position.y = 1.0f;
+			Position.z = 5.0f;
+		}
 
+		ImGui::DragFloat("Mov Speed", &mov_speed, 0.1f, 0.1f);
+		ImGui::DragFloat("Rot Speed", &rot_speed, 0.05f, 0.01f);
+		ImGui::DragFloat("Zoom Speed", &zm_speed, 0.1f, 0.1f);
+		
+		if (ImGui::Button("Original Speeds") == true)
+		{
+			mov_speed = 0.1f;
+			rot_speed = 0.25f;
+			zm_speed = 0.1f;
+		}
 	}
 }

@@ -26,7 +26,18 @@ public:
 
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
-
+	//NEW FUNCTIONALITIES
+	float GetVolume() const;
+	float GetMusicVolume() const;
+	float GetFXVolume() const;
+	const char * GetDriver()const;
+	//i don't knwo how to modify the volume, but in Ric's 
+	//pannel there are this type of volumes so it's kk to have it
+private:
+	float volume = 1.0f;
+	float music_volume = 1.0f;
+	float fx_volume = 1.0f;
+	
 private:
 
 	Mix_Music*			music;

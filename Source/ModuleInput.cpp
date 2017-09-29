@@ -140,7 +140,9 @@ void ModuleInput::PrintConfigData()
 	
 	if (ImGui::CollapsingHeader(name))
 	{
-
+		
+		ImGui::Text("Mouse Position:");
+		ImGui::Text("%d,%d", App->input->mouse_x, App->input->mouse_y);		
 	}
 	
 }

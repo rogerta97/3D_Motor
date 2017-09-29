@@ -54,7 +54,10 @@ void ModuleAudio::PrintConfigData()
 {
 	if (ImGui::CollapsingHeader(name))
 	{
-
+		ImGui::Text("Volume %d", volume);
+		ImGui::Text("Music Volume %d", music_volume);
+		ImGui::Text("FX Volume %d", fx_volume);
+		ImGui::Text("Driver: %s", this->GetDriver());
 	}
 }
 
@@ -174,3 +177,24 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+
+float ModuleAudio::GetVolume() const
+{
+	return volume;
+}
+
+float ModuleAudio::GetMusicVolume() const
+{
+	return music_volume;
+}
+
+float ModuleAudio::GetFXVolume() const
+{
+	return fx_volume;
+}
+
+const char * ModuleAudio::GetDriver() const
+{
+	return SDL_GetCurrentAudioDriver();
+}
+

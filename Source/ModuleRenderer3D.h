@@ -21,7 +21,7 @@ public:
 	void PrintConfigData();
 
 	char* GetGraphicsModel(const char* _module); 
-
+	const char* GetDriver();
 private: 
 	
 	bool depth_test_ch_b = true; 

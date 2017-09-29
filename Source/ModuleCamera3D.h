@@ -28,6 +28,10 @@ private:
 public:
 	
 	vec3 X, Y, Z, Position, Reference;
+	float mov_speed = 0.1f;
+	float rot_speed = 0.25f;
+	float zm_speed = 0.1f;
+
 
 private:
 

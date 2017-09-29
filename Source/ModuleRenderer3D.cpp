@@ -189,7 +189,7 @@ void ModuleRenderer3D::PrintConfigData()
 			glDisable(GL_CULL_FACE);
 			LOG("keloke"); 
 		}
-			
+		ImGui::Text("Driver: %s",this->GetDriver());
 
 	}
 }
@@ -203,6 +203,10 @@ char * ModuleRenderer3D::GetGraphicsModel(const char* _module)
 
 	else if(_module == "model")
 	    model = glGetString(GL_RENDERER);
-		
 	return (char*)model;
+}
+
+const char * ModuleRenderer3D::GetDriver()
+{
+	return SDL_GetCurrentVideoDriver();
 }
