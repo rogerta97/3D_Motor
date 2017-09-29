@@ -1,529 +1,1199 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Sources">
-      <UniqueIdentifier>{8b7ed093-66ce-4096-96d2-fbb9faa4bf52}</UniqueIdentifier>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{aafbd87f-c92e-4b43-ba93-eb7ac4937ed3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Modules">
-      <UniqueIdentifier>{7b418be2-1631-4a31-9ef2-8a8b234a7339}</UniqueIdentifier>
+    <Filter Include="3rd Party">
+      <UniqueIdentifier>{4876bc4f-b087-4477-b543-10706a99d856}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Containers">
-      <UniqueIdentifier>{afc36133-f401-499a-aa33-0da1e500fb52}</UniqueIdentifier>
+    <Filter Include="3rd Party\DevideId">
+      <UniqueIdentifier>{c6fc23ee-ba46-4242-96dd-2c494f609fa5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Tools">
-      <UniqueIdentifier>{7e4dfaf7-022c-4f7d-92aa-f3b3fa9d6248}</UniqueIdentifier>
+    <Filter Include="3rd Party\MathGeoLib">
+      <UniqueIdentifier>{0d900619-e162-440c-8124-d437d4efd418}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Helpers">
-      <UniqueIdentifier>{121f8e6b-df36-4ab0-be0d-601ddfc9e503}</UniqueIdentifier>
+    <Filter Include="3rd Party\Parson">
+      <UniqueIdentifier>{4adf76ef-8b05-44a7-b742-7d35211db057}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Modules\Game">
-      <UniqueIdentifier>{83f46af7-e02f-40c0-9e56-41d76082527b}</UniqueIdentifier>
+    <Filter Include="3rd Party\MathGeoLib\src">
+      <UniqueIdentifier>{1041918b-1aa4-4342-a583-04990b41409b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Tools\ImGui">
-      <UniqueIdentifier>{4d0fc134-1bee-4656-b87e-aec65064182e}</UniqueIdentifier>
+    <Filter Include="3rd Party\ImGui">
+      <UniqueIdentifier>{b151e6a5-a618-4524-85dc-f0d345c1295e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Tools\MathGeoLib">
-      <UniqueIdentifier>{993f4e0b-bb3c-4d53-9c7e-c59fc497812f}</UniqueIdentifier>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{acab524a-f627-4ab8-996d-7034329f23e8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Tools\DevideId">
-      <UniqueIdentifier>{5251124d-be2b-44b4-85c2-63c48b730ebb}</UniqueIdentifier>
+    <Filter Include="Containers">
+      <UniqueIdentifier>{077f6a63-b694-475a-ab5e-206d433d4a4d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Tools\JSON">
-      <UniqueIdentifier>{01f5011f-7014-4a37-8351-9ded7d7c6361}</UniqueIdentifier>
+    <Filter Include="Main">
+      <UniqueIdentifier>{d94b9e46-4f48-47d3-977e-73e872a9fde7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{a1f81301-f24b-4271-a836-db8c4310dce3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd Party\Bullet">
+      <UniqueIdentifier>{d68ee3bd-8de5-40d1-9dc0-36c88fe2b3e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
-      <Filter>Sources\Modules</Filter>
+      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleAudio.h">
-      <Filter>Sources\Modules</Filter>
+      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleCamera3D.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleInput.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleRenderer3D.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleWindow.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Point.h">
-      <Filter>Sources\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="glmath.h">
-      <Filter>Sources\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Primitive.h">
-      <Filter>Sources\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Color.h">
-      <Filter>Sources\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Sources\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleSceneIntro.h">
-      <Filter>Sources\Modules\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Sources\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="ModulePhysics3D.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysBody3D.h">
-      <Filter>Sources\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui.h">
-      <Filter>Sources\Tools\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_internal.h">
-      <Filter>Sources\Tools\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imconfig.h">
-      <Filter>Sources\Tools\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_impl_sdl.h">
-      <Filter>Sources\Tools\ImGui</Filter>
+      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleImGui.h">
-      <Filter>Sources\Modules</Filter>
+      <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\AABB.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+    <ClInclude Include="ModuleInput.h">
+      <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\AABB2D.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+    <ClInclude Include="ModulePhysics3D.h">
+      <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\assume.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+    <ClInclude Include="ModuleRenderer3D.h">
+      <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\BitOps.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+    <ClInclude Include="ModuleSceneIntro.h">
+      <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\Callstack.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\Capsule.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\Circle.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Time\Clock.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\FixedPoint.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\float2.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\float3.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\float3x3.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\float3x4.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\float4.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\float4_neon.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\float4_sse.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\float4d.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\float4x4.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\float4x4_neon.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\float4x4_sse.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\FloatCmp.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\Frustum.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\GeometryAll.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\GeomType.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Algorithm\GJK.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\grisu3.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\HitInfo.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\InclWindows.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\KDTree.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Algorithm\Random\LCG.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\emscripten\library_system.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\Line.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\LineSegment.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\MathAll.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\MathBuildConfig.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\MathConstants.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\MathFunc.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\MathGeoLib.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\MathGeoLibFwd.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\MathLog.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\MathNamespace.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\MathTypes.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\MatrixProxy.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\myassert.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\OBB.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\PBVolume.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\Plane.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\Polygon.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\Polyhedron.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\Polynomial.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\QuadTree.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\Quat.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\quat_simd.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\Ray.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\Rect.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\Reinterpret.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Algorithm\SAT.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\simd.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\Sphere.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\sse_mathfun.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\SSEMath.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\TransformOps.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\Triangle.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Geometry\TriangleMesh.h">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="iPoint.h">
-      <Filter>Sources\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenGL.h">
-      <Filter>Sources\Tools</Filter>
+    <ClInclude Include="ModuleWindow.h">
+      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="DeviceId\DeviceId.h">
-      <Filter>Sources\Tools\DevideId</Filter>
+      <Filter>3rd Party\DevideId</Filter>
     </ClInclude>
     <ClInclude Include="DeviceId\dxgi1_4.h">
-      <Filter>Sources\Tools\DevideId</Filter>
+      <Filter>3rd Party\DevideId</Filter>
     </ClInclude>
-<<<<<<< HEAD
+    <ClInclude Include="MathGeoLib\MathBuildConfig.h">
+      <Filter>3rd Party\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\MathGeoLib.h">
+      <Filter>3rd Party\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Algorithm\GJK.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Algorithm\SAT.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Algorithm\Random\LCG.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\emscripten\library_system.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\AABB.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\AABB2D.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\Capsule.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\Circle.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\Frustum.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\GeometryAll.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\GeomType.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\HitInfo.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\KDTree.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\Line.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\LineSegment.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\OBB.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\PBVolume.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\Plane.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\Polygon.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\Polyhedron.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\QuadTree.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\Ray.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\Sphere.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\Triangle.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Geometry\TriangleMesh.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\assume.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\BitOps.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\Callstack.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\FixedPoint.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\float2.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\float3.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\float3x3.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\float3x4.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\float4.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\float4_neon.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\float4_sse.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\float4d.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\float4x4.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\float4x4_neon.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\float4x4_sse.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\FloatCmp.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\grisu3.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\InclWindows.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\MathAll.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\MathConstants.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\MathFunc.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\MathLog.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\MathNamespace.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\MathTypes.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\MatrixProxy.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\myassert.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\Polynomial.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\Quat.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\quat_simd.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\Rect.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\Reinterpret.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\simd.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\sse_mathfun.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\SSEMath.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Math\TransformOps.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\Time\Clock.h">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClInclude>
     <ClInclude Include="Parson\parson.h">
-      <Filter>Sources\Tools\JSON</Filter>
+      <Filter>3rd Party\Parson</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>3rd Party\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_sdl.h">
+      <Filter>3rd Party\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>3rd Party\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="glmath.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Hardware.h">
+      <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="JSON.h">
-      <Filter>Sources\Tools\JSON</Filter>
-=======
-    <ClInclude Include="Hardware.h">
-      <Filter>Sources\Containers</Filter>
->>>>>>> bba7ae55ae4eb9eeca910d0c820a7a2a2abfe4a0
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitive.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_rect_pack.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_textedit.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_truetype.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\btBulletCollisionCommon.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\btBulletDynamicsCommon.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\BroadphaseCollision\btAxisSweep3.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\BroadphaseCollision\btBroadphaseInterface.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\BroadphaseCollision\btBroadphaseProxy.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\BroadphaseCollision\btCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\BroadphaseCollision\btDbvt.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\BroadphaseCollision\btDbvtBroadphase.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\BroadphaseCollision\btDispatcher.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\BroadphaseCollision\btMultiSapBroadphase.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\BroadphaseCollision\btOverlappingPairCache.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\BroadphaseCollision\btOverlappingPairCallback.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\BroadphaseCollision\btQuantizedBvh.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\BroadphaseCollision\btSimpleBroadphase.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btActivatingCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btBox2dBox2dCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btBoxBoxCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btBoxBoxDetector.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btCollisionConfiguration.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btCollisionCreateFunc.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btCollisionDispatcher.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btCollisionObject.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btCollisionObjectWrapper.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btCollisionWorld.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btCollisionWorldImporter.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btCompoundCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btCompoundCompoundCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btConvex2dConvex2dAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btConvexConcaveCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btConvexConvexAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btConvexPlaneCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btDefaultCollisionConfiguration.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btEmptyCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btGhostObject.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btHashedSimplePairCache.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btInternalEdgeUtility.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btManifoldResult.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btSimulationIslandManager.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btSphereBoxCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btSphereSphereCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btSphereTriangleCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\btUnionFind.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionDispatch\SphereTriangleDetector.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btBox2dShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btBoxShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btBvhTriangleMeshShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btCapsuleShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btCollisionMargin.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btCollisionShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btCompoundShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btConcaveShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btConeShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btConvex2dShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btConvexHullShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btConvexInternalShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btConvexPointCloudShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btConvexPolyhedron.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btConvexShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btConvexTriangleMeshShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btCylinderShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btEmptyShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btMaterial.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btMinkowskiSumShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btMultimaterialTriangleMeshShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btMultiSphereShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btOptimizedBvh.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btPolyhedralConvexShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btScaledBvhTriangleMeshShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btShapeHull.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btSphereShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btStaticPlaneShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btStridingMeshInterface.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btTetrahedronShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btTriangleBuffer.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btTriangleCallback.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btTriangleIndexVertexArray.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btTriangleIndexVertexMaterialArray.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btTriangleInfoMap.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btTriangleMesh.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btTriangleMeshShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btTriangleShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\CollisionShapes\btUniformScalingShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\btBoxCollision.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\btClipPolygon.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\btCompoundFromGimpact.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\btContactProcessing.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\btGenericPoolAllocator.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\btGeometryOperations.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\btGImpactBvh.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\btGImpactCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\btGImpactMassUtil.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\btGImpactQuantizedBvh.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\btGImpactShape.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\btQuantization.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\btTriangleShapeEx.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_array.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_basic_geometry_operations.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_bitset.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_box_collision.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_box_set.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_clip_polygon.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_contact.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_geometry.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_geom_types.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_hash_table.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_linear_math.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_math.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_memory.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_radixsort.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\Gimpact\gim_tri_collision.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btComputeGjkEpaPenetration.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btContinuousConvexCollision.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btConvexCast.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btConvexPenetrationDepthSolver.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btDiscreteCollisionDetectorInterface.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btGjkCollisionDescription.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btGjkConvexCast.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btGjkEpa2.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btGjkEpa3.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btGjkEpaPenetrationDepthSolver.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btGjkPairDetector.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btManifoldPoint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btMinkowskiPenetrationDepthSolver.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btMprPenetration.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btPersistentManifold.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btPointCollector.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btPolyhedralContactClipping.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btRaycastCallback.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btSimplexSolverInterface.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btSubSimplexConvexCast.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletCollision\NarrowPhaseCollision\btVoronoiSimplexSolver.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletSoftBody\btDefaultSoftBodySolver.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletSoftBody\btSoftBody.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletSoftBody\btSoftBodyConcaveCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletSoftBody\btSoftBodyData.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletSoftBody\btSoftBodyHelpers.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletSoftBody\btSoftBodyInternals.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletSoftBody\btSoftBodyRigidBodyCollisionConfiguration.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletSoftBody\btSoftBodySolvers.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletSoftBody\btSoftBodySolverVertexBuffer.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletSoftBody\btSoftRigidCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletSoftBody\btSoftRigidDynamicsWorld.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletSoftBody\btSoftSoftCollisionAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletSoftBody\btSparseSDF.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btAabbUtil2.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btAlignedAllocator.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btAlignedObjectArray.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btConvexHull.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btConvexHullComputer.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btCpuFeatureUtility.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btDefaultMotionState.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btGeometryUtil.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btGrahamScan2dConvexHull.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btHashMap.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btIDebugDraw.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btList.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btMatrix3x3.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btMatrixX.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btMinMax.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btMotionState.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btPolarDecomposition.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btPoolAllocator.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btQuadWord.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btQuaternion.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btQuickprof.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btRandom.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btScalar.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btSerializer.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btSpatialAlgebra.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btStackAlloc.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btTransform.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btTransformUtil.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\LinearMath\btVector3.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Character\btCharacterControllerInterface.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Character\btKinematicCharacterController.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btConeTwistConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btConstraintSolver.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btContactConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btContactSolverInfo.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btFixedConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btGearConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btGeneric6DofConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btGeneric6DofSpring2Constraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btGeneric6DofSpringConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btHinge2Constraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btHingeConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btJacobianEntry.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btNNCGConstraintSolver.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btPoint2PointConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btSequentialImpulseConstraintSolver.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btSliderConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btSolve2LinearConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btSolverBody.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btSolverConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btTypedConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\ConstraintSolver\btUniversalConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Dynamics\btActionInterface.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Dynamics\btDiscreteDynamicsWorld.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Dynamics\btDynamicsWorld.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Dynamics\btRigidBody.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Dynamics\btSimpleDynamicsWorld.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Featherstone\btMultiBody.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Featherstone\btMultiBodyConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Featherstone\btMultiBodyConstraintSolver.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Featherstone\btMultiBodyDynamicsWorld.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Featherstone\btMultiBodyJointFeedback.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Featherstone\btMultiBodyJointLimitConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Featherstone\btMultiBodyJointMotor.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Featherstone\btMultiBodyLink.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Featherstone\btMultiBodyLinkCollider.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Featherstone\btMultiBodyPoint2Point.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Featherstone\btMultiBodySolverConstraint.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\MLCPSolvers\btDantzigLCP.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\MLCPSolvers\btDantzigSolver.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\MLCPSolvers\btLemkeAlgorithm.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\MLCPSolvers\btLemkeSolver.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\MLCPSolvers\btMLCPSolver.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\MLCPSolvers\btMLCPSolverInterface.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\MLCPSolvers\btPATHSolver.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\MLCPSolvers\btSolveProjectedGaussSeidel.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Vehicle\btRaycastVehicle.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Vehicle\btVehicleRaycaster.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\include\BulletDynamics\Vehicle\btWheelInfo.h">
+      <Filter>3rd Party\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysBody3D.h">
+      <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
-      <Filter>Sources\Modules</Filter>
+      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleCamera3D.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleInput.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleRenderer3D.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleWindow.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="log.cpp">
-      <Filter>Sources\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Sources\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="glmath.cpp">
-      <Filter>Sources\Containers</Filter>
-    </ClCompile>
-    <ClCompile Include="Primitive.cpp">
-      <Filter>Sources\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Color.cpp">
-      <Filter>Sources\Containers</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Sources\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleSceneIntro.cpp">
-      <Filter>Sources\Modules\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="ModulePhysics3D.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysBody3D.cpp">
-      <Filter>Sources\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui.cpp">
-      <Filter>Sources\Tools\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_demo.cpp">
-      <Filter>Sources\Tools\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_draw.cpp">
-      <Filter>Sources\Tools\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_sdl.cpp">
-      <Filter>Sources\Tools\ImGui</Filter>
+      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleImGui.cpp">
-      <Filter>Sources\Modules</Filter>
+      <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\AABB.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+    <ClCompile Include="ModuleInput.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\BitOps.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+    <ClCompile Include="ModulePhysics3D.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\Callstack.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+    <ClCompile Include="ModuleRenderer3D.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\Capsule.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+    <ClCompile Include="ModuleSceneIntro.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\Circle.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Time\Clock.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\float2.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\float3.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\float3x3.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\float3x4.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\float4.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\float4d.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\float4x4.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\Frustum.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Algorithm\GJK.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\grisu3.c">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\grisu3_cpp.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Algorithm\Random\LCG.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\Line.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\LineSegment.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\MathFunc.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\MathLog.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\MathOps.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\OBB.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\PBVolume.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\Plane.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\Polygon.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\Polyhedron.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\Polynomial.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\Quat.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\Ray.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\Sphere.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\SSEMath.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\TransformOps.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\Triangle.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Geometry\TriangleMesh.cpp">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+    <ClCompile Include="ModuleWindow.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="DeviceId\DeviceId.cpp">
-      <Filter>Sources\Tools\DevideId</Filter>
+      <Filter>3rd Party\DevideId</Filter>
     </ClCompile>
-<<<<<<< HEAD
+    <ClCompile Include="MathGeoLib\Algorithm\GJK.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Algorithm\Random\LCG.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\AABB.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\Capsule.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\Circle.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\Frustum.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\Line.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\LineSegment.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\OBB.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\PBVolume.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\Plane.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\Polygon.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\Polyhedron.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\Ray.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\Sphere.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\Triangle.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Geometry\TriangleMesh.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\BitOps.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\Callstack.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\float2.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\float3.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\float3x3.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\float3x4.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\float4.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\float4d.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\float4x4.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\grisu3.c">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\grisu3_cpp.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\MathFunc.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\MathLog.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\MathOps.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\Polynomial.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\Quat.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\SSEMath.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Math\TransformOps.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="MathGeoLib\Time\Clock.cpp">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </ClCompile>
     <ClCompile Include="Parson\parson.c">
-      <Filter>Sources\Tools\JSON</Filter>
+      <Filter>3rd Party\Parson</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>3rd Party\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>3rd Party\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>3rd Party\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_sdl.cpp">
+      <Filter>3rd Party\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="glmath.cpp">
+      <Filter>Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Hardware.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
     <ClCompile Include="JSON.cpp">
-      <Filter>Sources\Tools\JSON</Filter>
-=======
-    <ClCompile Include="Hardware.cpp">
-      <Filter>Sources\Containers</Filter>
->>>>>>> bba7ae55ae4eb9eeca910d0c820a7a2a2abfe4a0
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="log.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitive.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysBody3D.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="MathGeoLib\Math\float2.inl">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </None>
     <None Include="MathGeoLib\Geometry\KDTree.inl">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
-    </None>
-    <None Include="MathGeoLib\Math\Matrix.inl">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+      <Filter>3rd Party\MathGeoLib\src</Filter>
     </None>
     <None Include="MathGeoLib\Geometry\QuadTree.inl">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+      <Filter>3rd Party\MathGeoLib\src</Filter>
     </None>
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_AVX.inl">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+      <Filter>3rd Party\MathGeoLib\src</Filter>
     </None>
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_CPP.inl">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+      <Filter>3rd Party\MathGeoLib\src</Filter>
     </None>
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_SSE.inl">
-      <Filter>Sources\Tools\MathGeoLib</Filter>
+      <Filter>3rd Party\MathGeoLib\src</Filter>
     </None>
-    <None Include="Parson\config.json" />
+    <None Include="MathGeoLib\Math\float2.inl">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </None>
+    <None Include="MathGeoLib\Math\Matrix.inl">
+      <Filter>3rd Party\MathGeoLib\src</Filter>
+    </None>
   </ItemGroup>
 </Project>
