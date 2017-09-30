@@ -51,6 +51,8 @@ update_status ModuleCamera3D::Update(float dt)
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 
+	App->performance.InitTimer(name); 
+
 	vec3 newPos(0,0,0);
 
 
@@ -112,6 +114,8 @@ update_status ModuleCamera3D::Update(float dt)
 
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
+
+	App->performance.SaveRunTimeData(name); 
 
 	return UPDATE_CONTINUE;
 }

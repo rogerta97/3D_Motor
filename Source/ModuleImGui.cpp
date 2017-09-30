@@ -35,6 +35,7 @@ update_status ModuleImGui::PreUpdate(float dt)
 
 update_status ModuleImGui::Update(float dt)
 {
+	App->performance.InitTimer(name); 
 	// Manage ImGui Keyboard input
 
 	ImGuiIO& io = ImGui::GetIO();
@@ -125,6 +126,7 @@ update_status ModuleImGui::Update(float dt)
 
 	// -------------------------------------------
  
+	App->performance.SaveRunTimeData(name); 
 	
 	return UPDATE_CONTINUE;
 }

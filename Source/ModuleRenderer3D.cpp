@@ -122,6 +122,7 @@ bool ModuleRenderer3D::Init()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
+	App->performance.InitTimer(name); 
 
 	glClearColor(0.f, 0.f, 0.f, 1.f);
 
@@ -137,13 +138,21 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
+	App->performance.PauseTimer(name); 
+
 	return UPDATE_CONTINUE;
 }
 
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {	
+
+	App->performance.ResumeTimer(name); 
+
 	SDL_GL_SwapWindow(App->window->window);
+
+	App->performance.SaveRunTimeData(name); 
+
 	return UPDATE_CONTINUE;
 }
 

@@ -114,6 +114,8 @@ bool ModulePhysics3D::Start()
 // ---------------------------------------------------------
 update_status ModulePhysics3D::PreUpdate(float dt)
 {
+	App->performance.InitTimer(name); 
+
 	world->stepSimulation(dt, 15);
 
 	int numManifolds = world->getDispatcher()->getNumManifolds();
@@ -147,12 +149,17 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 		}
 	}
 
+	App->performance.PauseTimer(name);
+
 	return UPDATE_CONTINUE;
 }
 
 // ---------------------------------------------------------
 update_status ModulePhysics3D::Update(float dt)
 {
+
+	App->performance.ResumeTimer(name); 
+
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
@@ -163,6 +170,8 @@ update_status ModulePhysics3D::Update(float dt)
 
 	GetCollisions(); 
 
+	App->performance.PauseTimer(name);
+
 	return UPDATE_CONTINUE;
 }
 
@@ -170,7 +179,11 @@ update_status ModulePhysics3D::Update(float dt)
 update_status ModulePhysics3D::PostUpdate(float dt)
 {
 
+	App->performance.ResumeTimer(name);
+
 	main_plane.Render(); 
+
+	App->performance.SaveRunTimeData(name); 
 
 	return UPDATE_CONTINUE;
 }

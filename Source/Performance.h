@@ -19,21 +19,24 @@ public:
 	bool Update();
 
 	bool SaveInitData(const char* module); 
+	bool SaveRunTimeData(const char* module); 
 
 	bool InitTimer(const char* module);
+	bool PauseTimer(const char* module); 
+	bool ResumeTimer(const char* module); 
 
 	~PerformanceWindow() {};
 
 private:
 
-	std::vector<int> audio_perf_buffer; 
-	std::vector<int> camera_perf_buffer;
-	std::vector<int> imgui_perf_buffer;
-	std::vector<int> input_perf_buffer;
-	std::vector<int> physics_perf_buffer;
-	std::vector<int> render_perf_buffer;
-	std::vector<int> scene_perf_buffer;
-	std::vector<int> window_perf_buffer;
+	std::vector<float> audio_perf_buffer; 
+	std::vector<float> camera_perf_buffer;
+	std::vector<float> imgui_perf_buffer;
+	std::vector<float> input_perf_buffer;
+	std::vector<float> physics_perf_buffer;
+	std::vector<float> render_perf_buffer;
+	std::vector<float> scene_perf_buffer;
+	std::vector<float> window_perf_buffer;
 
 	int audio_perf_init;
 	int camera_perf_init;
