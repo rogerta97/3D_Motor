@@ -65,6 +65,11 @@ update_status ModuleImGui::Update(float dt)
 			show_random_number = !show_random_number;
 		}
 
+		if (ImGui::MenuItem("Configuration"))
+		{
+			show_configuration = !show_configuration;
+		}
+
 		ImGui::Separator();
 
 		if (ImGui::MenuItem("Performance"))
@@ -161,7 +166,7 @@ void ModuleImGui::ClearConsole()
 
 void ModuleImGui::PrintConsole()
 {
-	ImGui::Begin("Console"); 
+	ImGui::Begin("Console", &show_console); 
 
 	for (int i = 0; i < console_buffer.size(); i++)
 	{
@@ -175,7 +180,7 @@ void ModuleImGui::PrintConsole()
 }
 void ModuleImGui::PrintRandomNumber()
 {
-	ImGui::Begin("Random Number Generator");
+	ImGui::Begin("Random Number Generator", &show_random_number);
 	ImGui::Text("Random Generator tool:");
 	ImGui::Text("-Random Integer between the 2 values:");
 	ImGui::DragInt("Minimum", &i_min, 1,0, 100);
@@ -198,7 +203,7 @@ void ModuleImGui::PrintRandomNumber()
 }
 void ModuleImGui::ShowAbout()
 {
-	ImGui::Begin("About");
+	ImGui::Begin("About", &show_about);
 
 	ImGui::TextWrapped("3D Engine");
 	ImGui::TextWrapped("We are two students from UPC, Barcelona. We are developing a 3D Open Engine for developers to make videogames. Providing some useful tools!");
@@ -218,7 +223,11 @@ void ModuleImGui::ShowAbout()
 
 void ModuleImGui::UpdateConfigPanel()
 {
-	ImGui::Begin("Configuration");
+
+	if (!show_configuration)
+		return;
+
+	ImGui::Begin("Configuration", &show_configuration);
 
 	App->PrintConfigData();
 

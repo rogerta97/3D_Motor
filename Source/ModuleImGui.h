@@ -36,6 +36,7 @@ private:
 	bool show_about = false; 
 	bool show_gui_demo = false; 
 	bool show_performance = false; 
+	bool show_configuration = true; 
 
 	// Console management -----------
 

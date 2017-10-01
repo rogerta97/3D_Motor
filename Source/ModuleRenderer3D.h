@@ -22,6 +22,8 @@ public:
 
 	char* GetGraphicsModel(const char* _module); 
 	const char* GetDriver();
+	void SetObjectsWireframe(bool state); 
+
 private: 
 	
 	bool depth_test_ch_b = true; 
@@ -29,13 +31,17 @@ private:
 	bool lighting_ch_b = true;
 	bool color_ch_b = true;
 	bool texture_ch_b = true;
+	bool wireframe_ch_b = false; 
+	bool fog_ch_b = false;
 
 public:
 
-	Light lights[MAX_LIGHTS];
+	Light lights[MAX_LIGHTS]; 
+
+	float fog_density; 
+
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
-	Sphere s1;
 };

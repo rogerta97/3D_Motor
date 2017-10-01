@@ -54,9 +54,6 @@ update_status ModuleCamera3D::Update(float dt)
 	App->performance.InitTimer(name); 
 
 	vec3 newPos(0,0,0);
-
-
-	LOG("%f", mov_speed);
 	
 	float temporal_speed = mov_speed;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)

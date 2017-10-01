@@ -1,5 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
+#include "Primitive.h"
 #include "ModuleRenderer3D.h"
 #include "OpenGL.h"
 
@@ -111,9 +112,6 @@ bool ModuleRenderer3D::Init()
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	s1.r = 4; 
-	s1.pos = vec(0, 0, 0); 
-
 	App->performance.SaveInitData(name); 
 	
 	return ret;
@@ -187,18 +185,123 @@ void ModuleRenderer3D::PrintConfigData()
 	{
 		ImGui::Text("Rendering options:"); ImGui::NewLine(); 
 
-		ImGui::Checkbox("DEPTH_TEST", &depth_test_ch_b);
-		ImGui::Checkbox("CULL_FACE", &cull_face_ch_b);
-		ImGui::Checkbox("LIGHTING", &lighting_ch_b);
-		ImGui::Checkbox("COLOR_MATERIAL", &color_ch_b);
-		ImGui::Checkbox("TEXTURE", &texture_ch_b);
-
-		if (cull_face_ch_b == false)
+		if (ImGui::TreeNode("Depth Testing"))
 		{
-			glDisable(GL_CULL_FACE);
-			LOG("keloke"); 
+			ImGui::Checkbox("DEPTH_TEST", &depth_test_ch_b);
+
+			ImGui::Separator();
+			ImGui::TreePop(); 
 		}
-		ImGui::Text("Driver: %s",this->GetDriver());
+
+		if (ImGui::TreeNode("Lighting"))
+		{
+			ImGui::Checkbox("LIGHTING", &lighting_ch_b);
+
+			if (lighting_ch_b)
+			{
+				ImGui::SliderFloat("Ambient R", &lights[0].ambient.r, 0.0f, 1.0f); 
+				ImGui::SliderFloat("Ambient G", &lights[0].ambient.g, 0.0f, 1.0f);
+				ImGui::SliderFloat("Ambient B", &lights[0].ambient.b, 0.0f, 1.0f);
+				ImGui::Separator();
+				ImGui::Separator();
+				ImGui::SliderFloat("Diffuse R", &lights[0].diffuse.r, 0.0f, 1.0f);
+				ImGui::SliderFloat("Diffuse G", &lights[0].diffuse.g, 0.0f, 1.0f);
+				ImGui::SliderFloat("Diffuse B", &lights[0].diffuse.b, 0.0f, 1.0f);
+
+				lights[0].Init();
+			}
+			
+			ImGui::Separator();
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Color Material"))
+		{
+			ImGui::Checkbox("COLOR_MATERIAL", &color_ch_b);
+
+			ImGui::Separator();
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Texture"))
+		{
+			ImGui::Checkbox("TEXTURE", &texture_ch_b);
+
+			ImGui::Separator();
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Wireframe"))
+		{
+			ImGui::Checkbox("WIREFRAME", &wireframe_ch_b);
+
+			ImGui::Separator();
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Cull Face"))
+		{
+			ImGui::Checkbox("CULL_FACE", &cull_face_ch_b);
+
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Fog"))
+		{
+			ImGui::Checkbox("FOG", &fog_ch_b);
+
+			if (fog_ch_b)
+			{
+				fog_density = 0.0f; 
+				ImGui::SliderFloat("Density", &fog_density, 0, 0.5f);
+			}
+
+			ImGui::TreePop();
+		}
+		
+
+		if (cull_face_ch_b == false) glDisable(GL_CULL_FACE);
+		else glEnable(GL_CULL_FACE);
+
+		if (depth_test_ch_b == false) glDisable(GL_DEPTH_TEST);
+		else glEnable(GL_DEPTH_TEST);
+
+		if (lighting_ch_b == false)
+		{
+			glDisable(GL_LIGHTING);		
+		}
+		else 
+			glEnable(GL_LIGHTING);
+
+		if (color_ch_b == false)
+		{
+			glDisable(GL_COLOR_MATERIAL);
+		}
+		else
+		{
+			glEnable(GL_COLOR_MATERIAL);
+		}
+
+		if (texture_ch_b == false) glDisable(GL_TEXTURE_2D);
+		else glEnable(GL_TEXTURE_2D);
+
+		if (wireframe_ch_b == false) SetObjectsWireframe(false); 
+		else SetObjectsWireframe(true);
+
+		if (fog_ch_b == false)
+		{
+			glDisable(GL_FOG);
+		}
+		else
+		{
+			glEnable(GL_FOG); 
+			glFogf(GL_FOG_DENSITY, fog_density); 
+		}
+
+		ImGui::Separator();
+	
+		ImGui::Text("Driver: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", this->GetDriver());
 
 	}
 }
@@ -218,4 +321,14 @@ char * ModuleRenderer3D::GetGraphicsModel(const char* _module)
 const char * ModuleRenderer3D::GetDriver()
 {
 	return SDL_GetCurrentVideoDriver();
+}
+
+void ModuleRenderer3D::SetObjectsWireframe(bool state)
+{
+
+	for (int i = 0; i < App->scene_intro->obj_list.size(); i++)
+	{
+		App->scene_intro->obj_list[i].wire = state;
+	}
+		
 }
