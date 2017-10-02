@@ -123,7 +123,7 @@ update_status ModuleInput::PreUpdate(float dt)
 		}
 	}
 
-	if(quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
+	if(quit == true || (keyboard[SDL_SCANCODE_ESCAPE] == KEY_DOWN && keyboard[SDL_SCANCODE_LSHIFT] == KEY_REPEAT))
 		return UPDATE_STOP;
 
 	App->performance.SaveRunTimeData(name); 

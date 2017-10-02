@@ -22,7 +22,7 @@ public:
 
 	char* GetGraphicsModel(const char* _module); 
 	const char* GetDriver();
-	void SetObjectsWireframe(bool state); 
+	//void SetObjectsWireframe(bool state); 
 
 private: 
 	
@@ -34,11 +34,13 @@ private:
 	bool wireframe_ch_b = false; 
 	bool fog_ch_b = false;
 
+	int light_editing_type;
+	float* light_color; 
+	float fog_density = 0.0f;
+
 public:
 
 	Light lights[MAX_LIGHTS]; 
-
-	float fog_density; 
 
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;

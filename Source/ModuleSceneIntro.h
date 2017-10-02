@@ -21,11 +21,11 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	//p2DynArray<p2Point<int>> GetCollisions(); 
 
-	std::vector<Primitive> obj_list; 
+	//std::vector<Primitive> obj_list; 
 
 private: 
 
-	PCube first_cube;
-	PSphere first_sphere; 
+	//PCube first_cube;
+	//PSphere first_sphere; 
 
 };

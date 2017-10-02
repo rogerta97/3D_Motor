@@ -135,16 +135,18 @@ void ModuleWindow::PrintConfigData()
 
 		ImGui::Text("Auto adjustments: "); 
 	
-		ImGui::Checkbox("Fullscreen", &fullscreen);
+		ImGui::Checkbox("Fullscreen", &fullscreen); ImGui::SameLine();
+		ImGui::Checkbox("Borderless", &borderless); 
 	
 		if (fullscreen)
-		{
 			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-		}
 		else
-		{
 			SDL_SetWindowFullscreen(window, 0);
-		}
+		
+		if (borderless)
+			SDL_SetWindowBordered(window, SDL_bool(false)); 
+		else
+			SDL_SetWindowBordered(window, SDL_bool(true));
 
 		// ------------------------------------------
 	}

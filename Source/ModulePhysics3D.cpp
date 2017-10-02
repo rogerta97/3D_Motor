@@ -74,39 +74,10 @@ bool ModulePhysics3D::Start()
 
 	//// Creating objects 
 
-	//main_plane = PPlane(0, 1, 0, 0);
-	//main_plane.axis = true;
+	main_plane = PPlane(0, 1, 0, 0);
+	main_plane.axis = true;
+	
 
-	//Sphere s1;
-	//s1.pos = vec(0.0f, 0.0f, 0.0f);
-	//s1.r = 5;
-
-	//Sphere s2;
-	//s2.pos = vec(0.0f, 0.0f, 0.0f);
-	//s2.r = 3;
-
-	//Sphere s3;
-	//s3.pos = vec(0.0f, 20.0f, 0.0f);
-	//s3.r = 2;
-
-	//Sphere s4;
-	//s4.pos = vec(0.0f, 10.0f, 0.0f);
-	//s4.r = 7;
-
-	//Sphere s5;
-	//s5.pos = vec(0.0f, 25.0f, 0.0f);
-	//s5.r = 7;
-
-	//Sphere s6;
-	//s6.pos = vec(0.0f, 0.0f,15.0f);
-	//s6.r = 2;
-
-	//spheres_list.push_back(s1);
-	//spheres_list.push_back(s2);
-	//spheres_list.push_back(s3);
-	//spheres_list.push_back(s4);
-	//spheres_list.push_back(s5);
-	//spheres_list.push_back(s6);
 
 	return true;
 }
@@ -170,6 +141,24 @@ update_status ModulePhysics3D::Update(float dt)
 
 	GetCollisions(); 
 
+	//Provisional code
+
+	std::list<PCube>::iterator it;
+
+	for (it = pcube_list.begin(); it != pcube_list.end(); it++)
+	{
+		(*it).Render();
+	}
+
+	std::list<PSphere>::iterator it2;
+
+	for (it2 = psphere_list.begin(); it2 != psphere_list.end(); it2++)
+	{
+		(*it2).Render();
+	}
+
+	// -----
+
 	App->performance.PauseTimer(name);
 
 	return UPDATE_CONTINUE;
@@ -232,6 +221,24 @@ bool ModulePhysics3D::CleanUp()
 	delete world;
 
 	return true;
+}
+
+void ModulePhysics3D::AddPCube(vec3 size, vec3 position, bool wireframe)
+{
+	PCube new_cube(size.x, size.y, size.z); 
+	new_cube.SetPos(position.x, position.y, position.z); 
+	new_cube.wire = wireframe; 
+
+	pcube_list.push_back(new_cube); 
+}
+
+void ModulePhysics3D::AddPSphere(float radium, vec3 position, bool wireframe)
+{
+	PSphere new_sphere(radium);
+	new_sphere.SetPos(position.x, position.y, position.z);
+	new_sphere.wire = wireframe;
+
+	psphere_list.push_back(new_sphere);
 }
 
 // ---------------------------------------------------------
@@ -435,6 +442,31 @@ void ModulePhysics3D::PrintConfigData()
 {
 	if (ImGui::CollapsingHeader(name))
 	{
+		if (ImGui::TreeNode("Object Creator"))
+		{
+			ImGui::Combo("Object Type", &object_type, "Cube\0Sphere\0", 2);
+
+			ImGui::Checkbox("Wireframe", &create_on_wire); 
+
+			if (ImGui::Button("Create!"))
+			{
+				switch (object_type)
+				{
+				case 0:
+					AddPCube(vec3(1, 1, 1), vec3(0, 0, 0), create_on_wire); 
+
+					break;
+
+				case 1:
+					AddPSphere(2, vec3(0, 0, 0), create_on_wire);
+					break;
+
+				}
+			}
+
+			ImGui::Separator();
+			ImGui::TreePop(); 
+		}
 
 	}
 }
