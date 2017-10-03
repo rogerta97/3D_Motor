@@ -34,8 +34,14 @@ private:
 	bool wireframe_ch_b = false; 
 	bool fog_ch_b = false;
 
-	int light_editing_type;
-	float* light_color; 
+	int light_editing_type = -1;
+
+	float ambient[4] = { 0.0f, 0.0f, 0.0f, 1.0 }; 
+	float diffuse[4] = { 0.0f, 0.0f, 0.0f, 1.0 };
+
+	float* curr_light_type = nullptr; 
+
+
 	float fog_density = 0.0f;
 
 public:

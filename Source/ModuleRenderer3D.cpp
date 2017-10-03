@@ -199,23 +199,27 @@ void ModuleRenderer3D::PrintConfigData()
 
 			if (lighting_ch_b)
 			{
-
 				ImGui::Combo("Light Type", &light_editing_type, "Ambient\0Diffuse\0", 2); 
 
 				switch (light_editing_type)
 				{
 				case 0:
-					ImGui::SliderFloat("R", &lights[0].ambient.r, 0.0f, 1.0f);
-					ImGui::SliderFloat("G", &lights[0].ambient.g, 0.0f, 1.0f);
-					ImGui::SliderFloat("B", &lights[0].ambient.b, 0.0f, 1.0f);
+					curr_light_type = ambient;
 					break;
 
 				case 1:
-					ImGui::SliderFloat("R", &lights[0].diffuse.r, 0.0f, 1.0f);
-					ImGui::SliderFloat("G", &lights[0].diffuse.g, 0.0f, 1.0f);
-					ImGui::SliderFloat("B", &lights[0].diffuse.b, 0.0f, 1.0f);
+					curr_light_type = diffuse;
 					break;
 				}
+
+				if (light_editing_type != -1) 
+				{
+					ImGui::ColorPicker4("Ambient color##4", curr_light_type, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_RGB | ImGuiColorEditFlags_AlphaPreview, NULL);
+
+					LOG("%d", curr_light_type[0]);
+				}
+
+				
 
 				lights[0].Init();
 			}

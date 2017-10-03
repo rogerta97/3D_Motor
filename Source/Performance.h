@@ -16,7 +16,7 @@ public:
 
 	PerformanceWindow() {};
 
-	bool Update();
+	bool Update(bool &show);
 
 	bool SaveInitData(const char* module); 
 	bool SaveRunTimeData(const char* module); 
