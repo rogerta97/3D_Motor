@@ -20,6 +20,8 @@
 #include <string>
 #include <list>
 
+#define FPS_LOG_SIZE 100
+
 class Application
 {
 public:
@@ -36,16 +38,23 @@ public:
 private:
 
 	Timer			ms_timer;
-	Timer			global_timer; 
-	Timer			frame_ms_timer; 
+	Timer			fps_timer;
+	
 
 	float			dt = 0.0f;
 	std::list<Module*> list_modules;
 
 	// Framerate management --------------
 
-	int	last_sec_frame_counter = 0;
-	int global_frames = 0; 
+	int		last_sec_frame_counter = 0;
+	int		global_frames = 0; 
+	int		capped_ms = 1000 / 60.0f;
+	int		fps_counter = 0;
+	int		last_frame_ms = 0;
+	int		last_fps = 0;
+
+	Uint64 frame_counter = 0;//we will need a large uint to store the larg value
+
 	
 	std::vector<float>	framerate_buffer; 
 	std::vector<float>	miliseconds_buffer;
@@ -75,10 +84,13 @@ public:
 	bool CleanUp();
 	const char* GetAppName();
 	const char* GetOrgName();
-	const char* GetMaxFPS();
-
+	void CapFPS(float fps);
+	uint GetCapFPS()const;
 	void OpenWebPage(const char* url); 
-
+	//Finish Update functions
+	void DelayToCap()const;
+	void UpdateBuffers(float fps_buf, float ms_buf);
+	void FitHistogram();
 	//add get & set config functions
 	Module* GetModule(int index);
 
@@ -94,7 +106,7 @@ private:
 
 	std::string		   engine_name = "-";
 	std::string		   organization = "-";
-	std::string		   max_fps = "0";
+	float				max_fps = 0.0f;
 
 	json_file*			config = nullptr;
 };
