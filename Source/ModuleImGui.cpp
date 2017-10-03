@@ -46,7 +46,7 @@ update_status ModuleImGui::Update(float dt)
 
 	if (ImGui::BeginMenu("Files"))
 	{
-		if (ImGui::MenuItem("Exit"))
+		if (ImGui::MenuItem("Exit", "Alt + Esc"))
 		{
 			return UPDATE_STOP;
 		}

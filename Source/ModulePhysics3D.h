@@ -29,6 +29,12 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
+	// Provisional implementation: 
+
+	void AddPCube(vec3 size, vec3 position, bool wire);
+	void AddPSphere(float radium, vec3 position, bool wire);
+
+
 	//PhysBody3D* AddBody(const Sphere& sphere, float mass = 1.0f);
 	//PhysBody3D* AddBody(const Cube& cube, float mass = 1.0f);
 	//PhysBody3D* AddBody(const Cylinder& cylinder, float mass = 1.0f);
@@ -65,6 +71,16 @@ private:
 	std::vector<AABB> cube_list; 
 
 	PPlane main_plane; 
+
+	std::list<PCube> pcube_list; 
+	std::list<PSphere> psphere_list; 
+
+	int object_type = -1;
+	bool create_on_wire = false;
+
+	vec3 curr_input_position; 
+	vec3 curr_input_size; 
+	int  curr_input_radium = -1;
 };
 
 class DebugDrawer : public btIDebugDraw

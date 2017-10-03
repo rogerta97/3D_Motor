@@ -36,6 +36,7 @@ public:
 	int height = 0; 
 
 	bool fullscreen = false; 
+	bool borderless = false; 
 	
 };
 

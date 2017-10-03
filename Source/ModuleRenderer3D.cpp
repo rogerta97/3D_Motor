@@ -199,14 +199,23 @@ void ModuleRenderer3D::PrintConfigData()
 
 			if (lighting_ch_b)
 			{
-				ImGui::SliderFloat("Ambient R", &lights[0].ambient.r, 0.0f, 1.0f); 
-				ImGui::SliderFloat("Ambient G", &lights[0].ambient.g, 0.0f, 1.0f);
-				ImGui::SliderFloat("Ambient B", &lights[0].ambient.b, 0.0f, 1.0f);
-				ImGui::Separator();
-				ImGui::Separator();
-				ImGui::SliderFloat("Diffuse R", &lights[0].diffuse.r, 0.0f, 1.0f);
-				ImGui::SliderFloat("Diffuse G", &lights[0].diffuse.g, 0.0f, 1.0f);
-				ImGui::SliderFloat("Diffuse B", &lights[0].diffuse.b, 0.0f, 1.0f);
+
+				ImGui::Combo("Light Type", &light_editing_type, "Ambient\0Diffuse\0", 2); 
+
+				switch (light_editing_type)
+				{
+				case 0:
+					ImGui::SliderFloat("R", &lights[0].ambient.r, 0.0f, 1.0f);
+					ImGui::SliderFloat("G", &lights[0].ambient.g, 0.0f, 1.0f);
+					ImGui::SliderFloat("B", &lights[0].ambient.b, 0.0f, 1.0f);
+					break;
+
+				case 1:
+					ImGui::SliderFloat("R", &lights[0].diffuse.r, 0.0f, 1.0f);
+					ImGui::SliderFloat("G", &lights[0].diffuse.g, 0.0f, 1.0f);
+					ImGui::SliderFloat("B", &lights[0].diffuse.b, 0.0f, 1.0f);
+					break;
+				}
 
 				lights[0].Init();
 			}
@@ -252,7 +261,6 @@ void ModuleRenderer3D::PrintConfigData()
 
 			if (fog_ch_b)
 			{
-				fog_density = 0.0f; 
 				ImGui::SliderFloat("Density", &fog_density, 0, 0.5f);
 			}
 
@@ -285,8 +293,8 @@ void ModuleRenderer3D::PrintConfigData()
 		if (texture_ch_b == false) glDisable(GL_TEXTURE_2D);
 		else glEnable(GL_TEXTURE_2D);
 
-		if (wireframe_ch_b == false) SetObjectsWireframe(false); 
-		else SetObjectsWireframe(true);
+		if (wireframe_ch_b == false) //SetObjectsWireframe(false); 
+		//else //SetObjectsWireframe(true);
 
 		if (fog_ch_b == false)
 		{
@@ -323,12 +331,12 @@ const char * ModuleRenderer3D::GetDriver()
 	return SDL_GetCurrentVideoDriver();
 }
 
-void ModuleRenderer3D::SetObjectsWireframe(bool state)
-{
-
-	for (int i = 0; i < App->scene_intro->obj_list.size(); i++)
-	{
-		App->scene_intro->obj_list[i].wire = state;
-	}
-		
-}
+//void ModuleRenderer3D::SetObjectsWireframe(bool state)
+//{
+//
+//	for (int i = 0; i < App->scene_intro->obj_list.size(); i++)
+//	{
+//		App->scene_intro->obj_list[i].wire = state;
+//	}
+//		
+//}
