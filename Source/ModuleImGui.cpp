@@ -46,7 +46,7 @@ update_status ModuleImGui::Update(float dt)
 
 	if (ImGui::BeginMenu("Files"))
 	{
-		if (ImGui::MenuItem("Exit", "Alt + Esc"))
+		if (ImGui::MenuItem("Exit", "Shift + Esc"))
 		{
 			return UPDATE_STOP;
 		}
@@ -119,7 +119,7 @@ update_status ModuleImGui::Update(float dt)
 	if (show_console) PrintConsole();
 	if (show_random_number)PrintRandomNumber();
 	if (show_about) ShowAbout();
-	if (show_performance) App->performance.Update(); 
+	if (show_performance) App->performance.Update(show_performance);
 
 	ImGui::EndMainMenuBar(); 
 
@@ -138,6 +138,8 @@ update_status ModuleImGui::Update(float dt)
 
 update_status ModuleImGui::PostUpdate(float dt)
 {
+
+	App->renderer3D->lights[0].on = false; 
 
 	UpdateConfigPanel();
 

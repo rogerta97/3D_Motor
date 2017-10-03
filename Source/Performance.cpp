@@ -2,9 +2,9 @@
 
 #define HISTOGRAM_FR_LENGHT 25
 
-bool PerformanceWindow::Update()
+bool PerformanceWindow::Update(bool& show_window)
 {
-	ImGui::Begin("Performance");
+	ImGui::Begin("Performance", &show_window);
 
 	ImGui::Text("START-UP PERFORMANCE:"); ImGui::NewLine(); 
 
@@ -24,11 +24,11 @@ bool PerformanceWindow::Update()
 
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "ONLY MODULES THAT UPDATE ITS PROPERTIES WILL BE SHOWN HERE"); ImGui::NewLine();
 
-	ImGui::PlotHistogram("", &camera_perf_buffer[0], camera_perf_buffer.size(), 0, "Camera", 0.0f, 5.0f, ImVec2(300,100));
-	ImGui::PlotHistogram("", &imgui_perf_buffer[0], imgui_perf_buffer.size(), 0, "ImGui", 0.0f, 5.0f, ImVec2(300, 100));
-	ImGui::PlotHistogram("", &input_perf_buffer[0], input_perf_buffer.size(), 0, "Input", 0.0f, 5.0f, ImVec2(300, 100));
-	ImGui::PlotHistogram("", &physics_perf_buffer[0], physics_perf_buffer.size(), 0, "Physics", 0.0f, 5.0f, ImVec2(300, 100));
-	ImGui::PlotHistogram("", &render_perf_buffer[0], render_perf_buffer.size(), 0, "Render", 0.0f, 5.0f, ImVec2(300, 100));
+	ImGui::PlotLines("", &camera_perf_buffer[0], camera_perf_buffer.size(), 0, "Camera", 0.0f, 5.0f, ImVec2(300,100));
+	ImGui::PlotLines("", &imgui_perf_buffer[0], imgui_perf_buffer.size(), 0, "ImGui", 0.0f, 5.0f, ImVec2(300, 100));
+	ImGui::PlotLines("", &input_perf_buffer[0], input_perf_buffer.size(), 0, "Input", 0.0f, 5.0f, ImVec2(300, 100));
+	ImGui::PlotLines("", &physics_perf_buffer[0], physics_perf_buffer.size(), 0, "Physics", 0.0f, 5.0f, ImVec2(300, 100));
+	ImGui::PlotLines("", &render_perf_buffer[0], render_perf_buffer.size(), 0, "Render", 0.0f, 5.0f, ImVec2(300, 100));
 	
 	ImGui::End(); 
 

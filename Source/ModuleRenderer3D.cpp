@@ -202,25 +202,39 @@ void ModuleRenderer3D::PrintConfigData()
 
 			if (lighting_ch_b)
 			{
+				GLenum light_type; 
 
 				ImGui::Combo("Light Type", &light_editing_type, "Ambient\0Diffuse\0", 2); 
 
 				switch (light_editing_type)
 				{
 				case 0:
-					ImGui::SliderFloat("R", &lights[0].ambient.r, 0.0f, 1.0f);
-					ImGui::SliderFloat("G", &lights[0].ambient.g, 0.0f, 1.0f);
-					ImGui::SliderFloat("B", &lights[0].ambient.b, 0.0f, 1.0f);
+					curr_light_data = tmp_color;
+					light_type = GL_AMBIENT; 
+					curr_light_num = GL_LIGHT0; 
+
 					break;
 
 				case 1:
-					ImGui::SliderFloat("R", &lights[0].diffuse.r, 0.0f, 1.0f);
-					ImGui::SliderFloat("G", &lights[0].diffuse.g, 0.0f, 1.0f);
-					ImGui::SliderFloat("B", &lights[0].diffuse.b, 0.0f, 1.0f);
+					curr_light_data = tmp_color;
+					light_type = GL_DIFFUSE;
+					curr_light_num = GL_LIGHT0;
 					break;
 				}
 
-				lights[0].Init();
+				if (light_editing_type != -1) 
+				{
+					ImGui::ColorPicker4("Ambient color##4", curr_light_data, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_RGB | ImGuiColorEditFlags_AlphaPreview, NULL);
+				}
+
+				if (ImGui::Button("Set Color!"))
+				{
+
+					GLfloat light_data[] = { curr_light_data[0], curr_light_data[1], curr_light_data[2], curr_light_data[3] };
+					glLightfv(curr_light_num, light_type, light_data);
+					glEnable(curr_light_num); 
+				}
+		
 			}
 			
 			ImGui::Separator();

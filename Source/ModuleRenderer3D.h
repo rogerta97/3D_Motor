@@ -31,11 +31,17 @@ private:
 	bool lighting_ch_b = true;
 	bool color_ch_b = true;
 	bool texture_ch_b = true;
+	bool smooth_ch_b = false; 
 	bool wireframe_ch_b = false; 
 	bool fog_ch_b = false;
 
-	int light_editing_type;
-	float* light_color; 
+	int light_editing_type = -1;
+
+	float tmp_color[4] = { 0.0f, 0.0f, 0.0f, 1.0 }; 
+
+	float* curr_light_data = nullptr; 
+	int curr_light_num = -1; 
+
 	float fog_density = 0.0f;
 
 public:
