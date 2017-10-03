@@ -41,6 +41,7 @@ private:
 public:
 
 	Light lights[MAX_LIGHTS]; 
+	bool vsync_on = false;
 
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;

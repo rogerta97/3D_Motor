@@ -37,6 +37,9 @@
     <Filter Include="3rd Party\Bullet">
       <UniqueIdentifier>{d68ee3bd-8de5-40d1-9dc0-36c88fe2b3e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3rd Party\mmgr">
+      <UniqueIdentifier>{54f4cdcc-6311-427c-8fba-c657711cd46c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -990,6 +993,12 @@
     <ClInclude Include="Performance.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="mmgr\mmgr.h">
+      <Filter>3rd Party\mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\nommgr.h">
+      <Filter>3rd Party\mmgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1177,6 +1186,9 @@
     </ClCompile>
     <ClCompile Include="Performance.cpp">
       <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>3rd Party\mmgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

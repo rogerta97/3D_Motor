@@ -1,8 +1,11 @@
 #include "Application.h"
+#include "mmgr\mmgr.h"
+
 #include <stdio.h>
 
 #define HISTOGRAM_FR_LENGHT 25
 #define HISTOGRAM_MS_LENGHT 100
+#define MAX_MEMORY_LOGGED	50
 Application::Application()
 {
 	//fps settings
@@ -108,6 +111,11 @@ void Application::FinishUpdate()
 	//Update the buffers to get the new frame information
 	framerate_buffer.push_back(last_fps);
 	FitHistogram();
+
+	memory.push_back(m_getMemoryStatistics().totalActualMemory);
+
+	if (memory.size() > MAX_MEMORY_LOGGED)
+		memory.erase(memory.begin());
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -140,7 +148,6 @@ update_status Application::Update()
 		{
 			ret = (*item)->PostUpdate(dt);
 		}
-
 	}
 	miliseconds_buffer.push_back(ms_timer.Read());
 
@@ -163,18 +170,38 @@ void Application::PrintConfigData()
 			App->CapFPS(max_fps);
 	
 		ImGui::Separator(); 
+		if (ImGui::Checkbox("Vsync", &App->renderer3D->vsync_on))
+		{
+			if (SDL_GL_SetSwapInterval(App->renderer3D->vsync_on) < 0)
+				LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
+		}
 		ImGui::Text("Framerate AVG: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.1f", (global_frames / (ms_timer.Read() / 1000.0f)));
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.1f", (global_frames / (ms_timer.Read())));
 
 		char title[25]; 
 		sprintf_s(title, 25, "Framerate %.1f", framerate_buffer[framerate_buffer.size() - 1]);
-		ImGui::PlotHistogram("##Framerate", &framerate_buffer[0], framerate_buffer.size(), 0, title, 0.0f, 100.0f, ImVec2(300, 100));
+		ImGui::PlotHistogram("##Framerate", &framerate_buffer[0], framerate_buffer.size(), 0, title, 0.0f, 150.0f, ImVec2(300, 100));
 
-		
 		sprintf_s(title, 25, "Miliseconds %.1f", miliseconds_buffer[miliseconds_buffer.size() - 1]);
 		ImGui::PlotHistogram("##Frame miliseconds", &miliseconds_buffer[0], miliseconds_buffer.size(), 0, title, 0.0f, 50.0f, ImVec2(300, 100));
+		//Memory Application Info
+		sMStats stats = m_getMemoryStatistics();
 
+		sprintf_s(title, 25, "%.1f", memory[memory.size() - 1]);
+		ImGui::PlotHistogram("Memory", &memory[0], memory.size(), 0, title, 0.0f, (float)stats.peakReportedMemory * 1.7f, ImVec2(300, 100));
+		
+		ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
+		ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
+		ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
+		ImGui::Text("Peak Actual Mem: %u", stats.peakActualMemory);
+		ImGui::Text("Accumulated Reported Mem: %u", stats.accumulatedReportedMemory);
+		ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
+		ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
+		ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
+		ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
+
+		//Hardware
 		if (ImGui::TreeNode("Hardware"))
 		{
 			SDL_version version; 
@@ -277,7 +304,8 @@ void Application::LoadConfig()
 	{
 		engine_name = config->GetString("app.engine_name", "No title");
 		organization = config->GetString("app.organization", "No org");
-		CapFPS(config->GetNumber("app.max_fps", 60.0f));
+		max_fps = config->GetNumber("app.max_fps", 60.0f);
+		CapFPS(max_fps);
 
 		
 		for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)

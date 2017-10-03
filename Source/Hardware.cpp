@@ -4,7 +4,6 @@ Hardware::Hardware()
 {
 	GetHardwareData(); 
 }
-
 bool Hardware::GetHardwareData()
 {
 	uint64_t tot_vm, curr_vm, av_vm, res_vm; 

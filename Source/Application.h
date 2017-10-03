@@ -21,6 +21,7 @@
 #include <list>
 
 #define FPS_LOG_SIZE 100
+#define MEM_LOG_SIZE 100
 
 class Application
 {
@@ -58,6 +59,7 @@ private:
 	
 	std::vector<float>	framerate_buffer; 
 	std::vector<float>	miliseconds_buffer;
+	std::vector<float> memory;
 
 	int framerate_placer = 0; 
 	int framerate_avg = 0; 
@@ -89,7 +91,6 @@ public:
 	void OpenWebPage(const char* url); 
 	//Finish Update functions
 	void DelayToCap()const;
-	void UpdateBuffers(float fps_buf, float ms_buf);
 	void FitHistogram();
 	//add get & set config functions
 	Module* GetModule(int index);
