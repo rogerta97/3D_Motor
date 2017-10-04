@@ -179,8 +179,8 @@ void Application::PrintConfigData()
 
 		}
 		ImGui::Text("Framerate AVG: "); ImGui::SameLine();
-		int debug = global_timer.Read() / 1000;
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.1f", (((float)global_frames / debug)));
+		int time = global_timer.Read() / 1000;
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.1f", (((float)global_frames / time)));
 
 		char title[25]; 
 		sprintf_s(title, 25, "Framerate %.1f", framerate_buffer[framerate_buffer.size() - 1]);
@@ -191,18 +191,11 @@ void Application::PrintConfigData()
 		//Memory Application Info
 		sMStats stats = m_getMemoryStatistics();
 
-		sprintf_s(title, 25, "%.1f", memory[memory.size() - 1]);
-		ImGui::PlotHistogram("Memory", &memory[0], memory.size(), 0, title, 0.0f, (float)stats.peakReportedMemory * 1.7f, ImVec2(300, 100));
+		sprintf_s(title, 25, "Memory %.1f", memory[memory.size() - 1]);
+		ImGui::PlotLines("##Memory", &memory[0], memory.size(), 0, title, 0.0f, (float)stats.peakReportedMemory * 1.7f, ImVec2(300, 100));
 		
-		ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
-		ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
-		ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
-		ImGui::Text("Peak Actual Mem: %u", stats.peakActualMemory);
-		ImGui::Text("Accumulated Reported Mem: %u", stats.accumulatedReportedMemory);
-		ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
-		ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
-		ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
-		ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
+	
+		
 
 		//Hardware
 		if (ImGui::TreeNode("Hardware"))
@@ -242,6 +235,8 @@ void Application::PrintConfigData()
 			ImGui::Text("GPU Model: "); ImGui::SameLine(); 
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", renderer3D->GetGraphicsModel("model"));
 
+			ImGui::Separator(); 
+
 			ImGui::Text("Total VRAM: "); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.2f", hardware.info.total_video_mem);
 
@@ -253,6 +248,35 @@ void Application::PrintConfigData()
 
 			ImGui::Text("Reserved VRAM: "); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.2f", hardware.info.reserved_video_mem);
+
+			ImGui::Separator(); 
+
+			ImGui::Text("Total Reported Mem:"); ImGui::SameLine(); 
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", stats.totalReportedMemory);
+
+			ImGui::Text("Total Actual Mem:"); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", stats.totalActualMemory); 
+
+			ImGui::Text("Peak Reported Mem:"); ImGui::SameLine();  
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", stats.peakReportedMemory); 
+
+			ImGui::Text("Peak Actual Mem: "); ImGui::SameLine();  
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", stats.peakActualMemory); 
+
+			ImGui::Text("Accumulated Reported Mem: "); ImGui::SameLine(); 
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", stats.accumulatedReportedMemory); 
+
+			ImGui::Text("Accumulated Actual Mem:"); ImGui::SameLine();  
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", stats.accumulatedActualMemory); 
+
+			ImGui::Text("Accumulated Alloc Unit Count:"); ImGui::SameLine();  
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", stats.accumulatedAllocUnitCount); 
+
+			ImGui::Text("Total Alloc Unit Count:"); ImGui::SameLine(); 
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", stats.totalAllocUnitCount); 
+
+			ImGui::Text("Peak Alloc Unit Count:"); ImGui::SameLine(); 
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", stats.peakAllocUnitCount);
 
 			ImGui::TreePop(); 
 		}		
