@@ -80,6 +80,8 @@ bool Application::Init()
 		}
 	}
 
+	global_timer.Start(); 
+
 	return ret;
 }
 
@@ -177,7 +179,8 @@ void Application::PrintConfigData()
 
 		}
 		ImGui::Text("Framerate AVG: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.1f", (global_frames / (ms_timer.Read())));
+		int debug = global_timer.Read() / 1000;
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.1f", (((float)global_frames / debug)));
 
 		char title[25]; 
 		sprintf_s(title, 25, "Framerate %.1f", framerate_buffer[framerate_buffer.size() - 1]);

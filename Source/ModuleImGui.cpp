@@ -138,7 +138,6 @@ update_status ModuleImGui::Update(float dt)
 
 update_status ModuleImGui::PostUpdate(float dt)
 {
-
 	App->renderer3D->lights[0].on = false; 
 
 	UpdateConfigPanel();

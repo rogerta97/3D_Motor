@@ -39,9 +39,9 @@ public:
 private:
 
 	Timer			ms_timer;
+	Timer			global_timer; 
 	Timer			fps_timer;
 	
-
 	float			dt = 0.0f;
 	std::list<Module*> list_modules;
 
