@@ -141,21 +141,31 @@ bool ModuleInput::CleanUp()
 
 void ModuleInput::PrintConfigData()
 {
-	
+	ImGuiIO& io = ImGui::GetIO();
+
 	if (ImGui::CollapsingHeader(name))
 	{
 		
 		ImGui::Text("Mouse Position:");
-		ImGui::Text("X: %d", App->input->mouse_x);		
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "X: %d", App->input->mouse_x);
+
 		
-		ImGui::Text("Y: %d", App->input->mouse_y);
+		
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Y: %d", App->input->mouse_y);
 		ImGui::Text("Mouse Motion:");
-		ImGui::Text("X: %d", App->input->mouse_x_motion);
-		
-		ImGui::Text("Y: %d", App->input->mouse_y_motion);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "X: %d", App->input->mouse_x_motion);
+
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Y: %d", App->input->mouse_y_motion);
 
 		ImGui::Text("Mouse Wheel:");
-		ImGui::Text("State: %d", App->input->mouse_wheel);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "State: %d", App->input->mouse_wheel);
+		
+		ImGui::Text("Keys down:");      for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (io.KeysDownDuration[i] >= 0.0f) { ImGui::SameLine(); ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d (%.02f secs)", i, io.KeysDownDuration[i]); }
+		ImGui::Text("Keys pressed:");   for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (ImGui::IsKeyPressed(i)) { ImGui::SameLine(); ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", i); }
+		ImGui::Text("Keys release:");   for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (ImGui::IsKeyReleased(i)) { ImGui::SameLine(); ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", i); }
+		ImGui::Text("Keys mods: %s%s%s%s", io.KeyCtrl ? "CTRL " : "", io.KeyShift ? "SHIFT " : "", io.KeyAlt ? "ALT " : "", io.KeySuper ? "SUPER " : "");
+
+
 	}
 	
 }
