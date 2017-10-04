@@ -194,9 +194,6 @@ void Application::PrintConfigData()
 		sprintf_s(title, 25, "Memory %.1f", memory[memory.size() - 1]);
 		ImGui::PlotLines("##Memory", &memory[0], memory.size(), 0, title, 0.0f, (float)stats.peakReportedMemory * 1.7f, ImVec2(300, 100));
 		
-	
-		
-
 		//Hardware
 		if (ImGui::TreeNode("Hardware"))
 		{
