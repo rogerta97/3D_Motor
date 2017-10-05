@@ -29,6 +29,9 @@ bool ModuleSceneIntro::Start()
 	bool ret = true;
 
 	srand(time(NULL));
+	
+
+
 
 	App->performance.SaveInitData(name); 
 
@@ -47,6 +50,7 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	
+
 	return UPDATE_CONTINUE;
 }
 

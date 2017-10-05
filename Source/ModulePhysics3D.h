@@ -81,6 +81,8 @@ private:
 	vec3 curr_input_position; 
 	vec3 curr_input_size; 
 	int  curr_input_radium = -1;
+
+	uint my_id;
 };
 
 class DebugDrawer : public btIDebugDraw

@@ -1,8 +1,11 @@
 #include "Globals.h"
 #include "Application.h"
+#include "OpenGL.h"
 #include "ModulePhysics3D.h"
 #include "PhysBody3D.h"
 #include "Primitive.h"
+
+#define NUM_VERTICES 36
 
 #ifdef _DEBUG
 	#pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
@@ -76,9 +79,69 @@ bool ModulePhysics3D::Start()
 
 	main_plane = PPlane(0, 1, 0, 0);
 	main_plane.axis = true;
+
+	 // Create cosas 
+
+	my_id = 0;
+	glGenBuffers(1, (GLuint*)&my_id);
+
+	glBindBuffer(GL_ARRAY_BUFFER, my_id);
+
+	float3 origin(10.0f, 10.0f, 10.0f);
+
+	float vertices[NUM_VERTICES * 3] =
+	{
+		origin.x + 1.0f, origin.y, origin.z,
+		origin.x, origin.y, origin.z,
+		origin.x, origin.y + 1, origin.z,
+
+		origin.x, origin.y + 1, origin.z,
+		origin.x + 1, origin.y + 1, origin.z,
+		origin.x + 1, origin.y, origin.z,
+
+		origin.x + 1, origin.y + 1, origin.z,
+		origin.x + 1, origin.y + 1, origin.z + 1,
+		origin.x + 1, origin.y, origin.z,
+
+		origin.x + 1, origin.y, origin.z,
+		origin.x + 1, origin.y + 1, origin.z + 1,
+		origin.x + 1, origin.y, origin.z + 1,
+
+		origin.x + 1, origin.y, origin.z + 1,
+		origin.x + 1, origin.y + 1, origin.z + 1,
+		origin.x, origin.y + 1, origin.z + 1,
+
+		origin.x + 1, origin.y, origin.z + 1,
+		origin.x, origin.y + 1, origin.z + 1,
+		origin.x, origin.y, origin.z + 1,
+
+		origin.x, origin.y + 1, origin.z + 1,
+		origin.x, origin.y, origin.z,
+		origin.x, origin.y, origin.z + 1,
+
+		origin.x, origin.y + 1, origin.z + 1,
+		origin.x, origin.y + 1, origin.z,
+		origin.x, origin.y, origin.z,
+
+		origin.x, origin.y + 1, origin.z,
+		origin.x, origin.y + 1, origin.z + 1,
+		origin.x + 1, origin.y + 1, origin.z + 1,
+
+		origin.x + 1, origin.y + 1, origin.z + 1,
+		origin.x + 1, origin.y + 1, origin.z,
+		origin.x, origin.y + 1, origin.z,
+
+		origin.x + 1, origin.y, origin.z + 1,
+		origin.x, origin.y, origin.z + 1,
+		origin.x, origin.y, origin.z,
+
+		origin.x + 1, origin.y, origin.z + 1,
+		origin.x, origin.y, origin.z,
+		origin.x + 1, origin.y, origin.z,
+	};
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * NUM_VERTICES * 3, vertices, GL_STATIC_DRAW);
 	
-
-
 	return true;
 }
 
@@ -158,6 +221,74 @@ update_status ModulePhysics3D::Update(float dt)
 	}
 
 	// -----
+
+	glLineWidth(2.0f);
+
+	glBegin(GL_TRIANGLES);
+
+	float3 origin(1.0f, 1.0f, 1.0f);
+
+	glVertex3f(origin.x + 1.0f, origin.y, origin.z);
+	glVertex3f(origin.x, origin.y, origin.z);
+	glVertex3f(origin.x, origin.y + 1, origin.z);
+
+	glVertex3f(origin.x, origin.y + 1, origin.z);
+	glVertex3f(origin.x + 1, origin.y + 1, origin.z);
+	glVertex3f(origin.x + 1, origin.y, origin.z);
+
+	glVertex3f(origin.x + 1, origin.y + 1, origin.z);
+	glVertex3f(origin.x + 1, origin.y + 1, origin.z + 1);
+	glVertex3f(origin.x + 1, origin.y, origin.z);
+
+	glVertex3f(origin.x + 1, origin.y, origin.z);
+	glVertex3f(origin.x + 1, origin.y + 1, origin.z + 1);
+	glVertex3f(origin.x + 1, origin.y, origin.z + 1);
+
+	glVertex3f(origin.x + 1, origin.y, origin.z + 1);
+	glVertex3f(origin.x + 1, origin.y + 1, origin.z + 1);
+	glVertex3f(origin.x, origin.y + 1, origin.z + 1);
+
+	glVertex3f(origin.x + 1, origin.y, origin.z + 1);
+	glVertex3f(origin.x, origin.y + 1, origin.z + 1);
+	glVertex3f(origin.x, origin.y, origin.z + 1);
+
+	glVertex3f(origin.x, origin.y + 1, origin.z + 1);
+	glVertex3f(origin.x, origin.y, origin.z);
+	glVertex3f(origin.x, origin.y, origin.z + 1);
+
+	glVertex3f(origin.x, origin.y + 1, origin.z + 1);
+	glVertex3f(origin.x, origin.y + 1, origin.z);
+	glVertex3f(origin.x, origin.y, origin.z);
+
+	glVertex3f(origin.x, origin.y + 1, origin.z);
+	glVertex3f(origin.x, origin.y + 1, origin.z + 1);
+	glVertex3f(origin.x + 1, origin.y + 1, origin.z + 1);
+
+	glVertex3f(origin.x + 1, origin.y + 1, origin.z + 1);
+	glVertex3f(origin.x + 1, origin.y + 1, origin.z);
+	glVertex3f(origin.x, origin.y + 1, origin.z);
+
+	glVertex3f(origin.x + 1, origin.y, origin.z + 1);
+	glVertex3f(origin.x, origin.y, origin.z + 1);
+	glVertex3f(origin.x, origin.y, origin.z);
+
+	glVertex3f(origin.x + 1, origin.y, origin.z + 1);
+	glVertex3f(origin.x, origin.y, origin.z);
+	glVertex3f(origin.x + 1, origin.y, origin.z);
+
+	glEnd();
+
+
+	//glEnableClientState(GL_VERTEX_ARRAY); 
+	//glBindBuffer(GL_VERTEX_ARRAY, my_id);
+	//glVertexPointer(3, GL_FLOAT, 0, NULL); 
+	//
+	//glDrawArrays(GL_TRIANGLES, 0, 36 * 3); 
+	//glBindBuffer(GL_VERTEX_ARRAY, 0); 
+	//glDisableClientState(GL_VERTEX_ARRAY);
+
+
+	//glLineWidth(1.0f);
 
 	App->performance.PauseTimer(name);
 
