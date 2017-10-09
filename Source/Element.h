@@ -60,5 +60,16 @@ protected:
 	std::vector<GLushort> indices;
 };
 
+class GLCylinder : public Gizmo
+{
+public:
+	GLCylinder();
+	~GLCylinder();
+
+	void Start();
+	void Draw();
+
+};
+
 #endif // !_ELEMENT_H_
 

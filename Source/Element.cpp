@@ -206,5 +206,21 @@ void GLSphere::Draw()
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 
+}
 
+GLCylinder::GLCylinder()
+{
+}
+
+GLCylinder::~GLCylinder()
+{
+}
+
+void GLCylinder::Start()
+{
+
+}
+
+void GLCylinder::Draw()
+{
 }
