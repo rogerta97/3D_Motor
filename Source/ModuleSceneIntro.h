@@ -2,10 +2,12 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Primitive.h"
+#include "Element.h"
 
 
 struct PhysBody3D;
 struct PhysMotor3D;
+class Cube1; 
 
 class ModuleSceneIntro : public Module
 {
@@ -22,6 +24,10 @@ public:
 	//p2DynArray<p2Point<int>> GetCollisions(); 
 
 	//std::vector<Primitive> obj_list; 
+
+	Cube1 my_cube; 
+	Cube2 my_cube2;
+	GLSphere sphere; 
 
 private: 
 

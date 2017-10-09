@@ -261,6 +261,12 @@ void ModuleRenderer3D::PrintConfigData()
 		{
 			ImGui::Checkbox("WIREFRAME", &wireframe_ch_b);
 
+			if (wireframe_ch_b)
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
+
+			else
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 			ImGui::Separator();
 			ImGui::TreePop();
 		}
@@ -347,6 +353,23 @@ const char * ModuleRenderer3D::GetDriver()
 {
 	return SDL_GetCurrentVideoDriver();
 }
+
+
+
+//
+//void ModuleRenderer3D::PrintBufferDataE(int* indices)
+//{
+//
+//	glEnableClientState(GL_VERTEX_ARRAY);
+//	glBindBuffer(GL_ARRAY_BUFFER, buffer_id);
+//	glVertexPointer(3, GL_FLOAT, 0, NULL);
+//
+//	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, indices);
+//
+//	glDisableClientState(GL_VERTEX_ARRAY);
+//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+//
+//}
 
 //void ModuleRenderer3D::SetObjectsWireframe(bool state)
 //{

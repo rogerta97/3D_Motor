@@ -304,7 +304,7 @@ void Application::AddModule(Module* mod)
 
 Module* Application::GetModule(int index)
 {
-	if (index <= 7)
+	if (index <= 8)
 	{
 		int i = 0;
 

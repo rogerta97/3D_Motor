@@ -24,6 +24,7 @@ public:
 	const char* GetDriver();
 	//void SetObjectsWireframe(bool state); 
 
+
 private: 
 	
 	bool depth_test_ch_b = true; 
@@ -43,6 +44,9 @@ private:
 	int curr_light_num = -1; 
 
 	float fog_density = 0.0f;
+
+	uint array_buffer = 0; 
+	uint element_buffer = 0;
 
 public:
 

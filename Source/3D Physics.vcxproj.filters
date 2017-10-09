@@ -999,6 +999,9 @@
     <ClInclude Include="mmgr\nommgr.h">
       <Filter>3rd Party\mmgr</Filter>
     </ClInclude>
+    <ClInclude Include="Element.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1189,6 +1192,9 @@
     </ClCompile>
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>3rd Party\mmgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Element.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

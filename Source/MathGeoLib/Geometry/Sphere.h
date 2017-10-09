@@ -22,6 +22,7 @@
 
 #ifdef MATH_URHO3D_INTEROP
 #include <Urho3D/Math/Sphere.h>
+#include "..\..\Element.h"
 #endif
 
 MATH_BEGIN_NAMESPACE
@@ -41,6 +42,7 @@ public:
 		default constructor. Remember to assign to them before use.
 		@see pos, r. */
 	Sphere() {}
+
 
 	/// Constructs a sphere with a given position and radius.
 	/** @param radius A value > 0 constructs a sphere with positive volume. A value of <= 0 is valid, and constructs a degenerate sphere.
