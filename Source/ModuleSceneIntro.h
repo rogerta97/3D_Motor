@@ -28,6 +28,7 @@ public:
 	Cube1 my_cube; 
 	Cube2 my_cube2;
 	GLSphere sphere; 
+	GLCylinder cylinder; 
 
 private: 
 

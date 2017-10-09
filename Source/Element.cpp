@@ -216,11 +216,42 @@ GLCylinder::~GLCylinder()
 {
 }
 
-void GLCylinder::Start()
+void GLCylinder::Start(float r, int sides, int height)
 {
+	vertices.resize(((360 / (360 / sides)) * 2) + 4);    //sides  (vertex per circumference) * 2 (circumferences) + 2 (circumference center)
+	std::vector<float3>::iterator v = vertices.begin();
 
+	*v++ = {0 ,  height*0.5f, 0 };     //vertices[0] is top center vertex
+	*v++ = {0 ,  -height*0.5f, 0 };    //vertices[1] is top bottom vertex
+
+	for (int a = 360; a >= 0; a -= (360 / sides))
+	{
+		float b = a * M_PI / 180; // degrees to radians
+		*v++ = { r * cos(b),height * 0.5f, r * sin(b) };    //vertices[2] is first vertex in top circumference
+		*v++ = { r * cos(b),-height*0.5f,  r * sin(b) };    //vertices[3] is first vertex in bottom circumference
+	}
+
+	indices.resize(vertices.size() * 6 - 4);
+	std::vector<GLushort>::iterator i = indices.begin();
+	for (int a = 2; (a + 2) < vertices.size(); a++)
+	{
+		*i++ = a + ((a + 1) % 2 ? 2 : 0); *i++ = a % 2; *i++ = a + (a % 2 ? 2 : 0);	// top and bottom circ
+		*i++ = a + ((a + 1) % 2 ? 0 : 2); *i++ = a + 1; *i++ = a + (a % 2 ? 0 : 2);   // side
+	}
+
+	glGenBuffers(1, (GLuint*)&buffer_num);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer_num);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*vertices.size()*3, &vertices[0], GL_STATIC_DRAW);
 }
 
 void GLCylinder::Draw()
 {
+
+	glEnableClientState(GL_VERTEX_ARRAY);  
+	glBindBuffer(GL_ARRAY_BUFFER, buffer_num); 
+	glVertexPointer(3, GL_FLOAT, 0, NULL); 
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, 0); 
+	
 }

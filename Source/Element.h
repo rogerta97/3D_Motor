@@ -66,8 +66,12 @@ public:
 	GLCylinder();
 	~GLCylinder();
 
-	void Start();
+	void Start(float r, int sides, int lenght);
 	void Draw();
+
+protected:
+	std::vector<float3> vertices;
+	std::vector<GLushort> indices;
 
 };
 

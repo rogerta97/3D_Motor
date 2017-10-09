@@ -63,6 +63,7 @@ bool ModuleSceneIntro::Start()
 	my_cube.Start(); 
 	my_cube2.Start(); 
 	sphere.Start(5, 9, 9); 
+	cylinder.Start(2, 10, 3); 
 
 	App->performance.SaveInitData(name); 
 
@@ -83,8 +84,9 @@ update_status ModuleSceneIntro::Update(float dt)
 	
 	//App->renderer3D->DrawCubeDirectMode(); 
 	my_cube.Draw(); 
-	my_cube2.Draw(); 
-	sphere.Draw(); 
+	//my_cube2.Draw(); 
+	//sphere.Draw(); 
+	cylinder.Draw();
 
 	return UPDATE_CONTINUE;
 }
