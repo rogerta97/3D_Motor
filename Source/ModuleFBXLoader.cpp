@@ -22,7 +22,7 @@ bool ModuleFBXLoader::Start()
 update_status ModuleFBXLoader::Update(float dt)
 {
 
-	return update_status();
+	return update_status::UPDATE_CONTINUE;
 }
 
 bool ModuleFBXLoader::CleanUp()
@@ -36,6 +36,9 @@ bool ModuleFBXLoader::CleanUp()
 bool ModuleFBXLoader::LoadFBX(const char* full_path)
 {
 	bool ret = true; 
+
+	if (curr_mesh.num_vertices != 0)
+		curr_mesh.Clean(); 
 
 	const aiScene* scene = aiImportFile(full_path, aiProcessPreset_TargetRealtime_MaxQuality);
 
@@ -105,4 +108,13 @@ void ModuleFBXLoader::DrawElement()
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void Mesh::Clean()
+{
+	//delete(vertices);
+	//vertices = nullptr; 
+
+	//delete(indices); 
+//	indices = nullptr;
 }

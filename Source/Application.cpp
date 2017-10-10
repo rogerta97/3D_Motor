@@ -6,6 +6,8 @@
 #define HISTOGRAM_FR_LENGHT 25
 #define HISTOGRAM_MS_LENGHT 100
 #define MAX_MEMORY_LOGGED	50
+#define NUM_MODULES 9
+
 Application::Application()
 {
 	//fps settings
@@ -23,7 +25,8 @@ Application::Application()
 	camera = new ModuleCamera3D(true);
 	physics = new ModulePhysics3D(true);
 	imgui = new ModuleImGui(true);
-	fbx_loader = new ModuleFBXLoader(true); 
+	fbx_loader = new ModuleFBXLoader(true);
+
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -33,6 +36,7 @@ Application::Application()
 	AddModule(json);
 	AddModule(window);
 	AddModule(camera);
+	AddModule(fbx_loader); 
 	AddModule(input);
 	AddModule(audio);
 	AddModule(physics);
@@ -305,7 +309,7 @@ void Application::AddModule(Module* mod)
 
 Module* Application::GetModule(int index)
 {
-	if (index <= 8)
+	if (index <= NUM_MODULES)
 	{
 		int i = 0;
 

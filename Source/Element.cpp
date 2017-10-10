@@ -246,12 +246,10 @@ void GLCylinder::Start(float r, int sides, int height)
 
 void GLCylinder::Draw()
 {
-
 	glEnableClientState(GL_VERTEX_ARRAY);  
 	glBindBuffer(GL_ARRAY_BUFFER, buffer_num); 
 	glVertexPointer(3, GL_FLOAT, 0, NULL); 
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, 0); 
-	
 }

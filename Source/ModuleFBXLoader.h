@@ -17,13 +17,15 @@
 struct Mesh
 {
 	float* vertices;
-	int num_vertices;
+	int num_vertices = 0;
 
 	uint* indices;
-	int num_indices;
+	int num_indices = 0;
 
 	int vertex_buffer; 
 	int indices_buffer; 
+
+	void Clean();
 };
 
 class ModuleFBXLoader : public Module

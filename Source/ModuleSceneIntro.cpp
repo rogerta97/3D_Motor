@@ -30,40 +30,8 @@ bool ModuleSceneIntro::Start()
 	bool ret = true;
 
 	srand(time(NULL));
-	
-	//App->renderer3D->GenVertexArrayBuffer("array"); 
 
-	// DrawArrays
-
-	//App->renderer3D->FillBufferData(vertices, 36); 
-
-	//App->renderer3D->GenVertexArrayBuffer("element"); 
-
-	////DrawElements
-	//origin = float3(5.0f, 5.0f, 5.0f);
-
-	//float vertices2[8*3] =
-	//{
-	//	origin.x, origin.y + 1, origin.z,			
-	//	origin.x + 1, origin.y + 1, origin.z,		
-	//	origin.x, origin.y, origin.z,
-
-	//	origin.x + 1, origin.y, origin.z,
-	//	origin.x + 1, origin.y + 1, origin.z + 1,
-	//	origin.x + 1, origin.y, origin.z + 1,
-
-	//	origin.x, origin.y + 1, origin.z + 1,
-	//	origin.x, origin.y, origin.z + 1,
-	//};
-
-	//App->renderer3D->FillBufferData(vertices2, 24); 
-
-	App->fbx_loader->LoadFBX("warrior.FBX"); 
-
-	my_cube.Start(); 
-	my_cube2.Start(); 
-	sphere.Start(5, 9, 9); 
-	cylinder.Start(2, 10, 3); 
+	App->fbx_loader->LoadFBX("saladfingers.FBX"); 
 
 	App->performance.SaveInitData(name); 
 
@@ -82,12 +50,6 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	
-	//App->renderer3D->DrawCubeDirectMode(); 
-	my_cube.Draw(); 
-	//my_cube2.Draw(); 
-	//sphere.Draw(); 
-	cylinder.Draw();
-
 	App->fbx_loader->DrawElement();
 
 	return UPDATE_CONTINUE;
