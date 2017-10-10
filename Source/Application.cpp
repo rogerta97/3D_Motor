@@ -23,6 +23,7 @@ Application::Application()
 	camera = new ModuleCamera3D(true);
 	physics = new ModulePhysics3D(true);
 	imgui = new ModuleImGui(true);
+	fbx_loader = new ModuleFBXLoader(true); 
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order

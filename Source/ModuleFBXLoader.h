@@ -9,6 +9,7 @@
 #include "Module.h"
 #include <list>
 #include "Globals.h"
+#include "OpenGL.h"
 
 #include "mmgr/mmgr.h"
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
@@ -29,7 +30,7 @@ class ModuleFBXLoader : public Module
 {
 public: 
 
-	ModuleFBXLoader(); 
+	ModuleFBXLoader(bool enable_state = true); 
 	~ModuleFBXLoader(); 
 		
 	bool Start();
@@ -37,6 +38,7 @@ public:
 	bool CleanUp(); 
 
 	bool LoadFBX(const char* path);
+	void DrawElement(); 
 	
 private:
 

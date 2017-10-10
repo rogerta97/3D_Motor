@@ -58,7 +58,7 @@ bool ModuleSceneIntro::Start()
 
 	//App->renderer3D->FillBufferData(vertices2, 24); 
 
-
+	App->fbx_loader->LoadFBX("warrior.FBX"); 
 
 	my_cube.Start(); 
 	my_cube2.Start(); 
@@ -87,6 +87,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	//my_cube2.Draw(); 
 	//sphere.Draw(); 
 	cylinder.Draw();
+
+	App->fbx_loader->DrawElement();
 
 	return UPDATE_CONTINUE;
 }

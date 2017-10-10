@@ -12,6 +12,7 @@
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
 #include "ModuleImGui.h"
+#include "ModuleFBXLoader.h"
 #include "MathGeoLib\MathGeoLib.h"
 #include "DeviceId\DeviceId.h"
 #include "JSON.h"
@@ -35,6 +36,7 @@ public:
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
 	ModuleImGui* imgui; 
+	ModuleFBXLoader* fbx_loader; 
 
 private:
 
