@@ -1,5 +1,7 @@
 #include "Element.h"
 #include "OpenGL.h"
+#include "Application.h"
+#include "ModuleRenderer3D.h"
 #include "MathGeoLib\MathGeoLib.h"
 #include <cmath>
 
@@ -124,14 +126,20 @@ void Cube2::Start()
 		10.f,0.f,0.f
 	};
 
+
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*8*3, vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	App->renderer3D->tex_loader.LoadTestImage(); 
+
+	App->renderer3D->tex_loader.LoadTextureBuffer(&tex_buffer_id);
 
 }
 
 void Cube2::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_2D);
 
 	glBindBuffer(GL_ARRAY_BUFFER, buffer_num);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
@@ -145,6 +153,8 @@ void Cube2::Draw()
 		4,7,6, 6,5,4 };
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, indices); 
+
+	glDisableClientState(GL_TEXTURE_2D);
 	glDisableClientState(GL_VERTEX_ARRAY); 
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0); 

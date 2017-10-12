@@ -276,6 +276,14 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="DeviceId\DeviceId.h" />
     <ClInclude Include="DeviceId\dxgi1_4.h" />
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\devil_cpp_wrapper.hpp" />
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\devil_internal_exports.h" />
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\il.h" />
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\ilu.h" />
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\ilut.h" />
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\ilut_config.h" />
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\ilu_region.h" />
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\il_wrap.h" />
     <ClInclude Include="Element.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
@@ -359,6 +367,7 @@
     <ClInclude Include="ModulePhysics3D.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="ModuleSceneIntro.h" />
+    <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="OpenGL.h" />
     <ClInclude Include="Parson\parson.h" />
@@ -430,6 +439,7 @@
     <ClCompile Include="ModulePhysics3D.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleSceneIntro.cpp" />
+    <ClCompile Include="TextureLoader.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="Performance.cpp" />

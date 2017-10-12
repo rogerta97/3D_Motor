@@ -112,6 +112,8 @@ bool ModuleRenderer3D::Init()
 		glEnable(GL_TEXTURE_2D); 
 	}
 
+	tex_loader.Start();
+
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 

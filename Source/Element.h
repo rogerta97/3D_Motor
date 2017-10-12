@@ -20,6 +20,7 @@ public:
 protected: 
 
 	uint buffer_num = 0; 
+	uint tex_buffer_id = 0; 
 
 };
 
@@ -55,6 +56,7 @@ public:
 	void Draw(); 
 
 protected:
+
 	std::vector<GLfloat> vertices;
 	std::vector<GLfloat> normals;
 	std::vector<GLushort> indices;

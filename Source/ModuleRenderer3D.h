@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
+#include "TextureLoader.h"
 #include "Light.h"
 
 #define MAX_LIGHTS 8
@@ -56,5 +57,7 @@ public:
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+
+	TextureLoader tex_loader;
 
 };

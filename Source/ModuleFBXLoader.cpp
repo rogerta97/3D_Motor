@@ -11,7 +11,6 @@ ModuleFBXLoader::~ModuleFBXLoader()
 
 bool ModuleFBXLoader::Start()
 {
-
 	struct aiLogStream stream;
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);

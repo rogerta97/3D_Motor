@@ -43,6 +43,12 @@
     <Filter Include="3rd Party\Assimp">
       <UniqueIdentifier>{91576e88-6234-443f-aba4-1c79d3bd0be3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3rd Party\DevIL">
+      <UniqueIdentifier>{8e3f1c7c-f4a7-499a-b0f7-753fce22ec6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Loaders">
+      <UniqueIdentifier>{9b0aa04d-c422-417b-951c-b788003f674e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -1119,6 +1125,33 @@
     <ClInclude Include="ModuleFBXLoader.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\devil_cpp_wrapper.hpp">
+      <Filter>3rd Party\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\devil_internal_exports.h">
+      <Filter>3rd Party\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\il.h">
+      <Filter>3rd Party\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\il_wrap.h">
+      <Filter>3rd Party\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\ilu.h">
+      <Filter>3rd Party\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\ilu_region.h">
+      <Filter>3rd Party\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\ilut.h">
+      <Filter>3rd Party\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="DevIL_Windows_SDK\include\IL\ilut_config.h">
+      <Filter>3rd Party\DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureLoader.h">
+      <Filter>Tools\Loaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1315,6 +1348,9 @@
     </ClCompile>
     <ClCompile Include="ModuleFBXLoader.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureLoader.cpp">
+      <Filter>Tools\Loaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
