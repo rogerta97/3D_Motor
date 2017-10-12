@@ -131,7 +131,6 @@ void Cube2::Start()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	App->renderer3D->tex_loader.LoadTestImage(); 
-
 	App->renderer3D->tex_loader.LoadTextureBuffer(&tex_buffer_id);
 
 }
@@ -139,7 +138,7 @@ void Cube2::Start()
 void Cube2::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_2D);
+	glEnableClientState(GL_TEXTURE_2D); 
 
 	glBindBuffer(GL_ARRAY_BUFFER, buffer_num);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
@@ -153,11 +152,13 @@ void Cube2::Draw()
 		4,7,6, 6,5,4 };
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, indices); 
+	glBindBuffer(GL_TEXTURE_2D, tex_buffer_id);
 
-	glDisableClientState(GL_TEXTURE_2D);
 	glDisableClientState(GL_VERTEX_ARRAY); 
+	glDisableClientState(GL_TEXTURE_2D);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0); 
+	glBindBuffer(GL_TEXTURE_2D, 0);
 	
 }
 

@@ -32,6 +32,7 @@ bool ModuleSceneIntro::Start()
 	srand(time(NULL));
 
 	App->fbx_loader->LoadFBX("saladfingers.FBX"); 
+	my_cube2.Start(); 
 
 	App->performance.SaveInitData(name); 
 
@@ -51,6 +52,9 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	
 	App->fbx_loader->DrawElement();
+
+	my_cube2.Draw();
+
 
 	return UPDATE_CONTINUE;
 }
