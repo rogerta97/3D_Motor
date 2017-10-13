@@ -230,8 +230,8 @@ void ModuleImGui::PrintProperties()
 {
 	//if any gizmo has been created
 	Gizmo* curr_GO = nullptr;// = App->fbx_loader->; // App->set the dragged gizmo
-	ImGui::SetNextWindowPos(ImVec2((float)properties_panel_x, (float)properties_panel_y), ImGuiSetCond_Always);
-	ImGui::SetNextWindowSize(ImVec2((float)properties_panel_w, (float)properties_panel_h), ImGuiSetCond_Always);
+	//ImGui::SetNextWindowPos(ImVec2((float)properties_panel_x, (float)properties_panel_y), ImGuiSetCond_Always);
+	//ImGui::SetNextWindowSize(ImVec2((float)properties_panel_w, (float)properties_panel_h), ImGuiSetCond_Always);
 	ImGui::Begin("Properties", &show_properties);
 	
 	if (curr_GO != nullptr)
