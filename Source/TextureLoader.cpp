@@ -11,6 +11,7 @@ TextureLoader::~TextureLoader()
 
 bool TextureLoader::Start()
 {
+
 	return true;
 }
 
@@ -36,14 +37,6 @@ void TextureLoader::LoadTextureBuffer(GLuint* texture_id)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	glTexCoord2f(0.0, 0.0); 
-
-	glTexCoord2f(0.0, 1.0); 
-
-	glTexCoord2f(1.0, 1.0); 
-
-	glTexCoord2f(1.0, 0.0); 
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, test_image);

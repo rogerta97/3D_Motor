@@ -17,12 +17,11 @@ public:
 	virtual void Start();
 	virtual void Draw(); 
 
-	uint GetBufferNum(); 
+public: 
 
-protected: 
-
-	uint buffer_num = 0; 
-	uint tex_buffer_id = 0; 
+	uint vertices_id = 0; 
+	uint textures_id = 0; 
+	uint indices_id = 0; 
 
 };
 
@@ -76,6 +75,28 @@ public:
 protected:
 	std::vector<float3> vertices;
 	std::vector<GLushort> indices;
+
+};
+
+class GLGizmo : public Gizmo
+{
+public:
+	GLGizmo();
+	~GLGizmo();
+
+	void Start(float r, int sides, int lenght);
+	void Draw();
+
+public:
+
+	float* vertices;
+	int num_vertices = 0;
+
+	uint* indices;
+	int num_indices = 0;
+
+	float* textures; 
+	int num_textures = 0; 
 
 };
 

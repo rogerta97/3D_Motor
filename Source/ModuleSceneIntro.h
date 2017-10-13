@@ -1,10 +1,8 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "Primitive.h"
-#include "Gizmo.h"
 
-
+class Gizmo; 
 struct PhysBody3D;
 struct PhysMotor3D;
 class Cube1; 
@@ -21,6 +19,7 @@ public:
 	bool CleanUp();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
+
 	//p2DynArray<p2Point<int>> GetCollisions(); 
 
 	std::vector<Gizmo*> obj_list; 

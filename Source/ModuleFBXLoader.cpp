@@ -1,20 +1,18 @@
 #include "ModuleFBXLoader.h"
 
-
 ModuleFBXLoader::ModuleFBXLoader(bool enable_state)
 {
 }
 
 ModuleFBXLoader::~ModuleFBXLoader()
 {
+	struct aiLogStream stream;
+	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
+	aiAttachLogStream(&stream);
 }
 
 bool ModuleFBXLoader::Start()
 {
-	struct aiLogStream stream;
-	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
-	aiAttachLogStream(&stream);
-
 	return true;
 }
 
@@ -32,88 +30,123 @@ bool ModuleFBXLoader::CleanUp()
 	return true;
 }
 
-bool ModuleFBXLoader::LoadFBX(const char* full_path)
+void ModuleFBXLoader::LoadFBX(const char* full_path)
 {
-	bool ret = true; 
 
-	if (curr_mesh.num_vertices != 0)
-		curr_mesh.Clean(); 
+	bool ret = true; 
 
 	const aiScene* scene = aiImportFile(full_path, aiProcessPreset_TargetRealtime_MaxQuality);
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
-		for (int i = 0; i < scene->mNumMeshes; i++)
+		for (int i = 0; i < scene->mNumMeshes; i++) 
 		{
-			aiMesh* new_mesh = scene->mMeshes[i];
+			//Vertices
+			aiMesh* m = scene->mMeshes[i];
 
-			curr_mesh.num_vertices = new_mesh->mNumVertices;
-			curr_mesh.vertices = new float[curr_mesh.num_vertices * 3];
-			memcpy(curr_mesh.vertices, new_mesh->mVertices, sizeof(float) * curr_mesh.num_vertices * 3);
-			LOG("New mesh with %d vertices", curr_mesh.num_vertices);
+			GLGizmo* new_mesh = new GLGizmo();
 
-			glGenBuffers(1, (GLuint*)&curr_mesh.vertex_buffer); 
-			glBindBuffer(GL_ARRAY_BUFFER, curr_mesh.vertex_buffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*curr_mesh.num_vertices*3, curr_mesh.vertices, GL_STATIC_DRAW); 
+			new_mesh->num_vertices = m->mNumVertices;
+			new_mesh->vertices = new float[new_mesh->num_vertices * 3];
+			memcpy(new_mesh->vertices, m->mVertices, sizeof(float) * new_mesh->num_vertices * 3);
 
-			if (new_mesh->HasFaces())
-			{
-				curr_mesh.num_indices = new_mesh->mNumFaces * 3;
-				curr_mesh.indices = new uint[curr_mesh.num_indices]; // assume each face is a triangle
+			LOG("New mesh with %d vertices", new_mesh->num_vertices);
+			glGenBuffers(1, (GLuint*) &new_mesh->vertices_id);
+			glBindBuffer(GL_ARRAY_BUFFER, new_mesh->vertices_id);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * new_mesh->num_vertices * 3, new_mesh->vertices, GL_STATIC_DRAW);
 
-				for (uint i = 0; i < new_mesh->mNumFaces; ++i)
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			//Indices
+
+			if (m->HasFaces()) {
+				new_mesh->num_indices = m->mNumFaces * 3;
+				new_mesh->indices = new uint[new_mesh->num_indices];
+
+				for (uint i = 0; i < m->mNumFaces; ++i)
 				{
-					if (new_mesh->mFaces[i].mNumIndices != 3)
-					{
+					if (m->mFaces[i].mNumIndices != 3) {
 						LOG("WARNING, geometry face with != 3 indices!");
 					}
-						
 					else
-						memcpy(&curr_mesh.indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+						memcpy(&new_mesh->indices[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
 				}
 
-				aiReleaseImport(scene);
 			}
 
-			glGenBuffers(1, (GLuint*)&curr_mesh.indices_buffer);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, curr_mesh.indices_buffer);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*curr_mesh.num_indices, curr_mesh.indices, GL_STATIC_DRAW);
+			glGenBuffers(1, (GLuint*) &new_mesh->indices_id);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, new_mesh->indices_id);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_indices, new_mesh->indices, GL_STATIC_DRAW);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+			if (m->HasTextureCoords(0)) // assume mesh has one texture coords
+			{
+				new_mesh->num_textures = m->mNumVertices;
+				new_mesh->textures = new float[new_mesh->num_textures * 3];
+				memcpy(new_mesh->textures, m->mTextureCoords[0], sizeof(float)*new_mesh->num_textures * 3);
+
+				glGenBuffers(1, (GLuint*) &new_mesh->textures_id);
+				glBindBuffer(GL_ARRAY_BUFFER, (GLuint)new_mesh->textures_id);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * new_mesh->num_textures * 3, new_mesh->textures, GL_STATIC_DRAW);
+			}
+			else
+			{
+				LOG("No Texture Coords found");
+			}
+
+			meshes.push_back(new_mesh); 
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
+
+		aiReleaseImport(scene);
+	
+		
 	}
+	if (scene != nullptr && scene->HasMaterials())
+	{
+		aiMaterial* mat = scene->mMaterials[0]; //just one material is supported now
+		aiString path;
+		mat->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+		LOG("Mesh material path is: %s. Start importing it...", path.C_Str());
+
+		
+	}
+
 	else
 	{
 		LOG("Error loading scene %s", full_path);
-		ret = false; 
 	}
 		
+}
 
-	return ret; 
+std::list<GLGizmo*>& ModuleFBXLoader::GetList()
+{
+	return meshes; 
 }
 
 void ModuleFBXLoader::DrawElement()
 {
-	glEnableClientState(GL_VERTEX_ARRAY); 
+	//glEnableClientState(GL_VERTEX_ARRAY); 
 
-	glBindBuffer(GL_ARRAY_BUFFER, curr_mesh.vertex_buffer); 
+	//glBindBuffer(GL_ARRAY_BUFFER, curr_mesh.vertex_buffer); 
 
-	glVertexPointer(3, GL_FLOAT, 0, NULL); 
+	//glVertexPointer(3, GL_FLOAT, 0, NULL); 
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, curr_mesh.indices_buffer);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, curr_mesh.indices_buffer);
 
-	glDrawElements(GL_TRIANGLES, curr_mesh.num_indices, GL_UNSIGNED_INT, NULL); 
+	//glDrawElements(GL_TRIANGLES, curr_mesh.num_indices, GL_UNSIGNED_INT, NULL); 
 
-	glDisableClientState(GL_VERTEX_ARRAY);
+	//glDisableClientState(GL_VERTEX_ARRAY);
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void Mesh::Clean()
-{
-	//delete(vertices);
-	//vertices = nullptr; 
-
-	//delete(indices); 
-//	indices = nullptr;
-}
+//void Mesh::Clean()
+//{
+//	//delete(vertices);
+//	//vertices = nullptr; 
+//
+//	//delete(indices); 
+////	indices = nullptr;
+//}

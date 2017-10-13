@@ -358,7 +358,7 @@ void ModulePhysics3D::PrintConfigData()
 						
 					if (!App->scene_intro->obj_list.empty())
 					{
-						LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->GetBufferNum());
+						LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->vertices_id);
 						delete(App->scene_intro->obj_list[0]);
 						App->scene_intro->obj_list.clear();
 					}
@@ -394,7 +394,7 @@ void ModulePhysics3D::PrintConfigData()
 
 					if (!App->scene_intro->obj_list.empty())
 					{
-						LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->GetBufferNum());
+						LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->vertices_id);
 						delete(App->scene_intro->obj_list[0]);
 						App->scene_intro->obj_list.clear();
 					}
@@ -430,7 +430,7 @@ void ModulePhysics3D::PrintConfigData()
 						
 					if (!App->scene_intro->obj_list.empty())
 					{
-						LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->GetBufferNum());
+						LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->vertices_id);
 						delete(App->scene_intro->obj_list[0]);
 						App->scene_intro->obj_list.clear();
 					}
