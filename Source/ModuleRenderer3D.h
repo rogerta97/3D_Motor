@@ -21,8 +21,8 @@ public:
 	void OnResize(int width, int height);
 	void PrintConfigData();
 
-	char* GetGraphicsModel(const char* _module); 
-	const char* GetDriver();
+	char* GetGraphicsModel(const char* _module) const; 
+	const char* GetDriver() const;
 	//void SetObjectsWireframe(bool state); 
 
 

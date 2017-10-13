@@ -95,7 +95,7 @@ public:
 	void DelayToCap()const;
 	void FitHistogram();
 	//add get & set config functions
-	Module* GetModule(int index);
+	Module* GetModule(int index) ;
 
 	//For performance
 
