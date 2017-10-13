@@ -339,7 +339,7 @@ void ModuleRenderer3D::PrintConfigData()
 	}
 }
 
-char * ModuleRenderer3D::GetGraphicsModel(const char* _module)
+char * ModuleRenderer3D::GetGraphicsModel(const char* _module) const
 {
 	const GLubyte* model; 
 
@@ -351,7 +351,7 @@ char * ModuleRenderer3D::GetGraphicsModel(const char* _module)
 	return (char*)model;
 }
 
-const char * ModuleRenderer3D::GetDriver()
+const char * ModuleRenderer3D::GetDriver()const
 {
 	return SDL_GetCurrentVideoDriver();
 }

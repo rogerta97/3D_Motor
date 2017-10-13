@@ -1,5 +1,4 @@
 #pragma once
-
 #ifndef  _TEXTURELOADER_H_
 #define _TEXTURELOADER_H_
 
@@ -12,9 +11,9 @@
 #include "DevIL_Windows_SDK\include\IL\il.h"
 #include "DevIL_Windows_SDK\include\IL\ilut.h"
 
-#pragma comment (lib, "DevIL_Windows_SDK/lib/x64/Release/DevIL.lib")
-#pragma comment (lib, "DevIL_Windows_SDK/lib/x64/Release/ILU.lib")
-#pragma comment (lib, "DevIL_Windows_SDK/lib/x64/Release/ILUT.lib")
+#pragma comment (lib, "DevIL_Windows_SDK/libx86/DevIL.lib")
+#pragma comment (lib, "DevIL_Windows_SDK/libx86/ILU.lib")
+#pragma comment (lib, "DevIL_Windows_SDK/libx86/ILUT.lib")
 
 
 class TextureLoader
