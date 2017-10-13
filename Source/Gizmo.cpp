@@ -56,10 +56,7 @@ void Gizmo::SetActive()
 	active = true;
 }
 
-uint Gizmo::GetBufferNum()
-{
-	return buffer_num; 
-}
+
 
 uint Gizmo::GetTriNum() const
 {
@@ -78,8 +75,8 @@ Cube1::Cube1()
 
 void Cube1::Start()
 {
-	glGenBuffers(1, (GLuint*)&buffer_num);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer_num);
+	glGenBuffers(1, (GLuint*)&vertices_id);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 
 	float3 origin(0, 0, 0);
 	float vertices[36 * 3] =
@@ -145,7 +142,7 @@ void Cube1::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
 
-	glBindBuffer(GL_ARRAY_BUFFER, buffer_num);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 	glDrawArrays(GL_TRIANGLES, 0, 36 * 3);
@@ -164,8 +161,8 @@ Cube2::~Cube2()
 
 void Cube2::Start(float3 origin, float size)
 {
-	glGenBuffers(1, (GLuint*)&buffer_num);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer_num);
+	glGenBuffers(1, (GLuint*)&vertices_id);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 
 	float vertices[8 * 3] =
 	{
@@ -183,12 +180,12 @@ void Cube2::Start(float3 origin, float size)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*8*3, vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	LOG("Cube created with buffer num %d", buffer_num);
+	LOG("Cube created with buffer num %d", vertices_id);
 	LOG("Vertices: 8"); 
 	LOG("Triangles: 16"); 
 
 	App->renderer3D->tex_loader.LoadTestImage(); 
-	App->renderer3D->tex_loader.LoadTextureBuffer(&tex_buffer_id);
+	App->renderer3D->tex_loader.LoadTextureBuffer(&textures_id);
 
 }
 
@@ -197,7 +194,7 @@ void Cube2::Draw()
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_2D); 
 
-	glBindBuffer(GL_ARRAY_BUFFER, buffer_num);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 	GLubyte indices[] =
@@ -217,7 +214,7 @@ void Cube2::Draw()
 	};
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, indices); 
-	glBindTexture(GL_TEXTURE_2D, tex_buffer_id);
+	glBindTexture(GL_TEXTURE_2D, textures_id);
 
 	glDisableClientState(GL_VERTEX_ARRAY); 
 	glDisableClientState(GL_TEXTURE_2D);
@@ -269,9 +266,9 @@ void GLSphere::Start(float radius, uint rings, uint sectors, float3 origin)
 		*i++ = (r + 1) * sectors + s;
 	}
 
-	glGenBuffers(1, (GLuint*)&buffer_num);
+	glGenBuffers(1, (GLuint*)&vertices_id);
 
-	LOG("Sphere created with buffer num %d", GetBufferNum()); 
+	LOG("Sphere created with buffer num %d", vertices_id);
 	LOG("Radius: %.2f", radius);
 	LOG("Rings: %d", rings);
 	LOG("Sectors: %d", sectors);
@@ -324,11 +321,11 @@ void GLCylinder::Start(float r, int sides, int height)
 		*i++ = a + ((a + 1) % 2 ? 0 : 2); *i++ = a + 1; *i++ = a + (a % 2 ? 0 : 2);   // side
 	}
 
-	glGenBuffers(1, (GLuint*)&buffer_num);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer_num);
+	glGenBuffers(1, (GLuint*)&vertices_id);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*vertices.size()*3, &vertices[0], GL_STATIC_DRAW);
 
-	LOG("Cylinder created with buffer num %d:", buffer_num); 
+	LOG("Cylinder created with buffer num %d:", vertices_id);
 	LOG("Radius: %d:", r);
 	LOG("Sides: %d:", sides);
 	LOG("Height: %d:", height);
@@ -338,9 +335,34 @@ void GLCylinder::Start(float r, int sides, int height)
 void GLCylinder::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);  
-	glBindBuffer(GL_ARRAY_BUFFER, buffer_num); 
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL); 
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
+
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, 0); 
+}
+
+GLGizmo::GLGizmo()
+{
+}
+
+GLGizmo::~GLGizmo()
+{
+}
+
+void GLGizmo::Start(float r, int sides, int lenght)
+{
+}
+
+void GLGizmo::Draw()
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
+	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

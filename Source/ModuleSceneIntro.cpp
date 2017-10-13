@@ -5,6 +5,7 @@
 #include "p2Point.h"
 #include "OpenGL.h"
 #include "Gizmo.h"
+#include "ModuleFBXLoader.h"
 
 #include "PhysBody3D.h"
 
@@ -31,7 +32,7 @@ bool ModuleSceneIntro::Start()
 
 	srand(time(NULL));
 
-	App->fbx_loader->LoadFBX("saladfingers.FBX"); 
+	
 
 	App->performance.SaveInitData(name); 
 
@@ -43,13 +44,6 @@ bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
-	if (!obj_list.empty())
-	{
-		obj_list.clear();
-		delete(&obj_list[0]);
-	}
-
-
 	return true;
 }
 
@@ -57,10 +51,21 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	
-	App->fbx_loader->DrawElement();
+	if (!App->fbx_loader->GetList().empty())
+	{
+		for (std::list<GLGizmo*>::iterator it = App->fbx_loader->GetList().begin(); it != App->fbx_loader->GetList().end(); it++)
+		{
+			obj_list.push_back((*it)); 
+		}
 
-	if(!obj_list.empty())
-		obj_list[0]->Draw(); 
+		App->fbx_loader->GetList().clear(); 
+	}
+
+	for (std::vector<Gizmo*>::iterator it = obj_list.begin(); it != obj_list.end(); it++)
+	{
+		(*it)->Draw(); 
+	}
+	
 
 	return UPDATE_CONTINUE;
 }

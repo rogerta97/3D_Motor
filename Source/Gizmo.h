@@ -40,10 +40,10 @@ protected:
 	uint texture_size;//? size or dimensions
 
 	bool active = false;
-
-	uint buffer_num = 0; 
-	uint tex_buffer_id = 0; 
-
+public:
+	uint vertices_id = 0;
+	uint textures_id = 0;
+	uint indices_id = 0;
 };
 
 class Cube1 : public Gizmo
@@ -98,6 +98,27 @@ protected:
 	std::vector<GLushort> indices;
 
 };
+class GLGizmo : public Gizmo
+	 {
+	public:
+		GLGizmo();
+		~GLGizmo();
+		
+			void Start(float r, int sides, int lenght);
+		void Draw();
+		
+			public:
+				
+					float* vertices;
+				int num_vertices = 0;
+				
+					uint* indices;
+				int num_indices = 0;
+				
+					float* textures;
+				int num_textures = 0;
+				
+					};
 
 #endif // !_ELEMENT_H_
 
