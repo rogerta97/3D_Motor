@@ -23,6 +23,7 @@ public:
 private:
 
 	void PrintConsole(); 
+	void PrintProperties();
 	void PrintRandomNumber();
 	void ShowAbout(); 
 	void UpdateConfigPanel(); 
@@ -33,6 +34,7 @@ private:
 	bool show_another_window = false;
 	bool show_console = false; 
 	bool show_random_number = false;
+	bool show_properties = true;
 	bool show_about = false; 
 	bool show_gui_demo = false; 
 	bool show_performance = false; 
@@ -48,6 +50,12 @@ private:
 	const char* new_input = ""; 
 
 	// ------
+	//drawing positions //SDL_Rect doesn't work at allneed to change it 
+	//panel
+	uint properties_panel_x = 10;
+	uint properties_panel_y = 10;
+	uint properties_panel_w = 100;
+	uint properties_panel_h = 200;
 
 	ImVec4 clear_color = ImColor(114, 144, 154);
 

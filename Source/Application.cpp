@@ -295,7 +295,6 @@ bool Application::CleanUp()
 			ret = (*item)->CleanUp();
 		}
 	}
-
 	framerate_buffer.clear(); 
 	miliseconds_buffer.clear(); 
 

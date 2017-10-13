@@ -19,13 +19,11 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt); 
 	bool CleanUp();
-
+	void PrintConfigData();
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	//p2DynArray<p2Point<int>> GetCollisions(); 
 
 	std::vector<Gizmo*> obj_list; 
 
 private:  
-
-
 };

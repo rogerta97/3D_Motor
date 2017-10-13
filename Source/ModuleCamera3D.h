@@ -31,7 +31,7 @@ public:
 	float mov_speed = 0.1f;
 	float rot_speed = 0.25f;
 	float zm_speed = 0.1f;
-
+	float mouse_wheel_speed = 2.0f;
 
 private:
 

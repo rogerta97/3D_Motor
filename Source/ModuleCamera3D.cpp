@@ -69,8 +69,8 @@ update_status ModuleCamera3D::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * temporal_speed;
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * temporal_speed;
 	
-	if(App->input->GetMouseWheel() == 1) newPos -= Z *temporal_speed;
-	if (App->input->GetMouseWheel() == -1) newPos += Z *temporal_speed;
+	if(App->input->GetMouseWheel() == 1) newPos -= Z *temporal_speed*mouse_wheel_speed;
+	if (App->input->GetMouseWheel() == -1) newPos += Z *temporal_speed*mouse_wheel_speed;
 
 
 
@@ -190,7 +190,8 @@ void ModuleCamera3D::PrintConfigData()
 
 		ImGui::DragFloat("Mov Speed", &mov_speed, 0.1f, 0.1f);
 		ImGui::DragFloat("Rot Speed", &rot_speed, 0.05f, 0.01f);
-		ImGui::DragFloat("Zoom Speed", &zm_speed, 0.1f, 0.1f);
+		ImGui::DragFloat("Zoom Speed", &mouse_wheel_speed, 0.1f, 2.0f,50.0f);
+
 		
 		if (ImGui::Button("Original Speeds") == true)
 		{

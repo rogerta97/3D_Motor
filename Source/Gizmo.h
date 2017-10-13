@@ -16,10 +16,30 @@ public:
 
 	virtual void Start();
 	virtual void Draw(); 
+	float3 GetPosition() const;
+	float3 GetRotation() const;
+	float3 GetScale() const;
+
+	void SetPosition(const float3& position);
+	void SetRotation(const float3& rotation);
+	void SetScale(const float3& scale);
+
+	bool Active()const;
+	void SetActive();
 
 	uint GetBufferNum(); 
+	uint GetTriNum() const;
+	uint GetTexSize()const;
 
 protected: 
+	float3 translation = float3::zero;
+	float3 rotation = float3::one;
+	float3 scale = float3::one;
+
+	uint triangles_num = 0;
+	uint texture_size;//? size or dimensions
+
+	bool active = false;
 
 	uint buffer_num = 0; 
 	uint tex_buffer_id = 0; 

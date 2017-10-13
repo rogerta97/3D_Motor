@@ -82,7 +82,10 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	
 	return UPDATE_CONTINUE; 
 }
+void ModuleSceneIntro::PrintConfigData()
+{
 
+}
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 

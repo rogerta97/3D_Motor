@@ -1,5 +1,6 @@
 #include "ModuleImGui.h"
 #include "Application.h"
+#include "Gizmo.h"
 #include <ctime>
 
 #define SCANCODE_AMOUNT 284
@@ -164,6 +165,7 @@ update_status ModuleImGui::Update(float dt)
 	if (show_console) PrintConsole();
 	if (show_random_number)PrintRandomNumber();
 	if (show_about) ShowAbout();
+	if (show_properties)PrintProperties();
 	if (show_performance) App->performance.Update(show_performance);
 
 	ImGui::EndMainMenuBar(); 
@@ -223,6 +225,34 @@ void ModuleImGui::PrintConsole()
 	ImGui::End(); 
 
 	
+}
+void ModuleImGui::PrintProperties()
+{
+	//if any gizmo has been created
+	Gizmo* curr_GO = nullptr;// = App->fbx_loader->; // App->set the dragged gizmo
+	ImGui::SetNextWindowPos(ImVec2((float)properties_panel_x, (float)properties_panel_y), ImGuiSetCond_Always);
+	ImGui::SetNextWindowSize(ImVec2((float)properties_panel_w, (float)properties_panel_h), ImGuiSetCond_Always);
+	ImGui::Begin("Properties", &show_properties);
+	
+	if (curr_GO != nullptr)
+	{
+		float3 pos = curr_GO->GetPosition();
+		float3 rot = curr_GO->GetRotation();
+		float3 scale = curr_GO->GetScale();
+
+		if (ImGui::DragFloat3("Position", (float*)&pos, 0.25f))
+			curr_GO->SetPosition(pos);
+
+		if (ImGui::DragFloat3("Rotation", (float*)&rot))
+			curr_GO->SetRotation(rot);
+
+		if (ImGui::DragFloat3("Scale", (float*)&scale, 0.05f))
+			curr_GO->SetScale(scale);
+
+		ImGui::Text("Current Triangles : %d", curr_GO->GetTriNum());
+		ImGui::Text("Texture size %d", curr_GO->GetTexSize());
+	}
+	ImGui::End();
 }
 void ModuleImGui::PrintRandomNumber()
 {

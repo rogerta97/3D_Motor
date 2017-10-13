@@ -16,9 +16,59 @@ void Gizmo::Draw()
 {
 }
 
+float3 Gizmo::GetPosition() const
+{
+	return translation;
+}
+
+float3 Gizmo::GetRotation() const
+{
+	return rotation;
+}
+
+float3 Gizmo::GetScale() const
+{
+	return scale;
+}
+
+void Gizmo::SetPosition(const float3 & position)
+{
+	translation = position;
+}
+
+void Gizmo::SetRotation(const float3 & rotation)
+{
+	this->rotation = rotation;
+}
+
+void Gizmo::SetScale(const float3 & scale)
+{
+	this->scale = scale;
+}
+
+bool Gizmo::Active() const
+{
+	return active;
+}
+
+void Gizmo::SetActive()
+{
+	active = true;
+}
+
 uint Gizmo::GetBufferNum()
 {
 	return buffer_num; 
+}
+
+uint Gizmo::GetTriNum() const
+{
+	return triangles_num;
+}
+
+uint Gizmo::GetTexSize() const
+{
+	return texture_size;
 }
 
 Cube1::Cube1()
