@@ -27,7 +27,8 @@ public:
 	bool CleanUp(); 
 
 	void LoadFBX(const char* path);
-	std::list<GLGizmo*>& GetList(); 
+	std::list<GLGizmo*>& GetList();
+	GLGizmo* GetLastGizmo();
 	void DrawElement(); 
 	
 private:

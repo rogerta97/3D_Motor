@@ -161,6 +161,7 @@ Cube2::~Cube2()
 
 void Cube2::Start(float3 origin, float size)
 {
+	translation = origin;
 	glGenBuffers(1, (GLuint*)&vertices_id);
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 
@@ -234,6 +235,7 @@ GLSphere::~GLSphere()
 
 void GLSphere::Start(float radius, uint rings, uint sectors, float3 origin)
 {
+	translation = origin;
 	float const R = 1. / (float)(rings - 1);
 	float const S = 1. / (float)(sectors - 1);
 	int r, s;

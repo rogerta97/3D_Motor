@@ -124,6 +124,14 @@ std::list<GLGizmo*>& ModuleFBXLoader::GetList()
 	return meshes; 
 }
 
+GLGizmo * ModuleFBXLoader::GetLastGizmo()
+{
+	if(meshes.empty() == false)
+		return meshes.back();
+	else
+		return nullptr;
+}
+
 void ModuleFBXLoader::DrawElement()
 {
 	//glEnableClientState(GL_VERTEX_ARRAY); 

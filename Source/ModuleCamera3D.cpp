@@ -2,7 +2,11 @@
 #include "Application.h"
 #include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
+#include "ModuleFBXLoader.h"
+#include "ModuleSceneIntro.h"
+#include "Gizmo.h"
 
+#define STD_CAM_DISTANCE 10
 ModuleCamera3D::ModuleCamera3D(bool start_enabled)
 {
 	CalculateViewMatrix();
@@ -50,7 +54,11 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
-
+	Gizmo* aux;
+	if (App->scene_intro->obj_list.empty() == false)
+		 aux = App->scene_intro->obj_list.back();
+	else
+		 aux = nullptr;
 	App->performance.InitTimer(name); 
 
 	vec3 newPos(0,0,0);
@@ -60,8 +68,8 @@ update_status ModuleCamera3D::Update(float dt)
 		temporal_speed=temporal_speed*0.3f;
 	
 
-	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += temporal_speed;
-	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= temporal_speed;
+	//if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += temporal_speed;
+	//if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= temporal_speed;
 
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z *temporal_speed;
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z *temporal_speed;
@@ -73,7 +81,29 @@ update_status ModuleCamera3D::Update(float dt)
 	if (App->input->GetMouseWheel() == -1) newPos += Z *temporal_speed*mouse_wheel_speed;
 
 
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_RALT) == KEY_REPEAT)
+			//TODO put the last gizmo position to orbit arround it
+		{
+			if (aux == nullptr)
+				Orbit(vec3(0,0,0), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
+			else
+				Orbit(vec3(aux->GetPosition().x, aux->GetPosition().y, aux->GetPosition().z), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
 
+		}
+			
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		//insert last gizmo position and the distance
+		//distance has to change depending on the size of the imported fbx
+		if(aux== NULL)
+			Focus(vec3(0, 0, 0), STD_CAM_DISTANCE);
+		else
+			Focus(vec3(aux->GetPosition().x, aux->GetPosition().y, aux->GetPosition().z), STD_CAM_DISTANCE);
+
+	}
 	Position += newPos;
 	Reference += newPos;
 
@@ -121,7 +151,38 @@ update_status ModuleCamera3D::Update(float dt)
 
 	return UPDATE_CONTINUE;
 }
+void ModuleCamera3D::Focus(const vec3& focus, const float& distance)
+{
+	Reference = focus;
+	//TODO change it to a simple rotation
+	Position = Reference + (Z * distance);
+}
+void ModuleCamera3D::Orbit(const vec3& orbit_center, const float& motion_x, const float& motion_y)
+{
+	Reference = orbit_center;
 
+	int dx = -motion_x;
+	int dy = -motion_y;
+
+	Position -= Reference;
+
+	if (dx != 0)
+	{
+		//Y rotation
+		X = rotate(X, dx, vec3(0.0f, 1.0f, 0.0f));
+		Y = rotate(Y, dx, vec3(0.0f, 1.0f, 0.0f));
+		Z = rotate(Z, dx, vec3(0.0f, 1.0f, 0.0f));
+	}
+
+	if (dy != 0)
+	{
+		//X rotation
+		Y = rotate(Y, dy, X);
+		Z = rotate(Z, dy, X);
+	}
+
+	Position = Reference + Z * length(Position);
+}
 // -----------------------------------------------------------------
 void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference)
 {
