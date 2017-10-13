@@ -2,7 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Primitive.h"
-#include "Element.h"
+#include "Gizmo.h"
 
 
 struct PhysBody3D;
@@ -23,16 +23,9 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	//p2DynArray<p2Point<int>> GetCollisions(); 
 
-	//std::vector<Primitive> obj_list; 
+	std::vector<Gizmo*> obj_list; 
 
-	Cube1 my_cube; 
-	Cube2 my_cube2;
-	GLSphere sphere; 
-	GLCylinder cylinder; 
+private:  
 
-private: 
-
-	//PCube first_cube;
-	//PSphere first_sphere; 
 
 };

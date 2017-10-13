@@ -284,7 +284,7 @@
     <ClInclude Include="DevIL_Windows_SDK\include\IL\ilut_config.h" />
     <ClInclude Include="DevIL_Windows_SDK\include\IL\ilu_region.h" />
     <ClInclude Include="DevIL_Windows_SDK\include\IL\il_wrap.h" />
-    <ClInclude Include="Element.h" />
+    <ClInclude Include="Gizmo.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Hardware.h" />
@@ -383,7 +383,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="DeviceId\DeviceId.cpp" />
-    <ClCompile Include="Element.cpp" />
+    <ClCompile Include="Gizmo.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="Hardware.cpp" />
     <ClCompile Include="imgui.cpp" />

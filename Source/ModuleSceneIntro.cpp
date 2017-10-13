@@ -4,7 +4,7 @@
 #include "Primitive.h"
 #include "p2Point.h"
 #include "OpenGL.h"
-#include "Element.h"
+#include "Gizmo.h"
 
 #include "PhysBody3D.h"
 
@@ -32,7 +32,6 @@ bool ModuleSceneIntro::Start()
 	srand(time(NULL));
 
 	App->fbx_loader->LoadFBX("saladfingers.FBX"); 
-	my_cube2.Start(); 
 
 	App->performance.SaveInitData(name); 
 
@@ -44,6 +43,13 @@ bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
+	if (!obj_list.empty())
+	{
+		obj_list.clear();
+		delete(&obj_list[0]);
+	}
+
+
 	return true;
 }
 
@@ -53,8 +59,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	
 	App->fbx_loader->DrawElement();
 
-	my_cube2.Draw();
-
+	if(!obj_list.empty())
+		obj_list[0]->Draw(); 
 
 	return UPDATE_CONTINUE;
 }

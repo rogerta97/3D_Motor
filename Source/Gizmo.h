@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef _ELEMENT_H_
-#define _ELEMENT_H_
+#ifndef _GIZMO_H_
+#define _GIZMO_H_
 
 #include "Globals.h"
 #include "MathGeoLib\MathGeoLib.h"
@@ -16,6 +16,8 @@ public:
 
 	virtual void Start();
 	virtual void Draw(); 
+
+	uint GetBufferNum(); 
 
 protected: 
 
@@ -41,7 +43,7 @@ public:
 	Cube2();
 	~Cube2();
 
-	void Start();
+	void Start(float3 origin, float size);
 
 	void Draw();
 };
@@ -52,7 +54,7 @@ public:
 	GLSphere();
 	~GLSphere();
 
-	void Start(float radius, uint rings, uint sectors);
+	void Start(float radius, uint rings, uint sectors, float3 origin);
 	void Draw(); 
 
 protected:

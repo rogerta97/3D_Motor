@@ -1,4 +1,4 @@
-#include "Element.h"
+#include "Gizmo.h"
 #include "OpenGL.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
@@ -14,6 +14,11 @@ void Gizmo::Start()
 
 void Gizmo::Draw()
 {
+}
+
+uint Gizmo::GetBufferNum()
+{
+	return buffer_num; 
 }
 
 Cube1::Cube1()
@@ -107,28 +112,30 @@ Cube2::~Cube2()
 {
 }
 
-void Cube2::Start()
+void Cube2::Start(float3 origin, float size)
 {
 	glGenBuffers(1, (GLuint*)&buffer_num);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer_num);
 
-	float3 origin(5,5,5); 
-
 	float vertices[8 * 3] =
 	{
-		15.f,5.f,5.f,
-		10.f,5.f,5.f,
-		10.f,0.f,5.f,
-		15.f,0.f,5.f,
-		15.f,0.f,0.f,
-		15.f,5.f,0.f,
-		10.f,5.f,0.f,
-		10.f,0.f,0.f
+		origin.x - size/2 ,origin.y + size / 2, origin.z - size / 2,
+		origin.x - size/2 ,origin.y - size / 2, origin.z - size / 2,
+		origin.x + size/2 ,origin.y + size / 2, origin.z - size / 2,
+		origin.x + size/2 ,origin.y - size / 2, origin.z - size / 2,
+		origin.x + size/2 ,origin.y + size / 2, origin.z + size / 2,
+		origin.x + size/2 ,origin.y - size / 2, origin.z + size / 2,
+		origin.x - size/2 ,origin.y + size / 2, origin.z + size / 2,
+		origin.x - size/2 ,origin.y - size / 2, origin.z + size / 2,
 	};
 
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*8*3, vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	LOG("Cube created with buffer num %d", buffer_num);
+	LOG("Vertices: 8"); 
+	LOG("Triangles: 16"); 
 
 	App->renderer3D->tex_loader.LoadTestImage(); 
 	App->renderer3D->tex_loader.LoadTextureBuffer(&tex_buffer_id);
@@ -144,21 +151,29 @@ void Cube2::Draw()
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 	GLubyte indices[] =
-	{ 0,1,2, 2,3,0,
-		0,3,4, 4,5,0,
-		0,5,6, 6,1,0,
-		1,6,7, 7,2,1,
-		7,4,3, 3,2,7,
-		4,7,6, 6,5,4 };
+	{			
+		0,4,2,
+		0,6,4, 
+		2,3,1,
+		0,2,1,
+		2,4,3,
+		4,5,3,
+		1,3,7,
+		7,3,5,
+		6,0,1,
+		6,1,7,
+		4,6,7,
+		4,7,5		
+	};
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, indices); 
-	glBindBuffer(GL_TEXTURE_2D, tex_buffer_id);
+	glBindTexture(GL_TEXTURE_2D, tex_buffer_id);
 
 	glDisableClientState(GL_VERTEX_ARRAY); 
 	glDisableClientState(GL_TEXTURE_2D);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0); 
-	glBindBuffer(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	
 }
 
@@ -170,7 +185,7 @@ GLSphere::~GLSphere()
 {
 }
 
-void GLSphere::Start(float radius, uint rings, uint sectors)
+void GLSphere::Start(float radius, uint rings, uint sectors, float3 origin)
 {
 	float const R = 1. / (float)(rings - 1);
 	float const S = 1. / (float)(sectors - 1);
@@ -203,6 +218,15 @@ void GLSphere::Start(float radius, uint rings, uint sectors)
 		*i++ = (r + 1) * sectors + (s + 1);
 		*i++ = (r + 1) * sectors + s;
 	}
+
+	glGenBuffers(1, (GLuint*)&buffer_num);
+
+	LOG("Sphere created with buffer num %d", GetBufferNum()); 
+	LOG("Radius: %.2f", radius);
+	LOG("Rings: %d", rings);
+	LOG("Sectors: %d", sectors);
+	LOG("Vertices: %d", (rings-2)*(sectors) + 2);
+
 }
 
 void GLSphere::Draw()
@@ -253,6 +277,12 @@ void GLCylinder::Start(float r, int sides, int height)
 	glGenBuffers(1, (GLuint*)&buffer_num);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer_num);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*vertices.size()*3, &vertices[0], GL_STATIC_DRAW);
+
+	LOG("Cylinder created with buffer num %d:", buffer_num); 
+	LOG("Radius: %d:", r);
+	LOG("Sides: %d:", sides);
+	LOG("Height: %d:", height);
+	LOG("Vertices: %d", ((360 / (360 / sides)) * 2) + 2); 
 }
 
 void GLCylinder::Draw()

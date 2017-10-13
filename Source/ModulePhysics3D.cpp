@@ -146,19 +146,19 @@ update_status ModulePhysics3D::Update(float dt)
 
 	//Provisional code
 
-	std::list<PCube>::iterator it;
+	//std::list<PCube>::iterator it;
 
-	for (it = pcube_list.begin(); it != pcube_list.end(); it++)
-	{
-		(*it).Render();
-	}
+	//for (it = pcube_list.begin(); it != pcube_list.end(); it++)
+	//{
+	//	(*it).Render();
+	//}
 
-	std::list<PSphere>::iterator it2;
+	//std::list<PSphere>::iterator it2;
 
-	for (it2 = psphere_list.begin(); it2 != psphere_list.end(); it2++)
-	{
-		(*it2).Render();
-	}
+	//for (it2 = psphere_list.begin(); it2 != psphere_list.end(); it2++)
+	//{
+	//	(*it2).Render();
+	//}
 
 	// -----
 
@@ -197,33 +197,33 @@ bool ModulePhysics3D::CleanUp()
 		world->removeCollisionObject(obj);
 	}
 
-	for(std::list<btTypedConstraint*>::iterator item = constraints.begin(); item != constraints.end(); item++)
-	{
-		world->removeConstraint((*item));
-		delete (*item);
-	}
-	
-	constraints.clear();
+	//for(std::list<btTypedConstraint*>::iterator item = constraints.begin(); item != constraints.end(); item++)
+	//{
+	//	world->removeConstraint((*item));
+	//	delete (*item);
+	//}
+	//
+	//constraints.clear();
 
-	for(std::list<btDefaultMotionState*>::iterator item = motions.begin(); item!=motions.end(); item++)
-		delete (*item);
+	//for(std::list<btDefaultMotionState*>::iterator item = motions.begin(); item!=motions.end(); item++)
+	//	delete (*item);
 
-	motions.clear();
+	//motions.clear();
 
-	for(std::list<btCollisionShape*>::iterator item = shapes.begin(); item!=shapes.end(); item++)
-		delete (*item);
+	//for(std::list<btCollisionShape*>::iterator item = shapes.begin(); item!=shapes.end(); item++)
+	//	delete (*item);
 
-	shapes.clear();
+	//shapes.clear();
 
-	for(std::list<PhysBody3D*>::iterator item = bodies.begin(); item!=bodies.end(); item++)
-		delete(*item);
+	//for(std::list<PhysBody3D*>::iterator item = bodies.begin(); item!=bodies.end(); item++)
+	//	delete(*item);
 
-	bodies.clear();
+	//bodies.clear();
 
-	for(std::list<PhysVehicle3D*>::iterator item = vehicles.begin(); item!=vehicles.end(); item++)
-		delete (*item);
+	//for(std::list<PhysVehicle3D*>::iterator item = vehicles.begin(); item!=vehicles.end(); item++)
+	//	delete (*item);
 
-	vehicles.clear();
+	//vehicles.clear();
 
 	delete vehicle_raycaster;
 	delete world;
@@ -231,149 +231,22 @@ bool ModulePhysics3D::CleanUp()
 	return true;
 }
 
-void ModulePhysics3D::AddPCube(vec3 size, vec3 position, bool wireframe)
-{
-	PCube new_cube(size.x, size.y, size.z); 
-	new_cube.SetPos(position.x, position.y, position.z); 
-	new_cube.wire = wireframe; 
-
-	pcube_list.push_back(new_cube); 
-}
-
-void ModulePhysics3D::AddPSphere(float radium, vec3 position, bool wireframe)
-{
-	PSphere new_sphere(radium);
-	new_sphere.SetPos(position.x, position.y, position.z);
-	new_sphere.wire = wireframe;
-
-	psphere_list.push_back(new_sphere);
-}
-
-// ---------------------------------------------------------
-//PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass)
+//void ModulePhysics3D::AddPCube(vec3 size, vec3 position, bool wireframe)
 //{
-//	btCollisionShape* colShape = new btSphereShape(sphere.r);
-//	shapes.add(colShape);
+//	PCube new_cube(size.x, size.y, size.z); 
+//	new_cube.SetPos(position.x, position.y, position.z); 
+//	new_cube.wire = wireframe; 
 //
-//	btTransform startTransform;
-//	startTransform.setFromOpenGLMatrix(&sphere.Transform);
-//
-//	btVector3 localInertia(0, 0, 0);
-//	if(mass != 0.f)
-//		colShape->calculateLocalInertia(mass, localInertia);
-//
-//	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-//	motions.add(myMotionState);
-//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-//
-//	btRigidBody* body = new btRigidBody(rbInfo);
-//	PhysBody3D* pbody = new PhysBody3D(body);
-//
-//	body->setUserPointer(pbody);
-//	world->addRigidBody(body);
-//	bodies.add(pbody);
-//
-//	return pbody;
+//	pcube_list.push_back(new_cube); 
 //}
-
-
-// ---------------------------------------------------------
-//PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass)
+//
+//void ModulePhysics3D::AddPSphere(float radium, vec3 position, bool wireframe)
 //{
-//	btCollisionShape* colShape = new btBoxShape(btVector3(cube.size.x*0.5f, cube.size.y*0.5f, cube.size.z*0.5f));
-//	shapes.add(colShape);
+//	PSphere new_sphere(radium);
+//	new_sphere.SetPos(position.x, position.y, position.z);
+//	new_sphere.wire = wireframe;
 //
-//	btTransform startTransform;
-//	startTransform.setFromOpenGLMatrix(&cube.transform);
-//
-//	btVector3 localInertia(0, 0, 0);
-//	if(mass != 0.f)
-//		colShape->calculateLocalInertia(mass, localInertia);
-//
-//	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-//	motions.add(myMotionState);
-//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-//
-//	btRigidBody* body = new btRigidBody(rbInfo);
-//	PhysBody3D* pbody = new PhysBody3D(body);
-//
-//	body->setUserPointer(pbody);
-//	world->addRigidBody(body);
-//	bodies.add(pbody);
-//
-//	return pbody;
-//}
-
-// ---------------------------------------------------------
-//PhysBody3D* ModulePhysics3D::AddBody(const Cylinder& cylinder, float mass)
-//{
-//	btCollisionShape* colShape = new btCylinderShapeX(btVector3(cylinder, cylinder.radius, 0.0f));
-//	shapes.add(colShape);
-//
-//	btTransform startTransform;
-//	startTransform.setFromOpenGLMatrix(&cylinder.transform);
-//
-//	btVector3 localInertia(0, 0, 0);
-//	if(mass != 0.f)
-//		colShape->calculateLocalInertia(mass, localInertia);
-//
-//	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-//	motions.add(myMotionState);
-//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-//
-//	btRigidBody* body = new btRigidBody(rbInfo);
-//	PhysBody3D* pbody = new PhysBody3D(body);
-//
-//	body->setUserPointer(pbody);
-//	world->addRigidBody(body);
-//	bodies.add(pbody);
-//
-//	return pbody;
-//}
-
-// ---------------------------------------------------------
-//PhysBody3D * ModulePhysics3D::AddTorus(btVector3& pos, float inner_radius, float outer_radius, float subdivisions)
-//{
-//	btVector3 forward(0.0f, 0.0f, 1.0f);
-//	btVector3 side((outer_radius + pos.getX()), pos.getY(), pos.getZ());
-//
-//	double gap = sqrt(2.0*inner_radius*inner_radius
-//		- 2.0*inner_radius*inner_radius*cos((2.0*SIMD_PI) / subdivisions));
-//	btCylinderShapeX * shape = new btCylinderShapeX(btVector3(btScalar(inner_radius),
-//		btScalar(inner_radius),
-//		btScalar((SIMD_PI / subdivisions) + 0.5*gap)));
-//
-//	btTransform t;
-//	btCompoundShape * torus_shape = new btCompoundShape();
-//
-//	for (int x = 0; x < (int)subdivisions; x++)
-//	{
-//		btScalar angle = btScalar((x*2.0*SIMD_PI) / subdivisions);
-//		btVector3 position = side.rotate(forward, angle);
-//		btQuaternion q(forward, angle);
-//		t.setIdentity();
-//		t.setOrigin(position);
-//		t.setRotation(q);
-//		torus_shape->addChildShape(t, shape);
-//	}
-//	shapes.push_back(shape);
-//	shapes.push_back(torus_shape);
-//	
-//	btVector3 localInertia(0, 0, 0);
-//	btTransform startTransform;
-//	startTransform.setIdentity();
-//
-//	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-//	btRigidBody::btRigidBodyConstructionInfo rbInfo(0, myMotionState, torus_shape, localInertia);
-//
-//	btRigidBody* body = new btRigidBody(rbInfo);
-//	PhysBody3D* pbody = new PhysBody3D(body);
-//	body->setUserPointer(pbody);
-//	world->addRigidBody(body);
-//	bodies.push_back(pbody);
-//
-//
-//	return pbody;
+//	psphere_list.push_back(new_sphere);
 //}
 
 // ---------------------------------------------------------
@@ -385,7 +258,6 @@ void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, con
 		btVector3(anchorA.x, anchorA.y, anchorA.z), 
 		btVector3(anchorB.x, anchorB.y, anchorB.z));
 	world->addConstraint(p2p);
-	constraints.push_back(p2p);
 	p2p->setDbgDrawSize(2.0f);
 }
 
@@ -400,7 +272,6 @@ void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, c
 		btVector3(axisB.x, axisB.y, axisB.z));
 
 	world->addConstraint(hinge, disable_collision);
-	constraints.push_back(hinge);
 	hinge->setDbgDrawSize(2.0f);
 }
 
@@ -452,31 +323,152 @@ void ModulePhysics3D::PrintConfigData()
 	{
 		if (ImGui::TreeNode("Object Creator"))
 		{
-			ImGui::Combo("Object Type", &object_type, "Cube\0Sphere\0", 2);
+			ImGui::Combo("Object Type", &object_type, "Cube\0Sphere\0Cylinder\0", 3);
 
-			ImGui::Checkbox("Wireframe", &create_on_wire); 
+			ImGui::Separator(); 
 
-			if (ImGui::Button("Create!"))
+			static float3 origin_vector = { 0.0f, 0.0f, 0.0f };
+			static int size = 0;
+
+			bool create_obj = false; 
+
+			ImGui::InputFloat("X", &origin_vector.x, 0.1f, 5.0f, 2);
+			ImGui::InputFloat("Y", &origin_vector.y, 0.1f, 5.0f, 2);
+			ImGui::InputFloat("Z", &origin_vector.z, 0.1f, 5.0f, 2);
+
+			ImGui::Separator(); 
+
+			switch (object_type)
 			{
-				switch (object_type)
+			case 0:
+				if (size < 0)
+					size = 0; 
+
+				ImGui::InputInt("Edge", &size, 1, 50);
+
+				ImGui::Separator(); 
+
+				if (ImGui::Button("Create!"))
 				{
-				case 0:
-					AddPCube(vec3(1, 1, 1), vec3(0, 0, 0), create_on_wire); 
+					if (size == 0)
+					{
+						LOG("Error crating cube, size must be +0");
+						break;
+					}
+						
+					if (!App->scene_intro->obj_list.empty())
+					{
+						LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->GetBufferNum());
+						delete(App->scene_intro->obj_list[0]);
+						App->scene_intro->obj_list.clear();
+					}
 
-					break;
+					App->scene_intro->obj_list.push_back((Gizmo*)AddCube(origin_vector, size)); 
+				}							
+				break;
 
-				case 1:
-					AddPSphere(2, vec3(0, 0, 0), create_on_wire);
-					break;
+			case 1:
 
-				}
+				static int rings; 
+				static int sectors; 
+				static float radius;
+
+				if (radius < 0) radius = 0;
+				if (rings < 0) rings = 0; 
+				if (sectors < 0) sectors = 0; 
+
+				ImGui::InputFloat("Radius", &radius, 1, 50, 2);
+				ImGui::InputInt("Rings", &rings, 1, 50);
+				ImGui::InputInt("Sectors", &sectors, 1, 50);
+
+				ImGui::Separator();
+
+				if (ImGui::Button("Create!"))
+				{
+
+					if (radius == 0 || rings < 2 || sectors < 2)
+					{
+						LOG("Radius should be +2 / Rings & sectors should be +2");
+						break;
+					}
+
+					if (!App->scene_intro->obj_list.empty())
+					{
+						LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->GetBufferNum());
+						delete(App->scene_intro->obj_list[0]);
+						App->scene_intro->obj_list.clear();
+					}
+
+					App->scene_intro->obj_list.push_back((Gizmo*)AddSphere(origin_vector, radius, rings, sectors));
+				}					
+				break;
+
+
+			case 2:
+				static int height;
+				static int sides;
+				static float r; 
+
+				if (r < 0) r = 0;
+				if (sides < 0) sides = 0;
+				if (height < 0) height = 0;
+
+				ImGui::InputFloat("Radius", &r, 1, 50, 2);
+				ImGui::InputInt("Height", &height, 1, 50);
+				ImGui::InputInt("Sides", &sides, 1, 50);
+
+				ImGui::Separator();
+
+				if (ImGui::Button("Create!"))
+				{
+
+					if (r == 0 || height == 0 || sides == 0)
+					{
+						LOG("All properties must be +0"); 
+						break;
+					}
+						
+					if (!App->scene_intro->obj_list.empty())
+					{
+						LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->GetBufferNum());
+						delete(App->scene_intro->obj_list[0]);
+						App->scene_intro->obj_list.clear();
+					}
+
+					App->scene_intro->obj_list.push_back((Gizmo*)AddCylinder(origin_vector, r, height, sides));
+				}								
+				break;
 			}
-
-			ImGui::Separator();
 			ImGui::TreePop(); 
 		}
-
 	}
+}
+
+Cube2* ModulePhysics3D::AddCube(float3 origin, uint size)
+{
+	Cube2* new_cube = new Cube2();
+
+	new_cube->Start(origin, (float)size);
+
+	return new_cube; 
+}
+
+GLSphere* ModulePhysics3D::AddSphere(float3 origin, float radius, uint rings, uint sectors)
+{
+	GLSphere* new_sphere = new GLSphere();
+
+	new_sphere->Start(radius, rings, sectors, origin);
+
+	return new_sphere;
+}
+
+GLCylinder* ModulePhysics3D::AddCylinder(float3 origin, float radius, float height, int sides)
+{
+	GLCylinder* new_cylinder = new GLCylinder();
+
+	new_cylinder->Start(radius, sides, height);
+
+	return new_cylinder;
 }
 
 // =============================================

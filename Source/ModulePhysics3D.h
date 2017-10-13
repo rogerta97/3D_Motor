@@ -4,6 +4,7 @@
 #include <string>
 #include<list>
 #include "Primitive.h"
+#include "Gizmo.h"
 #include "iPoint.h"
 
 #include "Bullet/include/btBulletDynamicsCommon.h"
@@ -31,21 +32,22 @@ public:
 
 	// Provisional implementation: 
 
-	void AddPCube(vec3 size, vec3 position, bool wire);
-	void AddPSphere(float radium, vec3 position, bool wire);
-
-
-	//PhysBody3D* AddBody(const Sphere& sphere, float mass = 1.0f);
-	//PhysBody3D* AddBody(const Cube& cube, float mass = 1.0f);
-	//PhysBody3D* AddBody(const Cylinder& cylinder, float mass = 1.0f);
-	//PhysVehicle3D* AddVehicle(const VehicleInfo& info);
-	//PhysBody3D* AddTorus(btVector3& pos, float inner_radius, float outer_radius, float subdivisions = 16.0f);
+	//void AddPCube(vec3 size, vec3 position, bool wire);
+	//void AddPSphere(float radium, vec3 position, bool wire);
 
 	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
 	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);
 
 	std::vector<iPoint> GetCollisions(); 
+
+	// 3DEngine
+
 	void PrintConfigData();
+
+	Cube2* AddCube(float3 origin, uint size); 
+	GLSphere* AddSphere(float3 origin, float radius, uint rings, uint sectors);
+	GLCylinder* AddCylinder(float3 origin, float radius, float height, int sides);
+
 
 private:
 
@@ -59,12 +61,6 @@ private:
 	btDefaultVehicleRaycaster*			vehicle_raycaster;
 	DebugDrawer*						debug_draw;
 
-	std::list<btCollisionShape*> shapes;
-	std::list<PhysBody3D*> bodies;
-	std::list<btDefaultMotionState*> motions;
-	std::list<btTypedConstraint*> constraints;
-	std::list<PhysVehicle3D*> vehicles;
-
 	// GeoMath
 
 	std::vector<Sphere> spheres_list; 
@@ -72,8 +68,7 @@ private:
 
 	PPlane main_plane; 
 
-	std::list<PCube> pcube_list; 
-	std::list<PSphere> psphere_list; 
+	std::list<Gizmo> gizmo_list; 
 
 	int object_type = -1;
 	bool create_on_wire = false;
