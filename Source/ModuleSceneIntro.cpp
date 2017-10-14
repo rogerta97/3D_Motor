@@ -62,7 +62,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		App->fbx_loader->GetList().clear(); 
 	}
 
-	for (std::vector<Gizmo*>::iterator it = obj_list.begin(); it != obj_list.end(); it++)
+	for (std::vector<GLGizmo*>::iterator it = obj_list.begin(); it != obj_list.end(); it++)
 	{
 		(*it)->Draw(); 
 	}
@@ -95,6 +95,11 @@ void ModuleSceneIntro::PrintConfigData()
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 
+}
+
+void ModuleSceneIntro::ClearGOList()
+{
+	obj_list.clear(); 
 }
 
 

@@ -122,11 +122,31 @@ update_status ModuleInput::PreUpdate(float dt)
 			}
 			break; 
 
-			case SDL_DROPFILE:			
-				char* file = e.drop.file;
+			case SDL_DROPFILE:	
 
-				if (file != nullptr) 
-					App->fbx_loader->LoadFBX(file);
+				std::string file = e.drop.file;
+
+				std::string termination = file.substr(file.size() - 3, 3);
+
+				if (termination == "fbx" || termination == "FBX")
+				{
+					LOG("FBX file dragged to window", termination); 
+					App->scene_intro->ClearGOList(); 
+					App->fbx_loader->LoadFBX(file.c_str());
+
+				}
+					
+
+				if (termination == "png" || termination == "PNG")
+				{
+					//For now we set the texture in the last obect created (the unique in the scene) 
+					LOG("PNG file dragged to window", termination);
+					GLuint new_tex = App->fbx_loader->ImportImage(file.c_str());
+					App->scene_intro->obj_list[0]->material.SetTextureID(new_tex); 
+ 
+				}
+					
+
 											
 				break;
 		}

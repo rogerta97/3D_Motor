@@ -221,8 +221,7 @@ void ModuleImGui::PrintConsole()
 
 	for (int i = 0; i < console_buffer.size(); i++)
 	{	
-		ImGui::Text(console_buffer[i].c_str());
-		ImGui::Separator(); 
+		ImGui::Text(console_buffer[i].c_str()); 
 	}
 
 	ImGui::End(); 

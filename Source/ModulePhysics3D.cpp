@@ -363,7 +363,7 @@ void ModulePhysics3D::PrintConfigData()
 						App->scene_intro->obj_list.clear();
 					}
 
-					App->scene_intro->obj_list.push_back((Gizmo*)AddCube(origin_vector, size)); 
+					//App->scene_intro->obj_list.push_back((Gizmo*)AddCube(origin_vector, size)); 
 				}							
 				break;
 
@@ -399,7 +399,7 @@ void ModulePhysics3D::PrintConfigData()
 						App->scene_intro->obj_list.clear();
 					}
 
-					App->scene_intro->obj_list.push_back((Gizmo*)AddSphere(origin_vector, radius, rings, sectors));
+					//App->scene_intro->obj_list.push_back((Gizmo*)AddSphere(origin_vector, radius, rings, sectors));
 				}					
 				break;
 
@@ -435,7 +435,7 @@ void ModulePhysics3D::PrintConfigData()
 						App->scene_intro->obj_list.clear();
 					}
 
-					App->scene_intro->obj_list.push_back((Gizmo*)AddCylinder(origin_vector, r, height, sides));
+					//App->scene_intro->obj_list.push_back((Gizmo*)AddCylinder(origin_vector, r, height, sides));
 				}								
 				break;
 			}

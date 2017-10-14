@@ -54,10 +54,14 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 	{
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
 		GLGizmo* new_object = new GLGizmo();;
+		int i; 
 
-		for (int i = 0; i < scene->mNumMeshes; i++) 
+		for (i = 0; i < scene->mNumMeshes; i++) 
 		{
 			//Vertices
+
+			LOG("Loading new mesh...")
+
 			aiMesh* m = scene->mMeshes[i];
 
 			MeshRenderer tmp_mr; 
@@ -65,11 +69,12 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			tmp_mr.num_vertices = m->mNumVertices;
 			tmp_mr.vertices = new float[tmp_mr.num_vertices*3];
 			memcpy(tmp_mr.vertices, m->mVertices, sizeof(float) * tmp_mr.num_vertices *3 );
-
-			LOG("New mesh with %d vertices", tmp_mr.num_vertices);
+		
 			glGenBuffers(1, (GLuint*) &tmp_mr.vertices_id_t);
 			glBindBuffer(GL_ARRAY_BUFFER, tmp_mr.vertices_id_t);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * tmp_mr.num_vertices * 3, tmp_mr.vertices, GL_STATIC_DRAW);
+
+			LOG("%d vertices", tmp_mr.num_vertices);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			//Indices
@@ -94,6 +99,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * tmp_mr.num_indices, tmp_mr.indices, GL_STATIC_DRAW);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+			LOG("%d indices", tmp_mr.num_indices); 
+
 			if (m->HasTextureCoords(0)) // assume mesh has one texture coords
 			{
 				tmp_mr.num_uvs = m->mNumVertices;
@@ -103,13 +110,14 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 				glGenBuffers(1, (GLuint*) &tmp_mr.uvs_id_t);
 				glBindBuffer(GL_ARRAY_BUFFER, (GLuint)tmp_mr.uvs_id_t);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * tmp_mr.num_uvs * 3, tmp_mr.uvs, GL_STATIC_DRAW);
+
+				LOG("%d texture cordinates", tmp_mr.num_uvs);
 			}
 			else
 			{
 				LOG("No Texture Coords found");
 			}
 			
-
 			AABB bbox;
 			bbox.SetNegativeInfinity();
 			bbox.Enclose((float3*)m->mVertices, m->mNumVertices);
@@ -120,6 +128,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			new_object->mr_list.push_back(tmp_mr); 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
+
+		LOG("FBX imported with %d meshes", i); 
 
 		if (scene != nullptr && scene->HasMaterials())
 		{
@@ -133,8 +143,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			std::string final_str = full_path_str.substr(0, cut + 1); 
 			final_str += path.C_Str(); 
 			new_object->material.textures_id_t = ImportImage(final_str.c_str());
-
-			LOG("Mesh material path is: %s. Start importing it...", path.C_Str());
+		
 		}
 
 		meshes.push_back(new_object);
@@ -195,6 +204,8 @@ GLuint ModuleFBXLoader::ImportImage(const char * path)
 	if (success)
 	{
 
+		LOG("Loading new texture with path %s", path); 
+
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
 		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
@@ -225,7 +236,8 @@ GLuint ModuleFBXLoader::ImportImage(const char * path)
 	}
 	else
 	{
-		LOG("Error on %s texture loading"); 
+		textureID = 0;
+		LOG("Not image found in "); 
 	}
 
 	return textureID; 

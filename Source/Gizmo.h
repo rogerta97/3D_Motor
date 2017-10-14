@@ -26,7 +26,15 @@ struct MeshRenderer
 
 struct Material
 {
+
+	void SetTextureID(GLuint tex); 
+
 	uint textures_id_t = 0;
+
+	uint width = 0; 
+	uint height = 0;
+
+	std::string path;  
 };
 
 class Gizmo
@@ -141,7 +149,7 @@ public:
 
 	AABB Gizmo_box;
 
-					};
+};
 
 #endif // !_ELEMENT_H_
 

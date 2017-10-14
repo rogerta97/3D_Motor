@@ -408,3 +408,7 @@ void GLGizmo::Draw()
 	
 }
 
+void Material::SetTextureID(GLuint tex)
+{
+	textures_id_t = tex;
+}
