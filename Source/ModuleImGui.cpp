@@ -146,7 +146,7 @@ update_status ModuleImGui::Update(float dt)
 
 		if (ImGui::MenuItem("Report a bug"))
 		{
-			App->OpenWebPage("https://github.com/rogerta97/3D_Motor/blob/master/LICENSE");
+			App->OpenWebPage("https://github.com/rogerta97/3D_Motor/issues");
 		}
 
 		if (ImGui::MenuItem("License"))
