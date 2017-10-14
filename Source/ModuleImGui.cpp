@@ -186,10 +186,13 @@ update_status ModuleImGui::Update(float dt)
 update_status ModuleImGui::PostUpdate(float dt)
 {
 	App->renderer3D->lights[0].on = false; 
-
+	
 	UpdateConfigPanel();
-
+	// TODO draw all the other things before
+	App->renderer3D->UI_attributes();
 	ImGui::Render();
+	App->renderer3D->CustomAttributes();
+
 
 	return UPDATE_CONTINUE;
 }

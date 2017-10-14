@@ -2747,8 +2747,18 @@ void ImGui::Render()
         for (int i = 0; i != g.Windows.Size; i++)
         {
             ImGuiWindow* window = g.Windows[i];
-            if (window->Active && window->HiddenFrames <= 0 && (window->Flags & (ImGuiWindowFlags_ChildWindow)) == 0)
-                AddWindowToRenderListSelectLayer(window);
+			if (window->Active && window->HiddenFrames <= 0 && (window->Flags & (ImGuiWindowFlags_ChildWindow)) == 0)
+			{
+				//AddWindowToRenderListSelectLayer(window);
+				// FIXME: Generalize this with a proper layering system so e.g. user can draw in specific layers, below text, ..
+				g.IO.MetricsActiveWindows++;
+				if (window->Flags & ImGuiWindowFlags_Popup)
+					AddWindowToRenderList(g.RenderDrawLists[1], window);
+				else if (window->Flags & ImGuiWindowFlags_Tooltip)
+					AddWindowToRenderList(g.RenderDrawLists[2], window);
+				else
+					AddWindowToRenderList(g.RenderDrawLists[0], window);
+			}
         }
 
         // Flatten layers

@@ -23,6 +23,8 @@ public:
 
 	char* GetGraphicsModel(const char* _module) const; 
 	const char* GetDriver() const;
+	void UI_attributes();
+	void CustomAttributes();
 	//void SetObjectsWireframe(bool state); 
 
 
@@ -48,6 +50,8 @@ private:
 
 	uint array_buffer = 0; 
 	uint element_buffer = 0;
+	float light_model_ambient = 1.0f;
+	float material_ambient = 1.0f;
 
 public:
 

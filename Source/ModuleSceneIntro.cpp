@@ -19,7 +19,8 @@ ModuleSceneIntro::ModuleSceneIntro(bool start_enabled)
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
-{}
+{
+}
 
 // Load assets
 bool ModuleSceneIntro::Start()

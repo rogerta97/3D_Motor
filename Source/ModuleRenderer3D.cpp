@@ -8,7 +8,8 @@
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "glew/glew-2.1.0/glew32.lib")
 
-
+#define STD_AMBIENT_LIGHTING 0.6f
+#define STD_MATERIAL_AMBIENT 1.0f
 ModuleRenderer3D::ModuleRenderer3D(bool start_enabled)
 {
 }
@@ -355,9 +356,59 @@ const char * ModuleRenderer3D::GetDriver()const
 {
 	return SDL_GetCurrentVideoDriver();
 }
+void ModuleRenderer3D::UI_attributes()
+{
 
+	GLfloat LightModelAmbient[] = { 0.6f, 0.6f, 0.6f, 1.0f };
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LightModelAmbient);
 
+	GLfloat MaterialAmbient[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, MaterialAmbient);
 
+	GLfloat MaterialDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
+
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_COLOR_MATERIAL);
+	glShadeModel(GL_SMOOTH);
+}
+void ModuleRenderer3D::CustomAttributes()
+{
+	if (light_model_ambient != STD_AMBIENT_LIGHTING) {
+		GLfloat LightModelAmbient[] = { light_model_ambient, light_model_ambient, light_model_ambient, 1.0f };
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LightModelAmbient);
+	}
+	if (material_ambient != STD_MATERIAL_AMBIENT) {
+		GLfloat MaterialAmbient[] = { material_ambient, material_ambient, material_ambient, 1.0f };
+		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, MaterialAmbient);
+	}
+
+	depth_test_ch_b ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+	cull_face_ch_b ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+	lighting_ch_b ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+	color_ch_b ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
+	texture_ch_b ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
+	(smooth_ch_b) ? glShadeModel(GL_SMOOTH) : glShadeModel(GL_FLAT);
+	if (fog_ch_b)
+	{
+		glEnable(GL_FOG);
+		glFogfv(GL_FOG_DENSITY, &fog_density);
+	}
+	else
+	{
+		glDisable(GL_FOG);
+	}
+	// TODO activate wireframe
+	/*if (wireframe_ch_b) {
+		App->imgui(wireframe_ch_b);
+	}
+	else {
+		App->scene_intro->Wireframe(wireframe_ch_b);
+	}*/
+
+}
 //
 //void ModuleRenderer3D::PrintBufferDataE(int* indices)
 //{
