@@ -369,13 +369,42 @@ void GLGizmo::Start(float r, int sides, int lenght)
 
 void GLGizmo::Draw()
 {
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
-	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	if (!mr_list.empty())
+	{
+		for (std::list<MeshRenderer>::iterator it = mr_list.begin(); it != mr_list.end(); it++)
+		{
+			glEnableClientState(GL_VERTEX_ARRAY);
+
+			glBindBuffer(GL_ARRAY_BUFFER, (*it).vertices_id_t);
+			glVertexPointer(3, GL_FLOAT, 0, NULL);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it).indices_id_t);
+
+			//Apply UV if exist
+			if ((*it).num_uvs != 0)
+			{
+				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+				glBindBuffer(GL_ARRAY_BUFFER, (*it).uvs_id_t);
+				glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+			}
+
+			//glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, (GLuint)material.textures_id_t);
+
+			glDrawElements(GL_TRIANGLES, (*it).num_indices, GL_UNSIGNED_INT, NULL);
+
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+			//Unbind textures affter rendering
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			glDisableClientState(GL_VERTEX_ARRAY);
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		}
+
+	}
+
+	
 }
 

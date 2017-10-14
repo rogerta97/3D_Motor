@@ -33,9 +33,14 @@ public:
 	//sizes for the Bounding Box of a new gizmo
 	float max_size = 0;
 	float size = 0;
+
+	GLuint ImportImage(const char* path); 
+
 private:
 
 	std::list<GLGizmo*> meshes;
+
+	
 
 };
 

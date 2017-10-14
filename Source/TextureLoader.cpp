@@ -12,6 +12,7 @@ TextureLoader::~TextureLoader()
 bool TextureLoader::Start()
 {
 
+
 	return true;
 }
 
