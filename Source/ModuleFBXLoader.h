@@ -30,7 +30,9 @@ public:
 	std::list<GLGizmo*>& GetList();
 	GLGizmo* GetLastGizmo();
 	void DrawElement(); 
-	
+	//sizes for the Bounding Box of a new gizmo
+	float max_size = 0;
+	float size = 0;
 private:
 
 	std::list<GLGizmo*> meshes;

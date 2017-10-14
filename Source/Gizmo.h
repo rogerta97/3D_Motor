@@ -23,11 +23,10 @@ public:
 	void SetPosition(const float3& position);
 	void SetRotation(const float3& rotation);
 	void SetScale(const float3& scale);
-
 	bool Active()const;
 	void SetActive();
 
-	uint GetBufferNum(); 
+	//uint GetBufferNum() ;
 	uint GetTriNum() const;
 	uint GetTexSize()const;
 
@@ -44,6 +43,7 @@ public:
 	uint vertices_id = 0;
 	uint textures_id = 0;
 	uint indices_id = 0;
+
 };
 
 class Cube1 : public Gizmo
@@ -106,6 +106,9 @@ class GLGizmo : public Gizmo
 		
 			void Start(float r, int sides, int lenght);
 		void Draw();
+		void SetGizmoBox(AABB _box);
+		AABB GetGizmoBox() const;
+
 		
 			public:
 				
@@ -117,7 +120,9 @@ class GLGizmo : public Gizmo
 				
 					float* textures;
 				int num_textures = 0;
-				
+
+				AABB Gizmo_box;
+
 					};
 
 #endif // !_ELEMENT_H_

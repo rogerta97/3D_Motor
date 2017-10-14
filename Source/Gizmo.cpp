@@ -31,6 +31,11 @@ float3 Gizmo::GetScale() const
 	return scale;
 }
 
+AABB GLGizmo::GetGizmoBox() const
+{
+	return Gizmo_box;
+}
+
 void Gizmo::SetPosition(const float3 & position)
 {
 	translation = position;
@@ -44,6 +49,11 @@ void Gizmo::SetRotation(const float3 & rotation)
 void Gizmo::SetScale(const float3 & scale)
 {
 	this->scale = scale;
+}
+
+void GLGizmo::SetGizmoBox(AABB _box)
+{
+	Gizmo_box = _box;
 }
 
 bool Gizmo::Active() const
@@ -368,3 +378,4 @@ void GLGizmo::Draw()
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+

@@ -1,5 +1,9 @@
+#include "Globals.h"
+#include "Application.h"
 #include "ModuleFBXLoader.h"
-
+#include "ModuleCamera3D.h"
+#include "Gizmo.h"
+#include <vector>
 ModuleFBXLoader::ModuleFBXLoader(bool enable_state)
 {
 }
@@ -48,8 +52,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			GLGizmo* new_mesh = new GLGizmo();
 
 			new_mesh->num_vertices = m->mNumVertices;
-			new_mesh->vertices = new float[new_mesh->num_vertices * 3];
-			memcpy(new_mesh->vertices, m->mVertices, sizeof(float) * new_mesh->num_vertices * 3);
+			new_mesh->vertices = new float[new_mesh->num_vertices*3];
+			memcpy(new_mesh->vertices, m->mVertices, sizeof(float) * new_mesh->num_vertices *3 );
 
 			LOG("New mesh with %d vertices", new_mesh->num_vertices);
 			glGenBuffers(1, (GLuint*) &new_mesh->vertices_id);
@@ -93,6 +97,15 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			{
 				LOG("No Texture Coords found");
 			}
+			
+
+			AABB bbox;
+			bbox.SetNegativeInfinity();
+			bbox.Enclose((float3*)m->mVertices, m->mNumVertices);
+			new_mesh->SetGizmoBox(bbox);
+			
+			App->camera->Focus(vec3(new_mesh->GetPosition().x, new_mesh->GetPosition().y,new_mesh->GetPosition().z), bbox.Size().Length() *1.2f);
+
 
 			meshes.push_back(new_mesh); 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);

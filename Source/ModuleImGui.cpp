@@ -296,6 +296,10 @@ void ModuleImGui::ShowAbout()
 	ImGui::TextWrapped(" STL");
 	ImGui::TextWrapped(" Bullet");
 	ImGui::TextWrapped(" ImGui");
+	ImGui::TextWrapped(" DevIL");
+	ImGui::TextWrapped(" Assimp");
+
+
 
 	ImGui::End();
 }
