@@ -29,6 +29,7 @@ struct Material
 
 	void SetTextureID(GLuint tex); 
 
+
 	uint textures_id_t = 0;
 
 	uint width = 0; 
@@ -146,7 +147,7 @@ public:
 					
 	std::list<MeshRenderer> mr_list; 
 	Material material; 
-
+	std::string path_name = "GameObject";
 	AABB Gizmo_box;
 
 };

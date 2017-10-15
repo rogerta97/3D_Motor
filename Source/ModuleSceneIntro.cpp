@@ -48,6 +48,24 @@ bool ModuleSceneIntro::CleanUp()
 	return true;
 }
 
+GLGizmo * ModuleSceneIntro::GetGameObject(uint id) const
+{
+	GLGizmo* ret = nullptr;
+
+	uint i = 0;
+	for (std::vector<GLGizmo*>::const_iterator it = obj_list.begin(); it != obj_list.end(); ++it)
+	{
+		if (i == id)
+		{
+			ret = (*it);
+			break;
+		}
+		++i;
+	}
+
+	return ret;
+}
+
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
@@ -92,6 +110,11 @@ void ModuleSceneIntro::PrintConfigData()
 {
 
 }
+void ModuleSceneIntro::PrintInspectorData()
+{
+
+}
+
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 

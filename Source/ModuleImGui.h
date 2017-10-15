@@ -25,6 +25,7 @@ private:
 	void PrintConsole(); 
 	void PrintProperties();
 	void PrintRandomNumber();
+	void PrintInspector();
 	void ShowAbout(); 
 	void UpdateConfigPanel(); 
 
@@ -39,7 +40,7 @@ private:
 	bool show_gui_demo = false; 
 	bool show_performance = false; 
 	bool show_configuration = true; 
-
+	bool show_inspector = true;
 	// Console management -----------
 
 	std::vector<std::string> console_buffer; 

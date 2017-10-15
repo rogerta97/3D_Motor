@@ -39,7 +39,7 @@ public:
 private:
 
 	std::list<GLGizmo*> meshes;
-
+	Material* info_material = nullptr;
 	
 
 };

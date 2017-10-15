@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleFBXLoader.h"
+#include "ModuleSceneIntro.h"
 #include "ModuleCamera3D.h"
 #include "Gizmo.h"
 #include <vector>
@@ -55,7 +56,6 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
 		GLGizmo* new_object = new GLGizmo();;
 		int i; 
-
 		for (i = 0; i < scene->mNumMeshes; i++) 
 		{
 			//Vertices
@@ -143,9 +143,14 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			std::string final_str = full_path_str.substr(0, cut + 1); 
 			final_str += path.C_Str(); 
 			new_object->material.textures_id_t = ImportImage(final_str.c_str());
-		
+			if (info_material != nullptr)
+			{
+				new_object->material.width = info_material->width;
+				new_object->material.height = info_material->height;
+			}
+			new_object->material.path = final_str.c_str();
 		}
-
+		
 		meshes.push_back(new_object);
 		aiReleaseImport(scene);
 			
@@ -189,7 +194,10 @@ void ModuleFBXLoader::DrawElement()
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
-
+//void ModuleFBXLoader::GetMaterialInfo(int w,int h)
+//{
+//
+//}
 GLuint ModuleFBXLoader::ImportImage(const char * path)
 {
 	ILuint imageID;
@@ -214,8 +222,13 @@ GLuint ModuleFBXLoader::ImportImage(const char * path)
 		}
 
 		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+		info_material = new Material();
+		info_material->width = ilGetInteger(IL_IMAGE_WIDTH);
+		info_material->height = ilGetInteger(IL_IMAGE_HEIGHT);
+		info_material->path = path;
+		
 
-
+		
 		if (!success)
 		{
 			LOG("Image conversion failed: %s\n", ilGetError());

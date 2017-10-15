@@ -1,4 +1,5 @@
 #include "ModuleImGui.h"
+#include "ModuleSceneIntro.h"
 #include "Application.h"
 #include "Gizmo.h"
 #include <ctime>
@@ -165,7 +166,7 @@ update_status ModuleImGui::Update(float dt)
 	if (show_console) PrintConsole();
 	if (show_random_number)PrintRandomNumber();
 	if (show_about) ShowAbout();
-	if (show_properties)PrintProperties();
+	if (show_inspector)PrintInspector();
 	if (show_performance) App->performance.Update(show_performance);
 
 	ImGui::EndMainMenuBar(); 
@@ -325,4 +326,64 @@ void ModuleImGui::UpdateConfigPanel()
 void ModuleImGui::ImGuiInput(SDL_Event* e)
 {
 	ImGui_ImplSdlGL2_ProcessEvent(e);
+}
+void ModuleImGui::PrintInspector()
+{
+	ImGui::Begin("Inspector", &show_inspector);
+
+	for (int i = 0; i < App->scene_intro->obj_list.size(); i++)
+	{
+		const char* aux = App->scene_intro->GetGameObject(i)->path_name.c_str();
+		if (ImGui::CollapsingHeader(aux))
+		{
+			ImGui::InputText("Name", (char*)App->scene_intro->GetGameObject(i)->path_name.c_str(), 20);
+
+			float pos[3] = { App->scene_intro->GetGameObject(i)->GetPosition().x ,App->scene_intro->GetGameObject(i)->GetPosition().y,App->scene_intro->GetGameObject(i)->GetPosition().z };
+			float rot[3] = { App->scene_intro->GetGameObject(i)->GetRotation().x,App->scene_intro->GetGameObject(i)->GetRotation().y,App->scene_intro->GetGameObject(i)->GetRotation().z };
+			float s[3] = { App->scene_intro->GetGameObject(i)->GetScale().x,App->scene_intro->GetGameObject(i)->GetScale().y,App->scene_intro->GetGameObject(i)->GetScale().z };
+			if (ImGui::CollapsingHeader("Transform"))
+			{
+				ImGui::InputFloat3("Pos##transform", pos, 2);
+				ImGui::InputFloat3("Rot##transform", rot, 2);
+				ImGui::InputFloat3("Scale##transform", s, 2);
+			}
+
+			if (ImGui::CollapsingHeader("Meshes"))
+			{
+				int j = 0;
+				if (App->scene_intro->GetGameObject(i) != nullptr)
+				{
+					for (std::list<MeshRenderer>::iterator m = App->scene_intro->GetGameObject(i)->mr_list.begin(); m != App->scene_intro->GetGameObject(i)->mr_list.end(); ++m)
+					{
+						char title[25];
+						sprintf_s(title, 25, "Mesh %d##meshrenderer", j + 1);
+						if (ImGui::CollapsingHeader(title))
+						{
+							char name[25];
+							sprintf_s(name, 25, "Vertices##mesh%d", j + 1);
+							ImGui::LabelText(name, "%d", (*m).num_vertices);
+							sprintf_s(name, 25, "Indices##mesh%d", j + 1);
+							ImGui::LabelText(name, "%d", (*m).num_indices);
+						}
+						++j;
+						if (App->scene_intro->GetGameObject(i) == nullptr)
+							break;
+
+					}
+				}
+
+			}
+			if (ImGui::CollapsingHeader("Materials"))
+			{
+				Material* material = &App->scene_intro->GetGameObject(i)->material;
+				ImGui::LabelText("ID##material", "%d", material->textures_id_t);
+				ImGui::LabelText("Width##material", "%d", material->width);
+				ImGui::LabelText("Height##material", "%d", material->height);
+				ImGui::LabelText("Path##material", "%s", material->path.c_str());
+			}
+		}
+		
+	}
+
+	ImGui::End();
 }

@@ -17,8 +17,10 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt); 
 	bool CleanUp();
+	GLGizmo * GetGameObject(uint id) const;
 
 	void PrintConfigData();
+	void PrintInspectorData();
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
 	//p2DynArray<p2Point<int>> GetCollisions(); 
