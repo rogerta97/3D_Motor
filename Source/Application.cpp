@@ -197,7 +197,7 @@ void Application::PrintConfigData()
 		sMStats stats = m_getMemoryStatistics();
 
 		sprintf_s(title, 25, "Memory %.1f", memory[memory.size() - 1]);
-		ImGui::PlotLines("##Memory", &memory[0], memory.size(), 0, title, 0.0f, (float)stats.peakReportedMemory * 1.7f, ImVec2(300, 100));
+		ImGui::PlotHistogram("##Memory", &memory[0], memory.size(), 0, title, 0.0f, (float)stats.peakReportedMemory * 1.7f, ImVec2(300, 100));
 		
 		//Hardware
 		if (ImGui::TreeNode("Hardware"))
@@ -252,7 +252,18 @@ void Application::PrintConfigData()
 			ImGui::Text("Reserved VRAM: "); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.2f", hardware.info.reserved_video_mem);
 
-			ImGui::Separator(); 
+			{
+				char buf[32];
+				sprintf(buf, "%.2f/%.2f", hardware.info.current_video_mem, hardware.info.available_video_mem);
+				float percentage = (hardware.info.current_video_mem * 100) / hardware.info.available_video_mem;
+
+				ImGui::ProgressBar(percentage / 100, ImVec2(0.f, 0.f), buf);
+				ImGui::SameLine(); 
+				ImGui::Text("VRAM usage"); 
+			}
+		
+
+			ImGui::Separator();
 
 			ImGui::Text("Total Reported Mem:"); ImGui::SameLine(); 
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", stats.totalReportedMemory);
@@ -280,6 +291,14 @@ void Application::PrintConfigData()
 
 			ImGui::Text("Peak Alloc Unit Count:"); ImGui::SameLine(); 
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%u", stats.peakAllocUnitCount);
+
+			{
+				char buf[32];
+				sprintf(buf, "%.2f/%.2f", stats.totalReportedMemory, stats.totalActualMemory);
+				float percentage = (stats.totalReportedMemory * 100) / stats.totalActualMemory;
+
+				ImGui::ProgressBar(percentage / 100, ImVec2(0.f, 0.f), buf);
+			}
 
 			ImGui::TreePop(); 
 		}		

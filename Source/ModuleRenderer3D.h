@@ -25,6 +25,7 @@ public:
 	const char* GetDriver() const;
 	void UI_attributes();
 	void CustomAttributes();
+
 	//void SetObjectsWireframe(bool state); 
 
 

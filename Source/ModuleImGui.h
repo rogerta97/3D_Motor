@@ -22,12 +22,12 @@ public:
 
 private:
 
-	void PrintConsole(); 
+	void PrintConsole() ; 
 	void PrintProperties();
 	void PrintRandomNumber();
 	void PrintInspector();
-	void ShowAbout(); 
-	void UpdateConfigPanel(); 
+	void ShowAbout();
+	void UpdateConfigPanel();
 
 private: 
 

@@ -229,7 +229,7 @@ void ModuleImGui::PrintConsole()
 
 	
 }
-void ModuleImGui::PrintProperties()
+void ModuleImGui::PrintProperties() 
 {
 	//if any gizmo has been created
 	Gizmo* curr_GO = nullptr;// = App->fbx_loader->; // App->set the dragged gizmo

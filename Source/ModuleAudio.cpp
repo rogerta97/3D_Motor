@@ -57,7 +57,8 @@ void ModuleAudio::PrintConfigData()
 		ImGui::Text("Volume %d", volume);
 		ImGui::Text("Music Volume %d", music_volume);
 		ImGui::Text("FX Volume %d", fx_volume);
-		ImGui::Text("Driver: %s", this->GetDriver());
+		ImGui::Text("Driver:");
+		ImGui::TextColored(ImVec4(1,1,0,1), "%s", this->GetDriver());
 	}
 }
 
