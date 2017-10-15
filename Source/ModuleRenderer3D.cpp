@@ -374,6 +374,7 @@ void ModuleRenderer3D::UI_attributes()
 	glDisable(GL_COLOR_MATERIAL);
 	glShadeModel(GL_SMOOTH);
 }
+
 void ModuleRenderer3D::CustomAttributes()
 {
 	if (light_model_ambient != STD_AMBIENT_LIGHTING) {

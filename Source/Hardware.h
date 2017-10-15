@@ -23,6 +23,7 @@ public:
 
 	Hardware();
 
+	void Start(); 
 	bool GetHardwareData();
 
 	~Hardware();

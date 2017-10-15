@@ -204,6 +204,7 @@ void Application::PrintConfigData()
 		{
 			SDL_version version; 
 			SDL_GetVersion(&version);	
+			hardware.Start(); 
 
 			ImGui::Text("SDL Version"); ImGui::SameLine(); 
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d.%d.%d", version.major, version.minor, version.patch); 
