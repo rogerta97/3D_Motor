@@ -18,7 +18,7 @@ public:
 
 	void AddToConsole(std::string new_line);
 	void ClearConsole(); 
-	void ImGuiInput(SDL_Event* e); 
+	void ImGuiInput(SDL_Event* e)const; 
 
 private:
 

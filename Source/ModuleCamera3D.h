@@ -23,7 +23,6 @@ public:
 	void PrintConfigData();
 
 private:
-
 	void CalculateViewMatrix();
 
 public:

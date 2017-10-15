@@ -169,7 +169,7 @@ std::list<GLGizmo*>& ModuleFBXLoader::GetList()
 	return meshes; 
 }
 
-GLGizmo * ModuleFBXLoader::GetLastGizmo()
+GLGizmo * ModuleFBXLoader::GetLastGizmo()const
 {
 	if(meshes.empty() == false)
 		return meshes.back();

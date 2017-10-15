@@ -276,7 +276,7 @@ bool ModulePhysics3D::CleanUp()
 //	hinge->setDbgDrawSize(2.0f);
 //}
 
-std::vector<iPoint> ModulePhysics3D::GetCollisions()
+std::vector<iPoint> ModulePhysics3D::GetCollisions()const
 { 
 	std::vector<iPoint> tmp_obj_list;
 	

@@ -323,7 +323,7 @@ void ModuleImGui::UpdateConfigPanel()
 
 }
 
-void ModuleImGui::ImGuiInput(SDL_Event* e)
+void ModuleImGui::ImGuiInput(SDL_Event* e)const
 {
 	ImGui_ImplSdlGL2_ProcessEvent(e);
 }
