@@ -1,11 +1,9 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "Primitive.h"
 #include <string>
 #include<list>
-#include "Primitive.h"
-#include "Gizmo.h"
-#include "iPoint.h"
 
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
@@ -13,9 +11,14 @@
 #define GRAVITY btVector3(0.0f, 0.0f, 0.0f) 
 
 class DebugDrawer;
-struct PhysBody3D;
-struct PhysVehicle3D;
+//struct PhysBody3D;
+//struct PhysVehicle3D;
 struct VehicleInfo;
+struct iPoint; 
+class Gizmo; 
+class Cube2; 
+class GLSphere; 
+class GLCylinder;
 
 class ModulePhysics3D : public Module
 {
@@ -30,14 +33,10 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	// Provisional implementation: 
 
-	//void AddPCube(vec3 size, vec3 position, bool wire);
-	//void AddPSphere(float radium, vec3 position, bool wire);
-
-	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
+	/*void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
 	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);
-
+*/
 	std::vector<iPoint> GetCollisions(); 
 
 	// 3DEngine
@@ -53,13 +52,13 @@ private:
 
 	bool debug;
 
-	btDefaultCollisionConfiguration*	collision_conf;
-	btCollisionDispatcher*				dispatcher;
-	btBroadphaseInterface*				broad_phase;
-	btSequentialImpulseConstraintSolver* solver;
-	btDiscreteDynamicsWorld*			world;
-	btDefaultVehicleRaycaster*			vehicle_raycaster;
-	DebugDrawer*						debug_draw;
+	//btDefaultCollisionConfiguration*	collision_conf;
+	//btCollisionDispatcher*				dispatcher;
+	//btBroadphaseInterface*				broad_phase;
+	//btSequentialImpulseConstraintSolver* solver;
+	//btDiscreteDynamicsWorld*			world;
+	//btDefaultVehicleRaycaster*			vehicle_raycaster;
+	//DebugDrawer*						debug_draw;
 
 	// GeoMath
 

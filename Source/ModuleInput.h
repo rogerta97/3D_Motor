@@ -60,6 +60,11 @@ public:
 		return mouse_y_motion;
 	}
 
+	bool IsMouseInWindow() const
+	{
+		return mouse_in_window;
+	}
+
 private:
 	KEY_STATE* keyboard;
 	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
@@ -68,5 +73,6 @@ private:
 	int mouse_wheel;
 	int mouse_x_motion;
 	int mouse_y_motion;
+	bool mouse_in_window; 
 	//int mouse_z_motion;
 };

@@ -3,7 +3,8 @@
 #include "OpenGL.h"
 #include "ModulePhysics3D.h"
 #include "PhysBody3D.h"
-#include "Primitive.h"
+#include "Gizmo.h"
+#include "iPoint.h"
 
 #define NUM_VERTICES 36
 
@@ -21,21 +22,21 @@ ModulePhysics3D::ModulePhysics3D(bool start_enabled)
 {
 	debug = true;
 
-	collision_conf = new btDefaultCollisionConfiguration();
-	dispatcher = new btCollisionDispatcher(collision_conf);
-	broad_phase = new btDbvtBroadphase();
-	solver = new btSequentialImpulseConstraintSolver();
-	debug_draw = new DebugDrawer();
+	//collision_conf = new btDefaultCollisionConfiguration();
+	//dispatcher = new btCollisionDispatcher(collision_conf);
+	//broad_phase = new btDbvtBroadphase();
+	//solver = new btSequentialImpulseConstraintSolver();
+	//debug_draw = new DebugDrawer();
 }
 
 // Destructor
 ModulePhysics3D::~ModulePhysics3D()
 {
-	delete debug_draw;
-	delete solver;
-	delete broad_phase;
-	delete dispatcher;
-	delete collision_conf;
+	//delete debug_draw;
+	//delete solver;
+	//delete broad_phase;
+	//delete dispatcher;
+	//delete collision_conf;
 }
 
 // Render not available yet----------------------------------
@@ -60,20 +61,20 @@ bool ModulePhysics3D::Start()
 {
 	LOG("Creating Physics environment");
 
-	world = new btDiscreteDynamicsWorld(dispatcher, broad_phase, solver, collision_conf);
-	world->setDebugDrawer(debug_draw);
-	world->setGravity(GRAVITY);
-	vehicle_raycaster = new btDefaultVehicleRaycaster(world);
+	//world = new btDiscreteDynamicsWorld(dispatcher, broad_phase, solver, collision_conf);
+	//world->setDebugDrawer(debug_draw);
+	//world->setGravity(GRAVITY);
+	//vehicle_raycaster = new btDefaultVehicleRaycaster(world);
 
 	// Big plane as ground
-	{
-		btCollisionShape* colShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
+	
+	/*	btCollisionShape* colShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
 		btDefaultMotionState* myMotionState = new btDefaultMotionState();
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
 
 		btRigidBody* body = new btRigidBody(rbInfo);
 		world->addRigidBody(body);
-	}
+	}*/
 
 	//// Creating objects 
 
@@ -90,38 +91,38 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 {
 	App->performance.InitTimer(name); 
 
-	world->stepSimulation(dt, 15);
+	//world->stepSimulation(dt, 15);
 
-	int numManifolds = world->getDispatcher()->getNumManifolds();
-	for(int i = 0; i<numManifolds; i++)
-	{
-		btPersistentManifold* contactManifold = world->getDispatcher()->getManifoldByIndexInternal(i);
-		btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
-		btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
+	//int numManifolds = world->getDispatcher()->getNumManifolds();
+	//for(int i = 0; i<numManifolds; i++)
+	//{
+	//	btPersistentManifold* contactManifold = world->getDispatcher()->getManifoldByIndexInternal(i);
+	//	btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
+	//	btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
 
-		int numContacts = contactManifold->getNumContacts();
-		if(numContacts > 0)
-		{
-			PhysBody3D* pbodyA = (PhysBody3D*)obA->getUserPointer();
-			PhysBody3D* pbodyB = (PhysBody3D*)obB->getUserPointer();
+	//	int numContacts = contactManifold->getNumContacts();
+	//	if(numContacts > 0)
+	//	{
+	//		PhysBody3D* pbodyA = (PhysBody3D*)obA->getUserPointer();
+	//		PhysBody3D* pbodyB = (PhysBody3D*)obB->getUserPointer();
 
-			if(pbodyA && pbodyB)
-			{
-				
-				for (std::list<Module*>::iterator item = pbodyA->collision_listeners.begin(); item != pbodyA->collision_listeners.end(); ++item)
-				{
-					(*item)->OnCollision(pbodyA, pbodyB);
-				}
+	//		if(pbodyA && pbodyB)
+	//		{
+	//			
+	//			for (std::list<Module*>::iterator item = pbodyA->collision_listeners.begin(); item != pbodyA->collision_listeners.end(); ++item)
+	//			{
+	//				(*item)->OnCollision(pbodyA, pbodyB);
+	//			}
 
-				
+	//			
 
-				for (std::list<Module*>::iterator item = pbodyB->collision_listeners.begin(); item != pbodyB->collision_listeners.end(); ++item)
-				{
-					(*item)->OnCollision(pbodyB, pbodyA);
-				}
-			}
-		}
-	}
+	//			for (std::list<Module*>::iterator item = pbodyB->collision_listeners.begin(); item != pbodyB->collision_listeners.end(); ++item)
+	//			{
+	//				(*item)->OnCollision(pbodyB, pbodyA);
+	//			}
+	//		}
+	//	}
+	//}
 
 	App->performance.PauseTimer(name);
 
@@ -137,10 +138,10 @@ update_status ModulePhysics3D::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
-	if(debug == true)
-	{
-		world->debugDrawWorld();
-	}
+	//if(debug == true)
+	//{
+	//	world->debugDrawWorld();
+	//}
 
 	GetCollisions(); 
 
@@ -191,11 +192,11 @@ bool ModulePhysics3D::CleanUp()
 	LOG("Destroying 3D Physics simulation");
 
 	// Remove from the world all collision bodies
-	for(int i = world->getNumCollisionObjects() - 1; i >= 0; i--)
-	{
-		btCollisionObject* obj = world->getCollisionObjectArray()[i];
-		world->removeCollisionObject(obj);
-	}
+	//for(int i = world->getNumCollisionObjects() - 1; i >= 0; i--)
+	//{
+	//	btCollisionObject* obj = world->getCollisionObjectArray()[i];
+	//	world->removeCollisionObject(obj);
+	//}
 
 	//for(std::list<btTypedConstraint*>::iterator item = constraints.begin(); item != constraints.end(); item++)
 	//{
@@ -225,8 +226,8 @@ bool ModulePhysics3D::CleanUp()
 
 	//vehicles.clear();
 
-	delete vehicle_raycaster;
-	delete world;
+	/*delete vehicle_raycaster;
+	delete world;*/
 
 	return true;
 }
@@ -248,32 +249,32 @@ bool ModulePhysics3D::CleanUp()
 //
 //	psphere_list.push_back(new_sphere);
 //}
-
-// ---------------------------------------------------------
-void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB)
-{
-	btTypedConstraint* p2p = new btPoint2PointConstraint(
-		*(bodyA.body), 
-		*(bodyB.body), 
-		btVector3(anchorA.x, anchorA.y, anchorA.z), 
-		btVector3(anchorB.x, anchorB.y, anchorB.z));
-	world->addConstraint(p2p);
-	p2p->setDbgDrawSize(2.0f);
-}
-
-void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisA, const vec3& axisB, bool disable_collision)
-{
-	btHingeConstraint* hinge = new btHingeConstraint(
-		*(bodyA.body), 
-		*(bodyB.body), 
-		btVector3(anchorA.x, anchorA.y, anchorA.z),
-		btVector3(anchorB.x, anchorB.y, anchorB.z),
-		btVector3(axisA.x, axisA.y, axisA.z), 
-		btVector3(axisB.x, axisB.y, axisB.z));
-
-	world->addConstraint(hinge, disable_collision);
-	hinge->setDbgDrawSize(2.0f);
-}
+//
+//// ---------------------------------------------------------
+//void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB)
+//{
+//	btTypedConstraint* p2p = new btPoint2PointConstraint(
+//		*(bodyA.body), 
+//		*(bodyB.body), 
+//		btVector3(anchorA.x, anchorA.y, anchorA.z), 
+//		btVector3(anchorB.x, anchorB.y, anchorB.z));
+//	world->addConstraint(p2p);
+//	p2p->setDbgDrawSize(2.0f);
+//}
+//
+//void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisA, const vec3& axisB, bool disable_collision)
+//{
+//	btHingeConstraint* hinge = new btHingeConstraint(
+//		*(bodyA.body), 
+//		*(bodyB.body), 
+//		btVector3(anchorA.x, anchorA.y, anchorA.z),
+//		btVector3(anchorB.x, anchorB.y, anchorB.z),
+//		btVector3(axisA.x, axisA.y, axisA.z), 
+//		btVector3(axisB.x, axisB.y, axisB.z));
+//
+//	world->addConstraint(hinge, disable_collision);
+//	hinge->setDbgDrawSize(2.0f);
+//}
 
 std::vector<iPoint> ModulePhysics3D::GetCollisions()
 { 

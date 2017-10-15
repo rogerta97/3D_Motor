@@ -172,14 +172,12 @@ void ModuleInput::PrintConfigData()
 {
 	ImGuiIO& io = ImGui::GetIO();
 
+	mouse_in_window = io.WantCaptureMouse;
+	
 	if (ImGui::CollapsingHeader(name))
 	{
-		
 		ImGui::Text("Mouse Position:");
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "X: %d", App->input->mouse_x);
-
-		
-		
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "X: %d", App->input->mouse_x);	
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Y: %d", App->input->mouse_y);
 		ImGui::Text("Mouse Motion:");
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "X: %d", App->input->mouse_x_motion);
@@ -193,8 +191,6 @@ void ModuleInput::PrintConfigData()
 		ImGui::Text("Keys pressed:");   for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (ImGui::IsKeyPressed(i)) { ImGui::SameLine(); ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", i); }
 		ImGui::Text("Keys release:");   for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (ImGui::IsKeyReleased(i)) { ImGui::SameLine(); ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", i); }
 		ImGui::Text("Keys mods: %s%s%s%s", io.KeyCtrl ? "CTRL " : "", io.KeyShift ? "SHIFT " : "", io.KeyAlt ? "ALT " : "", io.KeySuper ? "SUPER " : "");
-
-
 	}
 	
 }

@@ -357,13 +357,14 @@ void ModuleImGui::PrintInspector()
 					{
 						char title[25];
 						sprintf_s(title, 25, "Mesh %d##meshrenderer", j + 1);
-						if (ImGui::CollapsingHeader(title))
+						if (ImGui::TreeNode(title))
 						{
 							char name[25];
 							sprintf_s(name, 25, "Vertices##mesh%d", j + 1);
 							ImGui::LabelText(name, "%d", (*m).num_vertices);
 							sprintf_s(name, 25, "Indices##mesh%d", j + 1);
 							ImGui::LabelText(name, "%d", (*m).num_indices);
+							ImGui::TreePop();
 						}
 						++j;
 						if (App->scene_intro->GetGameObject(i) == nullptr)

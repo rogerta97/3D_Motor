@@ -77,9 +77,11 @@ update_status ModuleCamera3D::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * temporal_speed;
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * temporal_speed;
 	
-	if(App->input->GetMouseWheel() == 1) newPos -= Z *temporal_speed*mouse_wheel_speed;
-	if (App->input->GetMouseWheel() == -1) newPos += Z *temporal_speed*mouse_wheel_speed;
-
+	if (App->input->IsMouseInWindow() == 0)
+	{
+		if (App->input->GetMouseWheel() == 1) newPos -= Z *temporal_speed*mouse_wheel_speed;
+		if (App->input->GetMouseWheel() == -1) newPos += Z *temporal_speed*mouse_wheel_speed;
+	}
 
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
