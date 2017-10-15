@@ -43,9 +43,9 @@ public:
 
 	void PrintConfigData();
 
-	Cube2* AddCube(float3 origin, uint size); 
+	/*Cube2* AddCube(float3 origin, uint size); 
 	GLSphere* AddSphere(float3 origin, float radius, uint rings, uint sectors);
-	GLCylinder* AddCylinder(float3 origin, float radius, float height, int sides);
+	GLCylinder* AddCylinder(float3 origin, float radius, float height, int sides);*/
 
 
 private:

@@ -22,6 +22,10 @@ struct MeshRenderer
 	uint vertices_id_t = 0;
 	uint uvs_id_t = 0;
 	uint indices_id_t = 0;
+
+	void SetCubeVertices(float3 origin, uint edge_size); 
+	void SetSphereVertices(float radius, uint rings, uint sectors, float3 origin);
+	void SetCylinderVertices(float r, int sides, int height);
 };
 
 struct Material
@@ -72,72 +76,68 @@ protected:
 	bool active = false;
 public:
 
-	uint vertices_id = 0;
-	uint uvs_id = 0;
-	uint textures_id = 0;
-	uint indices_id = 0;
-
+	std::list<MeshRenderer> mr_list; 
 };
 
-class Cube1 : public Gizmo
-{
-public:
-	Cube1();
-	~Cube1(); 
-
-	void Start();
-
-	void Draw(); 
-};
-
-class Cube2 : public Gizmo
-{
-public:
-	Cube2();
-	~Cube2();
-
-	void Start(float3 origin, float size);
-
-	void Draw();
-};
-
-class GLSphere : public Gizmo
-{
-public: 
-	GLSphere();
-	~GLSphere();
-
-	void Start(float radius, uint rings, uint sectors, float3 origin);
-	void Draw(); 
-
-protected:
-
-	std::vector<GLfloat> vertices;
-	std::vector<GLfloat> normals;
-	std::vector<GLushort> indices;
-};
-
-class GLCylinder : public Gizmo
-{
-public:
-	GLCylinder();
-	~GLCylinder();
-
-	void Start(float r, int sides, int lenght);
-	void Draw();
-
-protected:
-	std::vector<float3> vertices;
-	std::vector<GLushort> indices;
-
-};
+//class Cube1 : public Gizmo
+//{
+//public:
+//	Cube1();
+//	~Cube1(); 
+//
+//	void Start();
+//
+//	void Draw(); 
+//};
+//
+//class Cube2 : public Gizmo
+//{
+//public:
+//	Cube2();
+//	~Cube2();
+//
+//	void Start(float3 origin, float size);
+//
+//	void Draw();
+//};
+//
+//class GLSphere : public Gizmo
+//{
+//public: 
+//	GLSphere();
+//	~GLSphere();
+//
+//	void Start(float radius, uint rings, uint sectors, float3 origin);
+//	void Draw(); 
+//
+//protected:
+//
+//	std::vector<GLfloat> vertices;
+//	std::vector<GLfloat> normals;
+//	std::vector<GLushort> indices;
+//};
+//
+//class GLCylinder : public Gizmo
+//{
+//public:
+//	GLCylinder();
+//	~GLCylinder();
+//
+//	void Start(float r, int sides, int lenght);
+//	void Draw();
+//
+//protected:
+//	std::vector<float3> vertices;
+//	std::vector<GLushort> indices;
+//
+//};
 class GLGizmo : public Gizmo
 {
 public:
 	GLGizmo();
 	~GLGizmo();
 	
-		void Start(float r, int sides, int lenght);
+	void Start(float r, int sides, int lenght);
 	void Draw();
 	void SetGizmoBox(AABB _box);
 	AABB GetGizmoBox() const;

@@ -359,12 +359,18 @@ void ModulePhysics3D::PrintConfigData()
 						
 					if (!App->scene_intro->obj_list.empty())
 					{
-						LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->vertices_id);
+						//LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
 						delete(App->scene_intro->obj_list[0]);
 						App->scene_intro->obj_list.clear();
 					}
 
-					//App->scene_intro->obj_list.push_back((Gizmo*)AddCube(origin_vector, size)); 
+					MeshRenderer mr; 
+					mr.SetCubeVertices(origin_vector, size);
+
+					GLGizmo* new_go = new GLGizmo; 
+					new_go->mr_list.push_back(mr); 
+
+					App->scene_intro->obj_list.push_back(new_go);
 				}							
 				break;
 
@@ -395,11 +401,12 @@ void ModulePhysics3D::PrintConfigData()
 
 					if (!App->scene_intro->obj_list.empty())
 					{
-						LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->vertices_id);
+					//	LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
 						delete(App->scene_intro->obj_list[0]);
 						App->scene_intro->obj_list.clear();
 					}
 
+					
 					//App->scene_intro->obj_list.push_back((Gizmo*)AddSphere(origin_vector, radius, rings, sectors));
 				}					
 				break;
@@ -431,7 +438,7 @@ void ModulePhysics3D::PrintConfigData()
 						
 					if (!App->scene_intro->obj_list.empty())
 					{
-						LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->vertices_id);
+						//LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
 						delete(App->scene_intro->obj_list[0]);
 						App->scene_intro->obj_list.clear();
 					}
@@ -444,33 +451,33 @@ void ModulePhysics3D::PrintConfigData()
 		}
 	}
 }
-
-Cube2* ModulePhysics3D::AddCube(float3 origin, uint size)
-{
-	Cube2* new_cube = new Cube2();
-
-	new_cube->Start(origin, (float)size);
-
-	return new_cube; 
-}
-
-GLSphere* ModulePhysics3D::AddSphere(float3 origin, float radius, uint rings, uint sectors)
-{
-	GLSphere* new_sphere = new GLSphere();
-
-	new_sphere->Start(radius, rings, sectors, origin);
-
-	return new_sphere;
-}
-
-GLCylinder* ModulePhysics3D::AddCylinder(float3 origin, float radius, float height, int sides)
-{
-	GLCylinder* new_cylinder = new GLCylinder();
-
-	new_cylinder->Start(radius, sides, height);
-
-	return new_cylinder;
-}
+//
+//Cube2* ModulePhysics3D::AddCube(float3 origin, uint size)
+//{
+//	Cube2* new_cube = new Cube2();
+//
+//	new_cube->Start(origin, (float)size);
+//
+//	return new_cube; 
+//}
+//
+//GLSphere* ModulePhysics3D::AddSphere(float3 origin, float radius, uint rings, uint sectors)
+//{
+//	GLSphere* new_sphere = new GLSphere();
+//
+//	new_sphere->Start(radius, rings, sectors, origin);
+//
+//	return new_sphere;
+//}
+//
+//GLCylinder* ModulePhysics3D::AddCylinder(float3 origin, float radius, float height, int sides)
+//{
+//	GLCylinder* new_cylinder = new GLCylinder();
+//
+//	new_cylinder->Start(radius, sides, height);
+//
+//	return new_cylinder;
+//}
 
 // =============================================
 void DebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
