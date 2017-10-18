@@ -130,6 +130,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			//FIX ME
 				//App->camera->Focus(vec3(new_object->GetPosition().x, new_object->GetPosition().y, new_object->GetPosition().z), bbox.Size().Length() *1.2f);
 
+			tmp_mr->type = COMPONENT_MESH_RENDERER; 
 			new_object->PushComponent((Component*)tmp_mr); 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -153,6 +154,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			final_str += path.C_Str(); 
 			MA_tmp = ImportImage(final_str.c_str());
 
+			MA_tmp->type = COMPONENT_MATERIAL;
 			new_object->PushComponent(MA_tmp); 
 		}
 
@@ -182,6 +184,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 					TR_cmp->SetRotation(rot);
 					TR_cmp->SetScale(scale);
 
+					TR_cmp->type = COMPONENT_TRANSFORM; 
 					new_object->PushComponent(TR_cmp); 
 				}
 			}
@@ -229,6 +232,7 @@ ComponentMaterial* ModuleFBXLoader::ImportImage(const char * path)
 	ILenum error;
 	ilGenImages(1, &imageID);
 	ilBindImage(imageID);
+
 	ComponentMaterial* new_component = new ComponentMaterial();
 
 	success = ilLoadImage(path);
@@ -250,6 +254,7 @@ ComponentMaterial* ModuleFBXLoader::ImportImage(const char * path)
 		new_component->width = ilGetInteger(IL_IMAGE_WIDTH);
 		new_component->height = ilGetInteger(IL_IMAGE_HEIGHT);
 		new_component->path = path;
+		new_component->type = COMPONENT_MATERIAL;
 			
 		if (!success)
 		{

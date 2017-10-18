@@ -147,12 +147,12 @@ update_status ModuleInput::PreUpdate(float dt)
 
 					if (App->scene_intro->GetGameObject(0) != nullptr)
 					{
-						App->scene_intro->GetGameObject(0)->GetComponent(COMPONENT_MATERIAL); 
+						ComponentMaterial* mat_to_change = (ComponentMaterial*)App->scene_intro->GetGameObject(0)->GetComponent(COMPONENT_MATERIAL);
 
-						new_material = nullptr;
+						mat_to_change->Set(new_material); 
+					
+						delete(new_material); 
 					}
-						//App->scene_intro->GetGameObject(0)->.SetTextureID(new_tex); 
- 
 				}
 					
 				break;

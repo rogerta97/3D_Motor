@@ -58,6 +58,8 @@ struct ComponentMeshRenderer : public Component
 struct ComponentMaterial : public Component
 {
 
+	void Set(ComponentMaterial* new_cmp); 
+
 	void SetTextureID(GLuint tex); 
 	uint GetTexSize()const;
 

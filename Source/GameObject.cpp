@@ -273,7 +273,6 @@ uint ComponentMeshRenderer::GetTriNum() const
 
 void GameObject::Draw()
 {
-
 	if (!component_list.empty())
 	{
 		for (int i = 0; i < component_list.size(); i++)
@@ -295,6 +294,7 @@ void GameObject::Draw()
 					glBindBuffer(GL_ARRAY_BUFFER, tmp->uvs_id);
 					glTexCoordPointer(3, GL_FLOAT, 0, NULL);
 				}
+
 				glDrawElements(GL_TRIANGLES, tmp->num_indices, GL_UNSIGNED_INT, NULL);
 
 			}
@@ -302,24 +302,31 @@ void GameObject::Draw()
 			if (component_list[i]->type == COMPONENT_MATERIAL)
 			{
 				ComponentMaterial* tmp2 = (ComponentMaterial*)component_list[i];
-				//glEnable(GL_TEXTURE_2D);
+				glEnable(GL_TEXTURE_2D);
 				glBindTexture(GL_TEXTURE_2D, tmp2->textures_id);
-
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-				//Unbind textures affter rendering
-				glBindTexture(GL_TEXTURE_2D, 0);
-
+		
 				glDisableClientState(GL_VERTEX_ARRAY);
 				glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 			}
+
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			//glBindTexture(GL_TEXTURE_2D, 0);
 			
 		}
 
 	}
 
 	
+}
+
+void ComponentMaterial::Set(ComponentMaterial * new_cmp)
+{
+	textures_id = new_cmp->textures_id; 
+	width = new_cmp->width;
+	height = new_cmp->height;
+	path = new_cmp->path;
+	type = new_cmp->type; 
 }
 
 void ComponentMaterial::SetTextureID(GLuint tex)
