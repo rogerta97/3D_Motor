@@ -141,13 +141,20 @@ update_status ModuleInput::PreUpdate(float dt)
 				{
 					//For now we set the texture in the last obect created (the unique in the scene) 
 					LOG("PNG file dragged to window", termination);
-					GLuint new_tex = App->fbx_loader->ImportImage(file.c_str());
-					App->scene_intro->obj_list[0]->material.SetTextureID(new_tex); 
+					ComponentMaterial* new_material = nullptr; 
+
+					new_material = App->fbx_loader->ImportImage(file.c_str());
+
+					if (App->scene_intro->GetGameObject(0) != nullptr)
+					{
+						App->scene_intro->GetGameObject(0)->GetComponent(COMPONENT_MATERIAL); 
+
+						new_material = nullptr;
+					}
+						//App->scene_intro->GetGameObject(0)->.SetTextureID(new_tex); 
  
 				}
 					
-
-											
 				break;
 		}
 	}

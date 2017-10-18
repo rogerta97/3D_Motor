@@ -4,7 +4,7 @@
 #include "Primitive.h"
 #include "p2Point.h"
 #include "OpenGL.h"
-#include "Gizmo.h"
+#include "GameObject.h"
 #include "ModuleFBXLoader.h"
 
 #include "PhysBody3D.h"
@@ -48,12 +48,12 @@ bool ModuleSceneIntro::CleanUp()
 	return true;
 }
 
-GLGizmo * ModuleSceneIntro::GetGameObject(uint id) const
+GameObject* ModuleSceneIntro::GetGameObject(uint id)
 {
-	GLGizmo* ret = nullptr;
+	GameObject* ret = nullptr;
 
 	uint i = 0;
-	for (std::vector<GLGizmo*>::const_iterator it = obj_list.begin(); it != obj_list.end(); ++it)
+	for (std::vector<GameObject*>::iterator it = GO_list.begin(); it != GO_list.end(); it++)
 	{
 		if (i == id)
 		{
@@ -61,8 +61,7 @@ GLGizmo * ModuleSceneIntro::GetGameObject(uint id) const
 			break;
 		}
 		++i;
-	}
-
+	}	
 	return ret;
 }
 
@@ -70,17 +69,7 @@ GLGizmo * ModuleSceneIntro::GetGameObject(uint id) const
 update_status ModuleSceneIntro::Update(float dt)
 {
 	
-	if (!App->fbx_loader->GetList().empty())
-	{
-		for (std::list<GLGizmo*>::iterator it = App->fbx_loader->GetList().begin(); it != App->fbx_loader->GetList().end(); it++)
-		{
-			obj_list.push_back((*it)); 
-		}
-
-		App->fbx_loader->GetList().clear(); 
-	}
-
-	for (std::vector<GLGizmo*>::iterator it = obj_list.begin(); it != obj_list.end(); it++)
+	for (std::vector<GameObject*>::iterator it = GO_list.begin(); it != GO_list.end(); it++)
 	{
 		(*it)->Draw(); 
 	}
@@ -120,9 +109,14 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 }
 
+void ModuleSceneIntro::AddGameObject(GameObject * GO)
+{
+	GO_list.push_back(GO); 
+}
+
 void ModuleSceneIntro::ClearGOList()
 {
-	obj_list.clear(); 
+	GO_list.clear();
 }
 
 

@@ -1149,7 +1149,7 @@
     <ClInclude Include="TextureLoader.h">
       <Filter>Tools\Loaders</Filter>
     </ClInclude>
-    <ClInclude Include="Gizmo.h">
+    <ClInclude Include="GameObject.h">
       <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1349,7 +1349,7 @@
     <ClCompile Include="TextureLoader.cpp">
       <Filter>Tools\Loaders</Filter>
     </ClCompile>
-    <ClCompile Include="Gizmo.cpp">
+    <ClCompile Include="GameObject.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>

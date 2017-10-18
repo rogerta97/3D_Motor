@@ -1,4 +1,4 @@
-#include "Gizmo.h"
+#include "GameObject.h"
 #include "OpenGL.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
@@ -8,75 +8,63 @@
 #define M_PI 3.14
 #define M_PI_2 M_PI/2
 
-void Gizmo::Start()
+float3 ComponentTransform::GetPosition() const
 {
+	return position;
 }
 
-void Gizmo::Draw()
-{
-}
-
-float3 Gizmo::GetPosition() const
-{
-	return translation;
-}
-
-float3 Gizmo::GetRotation() const
+Quat ComponentTransform::GetRotation() const
 {
 	return rotation;
 }
 
-float3 Gizmo::GetScale() const
+float3 ComponentTransform::GetScale() const
 {
 	return scale;
 }
 
-AABB GLGizmo::GetGizmoBox() const
+void ComponentTransform::SetPosition(const float3 & _position)
 {
-	return Gizmo_box;
+	position = _position;
 }
 
-void Gizmo::SetPosition(const float3 & position)
-{
-	translation = position;
-}
-
-void Gizmo::SetRotation(const float3 & rotation)
+void ComponentTransform::SetRotation(const Quat & rotation)
 {
 	this->rotation = rotation;
 }
 
-void Gizmo::SetScale(const float3 & scale)
+void ComponentTransform::SetScale(const float3 & scale)
 {
 	this->scale = scale;
 }
 
-void GLGizmo::SetGizmoBox(AABB _box)
+void ComponentMeshRenderer::SetGizmoBox(AABB _box)
 {
 	Gizmo_box = _box;
 }
-
-bool Gizmo::Active() const
+AABB ComponentMeshRenderer::GetGizmoBox() const
+{
+	return Gizmo_box;
+}
+bool GameObject::Active() const
 {
 	return active;
 }
 
-void Gizmo::SetActive()
+void GameObject::SetActive(bool _active)
 {
-	active = true;
+	active = _active;
 }
 
-
-
-uint Gizmo::GetTriNum() const
+uint ComponentMeshRenderer::GetTriNum() const
 {
-	return triangles_num;
+	return (num_vertices/3);
 }
 
-uint Gizmo::GetTexSize() const
-{
-	return texture_size;
-}
+//Point ComponentMaterial::GetTexSize() const
+//{
+	//return texture_size;
+//}
 
 //Cube1::Cube1()
 //{
@@ -277,52 +265,56 @@ uint Gizmo::GetTexSize() const
 //	glBindBuffer(GL_ARRAY_BUFFER, 0); 
 //}
 
-GLGizmo::GLGizmo()
-{
-}
 
-GLGizmo::~GLGizmo()
-{
-}
 
-void GLGizmo::Start(float r, int sides, int lenght)
-{
-}
 
-void GLGizmo::Draw()
+
+
+
+void GameObject::Draw()
 {
 
-	if (!mr_list.empty())
+	if (!component_list.empty())
 	{
-		for (std::list<MeshRenderer>::iterator it = mr_list.begin(); it != mr_list.end(); it++)
+		for (int i = 0; i < component_list.size(); i++)
 		{
-			glEnableClientState(GL_VERTEX_ARRAY);
-
-			glBindBuffer(GL_ARRAY_BUFFER, (*it).vertices_id_t);
-			glVertexPointer(3, GL_FLOAT, 0, NULL);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it).indices_id_t);
-
-			//Apply UV if exist
-			if ((*it).num_uvs != 0)
+			if (component_list[i]->type == COMPONENT_MESH_RENDERER)
 			{
-				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-				glBindBuffer(GL_ARRAY_BUFFER, (*it).uvs_id_t);
-				glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+				ComponentMeshRenderer* tmp = (ComponentMeshRenderer*)component_list[i];
+
+				glEnableClientState(GL_VERTEX_ARRAY);
+
+				glBindBuffer(GL_ARRAY_BUFFER, tmp->vertices_id);
+				glVertexPointer(3, GL_FLOAT, 0, NULL);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tmp->indices_id);
+
+				//Apply UV if exist
+				if (tmp->num_uvs != 0)
+				{
+					glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+					glBindBuffer(GL_ARRAY_BUFFER, tmp->uvs_id);
+					glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+				}
+				glDrawElements(GL_TRIANGLES, tmp->num_indices, GL_UNSIGNED_INT, NULL);
+
 			}
 
-			//glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, (GLuint)material.textures_id_t);
+			if (component_list[i]->type == COMPONENT_MATERIAL)
+			{
+				ComponentMaterial* tmp2 = (ComponentMaterial*)component_list[i];
+				//glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, tmp2->textures_id);
 
-			glDrawElements(GL_TRIANGLES, (*it).num_indices, GL_UNSIGNED_INT, NULL);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+				//Unbind textures affter rendering
+				glBindTexture(GL_TEXTURE_2D, 0);
 
-			//Unbind textures affter rendering
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			glDisableClientState(GL_VERTEX_ARRAY);
-			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+				glDisableClientState(GL_VERTEX_ARRAY);
+				glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+			}
+			
 		}
 
 	}
@@ -330,16 +322,21 @@ void GLGizmo::Draw()
 	
 }
 
-void Material::SetTextureID(GLuint tex)
+void ComponentMaterial::SetTextureID(GLuint tex)
 {
-	textures_id_t = tex;
+	textures_id = tex;
 }
 
-void MeshRenderer::SetCubeVertices(float3 origin, uint size)
+uint ComponentMaterial::GetTexSize() const
+{
+	return 0;
+}
+
+void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 {
 	//translation = origin;
-	glGenBuffers(1, (GLuint*)&vertices_id_t);
-	glBindBuffer(GL_ARRAY_BUFFER, vertices_id_t);
+	glGenBuffers(1, (GLuint*)&vertices_id);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 
 	float vertices[8 * 3] =
 	{
@@ -358,8 +355,8 @@ void MeshRenderer::SetCubeVertices(float3 origin, uint size)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 
-	glGenBuffers(1, (GLuint*)&indices_id_t);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id_t);
+	glGenBuffers(1, (GLuint*)&indices_id);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
 
 	GLubyte indices[] =
 	{			
@@ -381,12 +378,12 @@ void MeshRenderer::SetCubeVertices(float3 origin, uint size)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 12 * 3, indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	LOG("Cube created with buffer num %d", vertices_id_t);
+	LOG("Cube created with buffer num %d", vertices_id);
 	LOG("Vertices: 8");
 	LOG("Triangles: 16");
 }
 
-void MeshRenderer::SetSphereVertices(float radius, uint rings, uint sectors, float3 origin)
+void ComponentMeshRenderer::SetSphereVertices(float radius, uint rings, uint sectors, float3 origin)
 {
 	float const R = 1. / (float)(rings - 1);
 	float const S = 1. / (float)(sectors - 1);
@@ -416,16 +413,16 @@ void MeshRenderer::SetSphereVertices(float radius, uint rings, uint sectors, flo
 		*indices++ = (r + 1) * sectors + s;
 	}
 
-	glGenBuffers(1, (GLuint*)&vertices_id_t);
+	glGenBuffers(1, (GLuint*)&vertices_id);
 
-	LOG("Sphere created with buffer num %d", vertices_id_t);
+	LOG("Sphere created with buffer num %d", vertices_id);
 	LOG("Radius: %.2f", radius);
 	LOG("Rings: %d", rings);
 	LOG("Sectors: %d", sectors);
 	LOG("Vertices: %d", (rings - 2)*(sectors)+2);
 }
 
-void MeshRenderer::SetCylinderVertices(float r, int sides, int height)
+void ComponentMeshRenderer::SetCylinderVertices(float r, int sides, int height)
 {
 	//vertices.resize(((360 / (360 / sides)) * 2) + 4);    //sides  (vertex per circumference) * 2 (circumferences) + 2 (circumference center)
 	//std::vector<float3>::iterator v = vertices.begin();
@@ -457,4 +454,38 @@ void MeshRenderer::SetCylinderVertices(float r, int sides, int height)
 	//LOG("Sides: %d:", sides);
 	//LOG("Height: %d:", height);
 	//LOG("Vertices: %d", ((360 / (360 / sides)) * 2) + 2); 
+}
+
+Component * GameObject::GetComponent(component_type new_component_type)
+{
+	//here we will create the component and add it to the list
+
+	for (vector<Component*>::iterator it = component_list.begin();it != component_list.end(); it++)
+	{
+		if ((*it)->type == new_component_type)
+			return (*it); 
+	}
+
+	return nullptr; 
+	
+}
+
+void GameObject::PushComponent(Component * comp)
+{
+	component_list.push_back(comp); 
+}
+
+bool Component::Enable()
+{ 
+	return true;
+}
+
+bool Component::Update()
+{
+	return true;
+}
+
+bool Component::Disable()
+{
+	return true;
 }

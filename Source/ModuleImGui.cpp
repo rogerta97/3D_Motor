@@ -1,7 +1,7 @@
 #include "ModuleImGui.h"
 #include "ModuleSceneIntro.h"
 #include "Application.h"
-#include "Gizmo.h"
+#include "GameObject.h"
 #include <ctime>
 
 #define SCANCODE_AMOUNT 284
@@ -232,29 +232,32 @@ void ModuleImGui::PrintConsole()
 void ModuleImGui::PrintProperties() 
 {
 	//if any gizmo has been created
-	Gizmo* curr_GO = nullptr;// = App->fbx_loader->; // App->set the dragged gizmo
+
+	GameObject* curr_GO = nullptr;// = App->fbx_loader->; // App->set the dragged gizmo
 	//ImGui::SetNextWindowPos(ImVec2((float)properties_panel_x, (float)properties_panel_y), ImGuiSetCond_Always);
 	//ImGui::SetNextWindowSize(ImVec2((float)properties_panel_w, (float)properties_panel_h), ImGuiSetCond_Always);
-	ImGui::Begin("Properties", &show_properties);
+	/*ImGui::Begin("Properties", &show_properties);
+
+	ComponentTransform* trans_tmp = (ComponentTransform*)App->scene_intro->GetGameObject(0)->GetComponent(COMPONENT_TRANSFORM);
 	
 	if (curr_GO != nullptr)
-	{
-		float3 pos = curr_GO->GetPosition();
-		float3 rot = curr_GO->GetRotation();
-		float3 scale = curr_GO->GetScale();
+	{	 
+		float3 pos = trans_tmp->GetPosition();
+		float3 rot = trans_tmp->GetRotation();
+		float3 scale = trans_tmp->GetScale();
 
 		if (ImGui::DragFloat3("Position", (float*)&pos, 0.25f))
-			curr_GO->SetPosition(pos);
+			trans_tmp->SetPosition(pos);
 
 		if (ImGui::DragFloat3("Rotation", (float*)&rot))
-			curr_GO->SetRotation(rot);
+			trans_tmp->SetRotation(rot);
 
 		if (ImGui::DragFloat3("Scale", (float*)&scale, 0.05f))
-			curr_GO->SetScale(scale);
+			trans_tmp->SetScale(scale);
 
-		ImGui::Text("Current Triangles : %d", curr_GO->GetTriNum());
-		ImGui::Text("Texture size %d", curr_GO->GetTexSize());
-	}
+		ImGui::Text("Current Triangles : %d", trans_tmp->GetTriNum());
+		ImGui::Text("Texture size %d", trans_tmp->GetTexSize());
+	}*/
 	ImGui::End();
 }
 void ModuleImGui::PrintRandomNumber()
@@ -331,7 +334,7 @@ void ModuleImGui::PrintInspector()
 {
 	ImGui::Begin("Inspector", &show_inspector);
 
-	for (int i = 0; i < App->scene_intro->obj_list.size(); i++)
+	/*for (int i = 0; i < App->scene_intro->obj_list.size(); i++)
 	{
 		const char* aux = App->scene_intro->GetGameObject(i)->path_name.c_str();
 		if (ImGui::CollapsingHeader(aux))
@@ -384,7 +387,7 @@ void ModuleImGui::PrintInspector()
 			}
 		}
 		
-	}
+	}*/
 
 	ImGui::End();
 }

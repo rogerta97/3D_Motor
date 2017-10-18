@@ -4,7 +4,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleFBXLoader.h"
 #include "ModuleSceneIntro.h"
-#include "Gizmo.h"
+#include "GameObject.h"
 
 #define STD_CAM_DISTANCE 10
 ModuleCamera3D::ModuleCamera3D(bool start_enabled)
@@ -54,9 +54,11 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
-	Gizmo* aux;
-	if (App->scene_intro->obj_list.empty() == false)
-		 aux = App->scene_intro->obj_list.back();
+	GameObject* aux;
+	ComponentTransform* tmp_trans; 
+
+	if (App->scene_intro->GetGameObject(0) != nullptr)
+		 aux = App->scene_intro->GetGameObject(0);
 	else
 		 aux = nullptr;
 	App->performance.InitTimer(name); 
@@ -67,7 +69,6 @@ update_status ModuleCamera3D::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		temporal_speed=temporal_speed*0.3f;
 	
-
 	//if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += temporal_speed;
 	//if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= temporal_speed;
 
@@ -85,13 +86,16 @@ update_status ModuleCamera3D::Update(float dt)
 
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
+
 		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_RALT) == KEY_REPEAT)
 			//TODO put the last gizmo position to orbit arround it
 		{
+			tmp_trans = (ComponentTransform*)App->scene_intro->GetGameObject(0)->GetComponent(COMPONENT_TRANSFORM);
+
 			if (aux == nullptr)
 				Orbit(vec3(0,0,0), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
 			else
-				Orbit(vec3(aux->GetPosition().x, aux->GetPosition().y, aux->GetPosition().z), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
+				Orbit(vec3(tmp_trans->GetPosition().x, tmp_trans->GetPosition().y, tmp_trans->GetPosition().z), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
 
 		}
 			
@@ -100,10 +104,12 @@ update_status ModuleCamera3D::Update(float dt)
 	{
 		//insert last gizmo position and the distance
 		//distance has to change depending on the size of the imported fbx
+		tmp_trans = (ComponentTransform*)App->scene_intro->GetGameObject(0)->GetComponent(COMPONENT_TRANSFORM);
+
 		if(aux== NULL)
 			Focus(vec3(0, 0, 0), STD_CAM_DISTANCE);
 		else
-			Focus(vec3(aux->GetPosition().x, aux->GetPosition().y, aux->GetPosition().z), STD_CAM_DISTANCE);
+			Focus(vec3(tmp_trans->GetPosition().x, tmp_trans->GetPosition().y, tmp_trans->GetPosition().z), STD_CAM_DISTANCE);
 
 	}
 	Position += newPos;

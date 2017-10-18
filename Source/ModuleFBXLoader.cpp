@@ -3,7 +3,7 @@
 #include "ModuleFBXLoader.h"
 #include "ModuleSceneIntro.h"
 #include "ModuleCamera3D.h"
-#include "Gizmo.h"
+#include "GameObject.h"
 #include <vector>
 ModuleFBXLoader::ModuleFBXLoader(bool enable_state)
 {
@@ -50,11 +50,14 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 	bool ret = true; 
 
 	const aiScene* scene = aiImportFile(full_path, aiProcessPreset_TargetRealtime_MaxQuality);
+	GameObject* new_object; 
+
+	if(scene != nullptr)
+		new_object = new GameObject();
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
-		GLGizmo* new_object = new GLGizmo();;
 		int i; 
 		for (i = 0; i < scene->mNumMeshes; i++) 
 		{
@@ -64,24 +67,24 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 
 			aiMesh* m = scene->mMeshes[i];
 
-			MeshRenderer tmp_mr; 
+			ComponentMeshRenderer* tmp_mr = new ComponentMeshRenderer(); 
 
-			tmp_mr.num_vertices = m->mNumVertices;
-			tmp_mr.vertices = new float[tmp_mr.num_vertices*3];
-			memcpy(tmp_mr.vertices, m->mVertices, sizeof(float) * tmp_mr.num_vertices *3 );
+			tmp_mr->num_vertices = m->mNumVertices;
+			tmp_mr->vertices = new float[tmp_mr->num_vertices*3];
+			memcpy(tmp_mr->vertices, m->mVertices, sizeof(float) * tmp_mr->num_vertices *3 );
 		
-			glGenBuffers(1, (GLuint*) &tmp_mr.vertices_id_t);
-			glBindBuffer(GL_ARRAY_BUFFER, tmp_mr.vertices_id_t);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * tmp_mr.num_vertices * 3, tmp_mr.vertices, GL_STATIC_DRAW);
+			glGenBuffers(1, (GLuint*) &tmp_mr->vertices_id);
+			glBindBuffer(GL_ARRAY_BUFFER, tmp_mr->vertices_id);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * tmp_mr->num_vertices * 3, tmp_mr->vertices, GL_STATIC_DRAW);
 
-			LOG("%d vertices", tmp_mr.num_vertices);
+			LOG("%d vertices", tmp_mr->num_vertices);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			//Indices
 
 			if (m->HasFaces()) {
-				tmp_mr.num_indices = m->mNumFaces * 3;
-				tmp_mr.indices = new uint[tmp_mr.num_indices];
+				tmp_mr->num_indices = m->mNumFaces * 3;
+				tmp_mr->indices = new uint[tmp_mr->num_indices];
 
 				for (uint i = 0; i < m->mNumFaces; ++i)
 				{
@@ -89,29 +92,29 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 						LOG("WARNING, geometry face with != 3 indices!");
 					}
 					else
-						memcpy(&tmp_mr.indices[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
+						memcpy(&tmp_mr->indices[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
 				}
 
 			}
 
-			glGenBuffers(1, (GLuint*) &tmp_mr.indices_id_t);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tmp_mr.indices_id_t);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * tmp_mr.num_indices, tmp_mr.indices, GL_STATIC_DRAW);
+			glGenBuffers(1, (GLuint*) &tmp_mr->indices_id);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tmp_mr->indices_id);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_indices, tmp_mr->indices, GL_STATIC_DRAW);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-			LOG("%d indices", tmp_mr.num_indices); 
+			LOG("%d indices", tmp_mr->num_indices); 
 
 			if (m->HasTextureCoords(0)) // assume mesh has one texture coords
 			{
-				tmp_mr.num_uvs = m->mNumVertices;
-				tmp_mr.uvs = new float[tmp_mr.num_uvs * 3];
-				memcpy(tmp_mr.uvs, m->mTextureCoords[0], sizeof(float)*tmp_mr.num_uvs * 3);
+				tmp_mr->num_uvs = m->mNumVertices;
+				tmp_mr->uvs = new float[tmp_mr->num_uvs * 3];
+				memcpy(tmp_mr->uvs, m->mTextureCoords[0], sizeof(float)*tmp_mr->num_uvs * 3);
 
-				glGenBuffers(1, (GLuint*) &tmp_mr.uvs_id_t);
-				glBindBuffer(GL_ARRAY_BUFFER, (GLuint)tmp_mr.uvs_id_t);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * tmp_mr.num_uvs * 3, tmp_mr.uvs, GL_STATIC_DRAW);
+				glGenBuffers(1, (GLuint*) &tmp_mr->uvs_id);
+				glBindBuffer(GL_ARRAY_BUFFER, (GLuint)tmp_mr->uvs_id);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_uvs * 3, tmp_mr->uvs, GL_STATIC_DRAW);
 
-				LOG("%d texture cordinates", tmp_mr.num_uvs);
+				LOG("%d texture cordinates", tmp_mr->num_uvs);
 			}
 			else
 			{
@@ -121,12 +124,16 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			AABB bbox;
 			bbox.SetNegativeInfinity();
 			bbox.Enclose((float3*)m->mVertices, m->mNumVertices);
-			new_object->SetGizmoBox(bbox);
 			
-			App->camera->Focus(vec3(new_object->GetPosition().x, new_object->GetPosition().y, new_object->GetPosition().z), bbox.Size().Length() *1.2f);
 
-			new_object->mr_list.push_back(tmp_mr); 
+			tmp_mr->SetGizmoBox(bbox);
+			//FIX ME
+				//App->camera->Focus(vec3(new_object->GetPosition().x, new_object->GetPosition().y, new_object->GetPosition().z), bbox.Size().Length() *1.2f);
+
+			new_object->PushComponent((Component*)tmp_mr); 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+			
 		}
 
 		LOG("FBX imported with %d meshes", i); 
@@ -135,6 +142,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 		{
 			aiMaterial* mat = scene->mMaterials[0]; //just one material is supported now
 			aiString path;
+
+			ComponentMaterial* MA_tmp = new ComponentMaterial();
 			mat->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 
 			std::string full_path_str(full_path);
@@ -142,18 +151,45 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 
 			std::string final_str = full_path_str.substr(0, cut + 1); 
 			final_str += path.C_Str(); 
-			new_object->material.textures_id_t = ImportImage(final_str.c_str());
-			if (info_material != nullptr)
+			MA_tmp = ImportImage(final_str.c_str());
+
+			new_object->PushComponent(MA_tmp); 
+		}
+
+		if (scene != nullptr)
+		{
+			aiNode* node = scene->mRootNode; 
+
+			if (node != nullptr)
 			{
-				new_object->material.width = info_material->width;
-				new_object->material.height = info_material->height;
+
+				ComponentTransform* TR_cmp = new ComponentTransform();
+
+				for (int i = 0; i < node->mNumChildren; i++)
+				{
+					aiNode* tmp_node = node->mChildren[i];
+
+					aiVector3D translation;
+					aiVector3D scaling;
+					aiQuaternion rotation;
+
+					tmp_node->mTransformation.Decompose(scaling, rotation, translation);
+					float3 pos(translation.x, translation.y, translation.z);
+					float3 scale(scaling.x, scaling.y, scaling.z);
+					Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
+
+					TR_cmp->SetPosition(pos); 
+					TR_cmp->SetRotation(rot);
+					TR_cmp->SetScale(scale);
+
+					new_object->PushComponent(TR_cmp); 
+				}
 			}
-			new_object->material.path = final_str.c_str();
 		}
 		
-		meshes.push_back(new_object);
 		aiReleaseImport(scene);
-			
+		//FIX ME
+		App->scene_intro->AddGameObject(new_object); 
 	}
 
 
@@ -161,20 +197,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 	{
 		LOG("Error loading scene %s", full_path);
 	}
-		
-}
-
-std::list<GLGizmo*>& ModuleFBXLoader::GetList()
-{
-	return meshes; 
-}
-
-GLGizmo * ModuleFBXLoader::GetLastGizmo()const
-{
-	if(meshes.empty() == false)
-		return meshes.back();
-	else
-		return nullptr;
+	
 }
 
 void ModuleFBXLoader::DrawElement()
@@ -198,7 +221,7 @@ void ModuleFBXLoader::DrawElement()
 //{
 //
 //}
-GLuint ModuleFBXLoader::ImportImage(const char * path)
+ComponentMaterial* ModuleFBXLoader::ImportImage(const char * path)
 {
 	ILuint imageID;
 	GLuint textureID;
@@ -206,29 +229,28 @@ GLuint ModuleFBXLoader::ImportImage(const char * path)
 	ILenum error;
 	ilGenImages(1, &imageID);
 	ilBindImage(imageID);
+	ComponentMaterial* new_component = new ComponentMaterial();
 
 	success = ilLoadImage(path);
 
 	if (success)
 	{
-
 		LOG("Loading new texture with path %s", path); 
 
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
+
 		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
 		{
 			iluFlipImage();
 		}
 
 		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
-		info_material = new Material();
-		info_material->width = ilGetInteger(IL_IMAGE_WIDTH);
-		info_material->height = ilGetInteger(IL_IMAGE_HEIGHT);
-		info_material->path = path;
-		
-
-		
+	
+		new_component->width = ilGetInteger(IL_IMAGE_WIDTH);
+		new_component->height = ilGetInteger(IL_IMAGE_HEIGHT);
+		new_component->path = path;
+			
 		if (!success)
 		{
 			LOG("Image conversion failed: %s\n", ilGetError());
@@ -238,6 +260,8 @@ GLuint ModuleFBXLoader::ImportImage(const char * path)
 
 		glGenTextures(1, &textureID);
 		glBindTexture(GL_TEXTURE_2D, textureID);
+
+		new_component->textures_id = textureID; 
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -250,10 +274,10 @@ GLuint ModuleFBXLoader::ImportImage(const char * path)
 	else
 	{
 		textureID = 0;
-		LOG("Not image found in "); 
+		LOG("Not image found in %s", path); 
 	}
 
-	return textureID; 
+	return new_component;
 }
 
 //void Mesh::Clean()

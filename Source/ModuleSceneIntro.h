@@ -2,7 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 
-class GLGizmo; 
+class GameObject; 
 struct PhysBody3D;
 struct PhysMotor3D;
 class Cube1; 
@@ -17,15 +17,16 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt); 
 	bool CleanUp();
-	GLGizmo * GetGameObject(uint id) const;
+	GameObject* GetGameObject(uint id);
 
 	void PrintConfigData();
 	void PrintInspectorData();
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
+	void AddGameObject(GameObject* GO); 
 
 	//p2DynArray<p2Point<int>> GetCollisions(); 
 	void ClearGOList(); 
-	std::vector<GLGizmo*> obj_list; 
+	vector<GameObject*> GO_list;
 
 private:  
 };

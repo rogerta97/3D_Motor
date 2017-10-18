@@ -10,7 +10,7 @@
 #include <list>
 #include "Globals.h"
 #include "OpenGL.h"
-#include "Gizmo.h"
+#include "GameObject.h"
 
 #include "mmgr/mmgr.h"
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
@@ -27,21 +27,14 @@ public:
 	bool CleanUp(); 
 
 	void LoadFBX(const char* path);
-	std::list<GLGizmo*>& GetList();
-	GLGizmo* GetLastGizmo()const;
+
 	void DrawElement(); 
 	//sizes for the Bounding Box of a new gizmo
 	float max_size = 0;
 	float size = 0;
 
-	GLuint ImportImage(const char* path); 
-
-private:
-
-	std::list<GLGizmo*> meshes;
-	Material* info_material = nullptr;
+	ComponentMaterial* ImportImage(const char* path); 
 	
-
 };
 
 

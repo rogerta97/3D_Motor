@@ -3,7 +3,7 @@
 #include "OpenGL.h"
 #include "ModulePhysics3D.h"
 #include "PhysBody3D.h"
-#include "Gizmo.h"
+#include "GameObject.h"
 #include "iPoint.h"
 
 #define NUM_VERTICES 36
@@ -356,21 +356,21 @@ void ModulePhysics3D::PrintConfigData()
 						LOG("Error crating cube, size must be +0");
 						break;
 					}
-						
-					if (!App->scene_intro->obj_list.empty())
-					{
-						//LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
-						delete(App->scene_intro->obj_list[0]);
-						App->scene_intro->obj_list.clear();
-					}
+					//	
+					//if (!App->scene_intro->obj_list.empty())
+					//{
+					//	//LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
+					//	delete(App->scene_intro->obj_list[0]);
+					//	App->scene_intro->obj_list.clear();
+					//}
 
-					MeshRenderer mr; 
-					mr.SetCubeVertices(origin_vector, size);
+					//MeshRenderer mr; 
+					//mr.SetCubeVertices(origin_vector, size);
 
-					GLGizmo* new_go = new GLGizmo; 
-					new_go->mr_list.push_back(mr); 
+					//GLGizmo* new_go = new GLGizmo; 
+					//new_go->mr_list.push_back(mr); 
 
-					App->scene_intro->obj_list.push_back(new_go);
+					//App->scene_intro->obj_list.push_back(new_go);
 				}							
 				break;
 
@@ -399,11 +399,11 @@ void ModulePhysics3D::PrintConfigData()
 						break;
 					}
 
-					if (!App->scene_intro->obj_list.empty())
+					if (!App->scene_intro->GO_list.empty())
 					{
 					//	LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
-						delete(App->scene_intro->obj_list[0]);
-						App->scene_intro->obj_list.clear();
+						delete(App->scene_intro->GO_list[0]);
+						App->scene_intro->GO_list.clear();
 					}
 
 					
@@ -436,11 +436,11 @@ void ModulePhysics3D::PrintConfigData()
 						break;
 					}
 						
-					if (!App->scene_intro->obj_list.empty())
+					if (!App->scene_intro->GO_list.empty())
 					{
 						//LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
-						delete(App->scene_intro->obj_list[0]);
-						App->scene_intro->obj_list.clear();
+						delete(App->scene_intro->GO_list[0]);
+						App->scene_intro->GO_list.clear();
 					}
 
 					//App->scene_intro->obj_list.push_back((Gizmo*)AddCylinder(origin_vector, r, height, sides));

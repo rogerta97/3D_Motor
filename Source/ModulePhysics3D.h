@@ -15,7 +15,6 @@ class DebugDrawer;
 //struct PhysVehicle3D;
 struct VehicleInfo;
 struct iPoint; 
-class Gizmo; 
 class Cube2; 
 class GLSphere; 
 class GLCylinder;
@@ -66,8 +65,6 @@ private:
 	std::vector<AABB> cube_list; 
 
 	PPlane main_plane; 
-
-	std::list<Gizmo> gizmo_list; 
 
 	int object_type = -1;
 	bool create_on_wire = false;
