@@ -56,6 +56,16 @@ void GameObject::SetActive(bool _active)
 	active = _active;
 }
 
+void GameObject::SetName(const char * _name)
+{
+	name = _name; 
+}
+
+const char * GameObject::GetName()
+{
+	return name.c_str();
+}
+
 uint ComponentMeshRenderer::GetTriNum() const
 {
 	return (num_vertices/3);
@@ -265,12 +275,6 @@ uint ComponentMeshRenderer::GetTriNum() const
 //	glBindBuffer(GL_ARRAY_BUFFER, 0); 
 //}
 
-
-
-
-
-
-
 void GameObject::Draw()
 {
 	if (!component_list.empty())
@@ -307,14 +311,11 @@ void GameObject::Draw()
 		
 				glDisableClientState(GL_VERTEX_ARRAY);
 				glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-			}
-
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-			//glBindTexture(GL_TEXTURE_2D, 0);
-			
+			}		
 		}
-
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		//glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	

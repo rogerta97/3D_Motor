@@ -26,6 +26,7 @@ private:
 	void PrintProperties();
 	void PrintRandomNumber();
 	void PrintInspector();
+	void PrintHierarchy();
 	void ShowAbout();
 	void UpdateConfigPanel();
 
@@ -40,7 +41,9 @@ private:
 	bool show_gui_demo = false; 
 	bool show_performance = false; 
 	bool show_configuration = true; 
-	bool show_inspector = true;
+	bool show_inspector = false;
+	bool show_hierarchy = true; 
+
 	// Console management -----------
 
 	std::vector<std::string> console_buffer; 

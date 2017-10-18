@@ -65,6 +65,16 @@ GameObject* ModuleSceneIntro::GetGameObject(uint id)
 	return ret;
 }
 
+GameObject * ModuleSceneIntro::CreateGameObject(const char * name)
+{
+	GameObject* new_go = new GameObject(); 
+
+	new_go->SetName(name); 
+
+	return new_go; 
+
+}
+
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
@@ -112,6 +122,16 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 void ModuleSceneIntro::AddGameObject(GameObject * GO)
 {
 	GO_list.push_back(GO); 
+}
+
+vector<GameObject*> ModuleSceneIntro::GetList()
+{
+	return GO_list;
+}
+
+bool ModuleSceneIntro::IsListEmpty()
+{
+	return GO_list.empty();
 }
 
 void ModuleSceneIntro::ClearGOList()

@@ -45,7 +45,6 @@ struct ComponentMeshRenderer : public Component
 
 	AABB Gizmo_box;
 
-
 	void SetCubeVertices(float3 origin, uint edge_size); 
 	void SetSphereVertices(float radius, uint rings, uint sectors, float3 origin);
 	void SetCylinderVertices(float r, int sides, int height);
@@ -99,6 +98,9 @@ public:
 	bool Active()const;
 	void SetActive(bool _active);
 
+	void SetName(const char* name);
+	const char* GetName(); 
+
 	//uint GetBufferNum();
 	
 	Component* GetComponent(component_type new_component);
@@ -110,6 +112,7 @@ private:
 	GameObject* parent; 
 
 	bool active = false;
+	string name = "GameObject"; 
 
 };
 

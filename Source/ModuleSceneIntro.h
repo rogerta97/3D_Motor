@@ -18,15 +18,19 @@ public:
 	update_status PostUpdate(float dt); 
 	bool CleanUp();
 	GameObject* GetGameObject(uint id);
+	GameObject* CreateGameObject(const char* name); 
 
 	void PrintConfigData();
 	void PrintInspectorData();
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	void AddGameObject(GameObject* GO); 
+	vector<GameObject*> GetList(); 
+	bool IsListEmpty(); 
 
 	//p2DynArray<p2Point<int>> GetCollisions(); 
 	void ClearGOList(); 
+
+private:
 	vector<GameObject*> GO_list;
 
-private:  
 };

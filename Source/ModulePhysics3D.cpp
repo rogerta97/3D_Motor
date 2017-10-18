@@ -399,11 +399,11 @@ void ModulePhysics3D::PrintConfigData()
 						break;
 					}
 
-					if (!App->scene_intro->GO_list.empty())
+					if (!App->scene_intro->GetList().empty())
 					{
 					//	LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
-						delete(App->scene_intro->GO_list[0]);
-						App->scene_intro->GO_list.clear();
+						delete(App->scene_intro->GetList()[0]);
+						App->scene_intro->GetList().clear();
 					}
 
 					
@@ -436,11 +436,11 @@ void ModulePhysics3D::PrintConfigData()
 						break;
 					}
 						
-					if (!App->scene_intro->GO_list.empty())
+					if (!App->scene_intro->GetList().empty())
 					{
 						//LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
-						delete(App->scene_intro->GO_list[0]);
-						App->scene_intro->GO_list.clear();
+						delete(App->scene_intro->GetList()[0]);
+						App->scene_intro->GetList().clear();
 					}
 
 					//App->scene_intro->obj_list.push_back((Gizmo*)AddCylinder(origin_vector, r, height, sides));

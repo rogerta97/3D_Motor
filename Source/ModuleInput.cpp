@@ -134,8 +134,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					App->scene_intro->ClearGOList(); 
 					App->fbx_loader->LoadFBX(file.c_str());
 
-				}
-					
+				}				
 
 				if (termination == "png" || termination == "PNG")
 				{
