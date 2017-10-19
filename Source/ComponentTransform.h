@@ -17,14 +17,19 @@ public:
 	void SetRotation(const Quat& rotation);
 	void SetScale(const float3& scale);
 
-	float3 GetPosition() const;
-	Quat GetRotation() const;
-	float3 GetScale() const;
+	float3 GetLocalPosition() const;
+	Quat GetLocalRotation() const;
+	float3 GetLocalScale() const;
+
+	void SetTransformMatrix(float4x4* mat);
+	const float* GetLocalTransform(); 
 
 private:
 	float3 position = float3::zero;
 	Quat rotation = Quat::identity;
 	float3 scale = float3::one;
+
+	float4x4 transform_matrix; 
 };
 
 #endif 
