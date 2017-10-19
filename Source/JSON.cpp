@@ -55,6 +55,23 @@ json_file* JSON::LoadJSONFile(const char * path)
 	return ret;
 	}
 
+json_file* JSON::GetFile(const char * name)
+{
+	json_file* ret = nullptr;
+
+	for (std::list<json_file*>::iterator it = j_files.begin(); it != j_files.end(); it++)
+	{
+		if (strcmp(name, (*it)->GetPath()))
+		{
+			ret = (*it);
+			break;
+		}
+	}
+	return ret;
+}
+
+
+
 
 
 bool JSON::CleanUp()

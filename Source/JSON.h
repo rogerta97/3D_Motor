@@ -39,7 +39,7 @@ public:
 	~JSON();
 	bool Awake();
 	json_file* LoadJSONFile(const char* path);
-
+	json_file* GetFile(const char* name);
 	bool CleanUp();
 private:
 	std::list<json_file*> j_files;
