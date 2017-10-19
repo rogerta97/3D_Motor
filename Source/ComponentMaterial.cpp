@@ -1,5 +1,42 @@
 #include "ComponentMaterial.h"
 
+ComponentMaterial::ComponentMaterial()
+{
+}
+
+ComponentMaterial::~ComponentMaterial()
+{
+}
+
+bool ComponentMaterial::Enable()
+{
+	active = true; 
+
+	return true;
+}
+
+bool ComponentMaterial::Update()
+{
+
+	if (active == false)
+		return true;
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, textures_id);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	return true;
+}
+
+bool ComponentMaterial::Disable()
+{
+	active = false; 
+
+	return true;
+}
+
 void ComponentMaterial::Set(ComponentMaterial * new_cmp)
 {
 	textures_id = new_cmp->textures_id;
@@ -18,3 +55,4 @@ uint ComponentMaterial::GetTexSize() const
 {
 	return 0;
 }
+

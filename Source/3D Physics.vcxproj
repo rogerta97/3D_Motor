@@ -275,6 +275,7 @@
     <ClInclude Include="Bullet\include\LinearMath\btVector3.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="ComponentDefs.h" />
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentMeshRenderer.h" />
@@ -389,6 +390,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentMeshRenderer.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />

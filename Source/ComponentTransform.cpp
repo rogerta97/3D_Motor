@@ -15,6 +15,25 @@ float3 ComponentTransform::GetScale() const
 	return scale;
 }
 
+ComponentTransform::ComponentTransform()
+{
+	active = true; 
+}
+
+ComponentTransform::~ComponentTransform()
+{
+}
+
+
+bool ComponentTransform::Update()
+{
+
+
+	return false;
+}
+
+
+
 void ComponentTransform::SetPosition(const float3 & _position)
 {
 	position = _position;

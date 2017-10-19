@@ -8,6 +8,14 @@
 
 struct ComponentMaterial : public Component
 {
+public: 
+	ComponentMaterial();
+
+	~ComponentMaterial();
+
+	bool Enable();
+	bool Update();
+	bool Disable();
 
 	void Set(ComponentMaterial* new_cmp);
 

@@ -13,8 +13,6 @@ ModuleFileSystem::ModuleFileSystem(const char * game_path): Module(true)
 	AddPath(".");
 
 	//CreateAssimpIO();
-
-
 }
 
 ModuleFileSystem::~ModuleFileSystem()

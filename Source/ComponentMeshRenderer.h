@@ -10,8 +10,29 @@
 #define M_PI 3.14
 #define M_PI_2 M_PI/2
 
-struct ComponentMeshRenderer : public Component
+class ComponentMeshRenderer : public Component
 {
+
+public: 
+	ComponentMeshRenderer(); 
+
+	~ComponentMeshRenderer();
+
+	bool Enable(); 
+	bool Update(); 
+	bool Disable(); 
+
+	void SetCubeVertices(float3 origin, uint edge_size);
+	void SetSphereVertices(float radius, uint rings, uint sectors, float3 origin);
+	void SetCylinderVertices(float r, int sides, int height);
+	uint GetTriNum() const;
+
+	void SetGizmoBox(AABB _box);
+	AABB GetGizmoBox() const;
+	bool PrintBB(); 
+
+public: 
+
 	float* vertices;
 	int num_vertices = 0;
 
@@ -25,15 +46,12 @@ struct ComponentMeshRenderer : public Component
 	uint uvs_id = 0;
 	uint indices_id = 0;
 
-	AABB Gizmo_box;
+	AABB bounding_box;
 
-	void SetCubeVertices(float3 origin, uint edge_size);
-	void SetSphereVertices(float radius, uint rings, uint sectors, float3 origin);
-	void SetCylinderVertices(float r, int sides, int height);
-	uint GetTriNum() const;
+private:
 
-	void SetGizmoBox(AABB _box);
-	AABB GetGizmoBox() const;
+	bool show_bb; 
+
 };
 
 #endif

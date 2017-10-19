@@ -127,12 +127,13 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			bbox.SetNegativeInfinity();
 			bbox.Enclose((float3*)m->mVertices, m->mNumVertices);
 			
-
 			tmp_mr->SetGizmoBox(bbox);
 			//FIX ME
 				//App->camera->Focus(vec3(new_object->GetPosition().x, new_object->GetPosition().y, new_object->GetPosition().z), bbox.Size().Length() *1.2f);
 
 			tmp_mr->type = COMPONENT_MESH_RENDERER; 
+			tmp_mr->Enable(); 
+
 			new_object->PushComponent((Component*)tmp_mr); 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -157,6 +158,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			MA_tmp = ImportImage(final_str.c_str());
 
 			MA_tmp->type = COMPONENT_MATERIAL;
+			MA_tmp->Enable();
 			new_object->PushComponent(MA_tmp); 
 		}
 
@@ -187,6 +189,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 					TR_cmp->SetScale(scale);
 
 					TR_cmp->type = COMPONENT_TRANSFORM; 
+					TR_cmp->Enable(); 
+
 					new_object->PushComponent(TR_cmp); 
 				}
 			}

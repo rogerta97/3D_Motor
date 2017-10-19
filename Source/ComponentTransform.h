@@ -7,6 +7,12 @@
 class ComponentTransform : public Component
 {
 public:
+	ComponentTransform();
+
+	~ComponentTransform();
+
+	bool Update();
+
 	void SetPosition(const float3& position);
 	void SetRotation(const Quat& rotation);
 	void SetScale(const float3& scale);

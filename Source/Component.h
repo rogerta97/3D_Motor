@@ -24,6 +24,10 @@ public:
 
 	~Component() {}
 
+protected: 
+
+	bool active = false; 
+
 };
 
 #endif

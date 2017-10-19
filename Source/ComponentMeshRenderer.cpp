@@ -3,12 +3,67 @@
 
 void ComponentMeshRenderer::SetGizmoBox(AABB _box)
 {
-	Gizmo_box = _box;
+	bounding_box = _box;
 }
+
 AABB ComponentMeshRenderer::GetGizmoBox() const
 {
-	return Gizmo_box;
+	return bounding_box;
 }
+
+bool ComponentMeshRenderer::PrintBB()
+{
+	return false;
+}
+
+ComponentMeshRenderer::~ComponentMeshRenderer()
+{
+
+}
+
+bool ComponentMeshRenderer::Enable()
+{
+	active = true; 
+	return true; 
+}
+
+bool ComponentMeshRenderer::Update()
+{
+	if (active == false)
+		return true; 
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
+
+	//Apply UV if exist
+	if (num_uvs != 0)
+	{
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, uvs_id);
+		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+	}
+
+	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	return true;
+}
+
+bool ComponentMeshRenderer::Disable()
+{
+	active = false; 
+	return true;
+}
+
+ComponentMeshRenderer::ComponentMeshRenderer()
+{
+
+}
+
 uint ComponentMeshRenderer::GetTriNum() const
 {
 	return (num_vertices / 3);

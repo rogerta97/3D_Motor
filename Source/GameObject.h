@@ -26,8 +26,6 @@ public:
 	void SetName(const char* name);
 	const char* GetName(); 
 
-	//uint GetBufferNum();
-	
 	Component* GetComponent(component_type new_component);
 	void PushComponent(Component* comp); 
 

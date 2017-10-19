@@ -1182,6 +1182,9 @@
     <ClInclude Include="ModuleFileSystem.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentCamera.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1398,6 +1401,9 @@
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleFileSystem.cpp" />
+    <ClCompile Include="ComponentCamera.cpp">
+      <Filter>GameObject\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Geometry\KDTree.inl">
