@@ -1,6 +1,8 @@
 #ifndef _COMPONENT_H_
 #define _COMPONENT_H_
 
+class GameObject; 
+
 enum component_type
 {
 	COMPONENT_MESH_RENDERER,
@@ -22,11 +24,14 @@ public:
 	virtual bool Update();
 	virtual bool Disable();
 
+	GameObject* GetComponentParent() { return parent; }
+
 	~Component() {}
 
 protected: 
 
-	bool active = false; 
+	bool active = false;
+	GameObject* parent; 
 
 };
 

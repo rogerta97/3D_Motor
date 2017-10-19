@@ -22,7 +22,7 @@ public:
 	float3 GetLocalScale() const;
 
 	void SetTransformMatrix(float4x4* mat);
-	const float* GetLocalTransform(); 
+	const float* GetGlobalTransform(); 
 
 private:
 	float3 position = float3::zero;

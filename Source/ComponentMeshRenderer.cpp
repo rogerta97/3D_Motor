@@ -1,5 +1,9 @@
 #include "ComponentMeshRenderer.h"
 #include "OpenGL.h"
+#include "ComponentTransform.h"
+#include "GameObject.h"
+
+class ComponentTransform; 
 
 void ComponentMeshRenderer::SetGizmoBox(AABB _box)
 {
@@ -34,6 +38,11 @@ bool ComponentMeshRenderer::Update()
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 
+	ComponentTransform* ctranform = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
+	
+	glPushMatrix(); 
+	glMultMatrixf(ctranform->GetGlobalTransform());
+
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
@@ -49,6 +58,8 @@ bool ComponentMeshRenderer::Update()
 	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	glPopMatrix(); 
 
 	return true;
 }

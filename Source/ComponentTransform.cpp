@@ -31,15 +31,14 @@ void ComponentTransform::SetTransformMatrix(float4x4* mat)
 	mat->FromTRS(position, rotation, scale);
 }
 
-const float* ComponentTransform::GetLocalTransform()
+const float* ComponentTransform::GetGlobalTransform()
 {
-	return transform_matrix.ptr();
+	return transform_matrix.Transposed().ptr();
 }
 
 bool ComponentTransform::Update()
 {
-	glPushMatrix();
-	glMultMatrixf(GetLocalTransform());
+
 
 	return false;
 }
