@@ -3,6 +3,7 @@
 #include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
 #include "ModuleFBXLoader.h"
+#include "ComponentDefs.h"
 #include "ModuleSceneIntro.h"
 #include "GameObject.h"
 
@@ -55,6 +56,7 @@ update_status ModuleCamera3D::Update(float dt)
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 	GameObject* aux;
+
 	ComponentTransform* tmp_trans; 
 
 	if (App->scene_intro->GetGameObject(0) != nullptr)

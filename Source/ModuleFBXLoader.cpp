@@ -2,9 +2,11 @@
 #include "Application.h"
 #include "ModuleFBXLoader.h"
 #include "ModuleSceneIntro.h"
+#include "ComponentDefs.h"
 #include "ModuleCamera3D.h"
 #include "GameObject.h"
 #include <vector>
+
 ModuleFBXLoader::ModuleFBXLoader(bool enable_state)
 {
 

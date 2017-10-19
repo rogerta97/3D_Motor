@@ -49,6 +49,15 @@
     <Filter Include="Tools\Loaders">
       <UniqueIdentifier>{9b0aa04d-c422-417b-951c-b788003f674e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{79617f94-0a87-4649-a992-42c510a6f0e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\GameObject">
+      <UniqueIdentifier>{9e379b14-97d8-4352-bdfe-6df1742502b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Components">
+      <UniqueIdentifier>{12a44fb2-938d-43d4-9c36-7dea148c6c1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -1150,7 +1159,22 @@
       <Filter>Tools\Loaders</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Helpers</Filter>
+      <Filter>GameObject\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMeshRenderer.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTransform.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMaterial.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentDefs.h">
+      <Filter>GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1350,7 +1374,16 @@
       <Filter>Tools\Loaders</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Helpers</Filter>
+      <Filter>GameObject\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMeshRenderer.cpp">
+      <Filter>GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentTransform.cpp">
+      <Filter>GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMaterial.cpp">
+      <Filter>GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

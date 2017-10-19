@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ComponentMaterial.h"
 
 #define MAX_KEYS 300
 

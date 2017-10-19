@@ -274,6 +274,11 @@
     <ClInclude Include="Bullet\include\LinearMath\btTransformUtil.h" />
     <ClInclude Include="Bullet\include\LinearMath\btVector3.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentDefs.h" />
+    <ClInclude Include="ComponentMaterial.h" />
+    <ClInclude Include="ComponentMeshRenderer.h" />
+    <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="DeviceId\DeviceId.h" />
     <ClInclude Include="DeviceId\dxgi1_4.h" />
     <ClInclude Include="DevIL_Windows_SDK\include\IL\devil_cpp_wrapper.hpp" />
@@ -382,6 +387,9 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="ComponentMaterial.cpp" />
+    <ClCompile Include="ComponentMeshRenderer.cpp" />
+    <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="DeviceId\DeviceId.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glmath.cpp" />

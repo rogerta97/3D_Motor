@@ -12,8 +12,11 @@
 #include "OpenGL.h"
 #include "GameObject.h"
 
+
 #include "mmgr/mmgr.h"
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
+
+class ComponentMaterial; 
 
 class ModuleFBXLoader : public Module
 {

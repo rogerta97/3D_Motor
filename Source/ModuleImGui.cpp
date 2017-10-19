@@ -66,8 +66,6 @@ bool ModuleImGui::Init()
 	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.96f, 0.93f, 0.07f, 0.35f);
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
 
-	show_console = true;
-
 	App->performance.SaveInitData(name);
 
 	return true;
