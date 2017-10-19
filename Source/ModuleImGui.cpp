@@ -344,10 +344,10 @@ void ModuleImGui::ImGuiInput(SDL_Event* e)const
 }
 void ModuleImGui::PrintInspector()
 {
-	if (ImGui::CollapsingHeader("Inspector"))
+	/*if (ImGui::CollapsingHeader("Inspector"))
 	{
 
-		/*for (int i = 0; i < App->scene_intro->GetList().size(); i++)
+		for (int i = 0; i < App->scene_intro->GetList().size(); i++)
 		{
 			GameObject* aux = App->scene_intro->GetGameObject(i);
 
@@ -355,9 +355,9 @@ void ModuleImGui::PrintInspector()
 			aux->GetComponent(COMPONENT_MESH_RENDERER);
 
 
-			if (ImGui::CollapsingHeader(aux))
+			if (ImGui::CollapsingHeader(aux->GetName()))
 			{
-				ImGui::InputText("Name", (char*)App->scene_intro->GetGameObject(i)->path_name.c_str(), 20);
+				ImGui::InputText("Name", (char*)App->scene_intro->GetGameObject(i)->GetName(), 20);
 
 				float pos[3] = { App->scene_intro->GetGameObject(i)->GetPosition().x ,App->scene_intro->GetGameObject(i)->GetPosition().y,App->scene_intro->GetGameObject(i)->GetPosition().z };
 				float rot[3] = { App->scene_intro->GetGameObject(i)->GetRotation().x,App->scene_intro->GetGameObject(i)->GetRotation().y,App->scene_intro->GetGameObject(i)->GetRotation().z };
@@ -374,7 +374,7 @@ void ModuleImGui::PrintInspector()
 					int j = 0;
 					if (App->scene_intro->GetGameObject(i) != nullptr)
 					{
-						for (std::list<MeshRenderer>::iterator m = App->scene_intro->GetGameObject(i)->mr_list.begin(); m != App->scene_intro->GetGameObject(i)->mr_list.end(); ++m)
+						for (std::list<compo>::iterator m = App->scene_intro->GetGameObject(i)->mr_list.begin(); m != App->scene_intro->GetGameObject(i)->mr_list.end(); ++m)
 						{
 							char title[25];
 							sprintf_s(title, 25, "Mesh %d##meshrenderer", j + 1);
@@ -409,10 +409,8 @@ void ModuleImGui::PrintInspector()
 
 
 	}*/
-	}
-	
-
 }
+	
 
 void ModuleImGui::PrintHierarchy()
 {

@@ -6,6 +6,8 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <string>
+#include <vector>
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
 
@@ -17,6 +19,24 @@ void log(const char file[], int line, const char* format, ...);
 #define RADTODEG 57.295779513082320876f
 #define HAVE_M_PI
 
+#define RELEASE( x )\
+    {\
+       if( x != nullptr )\
+       {\
+         delete x;\
+	     x = nullptr;\
+       }\
+    }
+
+// Deletes an array of buffers
+#define RELEASE_ARRAY( x )\
+	{\
+       if( x != nullptr )\
+       {\
+           delete[] x;\
+	       x = nullptr;\
+		 }\
+	 }
 
 typedef unsigned int uint;
 using namespace std; 
@@ -27,6 +47,14 @@ enum update_status
 	UPDATE_STOP,
 	UPDATE_ERROR
 };
+//Folders
+#define ASSETS_FOLDER "/Assets/"
+#define LIBRARY_FOLDER "/Library/"
+#define MATERIALS_FOLDER "/Library/Materials/"
+#define MESHES_FOLDER "/Library/Meshes/"
+
+
+
 
 // Configuration -----------
 #define SCREEN_WIDTH 1280
