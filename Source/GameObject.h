@@ -26,7 +26,7 @@ public:
 	void SetName(const char* name);
 	const char* GetName(); 
 
-	Component* GetComponent(component_type new_component);
+	Component* GetComponent(component_type new_component, int skip_num = 0);
 	void PushComponent(Component* comp); 
 
 private:

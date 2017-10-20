@@ -135,6 +135,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			tmp_mr->Enable(); 
 
 			tmp_mr->SetComponentParent(new_object); 
+			tmp_mr->tranform_id = i; 
 
 			new_object->PushComponent((Component*)tmp_mr); 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -173,7 +174,6 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 
 			if (node != nullptr)
 			{
-
 				ComponentTransform* TR_cmp = new ComponentTransform();
 
 				for (int i = 0; i < node->mNumChildren; i++)
@@ -189,6 +189,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 					float3 pos(translation.x, translation.y, translation.z);
 					float3 scale(scaling.x, scaling.y, scaling.z);
 					Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
+			
 
 					TR_cmp->SetPosition(pos); 
 					TR_cmp->SetRotation(rot);
@@ -198,9 +199,11 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 					TR_cmp->Enable(); 
 
 					TR_cmp->SetComponentParent(new_object);
-
+					
 					new_object->PushComponent(TR_cmp); 
 				}
+
+				LOG("FBX imported with %d transform", i);
 			}
 		}
 		

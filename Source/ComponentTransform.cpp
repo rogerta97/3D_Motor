@@ -37,6 +37,11 @@ const float* ComponentTransform::GetGlobalTransform()
 	return transform_matrix.Transposed().ptr();
 }
 
+int ComponentTransform::GetTransformID()
+{
+	return transform_id;
+}
+
 bool ComponentTransform::Update()
 {
 
