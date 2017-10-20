@@ -26,6 +26,16 @@ const char * GameObject::GetName()
 	return name.c_str();
 }
 
+void GameObject::SetNumMeshes(uint n_meshes)
+{
+	num_meshes = n_meshes;
+}
+
+uint GameObject::GetNumMeshes() const
+{
+	return num_meshes;
+}
+
 void GameObject::Draw()
 {
 	if (!component_list.empty())

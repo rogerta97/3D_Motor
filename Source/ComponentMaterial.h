@@ -6,7 +6,7 @@
 #include <string>
 #include "Component.h"
 
-struct ComponentMaterial : public Component
+class ComponentMaterial : public Component
 {
 public: 
 	ComponentMaterial();

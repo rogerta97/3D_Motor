@@ -56,7 +56,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 
 	if(scene != nullptr)
 		new_object = new GameObject();
-
+	new_object->SetNumMeshes(scene->mNumMeshes);
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array

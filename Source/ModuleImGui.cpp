@@ -170,7 +170,7 @@ update_status ModuleImGui::Update(float dt)
 	if (show_performance) App->performance.Update(show_performance);
 	if (show_hierarchy) PrintHierarchy();
 
-	if (App->scene_intro->GetGameObject(0) != nullptr)
+	if (App->scene_intro->IsListEmpty() == false)
 		show_inspector = true; 
 	else 
 		show_inspector = false; 
@@ -315,16 +315,10 @@ void ModuleImGui::ShowAbout()
 
 void ModuleImGui::UpdateConfigPanel()
 {
-
 	if (!show_configuration)
 		return;
 
 	ImGui::Begin("Configuration", &show_configuration);
-
-	if (show_inspector)
-	{
-		PrintInspector();
-	}
 
 	App->PrintConfigData();
 
@@ -332,12 +326,7 @@ void ModuleImGui::UpdateConfigPanel()
 	{
 		App->GetModule(i)->PrintConfigData(); 
 	}
-
-
-
-
 	ImGui::End();
-
 }
 
 void ModuleImGui::ImGuiInput(SDL_Event* e)const
@@ -346,90 +335,92 @@ void ModuleImGui::ImGuiInput(SDL_Event* e)const
 }
 void ModuleImGui::PrintInspector()
 {
-	if (ImGui::CollapsingHeader("Inspector"))
+	if (ImGui::Begin("Inspector", &show_inspector))
 	{
 		for (int i = 0; i < App->scene_intro->GetList().size(); i++)
 		{
 			GameObject* g_aux = App->scene_intro->GetGameObject(i);
 			//if (g_aux->Active() == true)
 			//{
-				ComponentTransform* ct_aux =(ComponentTransform*) g_aux->GetComponent(COMPONENT_TRANSFORM);
-				//TRANSFORM
-				if (ImGui::TreeNode(g_aux->GetName()))
-				{
-					ImGui::InputText("Name", (char*)App->scene_intro->GetGameObject(i)->GetName(), 20);
-					float3 radians_angle = ct_aux->GetLocalRotation().ToEulerXYZ();
+			ComponentTransform* ct_aux = (ComponentTransform*)g_aux->GetComponent(COMPONENT_TRANSFORM);
+			//TRANSFORM
+			if (ImGui::TreeNode(g_aux->GetName()))
+			{
+				float3 radians_angle = ct_aux->GetLocalRotation().ToEulerXYZ();
 
-					float pos[3] = { ct_aux->GetLocalPosition().x,ct_aux->GetLocalPosition().y,ct_aux->GetLocalPosition().z};
-					float rot[3] = {RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
-					float s[3] = { ct_aux->GetLocalScale().x,ct_aux->GetLocalScale().y,ct_aux->GetLocalScale().z };
-					if (ImGui::TreeNode("Transform"))
+				float pos[3] = { ct_aux->GetLocalPosition().x,ct_aux->GetLocalPosition().y,ct_aux->GetLocalPosition().z };
+				float rot[3] = { RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
+				float s[3] = { ct_aux->GetLocalScale().x,ct_aux->GetLocalScale().y,ct_aux->GetLocalScale().z };
+				if (ImGui::TreeNode("Transform"))
+				{
+					ImGui::InputFloat3("Pos##transform", pos, 2);
+					ImGui::InputFloat3("Rot##transform", rot, 2);
+					ImGui::InputFloat3("Scale##transform", s, 2);
+					ImGui::TreePop();
+				}
+				//MESHES
+				if (ImGui::TreeNode("Meshes"))
+				{
+					int j = 0;
+					if (App->scene_intro->GetGameObject(i) != nullptr)
 					{
-						ImGui::InputFloat3("Pos##transform", pos, 2);
-						ImGui::InputFloat3("Rot##transform", rot, 2);
-						ImGui::InputFloat3("Scale##transform", s, 2);
-						ImGui::TreePop();
+						ComponentMeshRenderer* cm_aux = (ComponentMeshRenderer*)g_aux->GetComponent(COMPONENT_MESH_RENDERER, 0);
+
+						char title[25];
+						sprintf_s(title, 25, "Mesh %d##meshrenderer", j + 1);
+						if (ImGui::TreeNode(title))
+						{
+							char name[25];
+							sprintf_s(name, 25, "Vertices##mesh%d", j + 1);
+							ImGui::LabelText(name, "%d", cm_aux->num_vertices);
+							sprintf_s(name, 25, "Indices##mesh%d", j + 1);
+							ImGui::LabelText(name, "%d", cm_aux->num_indices);
+							ImGui::TreePop();
+						}
+						++j;
+						if (App->scene_intro->GetGameObject(i) == nullptr)
+							break;
 					}
 					ImGui::TreePop();
 				}
-	//			//MESHES
-	//			/*if (ImGui::CollapsingHeader("Meshes"))
-	//			{
-	//				int j = 0;
-	//				if (App->scene_intro->GetGameObject(i) != nullptr)
-	//				{
-	//					for (std::list<Component>::iterator m = App->scene_intro->GetGameObject(i)->mr_list.begin(); m != App->scene_intro->GetGameObject(i)->mr_list.end(); ++m)
-	//					{
-	//						char title[25];
-	//						sprintf_s(title, 25, "Mesh %d##meshrenderer", j + 1);
-	//						if (ImGui::TreeNode(title))
-	//						{
-	//							char name[25];
-	//							sprintf_s(name, 25, "Vertices##mesh%d", j + 1);
-	//							ImGui::LabelText(name, "%d", (*m).num_vertices);
-	//							sprintf_s(name, 25, "Indices##mesh%d", j + 1);
-	//							ImGui::LabelText(name, "%d", (*m).num_indices);
-	//							ImGui::TreePop();
-	//						}
-	//						++j;
-	//						if (App->scene_intro->GetGameObject(i) == nullptr)
-	//							break;
-
-	//					}
-	//				}
-	//			}*/
-	//			//MATERIALS
-	//		/*	if (ImGui::CollapsingHeader("Materials"))
-	//			{
-	//				Material* material = &App->scene_intro->GetGameObject(i)->material;
-	//				ImGui::LabelText("ID##material", "%d", material->textures_id_t);
-	//				ImGui::LabelText("Width##material", "%d", material->width);
-	//				ImGui::LabelText("Height##material", "%d", material->height);
-	//				ImGui::LabelText("Path##material", "%s", material->path.c_str());
-	//			}*/
-			//}//active
-	//		
-	//		
-
+				//MATERIALS
+				if (ImGui::TreeNode("Materials"))
+				{
+					ComponentMaterial* cma_aux = (ComponentMaterial*)g_aux->GetComponent(COMPONENT_MATERIAL);
+					ImGui::LabelText("ID##material", "%d", cma_aux->textures_id);
+					ImGui::LabelText("Width##material", "%d", cma_aux->width);
+					ImGui::LabelText("Height##material", "%d", cma_aux->height);
+					ImGui::LabelText("Path##material", "%s", cma_aux->path.c_str());
+					ImGui::TreePop();
+				}
+				ImGui::TreePop();
+			}
+			//}//activ
 		}
-
-
 	}
+	ImGui::End();
 }
 	
 
 void ModuleImGui::PrintHierarchy()
 {
+
 	if (ImGui::Begin("Hierarchy"), &show_hierarchy && App->scene_intro->IsListEmpty() == false)
 	{	
 		for (int i = 0; i < App->scene_intro->GetList().size(); i++)
 		{
 			if (ImGui::TreeNode(App->scene_intro->GetList()[i]->GetName()))
 			{
-				/*for (int i = 0; i < App->scene_intro->GetList().size(); i++)
+				GameObject* aux = App->scene_intro->GetList()[i];
+				for (int j = 0; j < aux->GetNumMeshes(); j++)
 				{
-
-				}*/
+					//ComponentMeshRenderer* cm_aux = (ComponentMeshRenderer*)aux->GetComponent(COMPONENT_MESH_RENDERER, j);
+					if (ImGui::TreeNode("Mesh"))
+					{
+						ImGui::LabelText("ID mesh", "%d", j);
+						ImGui::TreePop();
+					}
+				}
 				ImGui::TreePop();
 			}
 		}
