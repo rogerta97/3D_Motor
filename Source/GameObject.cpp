@@ -72,3 +72,8 @@ bool Component::Disable()
 	return true;
 }
 
+void Component::SetComponentParent(GameObject * _parent)
+{
+	parent = _parent; 
+}
+

@@ -134,6 +134,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			tmp_mr->type = COMPONENT_MESH_RENDERER; 
 			tmp_mr->Enable(); 
 
+			tmp_mr->SetComponentParent(new_object); 
+
 			new_object->PushComponent((Component*)tmp_mr); 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -159,6 +161,9 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 
 			MA_tmp->type = COMPONENT_MATERIAL;
 			MA_tmp->Enable();
+
+			MA_tmp->SetComponentParent(new_object);
+
 			new_object->PushComponent(MA_tmp); 
 		}
 
@@ -180,6 +185,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 					aiQuaternion rotation;
 
 					tmp_node->mTransformation.Decompose(scaling, rotation, translation);
+
 					float3 pos(translation.x, translation.y, translation.z);
 					float3 scale(scaling.x, scaling.y, scaling.z);
 					Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
@@ -190,6 +196,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 
 					TR_cmp->type = COMPONENT_TRANSFORM; 
 					TR_cmp->Enable(); 
+
+					TR_cmp->SetComponentParent(new_object);
 
 					new_object->PushComponent(TR_cmp); 
 				}

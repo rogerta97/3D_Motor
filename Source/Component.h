@@ -25,6 +25,7 @@ public:
 	virtual bool Disable();
 
 	GameObject* GetComponentParent() { return parent; }
+	void SetComponentParent(GameObject* parent); 
 
 	~Component() {}
 

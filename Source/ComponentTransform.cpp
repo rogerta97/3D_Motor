@@ -26,13 +26,14 @@ ComponentTransform::~ComponentTransform()
 {
 }
 
-void ComponentTransform::SetTransformMatrix(float4x4* mat)
+void ComponentTransform::SetTransformMatrix()
 {
-	mat->FromTRS(position, rotation, scale);
+	
 }
 
 const float* ComponentTransform::GetGlobalTransform()
 {
+	transform_matrix = transform_matrix.FromTRS(position, rotation, scale);
 	return transform_matrix.Transposed().ptr();
 }
 

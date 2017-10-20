@@ -21,7 +21,7 @@ public:
 	Quat GetLocalRotation() const;
 	float3 GetLocalScale() const;
 
-	void SetTransformMatrix(float4x4* mat);
+	void SetTransformMatrix();
 	const float* GetGlobalTransform(); 
 
 private:

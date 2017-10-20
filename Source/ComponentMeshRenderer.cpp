@@ -43,6 +43,7 @@ bool ComponentMeshRenderer::Update()
 	glPushMatrix(); 
 	glMultMatrixf(ctranform->GetGlobalTransform());
 
+
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
@@ -59,7 +60,7 @@ bool ComponentMeshRenderer::Update()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	glPopMatrix(); 
+	glPopMatrix();
 
 	return true;
 }
