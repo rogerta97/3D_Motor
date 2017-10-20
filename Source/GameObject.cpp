@@ -42,13 +42,18 @@ void GameObject::Draw()
 	}	
 }
 
-Component * GameObject::GetComponent(component_type new_component_type)
+Component * GameObject::GetComponent(component_type new_component_type, int skip_num)
 {
 	//here we will create the component and add it to the list
 
+	int components_skipped = 0; 
+
 	for (vector<Component*>::iterator it = component_list.begin();it != component_list.end(); it++)
 	{
-		if ((*it)->type == new_component_type)
+		if ((*it)->type == new_component_type)	
+			components_skipped++; 
+		
+		if(components_skipped > skip_num)		
 			return (*it); 
 	}
 
@@ -76,8 +81,13 @@ bool Component::Disable()
 	return true;
 }
 
+
 bool Component::IsActive() const
 {
 	return active;
+}
+void Component::SetComponentParent(GameObject * _parent)
+{
+	parent = _parent; 
 }
 

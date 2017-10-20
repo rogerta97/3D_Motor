@@ -21,8 +21,9 @@ public:
 	Quat GetLocalRotation() const;
 	float3 GetLocalScale() const;
 
-	void SetTransformMatrix(float4x4* mat);
+	void SetTransformMatrix();
 	const float* GetGlobalTransform(); 
+	int GetTransformID(); 
 
 private:
 	float3 position = float3::zero;
@@ -30,6 +31,8 @@ private:
 	float3 scale = float3::one;
 
 	float4x4 transform_matrix; 
+
+	int transform_id; 
 };
 
 #endif 

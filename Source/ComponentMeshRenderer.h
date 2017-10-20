@@ -46,6 +46,11 @@ public:
 	uint uvs_id = 0;
 	uint indices_id = 0;
 
+	// As this motor can have infinite meshes per gameobject we must set an ID for apliying to 
+	// each mesh its corresponding transformation
+
+	uint tranform_id = 0; 
+
 	AABB bounding_box;
 
 private:

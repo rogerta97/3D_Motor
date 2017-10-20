@@ -26,6 +26,7 @@ public:
 	bool IsActive()const;
 
 	GameObject* GetComponentParent() { return parent; }
+	void SetComponentParent(GameObject* parent); 
 
 	~Component() {}
 
