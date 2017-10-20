@@ -23,6 +23,7 @@ public:
 	virtual bool Enable();
 	virtual bool Update();
 	virtual bool Disable();
+	bool IsActive()const;
 
 	GameObject* GetComponentParent() { return parent; }
 

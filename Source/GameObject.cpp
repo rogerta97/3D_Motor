@@ -30,9 +30,13 @@ void GameObject::Draw()
 {
 	if (!component_list.empty())
 	{
-
 		for (int i = 0; i < component_list.size(); i++)
-			component_list[i]->Update(); 
+		{
+			if (component_list[i]->IsActive() == false)
+				return;
+			component_list[i]->Update();//<----------
+		}
+			
 	
 		//glBindTexture(GL_TEXTURE_2D, 0);
 	}	
@@ -70,5 +74,10 @@ bool Component::Update()
 bool Component::Disable()
 {
 	return true;
+}
+
+bool Component::IsActive() const
+{
+	return active;
 }
 

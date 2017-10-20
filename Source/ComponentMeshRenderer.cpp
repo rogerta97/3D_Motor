@@ -38,10 +38,10 @@ bool ComponentMeshRenderer::Update()
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 
-	ComponentTransform* ctranform = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
+//	ComponentTransform* ctranform = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
 	
 	glPushMatrix(); 
-	glMultMatrixf(ctranform->GetGlobalTransform());
+//	glMultMatrixf(ctranform->GetGlobalTransform());
 
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);

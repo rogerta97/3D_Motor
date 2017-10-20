@@ -2,6 +2,8 @@
 #include "ModuleSceneIntro.h"
 #include "Application.h"
 #include "GameObject.h"
+#include "Component.h"
+#include "ComponentDefs.h"
 #include <ctime>
 
 #define SCANCODE_AMOUNT 284
@@ -344,71 +346,75 @@ void ModuleImGui::ImGuiInput(SDL_Event* e)const
 }
 void ModuleImGui::PrintInspector()
 {
-	/*if (ImGui::CollapsingHeader("Inspector"))
+	if (ImGui::CollapsingHeader("Inspector"))
 	{
-
 		for (int i = 0; i < App->scene_intro->GetList().size(); i++)
 		{
-			GameObject* aux = App->scene_intro->GetGameObject(i);
-
-
-			aux->GetComponent(COMPONENT_MESH_RENDERER);
-
-
-			if (ImGui::CollapsingHeader(aux->GetName()))
-			{
-				ImGui::InputText("Name", (char*)App->scene_intro->GetGameObject(i)->GetName(), 20);
-
-				float pos[3] = { App->scene_intro->GetGameObject(i)->GetPosition().x ,App->scene_intro->GetGameObject(i)->GetPosition().y,App->scene_intro->GetGameObject(i)->GetPosition().z };
-				float rot[3] = { App->scene_intro->GetGameObject(i)->GetRotation().x,App->scene_intro->GetGameObject(i)->GetRotation().y,App->scene_intro->GetGameObject(i)->GetRotation().z };
-				float s[3] = { App->scene_intro->GetGameObject(i)->GetScale().x,App->scene_intro->GetGameObject(i)->GetScale().y,App->scene_intro->GetGameObject(i)->GetScale().z };
-				if (ImGui::CollapsingHeader("Transform"))
+			GameObject* g_aux = App->scene_intro->GetGameObject(i);
+			//if (g_aux->Active() == true)
+			//{
+				ComponentTransform* ct_aux =(ComponentTransform*) g_aux->GetComponent(COMPONENT_TRANSFORM);
+				//TRANSFORM
+				if (ImGui::TreeNode(g_aux->GetName()))
 				{
-					ImGui::InputFloat3("Pos##transform", pos, 2);
-					ImGui::InputFloat3("Rot##transform", rot, 2);
-					ImGui::InputFloat3("Scale##transform", s, 2);
-				}
+					ImGui::InputText("Name", (char*)App->scene_intro->GetGameObject(i)->GetName(), 20);
+					float3 radians_angle = ct_aux->GetLocalRotation().ToEulerXYZ();
 
-				if (ImGui::CollapsingHeader("Meshes"))
-				{
-					int j = 0;
-					if (App->scene_intro->GetGameObject(i) != nullptr)
+					float pos[3] = { ct_aux->GetLocalPosition().x,ct_aux->GetLocalPosition().y,ct_aux->GetLocalPosition().z};
+					float rot[3] = {RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
+					float s[3] = { ct_aux->GetLocalScale().x,ct_aux->GetLocalScale().y,ct_aux->GetLocalScale().z };
+					if (ImGui::TreeNode("Transform"))
 					{
-						for (std::list<compo>::iterator m = App->scene_intro->GetGameObject(i)->mr_list.begin(); m != App->scene_intro->GetGameObject(i)->mr_list.end(); ++m)
-						{
-							char title[25];
-							sprintf_s(title, 25, "Mesh %d##meshrenderer", j + 1);
-							if (ImGui::TreeNode(title))
-							{
-								char name[25];
-								sprintf_s(name, 25, "Vertices##mesh%d", j + 1);
-								ImGui::LabelText(name, "%d", (*m).num_vertices);
-								sprintf_s(name, 25, "Indices##mesh%d", j + 1);
-								ImGui::LabelText(name, "%d", (*m).num_indices);
-								ImGui::TreePop();
-							}
-							++j;
-							if (App->scene_intro->GetGameObject(i) == nullptr)
-								break;
-
-						}
+						ImGui::InputFloat3("Pos##transform", pos, 2);
+						ImGui::InputFloat3("Rot##transform", rot, 2);
+						ImGui::InputFloat3("Scale##transform", s, 2);
+						ImGui::TreePop();
 					}
+					ImGui::TreePop();
+				}
+	//			//MESHES
+	//			/*if (ImGui::CollapsingHeader("Meshes"))
+	//			{
+	//				int j = 0;
+	//				if (App->scene_intro->GetGameObject(i) != nullptr)
+	//				{
+	//					for (std::list<Component>::iterator m = App->scene_intro->GetGameObject(i)->mr_list.begin(); m != App->scene_intro->GetGameObject(i)->mr_list.end(); ++m)
+	//					{
+	//						char title[25];
+	//						sprintf_s(title, 25, "Mesh %d##meshrenderer", j + 1);
+	//						if (ImGui::TreeNode(title))
+	//						{
+	//							char name[25];
+	//							sprintf_s(name, 25, "Vertices##mesh%d", j + 1);
+	//							ImGui::LabelText(name, "%d", (*m).num_vertices);
+	//							sprintf_s(name, 25, "Indices##mesh%d", j + 1);
+	//							ImGui::LabelText(name, "%d", (*m).num_indices);
+	//							ImGui::TreePop();
+	//						}
+	//						++j;
+	//						if (App->scene_intro->GetGameObject(i) == nullptr)
+	//							break;
 
-				}
-				if (ImGui::CollapsingHeader("Materials"))
-				{
-					Material* material = &App->scene_intro->GetGameObject(i)->material;
-					ImGui::LabelText("ID##material", "%d", material->textures_id_t);
-					ImGui::LabelText("Width##material", "%d", material->width);
-					ImGui::LabelText("Height##material", "%d", material->height);
-					ImGui::LabelText("Path##material", "%s", material->path.c_str());
-				}
-			}
+	//					}
+	//				}
+	//			}*/
+	//			//MATERIALS
+	//		/*	if (ImGui::CollapsingHeader("Materials"))
+	//			{
+	//				Material* material = &App->scene_intro->GetGameObject(i)->material;
+	//				ImGui::LabelText("ID##material", "%d", material->textures_id_t);
+	//				ImGui::LabelText("Width##material", "%d", material->width);
+	//				ImGui::LabelText("Height##material", "%d", material->height);
+	//				ImGui::LabelText("Path##material", "%s", material->path.c_str());
+	//			}*/
+			//}//active
+	//		
+	//		
 
 		}
 
 
-	}*/
+	}
 }
 	
 
