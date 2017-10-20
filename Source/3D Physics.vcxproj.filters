@@ -1185,6 +1185,9 @@
     <ClInclude Include="ComponentCamera.h">
       <Filter>GameObject\Components</Filter>
     </ClInclude>
+    <ClInclude Include="DebugDraw.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1403,6 +1406,9 @@
     <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="ComponentCamera.cpp">
       <Filter>GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugDraw.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

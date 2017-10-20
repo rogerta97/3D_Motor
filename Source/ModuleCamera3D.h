@@ -22,6 +22,8 @@ public:
 	void Focus(const vec3& focus, const float& distance);
 	void PrintConfigData();
 
+	bool IsCulling(); 
+
 private:
 	void CalculateViewMatrix();
 
@@ -32,6 +34,8 @@ public:
 	float rot_speed = 0.25f;
 	float zm_speed = 0.1f;
 	float mouse_wheel_speed = 2.0f;
+
+	bool frustum_culling = false; 
 
 private:
 

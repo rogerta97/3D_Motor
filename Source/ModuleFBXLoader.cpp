@@ -54,9 +54,12 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 	const aiScene* scene = aiImportFile(full_path, aiProcessPreset_TargetRealtime_MaxQuality);
 	GameObject* new_object; 
 
-	if(scene != nullptr)
+	if (scene != nullptr)
+	{
 		new_object = new GameObject();
-	new_object->SetNumMeshes(scene->mNumMeshes);
+		new_object->SetNumMeshes(scene->mNumMeshes);
+	}
+		
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array

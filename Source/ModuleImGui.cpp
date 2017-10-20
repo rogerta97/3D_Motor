@@ -351,9 +351,7 @@ void ModuleImGui::PrintInspector()
 					int j = 0; 
 					while (App->scene_intro->GetGameObject(i)->GetNumMeshes() > j)
 					{
-						string tree_name("Mesh "); 
-
-			
+						string tree_name("Mesh "); 	
 						tree_name += to_string(j + 1); 
 						
 						if (ImGui::TreeNode(tree_name.c_str()))

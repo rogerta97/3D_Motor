@@ -270,5 +270,15 @@ void ModuleCamera3D::PrintConfigData()
 			rot_speed = 0.25f;
 			zm_speed = 0.1f;
 		}
+
+		ImGui::Separator(); 
+
+		if (ImGui::Checkbox("Frustum Culling", &frustum_culling)); 
+
 	}
+}
+
+bool ModuleCamera3D::IsCulling()
+{
+	return frustum_culling;
 }

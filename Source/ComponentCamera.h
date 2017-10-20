@@ -7,7 +7,21 @@
 
 class ComponentCamera : public Component
 {
-	
+public: 
+
+	ComponentCamera(); 
+
+	~ComponentCamera(); 
+
+	bool Update(); 
+
+	void DrawFrustum(); 
+
+private:
+
+	Frustum frustum; 
+	bool frustum_culling = false; 
+
 };
 
 #endif
