@@ -346,16 +346,44 @@ void ModuleImGui::PrintInspector()
 			//TRANSFORM
 			if (ImGui::TreeNode(g_aux->GetName()))
 			{
-				float3 radians_angle = ct_aux->GetLocalRotation().ToEulerXYZ();
-
-				float pos[3] = { ct_aux->GetLocalPosition().x,ct_aux->GetLocalPosition().y,ct_aux->GetLocalPosition().z };
-				float rot[3] = { RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
-				float s[3] = { ct_aux->GetLocalScale().x,ct_aux->GetLocalScale().y,ct_aux->GetLocalScale().z };
 				if (ImGui::TreeNode("Transform"))
 				{
-					ImGui::InputFloat3("Pos##transform", pos, 2);
-					ImGui::InputFloat3("Rot##transform", rot, 2);
-					ImGui::InputFloat3("Scale##transform", s, 2);
+					int j = 0; 
+					while (App->scene_intro->GetGameObject(i)->GetNumMeshes() > j)
+					{
+						string tree_name("Mesh "); 
+
+			
+						tree_name += to_string(j + 1); 
+						
+						if (ImGui::TreeNode(tree_name.c_str()))
+						{
+							ComponentTransform* ct_aux = (ComponentTransform*)g_aux->GetComponent(COMPONENT_TRANSFORM, j);
+
+							float3 radians_angle = ct_aux->GetLocalRotation()->ToEulerXYZ();
+
+							float pos[3] = { ct_aux->GetLocalPosition()->x,ct_aux->GetLocalPosition()->y,ct_aux->GetLocalPosition()->z };
+							float rot[3] = { RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
+							float s[3] = { ct_aux->GetLocalScale()->x,ct_aux->GetLocalScale()->y,ct_aux->GetLocalScale()->z };
+
+							ImGui::InputFloat3("Pos##transform", pos, 2);
+							ImGui::InputFloat3("Rot##transform", rot, 2);
+							ImGui::InputFloat3("Scale##transform", s, 2);
+
+							Quat new_quad;
+							//TODO
+							//Set the variable new quad to the new rotation quaternion from rot vector, then uncoment the line above
+							
+							ct_aux->SetPosition(float3(pos[0], pos[1], pos[2])); 
+							//ct_aux->SetRotation(new_quad);
+							ct_aux->SetScale(float3(s[0], s[1], s[2]));
+
+						
+							ImGui::TreePop(); 
+						}
+
+						j++; 
+					}			
 					ImGui::TreePop();
 				}
 				//MESHES
@@ -364,7 +392,7 @@ void ModuleImGui::PrintInspector()
 					int j = 0;
 					if (App->scene_intro->GetGameObject(i) != nullptr)
 					{
-						ComponentMeshRenderer* cm_aux = (ComponentMeshRenderer*)g_aux->GetComponent(COMPONENT_MESH_RENDERER, 0);
+						ComponentMeshRenderer* cm_aux = (ComponentMeshRenderer*)g_aux->GetComponent(COMPONENT_MESH_RENDERER);
 
 						char title[25];
 						sprintf_s(title, 25, "Mesh %d##meshrenderer", j + 1);

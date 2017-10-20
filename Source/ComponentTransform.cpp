@@ -2,19 +2,19 @@
 #include "OpenGL.h"
 #include "MathGeoLib\MathGeoLib.h"
 
-float3 ComponentTransform::GetLocalPosition() const
+float3* ComponentTransform::GetLocalPosition()
 {
-	return position;
+	return &position;
 }
 
-Quat ComponentTransform::GetLocalRotation() const
+Quat* ComponentTransform::GetLocalRotation()
 {
-	return rotation;
+	return &rotation;
 }
 
-float3 ComponentTransform::GetLocalScale() const
+float3* ComponentTransform::GetLocalScale()
 {
-	return scale;
+	return &scale;
 }
 
 ComponentTransform::ComponentTransform()
