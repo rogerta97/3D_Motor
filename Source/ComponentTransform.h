@@ -17,9 +17,9 @@ public:
 	void SetRotation(const Quat& rotation);
 	void SetScale(const float3& scale);
 
-	float3* GetLocalPosition();
-	Quat* GetLocalRotation();
-	float3* GetLocalScale(); 
+	float3 GetLocalPosition();
+	Quat GetLocalRotation();
+	float3 GetLocalScale(); 
 
 	void SetTransformMatrix();
 	const float* GetGlobalTransform(); 

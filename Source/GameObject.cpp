@@ -112,6 +112,31 @@ Component * GameObject::GetComponent(component_type new_component_type, int skip
 	
 }
 
+GameObject * GameObject::GetChild(uint id)
+{
+	return child_list.at(id);
+}
+
+bool GameObject::IsCompEmpty()
+{
+	return component_list.empty();
+}
+
+bool GameObject::IsChildEmpty()
+{
+	return child_list.empty();
+}
+
+uint GameObject::GetNumChilds()
+{
+	return child_list.size();
+}
+
+uint GameObject::GetNumComponents()
+{
+	return component_list.size();
+}
+
 void GameObject::PushComponent(Component * comp)
 {
 	component_list.push_back(comp); 
