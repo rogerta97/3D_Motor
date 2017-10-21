@@ -40,7 +40,7 @@ GameObject::GameObject(mesh_shape shape)
 {
 	switch (shape)
 	{
-		case EMPTY: 
+		case EMPTY_MESH: 
 		{
 			parent = nullptr;
 			num_meshes = 0;
@@ -48,15 +48,17 @@ GameObject::GameObject(mesh_shape shape)
 
 			ComponentTransform* trans = new ComponentTransform();
 			trans->SetIdentityTransform();
+			trans->type = COMPONENT_TRANSFORM;
 			PushComponent(trans);
 
 			break;
 		}
 
-		case CUBE: 
+		case CUBE_MESH: 
 		{
 			ComponentMeshRenderer* cube_shape = new ComponentMeshRenderer();
 			cube_shape->SetCubeVertices({ 0,0,0 }, 1);
+			cube_shape->type = COMPONENT_MESH_RENDERER;
 			PushComponent(cube_shape);
 
 			parent = nullptr;
@@ -64,6 +66,14 @@ GameObject::GameObject(mesh_shape shape)
 
 			break;
 		}
+
+		case FBX_MESH:
+
+			parent = nullptr;
+			num_meshes = 0;
+			SetActive(true);
+
+			break; 
 
 }
 }
@@ -78,8 +88,7 @@ void GameObject::Draw()
 				return;
 			component_list[i]->Update();//<----------
 		}
-			
-	
+				
 		//glBindTexture(GL_TEXTURE_2D, 0);
 	}	
 }

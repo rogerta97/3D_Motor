@@ -56,7 +56,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 
 	if (scene != nullptr)
 	{
-		new_object = new GameObject(EMPTY);
+		new_object = new GameObject(FBX_MESH);
 		new_object->SetNumMeshes(scene->mNumMeshes);
 	}
 		

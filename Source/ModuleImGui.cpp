@@ -286,10 +286,10 @@ update_status ModuleImGui::PrintTopBar()
 		{
 
 			if (ImGui::MenuItem("Empty", NULL))			
-				App->scene_intro->CreateGameObject("GameObject", EMPTY); 
+				App->scene_intro->CreateGameObject("GameObject", EMPTY_MESH); 
 			
 			if(ImGui::MenuItem("Cube"))
-				App->scene_intro->CreateGameObject("GameObject Cube", CUBE);
+				App->scene_intro->CreateGameObject("GameObject Cube", CUBE_MESH);
 
 		
 			ImGui::EndMenu(); 
@@ -409,10 +409,10 @@ void ModuleImGui::PrintInspector()
 								ct_aux->SetScale(float3(s[0], s[1], s[2]));
 
 
+								j++;
 								ImGui::TreePop();
 							}
 
-							j++;
 						}
 						ImGui::TreePop();
 					}
@@ -466,6 +466,27 @@ void ModuleImGui::PrintInspector()
 				if (cma_aux != nullptr)
 				{
 					if (ImGui::TreeNode("Materials"))
+					{
+
+						if (cma_aux != nullptr)
+						{
+							ImGui::LabelText("ID##material", "%d", cma_aux->textures_id);
+							ImGui::LabelText("Width##material", "%d", cma_aux->width);
+							ImGui::LabelText("Height##material", "%d", cma_aux->height);
+							ImGui::LabelText("Path##material", "%s", cma_aux->path.c_str());
+						}
+
+						ImGui::TreePop();
+					}
+				}
+
+
+				ComponentCamera* cam_aux = (ComponentCamera*)g_aux->GetComponent(COMPONENT_CAMERA);
+
+				//CAMERA
+				if (cma_aux != nullptr)
+				{
+					if (ImGui::TreeNode("Component Camera"))
 					{
 
 						if (cma_aux != nullptr)

@@ -13,6 +13,8 @@ ComponentCamera::ComponentCamera()
 	frustum.farPlaneDistance = 1000.0f;
 	//frustum.verticalFov =  * 60.0f;
 	//SetAspectRatio(1.3f);
+
+	type = COMPONENT_CAMERA; 
 }
 
 ComponentCamera::~ComponentCamera()

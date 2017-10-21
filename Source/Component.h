@@ -8,14 +8,17 @@ enum component_type
 	COMPONENT_MESH_RENDERER,
 	COMPONENT_MATERIAL,
 	COMPONENT_TRANSFORM,
+	COMPONENT_CAMERA, 
 	COMPONENT_NULL
 
 };
 
 enum mesh_shape
 {
-	EMPTY,
-	CUBE,
+	EMPTY_MESH,
+	CUBE_MESH,
+	FBX_MESH
+	
 };
 
 class Component

@@ -4,6 +4,7 @@
 #include "Primitive.h"
 #include "p2Point.h"
 #include "Component.h"
+#include "ComponentDefs.h"
 #include "OpenGL.h"
 #include "GameObject.h"
 #include "ModuleFBXLoader.h"
@@ -34,7 +35,10 @@ bool ModuleSceneIntro::Start()
 
 	srand(time(NULL));
 
-	
+	GameObject* GO = CreateGameObject("Camara Holder", EMPTY_MESH);
+
+	ComponentCamera* new_cam = new ComponentCamera();
+	GO->PushComponent(new_cam); 
 
 	App->performance.SaveInitData(name); 
 
