@@ -10,12 +10,13 @@
 
 class Component; 
 enum component_type; 
+enum mesh_shape; 
 
 class GameObject
 {
 public:
 
-	GameObject() {}
+	GameObject(mesh_shape shape);
 	~GameObject() {}
 
 	virtual void Draw(); 

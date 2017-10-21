@@ -36,6 +36,38 @@ uint GameObject::GetNumMeshes() const
 	return num_meshes;
 }
 
+GameObject::GameObject(mesh_shape shape)
+{
+	switch (shape)
+	{
+		case EMPTY: 
+		{
+			parent = nullptr;
+			num_meshes = 0;
+			SetActive(true);
+
+			ComponentTransform* trans = new ComponentTransform();
+			trans->SetIdentityTransform();
+			PushComponent(trans);
+
+			break;
+		}
+
+		case CUBE: 
+		{
+			ComponentMeshRenderer* cube_shape = new ComponentMeshRenderer();
+			cube_shape->SetCubeVertices({ 0,0,0 }, 1);
+			PushComponent(cube_shape);
+
+			parent = nullptr;
+			SetActive(true);
+
+			break;
+		}
+
+}
+}
+
 void GameObject::Draw()
 {
 	if (!component_list.empty())

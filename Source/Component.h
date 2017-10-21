@@ -12,6 +12,12 @@ enum component_type
 
 };
 
+enum mesh_shape
+{
+	EMPTY,
+	CUBE,
+};
+
 class Component
 {
 public:

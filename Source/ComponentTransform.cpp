@@ -42,6 +42,15 @@ int ComponentTransform::GetTransformID()
 	return transform_id;
 }
 
+void ComponentTransform::SetIdentityTransform()
+{
+	SetPosition({ 0,0,0 }); 
+	Quat rot; 
+	rot.identity; 
+	SetRotation(rot); 
+	SetScale({ 1,1,1 }); 
+}
+
 bool ComponentTransform::Update()
 {
 

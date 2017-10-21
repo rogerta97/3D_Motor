@@ -29,6 +29,7 @@ private:
 	void PrintHierarchy();
 	void ShowAbout();
 	void UpdateConfigPanel();
+	update_status PrintTopBar(); 
 
 private: 
 

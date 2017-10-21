@@ -25,6 +25,8 @@ public:
 	const float* GetGlobalTransform(); 
 	int GetTransformID(); 
 
+	void SetIdentityTransform(); 
+
 private:
 	float3 position = float3::zero;
 	Quat rotation = Quat::identity;

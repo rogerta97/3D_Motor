@@ -3,6 +3,7 @@
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
 #include "p2Point.h"
+#include "Component.h"
 #include "OpenGL.h"
 #include "GameObject.h"
 #include "ModuleFBXLoader.h"
@@ -65,11 +66,14 @@ GameObject* ModuleSceneIntro::GetGameObject(uint id)
 	return ret;
 }
 
-GameObject * ModuleSceneIntro::CreateGameObject(const char * name)
+GameObject * ModuleSceneIntro::CreateGameObject(const char * name, mesh_shape shape)
 {
-	GameObject* new_go = new GameObject(); 
-
+	GameObject* new_go = new GameObject(shape); 
 	new_go->SetName(name); 
+
+	LOG("GameObject '%s' created", name); 
+
+	GO_list.push_back(new_go); 
 
 	return new_go; 
 
@@ -84,7 +88,6 @@ update_status ModuleSceneIntro::Update(float dt)
 		(*it)->Draw(); 
 	}
 	
-
 	return UPDATE_CONTINUE;
 }
 

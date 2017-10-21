@@ -56,6 +56,7 @@ public:
 private:
 
 	bool show_bb; 
+	mesh_shape shape_mesh; 
 
 };
 

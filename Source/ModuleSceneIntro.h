@@ -1,11 +1,13 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "Component.h"
 
 class GameObject; 
 struct PhysBody3D;
 struct PhysMotor3D;
 class Cube1; 
+enum mesh_shape; 
 
 class ModuleSceneIntro : public Module
 {
@@ -18,7 +20,7 @@ public:
 	update_status PostUpdate(float dt); 
 	bool CleanUp();
 	GameObject* GetGameObject(uint id);
-	GameObject* CreateGameObject(const char* name); 
+	GameObject* CreateGameObject(const char* name, mesh_shape shape = EMPTY);
 
 	void PrintConfigData();
 	void PrintInspectorData();

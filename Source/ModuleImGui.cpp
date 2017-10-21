@@ -89,99 +89,8 @@ update_status ModuleImGui::Update(float dt)
 
 	// Main menu bar -----------------------------
 
-	ImGui::BeginMainMenuBar();
-
-	if (ImGui::BeginMenu("Files"))
-	{
-		if (ImGui::MenuItem("Exit", "Shift + Esc"))
-		{
-			return UPDATE_STOP;
-		}
-
-		ImGui::EndMenu(); 
-	}
-
-	if (ImGui::BeginMenu("Tools"))
-	{
-		if (ImGui::MenuItem("Console"))
-		{
-			show_console = !show_console;
-		}
-		if (ImGui::MenuItem("RandomNum"))
-		{
-			show_random_number = !show_random_number;
-		}
-
-		if (ImGui::MenuItem("Configuration"))
-		{
-			show_configuration = !show_configuration;
-		}
-
-		ImGui::Separator();
-
-		if (ImGui::MenuItem("Performance"))
-		{
-			show_performance = !show_performance;
-		}
-
-		ImGui::EndMenu();		
-	}
-
-	if (ImGui::BeginMenu("Help"))
-	{
-
-		if (ImGui::MenuItem("DEMO GUI"))
-		{
-			show_gui_demo = !show_gui_demo;
-		}
-
-		if (ImGui::MenuItem("Documentation"))
-		{
-			App->OpenWebPage("https://github.com/rogerta97/3D_Motor");
-		}
-
-		if (ImGui::MenuItem("Download latest"))
-		{
-			App->OpenWebPage("https://github.com/rogerta97/3D_Motor/releases");
-		}
-
-		if (ImGui::MenuItem("Report a bug"))
-		{
-			App->OpenWebPage("https://github.com/rogerta97/3D_Motor/issues");
-		}
-
-		if (ImGui::MenuItem("License"))
-		{
-			App->OpenWebPage("https://github.com/rogerta97/3D_Motor/blob/master/LICENSE");			
-		}
-
-		if (ImGui::MenuItem("About"))
-		{
-			show_about = !show_about; 
-		}
-
-		ImGui::EndMenu();
-	}
-
-	if (show_console) PrintConsole();
-	if (show_random_number)PrintRandomNumber();
-	if (show_about) ShowAbout();
-	if (show_inspector)PrintInspector();
-	if (show_performance) App->performance.Update(show_performance);
-	if (show_hierarchy) PrintHierarchy();
-
-	if (App->scene_intro->IsListEmpty() == false)
-		show_inspector = true; 
-	else 
-		show_inspector = false; 
-
-	ImGui::EndMainMenuBar(); 
-
-	if (show_gui_demo)
-	{
-		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
-		ImGui::ShowTestWindow();
-	}
+	if (PrintTopBar() != UPDATE_CONTINUE)
+		return UPDATE_STOP; 
 
 	// -------------------------------------------
  
@@ -329,6 +238,125 @@ void ModuleImGui::UpdateConfigPanel()
 	ImGui::End();
 }
 
+update_status ModuleImGui::PrintTopBar()
+{
+
+	ImGui::BeginMainMenuBar();
+
+	if (ImGui::BeginMenu("Files"))
+	{
+		if (ImGui::MenuItem("Exit", "Shift + Esc"))
+		{
+			return UPDATE_STOP;
+		}
+
+		ImGui::EndMenu();
+	}
+
+	if (ImGui::BeginMenu("Tools"))
+	{
+		if (ImGui::MenuItem("Console"))
+		{
+			show_console = !show_console;
+		}
+		if (ImGui::MenuItem("RandomNum"))
+		{
+			show_random_number = !show_random_number;
+		}
+
+		if (ImGui::MenuItem("Configuration"))
+		{
+			show_configuration = !show_configuration;
+		}
+
+		ImGui::Separator();
+
+		if (ImGui::MenuItem("Performance"))
+		{
+			show_performance = !show_performance;
+		}
+
+		ImGui::EndMenu();
+	}
+
+
+	if (ImGui::BeginMenu("Create"))
+	{
+		if (ImGui::BeginMenu("GameObject"))
+		{
+
+			if (ImGui::MenuItem("Empty", NULL))			
+				App->scene_intro->CreateGameObject("GameObject", EMPTY); 
+			
+			if(ImGui::MenuItem("Cube"))
+				App->scene_intro->CreateGameObject("GameObject Cube", CUBE);
+
+		
+			ImGui::EndMenu(); 
+		}
+
+		ImGui::EndMenu();
+	}
+
+	if (ImGui::BeginMenu("Help"))
+	{
+
+		if (ImGui::MenuItem("DEMO GUI"))
+		{
+			show_gui_demo = !show_gui_demo;
+		}
+
+		if (ImGui::MenuItem("Documentation"))
+		{
+			App->OpenWebPage("https://github.com/rogerta97/3D_Motor");
+		}
+
+		if (ImGui::MenuItem("Download latest"))
+		{
+			App->OpenWebPage("https://github.com/rogerta97/3D_Motor/releases");
+		}
+
+		if (ImGui::MenuItem("Report a bug"))
+		{
+			App->OpenWebPage("https://github.com/rogerta97/3D_Motor/issues");
+		}
+
+		if (ImGui::MenuItem("License"))
+		{
+			App->OpenWebPage("https://github.com/rogerta97/3D_Motor/blob/master/LICENSE");
+		}
+
+		if (ImGui::MenuItem("About"))
+		{
+			show_about = !show_about;
+		}
+
+		ImGui::EndMenu();
+	}
+
+	if (show_console) PrintConsole();
+	if (show_random_number)PrintRandomNumber();
+	if (show_about) ShowAbout();
+	if (show_inspector)PrintInspector();
+	if (show_performance) App->performance.Update(show_performance);
+	if (show_hierarchy) PrintHierarchy();
+
+	if (App->scene_intro->IsListEmpty() == false)
+		show_inspector = true;
+	else
+		show_inspector = false;
+
+	ImGui::EndMainMenuBar();
+
+	if (show_gui_demo)
+	{
+		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
+		ImGui::ShowTestWindow();
+	}
+
+	return UPDATE_CONTINUE; 
+}
+
 void ModuleImGui::ImGuiInput(SDL_Event* e)const
 {
 	ImGui_ImplSdlGL2_ProcessEvent(e);
@@ -342,89 +370,124 @@ void ModuleImGui::PrintInspector()
 			GameObject* g_aux = App->scene_intro->GetGameObject(i);
 			//if (g_aux->Active() == true)
 			//{
-			ComponentTransform* ct_aux = (ComponentTransform*)g_aux->GetComponent(COMPONENT_TRANSFORM);
-			//TRANSFORM
+
+			//TRANSFORM ---------------------------------------------------------------
 			if (ImGui::TreeNode(g_aux->GetName()))
 			{
-				if (ImGui::TreeNode("Transform"))
+				ComponentTransform* ct_aux = (ComponentTransform*)g_aux->GetComponent(COMPONENT_TRANSFORM);
+
+				if (ct_aux != nullptr)
 				{
-					int j = 0; 
-					while (App->scene_intro->GetGameObject(i)->GetNumMeshes() > j)
+					if (ImGui::TreeNode("Transform"))
 					{
-						string tree_name("Mesh "); 	
-						tree_name += to_string(j + 1); 
-						
-						if (ImGui::TreeNode(tree_name.c_str()))
+						int j = 0;
+						while (App->scene_intro->GetGameObject(i)->GetNumMeshes() > j)
 						{
-							ComponentTransform* ct_aux = (ComponentTransform*)g_aux->GetComponent(COMPONENT_TRANSFORM, j);
+							string tree_name("Mesh ");
+							tree_name += to_string(j + 1);
 
-							float3 radians_angle = ct_aux->GetLocalRotation()->ToEulerXYZ();
+							if (ImGui::TreeNode(tree_name.c_str()))
+							{
+								ComponentTransform* ct_aux = (ComponentTransform*)g_aux->GetComponent(COMPONENT_TRANSFORM, j);
 
-							float pos[3] = { ct_aux->GetLocalPosition()->x,ct_aux->GetLocalPosition()->y,ct_aux->GetLocalPosition()->z };
-							float rot[3] = { RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
-							float s[3] = { ct_aux->GetLocalScale()->x,ct_aux->GetLocalScale()->y,ct_aux->GetLocalScale()->z };
+								float3 radians_angle = ct_aux->GetLocalRotation()->ToEulerXYZ();
 
-							ImGui::InputFloat3("Pos##transform", pos, 2);
-							ImGui::InputFloat3("Rot##transform", rot, 2);
-							ImGui::InputFloat3("Scale##transform", s, 2);
+								float pos[3] = { ct_aux->GetLocalPosition()->x,ct_aux->GetLocalPosition()->y,ct_aux->GetLocalPosition()->z };
+								float rot[3] = { RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
+								float s[3] = { ct_aux->GetLocalScale()->x,ct_aux->GetLocalScale()->y,ct_aux->GetLocalScale()->z };
 
-							Quat new_quad;
-							//TODO
-							//Set the variable new quad to the new rotation quaternion from rot vector, then uncoment the line above
-							
-							ct_aux->SetPosition(float3(pos[0], pos[1], pos[2])); 
-							//ct_aux->SetRotation(new_quad);
-							ct_aux->SetScale(float3(s[0], s[1], s[2]));
+								ImGui::InputFloat3("Pos##transform", pos, 2);
+								ImGui::InputFloat3("Rot##transform", rot, 2);
+								ImGui::InputFloat3("Scale##transform", s, 2);
 
-						
-							ImGui::TreePop(); 
+								Quat new_quad;
+								//TODO
+								//Set the variable new quad to the new rotation quaternion from rot vector, then uncoment the line above
+
+								ct_aux->SetPosition(float3(pos[0], pos[1], pos[2]));
+								//ct_aux->SetRotation(new_quad);
+								ct_aux->SetScale(float3(s[0], s[1], s[2]));
+
+
+								ImGui::TreePop();
+							}
+
+							j++;
 						}
-
-						j++; 
-					}			
-					ImGui::TreePop();
-				}
-				//MESHES
-				if (ImGui::TreeNode("Meshes"))
-				{
-					int j = 0;
-					if (App->scene_intro->GetGameObject(i) != nullptr)
-					{
-						ComponentMeshRenderer* cm_aux = (ComponentMeshRenderer*)g_aux->GetComponent(COMPONENT_MESH_RENDERER);
-
-						char title[25];
-						sprintf_s(title, 25, "Mesh %d##meshrenderer", j + 1);
-						if (ImGui::TreeNode(title))
-						{
-							char name[25];
-							sprintf_s(name, 25, "Vertices##mesh%d", j + 1);
-							ImGui::LabelText(name, "%d", cm_aux->num_vertices);
-							sprintf_s(name, 25, "Indices##mesh%d", j + 1);
-							ImGui::LabelText(name, "%d", cm_aux->num_indices);
-							ImGui::TreePop();
-						}
-						++j;
-						if (App->scene_intro->GetGameObject(i) == nullptr)
-							break;
+						ImGui::TreePop();
 					}
-					ImGui::TreePop();
 				}
-				//MATERIALS
-				if (ImGui::TreeNode("Materials"))
+
+				ComponentMeshRenderer* cm_aux = (ComponentMeshRenderer*)g_aux->GetComponent(COMPONENT_MESH_RENDERER);
+
+				//MESHES
+				if (cm_aux != nullptr)
 				{
-					ComponentMaterial* cma_aux = (ComponentMaterial*)g_aux->GetComponent(COMPONENT_MATERIAL);
-					ImGui::LabelText("ID##material", "%d", cma_aux->textures_id);
-					ImGui::LabelText("Width##material", "%d", cma_aux->width);
-					ImGui::LabelText("Height##material", "%d", cma_aux->height);
-					ImGui::LabelText("Path##material", "%s", cma_aux->path.c_str());
-					ImGui::TreePop();
+					if (ImGui::TreeNode("Meshes"))
+					{
+
+
+
+						int j = 0;
+						if (App->scene_intro->GetGameObject(i) != nullptr)
+						{
+
+
+							if (cm_aux != nullptr)
+							{
+								char title[25];
+								sprintf_s(title, 25, "Mesh %d##meshrenderer", j + 1);
+								if (ImGui::TreeNode(title))
+								{
+									char name[25];
+									sprintf_s(name, 25, "Vertices##mesh%d", j + 1);
+									ImGui::LabelText(name, "%d", cm_aux->num_vertices);
+									sprintf_s(name, 25, "Indices##mesh%d", j + 1);
+									ImGui::LabelText(name, "%d", cm_aux->num_indices);
+									ImGui::TreePop();
+								}
+							}
+
+							++j;
+
+							if (App->scene_intro->GetGameObject(i) == nullptr)
+							{
+								break;
+							}
+
+						}
+						ImGui::TreePop();
+					}
 				}
+
+				ComponentMaterial* cma_aux = (ComponentMaterial*)g_aux->GetComponent(COMPONENT_MATERIAL);
+
+				//MATERIALS
+				if (cma_aux != nullptr)
+				{
+					if (ImGui::TreeNode("Materials"))
+					{
+
+						if (cma_aux != nullptr)
+						{
+							ImGui::LabelText("ID##material", "%d", cma_aux->textures_id);
+							ImGui::LabelText("Width##material", "%d", cma_aux->width);
+							ImGui::LabelText("Height##material", "%d", cma_aux->height);
+							ImGui::LabelText("Path##material", "%s", cma_aux->path.c_str());
+						}
+
+						ImGui::TreePop();
+					}
+				}
+
+
 				ImGui::TreePop();
+
+				//}//activ
 			}
-			//}//activ
 		}
+		ImGui::End();
 	}
-	ImGui::End();
 }
 	
 
