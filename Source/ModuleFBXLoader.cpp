@@ -48,16 +48,23 @@ bool ModuleFBXLoader::CleanUp()
 
 void ModuleFBXLoader::LoadFBX(const char* full_path)
 {
-
 	bool ret = true; 
 
 	const aiScene* scene = aiImportFile(full_path, aiProcessPreset_TargetRealtime_MaxQuality);
 	GameObject* new_object; 
-
+	
 	if (scene != nullptr)
 	{
+		string tot_path(full_path);
+		int cut = tot_path.find_last_of('\\');
+		int cut2 = tot_path.find_last_of('.');
+
+		int extension_name = cut2 - cut;
+		string new_name = tot_path.substr(cut + 1, extension_name - 1);
+
 		new_object = new GameObject(FBX_MESH);
 		new_object->SetNumMeshes(scene->mNumMeshes);
+		new_object->SetName(new_name.c_str());
 	}
 		
 	if (scene != nullptr && scene->HasMeshes())

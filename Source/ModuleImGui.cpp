@@ -361,6 +361,7 @@ void ModuleImGui::ImGuiInput(SDL_Event* e)const
 {
 	ImGui_ImplSdlGL2_ProcessEvent(e);
 }
+
 void ModuleImGui::PrintInspector()
 {
 	if (ImGui::Begin("Inspector", &show_inspector))
