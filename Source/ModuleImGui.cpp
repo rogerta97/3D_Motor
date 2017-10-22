@@ -399,17 +399,13 @@ void ModuleImGui::PrintInspector()
 								float rot[3] = { RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
 								float s[3] = { ct_aux->GetLocalScale().x,ct_aux->GetLocalScale().y,ct_aux->GetLocalScale().z };
 
-								ImGui::InputFloat3("Pos##transform", pos, 2);
-								ImGui::InputFloat3("Rot##transform", rot, 2);
-								ImGui::InputFloat3("Scale##transform", s, 2);
+								if(ImGui::InputFloat3("Pos##transform", pos, 2))
+									ct_aux->SetPosition(float3(pos[0], pos[1], pos[2]));
+								if(ImGui::InputFloat3("Rot##transform", rot, 2))
+									ct_aux->SetRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
+								if(ImGui::InputFloat3("Scale##transform", s, 2))
+									ct_aux->SetScale(float3(s[0], s[1], s[2]));
 
-								ct_aux->SetPosition(float3(pos[0], pos[1], pos[2]));
-
-								Quat q;
-								q.FromEulerXYX(rot[0], rot[1], rot[2]);
-
-								//ct_aux->SetRotation(q);
-								ct_aux->SetScale(float3(s[0], s[1], s[2]));
 
 								ImGui::TreePop(); 
 							}

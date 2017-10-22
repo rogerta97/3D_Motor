@@ -47,7 +47,7 @@ void ComponentTransform::SetIdentityTransform()
 	SetPosition({ 0,0,0 }); 
 	Quat rot; 
 	rot.identity; 
-	SetRotation(rot); 
+	SetRotation(rot);
 	SetScale({ 1,1,1 }); 
 }
 
@@ -65,9 +65,14 @@ void ComponentTransform::SetPosition(const float3 & _position)
 	position = _position;
 }
 
-void ComponentTransform::SetRotation(const Quat & rotation)
+void ComponentTransform::SetRotation(const float3& _rotation)
 {
-	this->rotation = rotation;
+	Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
+	rotation =  mod;
+}
+void ComponentTransform::SetRotation(const Quat& _rotation)
+{
+	rotation = _rotation;
 }
 
 void ComponentTransform::SetScale(const float3 & scale)
