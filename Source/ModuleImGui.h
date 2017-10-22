@@ -64,4 +64,8 @@ private:
 
 	ImVec4 clear_color = ImColor(114, 144, 154);
 
+	//Inspector
+
+	int inspector_count = 0; 
+
 };

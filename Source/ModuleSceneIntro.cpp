@@ -78,7 +78,7 @@ GameObject * ModuleSceneIntro::CreateGameObject(const char * name, mesh_shape sh
 
 	LOG("GameObject '%s' created", name); 
 
-	GO_list.push_back(new_go); 
+	AddGameObject(new_go); 
 
 	return new_go; 
 
@@ -99,17 +99,6 @@ update_status ModuleSceneIntro::Update(float dt)
 update_status ModuleSceneIntro::PostUpdate(float dt)
 {
 
-	//App->renderer3D->PrintBufferData(); 
-
-	//int indices[36] =
-	//{
-	//	0, 3, 2,
-	//	0, 1, 3,
-	//	1, 4, 3, 
-	//	4, 5, 3,
-	//};
-
-	//App->renderer3D->PrintBufferData(&indices[0]); 
 	
 	return UPDATE_CONTINUE; 
 }
@@ -130,6 +119,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 void ModuleSceneIntro::AddGameObject(GameObject * GO)
 {
 	GO_list.push_back(GO); 
+	current_gameobject_id = GO_list.size() - 1; 
 }
 
 vector<GameObject*> ModuleSceneIntro::GetList()
@@ -140,6 +130,16 @@ vector<GameObject*> ModuleSceneIntro::GetList()
 bool ModuleSceneIntro::IsListEmpty()
 {
 	return GO_list.empty();
+}
+
+void ModuleSceneIntro::SetCurrentGO(uint id)
+{
+	current_gameobject_id = id;
+}
+
+GameObject* ModuleSceneIntro::GetCurrentGO()
+{
+	return GO_list.at(current_gameobject_id);
 }
 
 void ModuleSceneIntro::ClearGOList()

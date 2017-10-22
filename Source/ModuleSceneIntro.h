@@ -30,9 +30,15 @@ public:
 	bool IsListEmpty(); 
 
 	//p2DynArray<p2Point<int>> GetCollisions(); 
+	void SetCurrentGO(uint id);
+	GameObject* GetCurrentGO(); 
+
 	void ClearGOList(); 
 
 private:
+
 	vector<GameObject*> GO_list;
+	uint current_gameobject_id = 0;
+
 
 };

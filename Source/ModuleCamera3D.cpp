@@ -101,7 +101,7 @@ update_status ModuleCamera3D::Update(float dt)
 			if (aux == nullptr)
 				Orbit(vec3(0,0,0), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
 			else
-				Orbit(vec3(tmp_trans->GetLocalPosition()->x, tmp_trans->GetLocalPosition()->y, tmp_trans->GetLocalPosition()->z), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
+				Orbit(vec3(tmp_trans->GetLocalPosition().x, tmp_trans->GetLocalPosition().y, tmp_trans->GetLocalPosition().z), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
 
 		}
 			
@@ -115,7 +115,7 @@ update_status ModuleCamera3D::Update(float dt)
 		if(aux== NULL)
 			Focus(vec3(0, 0, 0), STD_CAM_DISTANCE);
 		else
-			Focus(vec3(tmp_trans->GetLocalPosition()->x, tmp_trans->GetLocalPosition()->y, tmp_trans->GetLocalPosition()->z), STD_CAM_DISTANCE);
+			Focus(vec3(tmp_trans->GetLocalPosition().x, tmp_trans->GetLocalPosition().y, tmp_trans->GetLocalPosition().z), STD_CAM_DISTANCE);
 
 	}
 	

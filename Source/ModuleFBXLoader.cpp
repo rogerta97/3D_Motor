@@ -48,16 +48,23 @@ bool ModuleFBXLoader::CleanUp()
 
 void ModuleFBXLoader::LoadFBX(const char* full_path)
 {
-
 	bool ret = true; 
 
 	const aiScene* scene = aiImportFile(full_path, aiProcessPreset_TargetRealtime_MaxQuality);
 	GameObject* new_object; 
-
+	
 	if (scene != nullptr)
 	{
+		string tot_path(full_path);
+		int cut = tot_path.find_last_of('\\');
+		int cut2 = tot_path.find_last_of('.');
+
+		int extension_name = cut2 - cut;
+		string new_name = tot_path.substr(cut + 1, extension_name - 1);
+
 		new_object = new GameObject(FBX_MESH);
 		new_object->SetNumMeshes(scene->mNumMeshes);
+		new_object->SetName(new_name.c_str());
 	}
 		
 	if (scene != nullptr && scene->HasMeshes())
@@ -152,7 +159,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			aiMaterial* mat = scene->mMaterials[0]; //just one material is supported now
 			aiString path;
 
-			ComponentMaterial* MA_tmp = new ComponentMaterial();
+			ComponentMaterial* MA_tmp;
 			mat->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 
 			std::string full_path_str(full_path);
@@ -272,7 +279,6 @@ ComponentMaterial* ModuleFBXLoader::ImportImage(const char * path)
 	
 		new_component->width = ilGetInteger(IL_IMAGE_WIDTH);
 		new_component->height = ilGetInteger(IL_IMAGE_HEIGHT);
-		new_component->path = path;
 		new_component->type = COMPONENT_MATERIAL;
 			
 		if (!success)
@@ -293,6 +299,7 @@ ComponentMaterial* ModuleFBXLoader::ImportImage(const char * path)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+
 
 	}
 	else
