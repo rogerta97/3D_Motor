@@ -92,7 +92,44 @@ void DebugDraw(const Sphere & sphere, Color color, const float4x4 & transform)
     }
 	glPopMatrix();
 }
+void DebugDrawBox(const float3* corners, Color color)
+{
+	glColor3f(color.r, color.g, color.b);
 
+	glBegin(GL_QUADS);
+
+	glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy, sz);
+	glVertex3fv((GLfloat*)&corners[5]); //glVertex3f( sx, -sy, sz);
+	glVertex3fv((GLfloat*)&corners[7]); //glVertex3f( sx,  sy, sz);
+	glVertex3fv((GLfloat*)&corners[3]); //glVertex3f(-sx,  sy, sz);
+
+	glVertex3fv((GLfloat*)&corners[4]); //glVertex3f( sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&corners[0]); //glVertex3f(-sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&corners[2]); //glVertex3f(-sx,  sy, -sz);
+	glVertex3fv((GLfloat*)&corners[6]); //glVertex3f( sx,  sy, -sz);
+
+	glVertex3fv((GLfloat*)&corners[5]); //glVertex3f(sx, -sy,  sz);
+	glVertex3fv((GLfloat*)&corners[4]); //glVertex3f(sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&corners[6]); //glVertex3f(sx,  sy, -sz);
+	glVertex3fv((GLfloat*)&corners[7]); //glVertex3f(sx,  sy,  sz);
+
+	glVertex3fv((GLfloat*)&corners[0]); //glVertex3f(-sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy,  sz);
+	glVertex3fv((GLfloat*)&corners[3]); //glVertex3f(-sx,  sy,  sz);
+	glVertex3fv((GLfloat*)&corners[2]); //glVertex3f(-sx,  sy, -sz);
+
+	glVertex3fv((GLfloat*)&corners[3]); //glVertex3f(-sx, sy,  sz);
+	glVertex3fv((GLfloat*)&corners[7]); //glVertex3f( sx, sy,  sz);
+	glVertex3fv((GLfloat*)&corners[6]); //glVertex3f( sx, sy, -sz);
+	glVertex3fv((GLfloat*)&corners[2]); //glVertex3f(-sx, sy, -sz);
+
+	glVertex3fv((GLfloat*)&corners[0]); //glVertex3f(-sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&corners[4]); //glVertex3f( sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&corners[5]); //glVertex3f( sx, -sy,  sz);
+	glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy,  sz);
+
+	glEnd();
+}
 // ------------------------------------------------------------
 void DebugDraw(const AABB & aabb, Color color, const float4x4& transform)
 {
@@ -249,46 +286,6 @@ void DebugDraw(const float3 & point, Color color)
 	glEnd();
 	glPointSize(1.0f);
 }
-
-void DebugDrawBox(const float3* corners, Color color)
-{
-	glColor3f(color.r, color.g, color.b);
-
-	glBegin(GL_QUADS);
-
-	glVertex3fv((GLfloat*) &corners[1]); //glVertex3f(-sx, -sy, sz);
-	glVertex3fv((GLfloat*) &corners[5]); //glVertex3f( sx, -sy, sz);
-	glVertex3fv((GLfloat*) &corners[7]); //glVertex3f( sx,  sy, sz);
-	glVertex3fv((GLfloat*) &corners[3]); //glVertex3f(-sx,  sy, sz);
-
-	glVertex3fv((GLfloat*) &corners[4]); //glVertex3f( sx, -sy, -sz);
-	glVertex3fv((GLfloat*) &corners[0]); //glVertex3f(-sx, -sy, -sz);
-	glVertex3fv((GLfloat*) &corners[2]); //glVertex3f(-sx,  sy, -sz);
-	glVertex3fv((GLfloat*) &corners[6]); //glVertex3f( sx,  sy, -sz);
-
-	glVertex3fv((GLfloat*) &corners[5]); //glVertex3f(sx, -sy,  sz);
-	glVertex3fv((GLfloat*) &corners[4]); //glVertex3f(sx, -sy, -sz);
-	glVertex3fv((GLfloat*) &corners[6]); //glVertex3f(sx,  sy, -sz);
-	glVertex3fv((GLfloat*) &corners[7]); //glVertex3f(sx,  sy,  sz);
-
-	glVertex3fv((GLfloat*) &corners[0]); //glVertex3f(-sx, -sy, -sz);
-	glVertex3fv((GLfloat*) &corners[1]); //glVertex3f(-sx, -sy,  sz);
-	glVertex3fv((GLfloat*) &corners[3]); //glVertex3f(-sx,  sy,  sz);
-	glVertex3fv((GLfloat*) &corners[2]); //glVertex3f(-sx,  sy, -sz);
-
-	glVertex3fv((GLfloat*) &corners[3]); //glVertex3f(-sx, sy,  sz);
-	glVertex3fv((GLfloat*) &corners[7]); //glVertex3f( sx, sy,  sz);
-	glVertex3fv((GLfloat*) &corners[6]); //glVertex3f( sx, sy, -sz);
-	glVertex3fv((GLfloat*) &corners[2]); //glVertex3f(-sx, sy, -sz);
-
-	glVertex3fv((GLfloat*) &corners[0]); //glVertex3f(-sx, -sy, -sz);
-	glVertex3fv((GLfloat*) &corners[4]); //glVertex3f( sx, -sy, -sz);
-	glVertex3fv((GLfloat*) &corners[5]); //glVertex3f( sx, -sy,  sz);
-	glVertex3fv((GLfloat*) &corners[1]); //glVertex3f(-sx, -sy,  sz);
-
-	glEnd();
-}
-
 
 void DebugDrawArrow(const float3& dir, const float3& offset, Color color, const float4x4 & transform)
 {

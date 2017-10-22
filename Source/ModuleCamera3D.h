@@ -14,13 +14,14 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
-	void LookAt(const vec3 &Spot);
+	void Look(const float3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
 	void Move(const vec3 &Movement);
 	float* GetViewMatrix();
 	void Orbit(const vec3& orbit_center, const float& motion_x, const float& motion_y);
 	void Focus(const vec3& focus, const float& distance);
 	void PrintConfigData();
+
+	ComponentCamera* GetBasicCam()const;
 
 	bool IsCulling(); 
 
@@ -38,6 +39,7 @@ public:
 	bool frustum_culling = false; 
 
 private:
-
 	mat4x4 ViewMatrix, ViewMatrixInverse;
+	ComponentCamera* basic_camera = nullptr;
+
 };

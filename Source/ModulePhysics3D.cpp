@@ -49,7 +49,7 @@ bool ModulePhysics3D::Init()
 	bool ret = true;
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
-	App->camera->LookAt(vec3(0, 0, 0));
+	App->camera->Look(float3(0, 0, 0),vec3(0,0,0),false);
 
 	App->performance.SaveInitData(name);
 

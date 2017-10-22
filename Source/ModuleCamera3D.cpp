@@ -5,6 +5,7 @@
 #include "ModuleFBXLoader.h"
 #include "ComponentDefs.h"
 #include "ModuleSceneIntro.h"
+#include "ModuleRenderer3D.h"
 #include "GameObject.h"
 
 #define STD_CAM_DISTANCE 10
@@ -18,16 +19,20 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled)
 
 	Position = vec3(0.0f, 0.0f, 5.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
+	basic_camera = new ComponentCamera();
+
 }
 
 ModuleCamera3D::~ModuleCamera3D()
-{}
+{
+	RELEASE(basic_camera);
+}
 
 bool ModuleCamera3D::Init() 
 {
 	name = "Camera";
 	App->performance.InitTimer(name);
-
+	App->renderer3D->curr_cam = basic_camera;
 	App->performance.SaveInitData(name);
 
 	return true; 
@@ -46,6 +51,7 @@ bool ModuleCamera3D::Start()
 bool ModuleCamera3D::CleanUp()
 {
 	LOG("Cleaning camera");
+	App->renderer3D->curr_cam = nullptr;
 
 	return true;
 }
@@ -56,6 +62,7 @@ update_status ModuleCamera3D::Update(float dt)
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 	GameObject* aux;
+	Frustum frustum = basic_camera->frustum;//AQUI
 
 	ComponentTransform* tmp_trans; 
 
@@ -69,11 +76,8 @@ update_status ModuleCamera3D::Update(float dt)
 	
 	float temporal_speed = mov_speed;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		temporal_speed=temporal_speed*0.3f;
+		temporal_speed = temporal_speed * 0.3f;
 	
-	//if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += temporal_speed;
-	//if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= temporal_speed;
-
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z *temporal_speed;
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z *temporal_speed;
 
@@ -114,6 +118,7 @@ update_status ModuleCamera3D::Update(float dt)
 			Focus(vec3(tmp_trans->GetLocalPosition()->x, tmp_trans->GetLocalPosition()->y, tmp_trans->GetLocalPosition()->z), STD_CAM_DISTANCE);
 
 	}
+	
 	Position += newPos;
 	Reference += newPos;
 
@@ -194,36 +199,12 @@ void ModuleCamera3D::Orbit(const vec3& orbit_center, const float& motion_x, cons
 	Position = Reference + Z * length(Position);
 }
 // -----------------------------------------------------------------
-void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference)
+void ModuleCamera3D::Look(const float3 &Position, const vec3 &Reference, bool RotateAroundReference)
 {
-	this->Position = Position;
-	this->Reference = Reference;
-
-	Z = normalize(Position - Reference);
-	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
-	Y = cross(Z, X);
-
-	if(!RotateAroundReference)
-	{
-		this->Reference = this->Position;
-		this->Position += Z * 0.05f;
-	}
-
-	CalculateViewMatrix();
+	basic_camera->Look(Position);
 }
 
 // -----------------------------------------------------------------
-void ModuleCamera3D::LookAt( const vec3 &Spot)
-{
-	Reference = Spot;
-
-	Z = normalize(Position - Reference);
-	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
-	Y = cross(Z, X);
-
-	CalculateViewMatrix();
-}
-
 
 // -----------------------------------------------------------------
 void ModuleCamera3D::Move(const vec3 &Movement)
@@ -276,6 +257,11 @@ void ModuleCamera3D::PrintConfigData()
 		if (ImGui::Checkbox("Frustum Culling", &frustum_culling)); 
 
 	}
+}
+
+ComponentCamera * ModuleCamera3D::GetBasicCam() const
+{
+	return basic_camera;
 }
 
 bool ModuleCamera3D::IsCulling()

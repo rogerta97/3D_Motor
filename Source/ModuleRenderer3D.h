@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "glmath.h"
 #include "TextureLoader.h"
+#include "ComponentCamera.h"
 #include "Light.h"
 
 #define MAX_LIGHTS 8
@@ -19,6 +20,7 @@ public:
 	bool CleanUp();
 
 	void OnResize(int width, int height);
+	void ChangeProjection(int width, int height);
 	void PrintConfigData();
 
 	char* GetGraphicsModel(const char* _module) const; 
@@ -55,7 +57,7 @@ private:
 	float material_ambient = 1.0f;
 
 public:
-
+	ComponentCamera* curr_cam = nullptr;
 	Light lights[MAX_LIGHTS]; 
 	bool vsync_on = false;
 

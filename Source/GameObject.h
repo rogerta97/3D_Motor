@@ -30,7 +30,6 @@ public:
 	uint GetNumMeshes()const;
 	Component* GetComponent(component_type new_component, int skip_num = 0);
 	void PushComponent(Component* comp); 
-
 private:
 	vector<Component*> component_list;
 	vector<GameObject*> child_list;

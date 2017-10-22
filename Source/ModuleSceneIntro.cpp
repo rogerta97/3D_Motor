@@ -39,6 +39,7 @@ bool ModuleSceneIntro::Start()
 
 	ComponentCamera* new_cam = new ComponentCamera();
 	GO->PushComponent(new_cam); 
+	new_cam->SetActive(true);
 
 	App->performance.SaveInitData(name); 
 

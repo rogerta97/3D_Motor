@@ -137,6 +137,11 @@ bool Component::IsActive() const
 {
 	return active;
 }
+bool Component::SetActive(bool _active)
+{
+	active = _active;
+	return active;
+}
 void Component::SetComponentParent(GameObject * _parent)
 {
 	parent = _parent; 

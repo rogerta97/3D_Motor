@@ -125,7 +125,6 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			{
 				LOG("No Texture Coords found");
 			}
-			
 			AABB bbox;
 			bbox.SetNegativeInfinity();
 			bbox.Enclose((float3*)m->mVertices, m->mNumVertices);

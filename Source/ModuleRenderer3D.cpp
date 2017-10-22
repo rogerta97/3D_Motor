@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Primitive.h"
 #include "ModuleRenderer3D.h"
+#include "ComponentCamera.h"
 #include "OpenGL.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -171,18 +172,34 @@ bool ModuleRenderer3D::CleanUp()
 }
 
 
-void ModuleRenderer3D::OnResize(int width, int height)
+void ModuleRenderer3D::ChangeProjection(int width, int height)
 {
-	glViewport(0, 0, width, height);
+	//ComponentCamera* camera = curr_cam;
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
+	//if (camera == nullptr)
+	//{
+		ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
+		glLoadMatrixf(&ProjectionMatrix);
+	//}
+	//else
+		//glLoadMatrixf((GLfloat*)camera->GetOpenGLProjectionMatrix());
 
-	glLoadMatrixf(&ProjectionMatrix);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void ModuleRenderer3D::OnResize(int width, int height)
+{
+	//ComponentCamera* camera = curr_cam;
+	//if (camera != nullptr)
+	//{
+		//camera->SetAspectRatio((float)width / (float)height);
+		//glViewport(0, 0, width, height);
+	//}
+	ChangeProjection(width,  height);
 }
 
 void ModuleRenderer3D::PrintConfigData()
@@ -401,13 +418,7 @@ void ModuleRenderer3D::CustomAttributes()
 	{
 		glDisable(GL_FOG);
 	}
-	// TODO activate wireframe
-	/*if (wireframe_ch_b) {
-		App->imgui(wireframe_ch_b);
-	}
-	else {
-		App->scene_intro->Wireframe(wireframe_ch_b);
-	}*/
+
 
 }
 //
