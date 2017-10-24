@@ -26,7 +26,6 @@ bool ComponentMaterial::Update()
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glBindTexture(GL_TEXTURE_2D, 0);
 
 	return true;
 }

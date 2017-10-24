@@ -112,9 +112,9 @@ update_status ModuleImGui::PostUpdate(float dt)
 	App->renderer3D->UI_attributes();
 
 
-	//inspector.Draw();
-	//
-	//console.PrintConsole(); 
+	inspector.Draw();
+	hierarchy.Draw(); 
+	console.PrintConsole(); 
 
 	ImGui::Render();
 	App->renderer3D->CustomAttributes();
@@ -326,7 +326,6 @@ update_status ModuleImGui::PrintTopBar()
 	if (show_random_number)PrintRandomNumber();
 	if (show_about) ShowAbout();
 	if (show_performance) App->performance.Update(show_performance);
-	if (show_hierarchy) PrintHierarchy();
 
 	if (App->scene_intro->IsListEmpty() == false)
 		show_inspector = true;
@@ -350,37 +349,4 @@ void ModuleImGui::ImGuiInput(SDL_Event* e)const
 }
 	
 
-void ModuleImGui::PrintHierarchy()
-{
-
-	//if (ImGui::Begin("Hierarchy"), &show_hierarchy && App->scene_intro->IsListEmpty() == false)
-	//{	
-	//	for (int i = 0; i < App->scene_intro->GetList().size(); i++)
-	//	{
-	//		GameObject* curr_go_drawed = App->scene_intro->GetGameObject(i); 
-
-	//		if (!curr_go_drawed->IsChildEmpty())
-	//		{
-	//			for (int j = 0; j < curr_go_drawed->GetNumChilds(); j++)
-	//			{
-	//				if (ImGui::TreeNode(curr_go_drawed->GetChild(j)->GetName())); 
-	//				{
-
-	//					ImGui::TreePop();
-	//				}
-	//			}	
-	//		}
-	//		else
-	//		{
-	//			if (ImGui::MenuItem(curr_go_drawed->GetName()))
-	//			{
-	//				App->scene_intro->SetCurrentGO(i);
-	//			}
-	//		}
-	//			
-	//	}		
-	//}	
-
-	//ImGui::End();
-}
 

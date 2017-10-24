@@ -3,11 +3,9 @@
 #include "Module.h"
 #include "PanelConsole.h"
 #include "PanelInspector.h"
+#include "PanelHierarchy.h"
 
 #include<vector>
-
-
-
 class ModuleImGui : public Module
 {
 public: 
@@ -28,7 +26,6 @@ private:
 
 	void PrintProperties();
 	void PrintRandomNumber();
-	void PrintHierarchy();
 	void ShowAbout();
 	void UpdateConfigPanel(); 
 	update_status PrintTopBar(); 
@@ -37,6 +34,7 @@ private:
 
 	PanelInspector inspector;
 	PanelConsole console;
+	PanelHierarchy hierarchy; 
 
 	bool show_test_window = true;
 	bool show_another_window = false;

@@ -377,6 +377,7 @@
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="ModuleSceneIntro.h" />
     <ClInclude Include="PanelConsole.h" />
+    <ClInclude Include="PanelHierarchy.h" />
     <ClInclude Include="PanelInspector.h" />
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="ModuleWindow.h" />
@@ -459,6 +460,7 @@
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleSceneIntro.cpp" />
     <ClCompile Include="PanelConsoler.cpp" />
+    <ClCompile Include="PanelHierarchy.cpp" />
     <ClCompile Include="PanelInspector.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />

@@ -79,24 +79,22 @@ GameObject::GameObject()
 
 void GameObject::Draw()
 {
-
-	
 	if (!component_list.empty())
 	{
 		for (int i = 0; i < component_list.size(); i++)
 		{
 			if (component_list[i]->IsActive() == false)
 				return;
-			component_list[i]->Update();//<----------
+
+			component_list[i]->Update();
 		}
 	}	
-
 
 	if (!child_list.empty())
 	{
 		for (int i = 0; i < child_list.size(); i++)
 		{
-			child_list[i]->Draw();//<----------
+			child_list[i]->Draw();
 		}
 	}
 }
@@ -118,6 +116,16 @@ Component * GameObject::GetComponent(component_type new_component_type, int skip
 
 	return nullptr; 
 	
+}
+
+Component * GameObject::GetComponent(int index)
+{
+	int count = 0; 
+	for (std::vector<Component*>::iterator it = component_list.begin(); it != component_list.end(); it++)
+	{
+		if (count++ == index)
+			return (*it); 
+	}
 }
 
 GameObject * GameObject::GetChild(uint id)

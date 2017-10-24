@@ -1197,6 +1197,9 @@
     <ClInclude Include="PanelConsole.h">
       <Filter>Helpers\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="PanelHierarchy.h">
+      <Filter>Helpers\ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1423,6 +1426,9 @@
       <Filter>Helpers\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="PanelConsoler.cpp">
+      <Filter>Helpers\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelHierarchy.cpp">
       <Filter>Helpers\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
