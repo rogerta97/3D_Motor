@@ -71,25 +71,9 @@ update_status ModuleCamera3D::Update(float dt)
 	else
 		 aux = nullptr;
 	App->performance.InitTimer(name); 
-
-	vec3 newPos(0,0,0);
-	
-	float temporal_speed = mov_speed;
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		temporal_speed = temporal_speed * 0.3f;
-	
-	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z *temporal_speed;
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z *temporal_speed;
-
-	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * temporal_speed;
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * temporal_speed;
-	
-	if (App->input->IsMouseInWindow() == 0)
-	{
-		if (App->input->GetMouseWheel() == 1) newPos -= Z *temporal_speed*mouse_wheel_speed;
-		if (App->input->GetMouseWheel() == -1) newPos += Z *temporal_speed*mouse_wheel_speed;
-	}
-
+	//------Move
+	Move();
+	//------Orbit with Focus
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 
@@ -106,6 +90,7 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 			
 	}
+	//------Focus 
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
 		//insert last gizmo position and the distance
@@ -118,48 +103,13 @@ update_status ModuleCamera3D::Update(float dt)
 			Focus(vec3(tmp_trans->GetLocalPosition().x, tmp_trans->GetLocalPosition().y, tmp_trans->GetLocalPosition().z), STD_CAM_DISTANCE);
 
 	}
-	
-	Position += newPos;
-	Reference += newPos;
 
-	// Mouse motion ----------------
+	//------ Mouse motion ----------------
 
-	if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-	{
-		int dx = -App->input->GetMouseXMotion();
-		int dy = -App->input->GetMouseYMotion();
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+		FreeOrbit();
 
-		
-
-		Position -= Reference;
-
-		if(dx != 0)
-		{
-			float DeltaX = (float)dx * rot_speed;
-
-			X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-			Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-			Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-		}
-
-		if(dy != 0)
-		{
-			float DeltaY = (float)dy * rot_speed;
-
-			Y = rotate(Y, DeltaY, X);
-			Z = rotate(Z, DeltaY, X);
-
-			if(Y.y < 0.0f)
-			{
-				Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-				Y = cross(Z, X);
-			}
-		}
-
-		Position = Reference + Z * length(Position);
-	}
-
-	// Recalculate matrix -------------
+	// ------ Recalculate matrix -------------
 	CalculateViewMatrix();
 
 	App->performance.SaveRunTimeData(name); 
@@ -207,10 +157,34 @@ void ModuleCamera3D::Look(const float3 &Position, const vec3 &Reference, bool Ro
 // -----------------------------------------------------------------
 
 // -----------------------------------------------------------------
-void ModuleCamera3D::Move(const vec3 &Movement)
+void ModuleCamera3D::Move()
 {
-	Position += Movement;
-	Reference += Movement;
+	vec3 move_aux(0.0f, 0.0f, 0.0f);
+	float temporal_speed = mov_speed;
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		temporal_speed = temporal_speed * 0.3f;
+
+	if (App->input->IsMouseInWindow() == 0)
+	{
+		if (App->input->GetMouseWheel() == 1) move_aux -= Z *temporal_speed*mouse_wheel_speed;
+		if (App->input->GetMouseWheel() == -1) move_aux += Z *temporal_speed*mouse_wheel_speed;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) move_aux -= Z *temporal_speed;
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) move_aux += Z *temporal_speed;
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) move_aux -= X * temporal_speed;
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) move_aux += X * temporal_speed;
+
+	Position += move_aux;
+	Reference += move_aux;
+
+	CalculateViewMatrix();
+}
+
+void ModuleCamera3D::Move(const vec3 & pos)
+{
+	Position += pos;
+	Reference += pos;
 
 	CalculateViewMatrix();
 }
@@ -219,6 +193,39 @@ void ModuleCamera3D::Move(const vec3 &Movement)
 float* ModuleCamera3D::GetViewMatrix()
 {
 	return &ViewMatrix;
+}
+
+void ModuleCamera3D::FreeOrbit()
+{
+	int dx = -App->input->GetMouseXMotion();
+	int dy = -App->input->GetMouseYMotion();
+
+	Position -= Reference;
+
+	if (dx != 0)
+	{
+		float DeltaX = (float)dx * rot_speed;
+
+		X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+		Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+		Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+	}
+
+	if (dy != 0)
+	{
+		float DeltaY = (float)dy * rot_speed;
+
+		Y = rotate(Y, DeltaY, X);
+		Z = rotate(Z, DeltaY, X);
+
+		if (Y.y < 0.0f)
+		{
+			Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+			Y = cross(Z, X);
+		}
+	}
+
+	Position = Reference + Z * length(Position);
 }
 
 // -----------------------------------------------------------------

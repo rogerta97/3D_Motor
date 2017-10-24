@@ -128,8 +128,10 @@ void DebugDrawBox(const float3* corners, Color color,bool debug)
 	glVertex3fv((GLfloat*)&corners[4]); //glVertex3f( sx, -sy, -sz);
 	glVertex3fv((GLfloat*)&corners[5]); //glVertex3f( sx, -sy,  sz);
 	glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy,  sz);
+	
 	glEnd();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glColor3f(1.0f, 1.0f, 1.0f);
 
 }
 // ------------------------------------------------------------
