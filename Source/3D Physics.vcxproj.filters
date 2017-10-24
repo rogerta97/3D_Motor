@@ -58,6 +58,9 @@
     <Filter Include="GameObject\Components">
       <UniqueIdentifier>{12a44fb2-938d-43d4-9c36-7dea148c6c1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Helpers\ImGui">
+      <UniqueIdentifier>{f7bcb8fa-80b6-4c5b-bd4f-0fbca43849ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -1188,6 +1191,12 @@
     <ClInclude Include="DebugDraw.h">
       <Filter>Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="PanelInspector.h">
+      <Filter>Helpers\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelConsole.h">
+      <Filter>Helpers\ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1409,6 +1418,12 @@
     </ClCompile>
     <ClCompile Include="DebugDraw.cpp">
       <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelInspector.cpp">
+      <Filter>Helpers\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelConsoler.cpp">
+      <Filter>Helpers\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -17,7 +17,7 @@ void log(const char file[], int line, const char* format, ...)
 	OutputDebugString(tmp_string2);
 
 	if (App != nullptr)
-		App->imgui->AddToConsole(tmp_string);
+		App->imgui->AddInConsole(tmp_string);
 
 }
 

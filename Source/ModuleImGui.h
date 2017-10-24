@@ -1,7 +1,12 @@
 #pragma once
 
 #include "Module.h"
+#include "PanelConsole.h"
+#include "PanelInspector.h"
+
 #include<vector>
+
+
 
 class ModuleImGui : public Module
 {
@@ -16,22 +21,23 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp(); 
 
-	void AddToConsole(std::string new_line);
-	void ClearConsole(); 
+	void AddInConsole(const std::string);
 	void ImGuiInput(SDL_Event* e)const; 
 
 private:
 
-	void PrintConsole() ; 
 	void PrintProperties();
 	void PrintRandomNumber();
 	void PrintInspector();
 	void PrintHierarchy();
 	void ShowAbout();
-	void UpdateConfigPanel();
+	void UpdateConfigPanel(); 
 	update_status PrintTopBar(); 
 
 private: 
+
+	PanelInspector inspector;
+	PanelConsole console;
 
 	bool show_test_window = true;
 	bool show_another_window = false;
@@ -47,14 +53,14 @@ private:
 
 	// Console management -----------
 
-	std::vector<std::string> console_buffer; 
 	int i_rand = 60;
 	int i_max = 100;
 	int i_min = 0;
 	float f_rand = 0.0f;
-	const char* new_input = ""; 
+	const char* new_input = "";
 
 	// ------
+
 	//drawing positions //SDL_Rect doesn't work at allneed to change it 
 	//panel
 	uint properties_panel_x = 10;
@@ -64,8 +70,6 @@ private:
 
 	ImVec4 clear_color = ImColor(114, 144, 154);
 
-	//Inspector
 
-	int inspector_count = 0; 
 
 };
