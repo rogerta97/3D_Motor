@@ -28,7 +28,6 @@ private:
 
 	void PrintProperties();
 	void PrintRandomNumber();
-	void PrintInspector();
 	void PrintHierarchy();
 	void ShowAbout();
 	void UpdateConfigPanel(); 

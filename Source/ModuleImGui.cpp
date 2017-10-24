@@ -94,6 +94,8 @@ update_status ModuleImGui::Update(float dt)
 
 	// Update panels -----------------------------
 
+	inspector.Draw(); 
+	console.PrintConsole(); 
 
  
 	App->performance.SaveRunTimeData(name); 
@@ -245,7 +247,7 @@ update_status ModuleImGui::PrintTopBar()
 	{
 		if (ImGui::MenuItem("Console"))
 		{
-			show_console = !show_console;
+			console.SetBoolean(true);
 		}
 		if (ImGui::MenuItem("RandomNum"))
 		{
@@ -324,7 +326,6 @@ update_status ModuleImGui::PrintTopBar()
 
 	if (show_random_number)PrintRandomNumber();
 	if (show_about) ShowAbout();
-	if (show_inspector)PrintInspector();
 	if (show_performance) App->performance.Update(show_performance);
 	if (show_hierarchy) PrintHierarchy();
 
@@ -347,11 +348,6 @@ update_status ModuleImGui::PrintTopBar()
 void ModuleImGui::ImGuiInput(SDL_Event* e)const
 {
 	ImGui_ImplSdlGL2_ProcessEvent(e);
-}
-
-void ModuleImGui::PrintInspector()
-{
-	
 }
 	
 

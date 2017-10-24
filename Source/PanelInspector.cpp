@@ -16,6 +16,8 @@ bool PanelInspector::Update()
 
 bool PanelInspector::Draw()
 {
+	if (!show_inspector)
+		return false;
 
 	if (ImGui::Begin("Inspector"), &show_inspector)
 	{
@@ -123,3 +125,4 @@ bool PanelInspector::Draw()
 
 	return true; 
 }
+

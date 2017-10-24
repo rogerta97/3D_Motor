@@ -13,9 +13,10 @@ public:
 
 	bool Draw(); 
 
+
 private:
 
-	bool show_inspector = false; 
+	bool show_inspector = true; 
 
 };
 

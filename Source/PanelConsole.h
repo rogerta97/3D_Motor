@@ -12,6 +12,8 @@ public:
 	void AddToConsole(std::string new_str); 
 	void ClearConsole(); 
 
+	void SetBoolean(bool _new); 
+
 private:
 
 	std::vector<std::string> console_buffer;
