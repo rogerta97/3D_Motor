@@ -94,10 +94,9 @@ update_status ModuleImGui::Update(float dt)
 
 	// Update panels -----------------------------
 
-	inspector.Draw(); 
-	console.PrintConsole(); 
+	//inspector.Draw(); 
+	//console.PrintConsole(); 
 
- 
 	App->performance.SaveRunTimeData(name); 
 	
 	return UPDATE_CONTINUE;
@@ -113,9 +112,9 @@ update_status ModuleImGui::PostUpdate(float dt)
 	App->renderer3D->UI_attributes();
 
 
-	inspector.Draw();
-	
-	console.PrintConsole(); 
+	//inspector.Draw();
+	//
+	//console.PrintConsole(); 
 
 	ImGui::Render();
 	App->renderer3D->CustomAttributes();
@@ -354,34 +353,34 @@ void ModuleImGui::ImGuiInput(SDL_Event* e)const
 void ModuleImGui::PrintHierarchy()
 {
 
-	if (ImGui::Begin("Hierarchy"), &show_hierarchy && App->scene_intro->IsListEmpty() == false)
-	{	
-		for (int i = 0; i < App->scene_intro->GetList().size(); i++)
-		{
-			GameObject* curr_go_drawed = App->scene_intro->GetGameObject(i); 
+	//if (ImGui::Begin("Hierarchy"), &show_hierarchy && App->scene_intro->IsListEmpty() == false)
+	//{	
+	//	for (int i = 0; i < App->scene_intro->GetList().size(); i++)
+	//	{
+	//		GameObject* curr_go_drawed = App->scene_intro->GetGameObject(i); 
 
-			if (!curr_go_drawed->IsChildEmpty())
-			{
-				for (int j = 0; j < curr_go_drawed->GetNumChilds(); j++)
-				{
-					if (ImGui::TreeNode(curr_go_drawed->GetChild(j)->GetName())); 
-					{
+	//		if (!curr_go_drawed->IsChildEmpty())
+	//		{
+	//			for (int j = 0; j < curr_go_drawed->GetNumChilds(); j++)
+	//			{
+	//				if (ImGui::TreeNode(curr_go_drawed->GetChild(j)->GetName())); 
+	//				{
 
-						ImGui::TreePop();
-					}
-				}	
-			}
-			else
-			{
-				if (ImGui::MenuItem(curr_go_drawed->GetName()))
-				{
-					App->scene_intro->SetCurrentGO(i);
-				}
-			}
-				
-		}		
-	}	
+	//					ImGui::TreePop();
+	//				}
+	//			}	
+	//		}
+	//		else
+	//		{
+	//			if (ImGui::MenuItem(curr_go_drawed->GetName()))
+	//			{
+	//				App->scene_intro->SetCurrentGO(i);
+	//			}
+	//		}
+	//			
+	//	}		
+	//}	
 
-	ImGui::End();
+	//ImGui::End();
 }
 

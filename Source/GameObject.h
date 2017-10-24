@@ -16,7 +16,7 @@ class GameObject
 {
 public:
 
-	GameObject(mesh_shape shape);
+	GameObject();
 	~GameObject() {}
 
 	virtual void Draw(); 
@@ -39,6 +39,8 @@ public:
 	uint GetNumComponents(); 
 
 	void PushComponent(Component* comp); 
+	void PushChild(GameObject* child); 
+
 private:
 	vector<Component*> component_list;
 	vector<GameObject*> child_list;

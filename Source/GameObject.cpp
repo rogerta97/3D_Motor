@@ -36,50 +36,51 @@ uint GameObject::GetNumMeshes() const
 	return num_meshes;
 }
 
-GameObject::GameObject(mesh_shape shape)
+GameObject::GameObject()
 {
-	switch (shape)
-	{
-		case EMPTY_MESH: 
-		{
-			parent = nullptr;
-			num_meshes = 0;
-			SetActive(true);
-
-			ComponentTransform* trans = new ComponentTransform();
-			trans->SetIdentityTransform();
-			trans->type = COMPONENT_TRANSFORM;
-			PushComponent(trans);
-
-			break;
-		}
-
-		case CUBE_MESH: 
-		{
-			ComponentMeshRenderer* cube_shape = new ComponentMeshRenderer();
-			cube_shape->SetCubeVertices({ 0,0,0 }, 1);
-			cube_shape->type = COMPONENT_MESH_RENDERER;
-			PushComponent(cube_shape);
-
+	//switch (shape)
+	//{
+	//	case EMPTY_MESH: 
+	//	{
 			parent = nullptr;
 			SetActive(true);
 
-			break;
-		}
+			//ComponentTransform* trans = new ComponentTransform();
+			//trans->SetIdentityTransform();
+			//trans->type = COMPONENT_TRANSFORM;
+			//PushComponent(trans);
 
-		case FBX_MESH:
-
-			parent = nullptr;
-			num_meshes = 0;
-			SetActive(true);
-
-			break; 
-
-}
+//			break;
+//		}
+//
+//		case CUBE_MESH: 
+//		{
+//			ComponentMeshRenderer* cube_shape = new ComponentMeshRenderer();
+//			cube_shape->SetCubeVertices({ 0,0,0 }, 1);
+//			cube_shape->type = COMPONENT_MESH_RENDERER;
+//			PushComponent(cube_shape);
+//
+//			parent = nullptr;
+//			SetActive(true);
+//
+//			break;
+//		}
+//
+//		case FBX_MESH:
+//
+//			parent = nullptr;
+//			num_meshes = 0;
+//			SetActive(true);
+//
+//			break; 
+//
+//}
 }
 
 void GameObject::Draw()
 {
+
+	
 	if (!component_list.empty())
 	{
 		for (int i = 0; i < component_list.size(); i++)
@@ -88,9 +89,16 @@ void GameObject::Draw()
 				return;
 			component_list[i]->Update();//<----------
 		}
-				
-		//glBindTexture(GL_TEXTURE_2D, 0);
 	}	
+
+
+	if (!child_list.empty())
+	{
+		for (int i = 0; i < child_list.size(); i++)
+		{
+			child_list[i]->Draw();//<----------
+		}
+	}
 }
 
 Component * GameObject::GetComponent(component_type new_component_type, int skip_num)
@@ -140,6 +148,12 @@ uint GameObject::GetNumComponents()
 void GameObject::PushComponent(Component * comp)
 {
 	component_list.push_back(comp); 
+}
+
+void GameObject::PushChild(GameObject * child)
+{
+
+	child_list.push_back(child); 
 }
 
 bool Component::Enable()

@@ -51,7 +51,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 	bool ret = true; 
 
 	const aiScene* scene = aiImportFile(full_path, aiProcessPreset_TargetRealtime_MaxQuality);
-	GameObject* new_object; 
+	GameObject* root_go; 
 	
 	if (scene != nullptr)
 	{
@@ -62,9 +62,9 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 		int extension_name = cut2 - cut;
 		string new_name = tot_path.substr(cut + 1, extension_name - 1);
 
-		new_object = new GameObject(FBX_MESH);
-		new_object->SetNumMeshes(scene->mNumMeshes);
-		new_object->SetName(new_name.c_str());
+		root_go = new GameObject();
+		root_go->SetNumMeshes(scene->mNumMeshes);
+		root_go->SetName(new_name.c_str());
 	}
 		
 	if (scene != nullptr && scene->HasMeshes())
@@ -74,6 +74,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 		for (i = 0; i < scene->mNumMeshes; i++) 
 		{
 			//Vertices
+
+			GameObject* child_go = new GameObject(); 
 
 			LOG("Loading new mesh...")
 
@@ -143,50 +145,44 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			tmp_mr->type = COMPONENT_MESH_RENDERER; 
 			tmp_mr->Enable(); 
 
-			tmp_mr->SetComponentParent(new_object); 
+			tmp_mr->SetComponentParent(child_go);
 			tmp_mr->tranform_id = i; 
 
-			new_object->PushComponent((Component*)tmp_mr); 
+			child_go->PushComponent((Component*)tmp_mr);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-			
-		}
+			LOG("FBX imported with %d meshes", i);
 
-		LOG("FBX imported with %d meshes", i); 
-
-		if (scene != nullptr && scene->HasMaterials())
-		{
-			aiMaterial* mat = scene->mMaterials[0]; //just one material is supported now
-			aiString path;
-
-			ComponentMaterial* MA_tmp;
-			mat->GetTexture(aiTextureType_DIFFUSE, 0, &path);
-
-			std::string full_path_str(full_path);
-			uint cut = full_path_str.find_last_of('\\');
-
-			std::string final_str = full_path_str.substr(0, cut + 1); 
-			final_str += path.C_Str(); 
-			MA_tmp = ImportImage(final_str.c_str());
-
-			MA_tmp->type = COMPONENT_MATERIAL;
-			MA_tmp->Enable();
-
-			MA_tmp->SetComponentParent(new_object);
-
-			new_object->PushComponent(MA_tmp); 
-		}
-
-		if (scene != nullptr)
-		{
-			aiNode* node = scene->mRootNode; 
-
-			if (node != nullptr)
+			if (scene != nullptr && scene->HasMaterials())
 			{
-				ComponentTransform* TR_cmp = new ComponentTransform();
+				aiMaterial* mat = scene->mMaterials[0]; //just one material is supported now
+				aiString path;
 
-				for (int i = 0; i < node->mNumChildren; i++)
+				ComponentMaterial* MA_tmp;
+				mat->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+
+				std::string full_path_str(full_path);
+				uint cut = full_path_str.find_last_of('\\');
+
+				std::string final_str = full_path_str.substr(0, cut + 1);
+				final_str += path.C_Str();
+				MA_tmp = ImportImage(final_str.c_str());
+
+				MA_tmp->type = COMPONENT_MATERIAL;
+				MA_tmp->Enable();
+
+				MA_tmp->SetComponentParent(child_go);
+
+				child_go->PushComponent(MA_tmp);
+			}
+
+
+				aiNode* node = scene->mRootNode;
+
+				if (node != nullptr)
 				{
+					ComponentTransform* TR_cmp = new ComponentTransform();
+
 					aiNode* tmp_node = node->mChildren[i];
 
 					aiVector3D translation;
@@ -198,27 +194,31 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 					float3 pos(translation.x, translation.y, translation.z);
 					float3 scale(scaling.x, scaling.y, scaling.z);
 					Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
-			
 
-					TR_cmp->SetPosition(pos); 
+
+					TR_cmp->SetPosition(pos);
 					TR_cmp->SetRotation(rot);
 					TR_cmp->SetScale(scale);
 
-					TR_cmp->type = COMPONENT_TRANSFORM; 
-					TR_cmp->Enable(); 
+					TR_cmp->type = COMPONENT_TRANSFORM;
+					TR_cmp->Enable();
 
-					TR_cmp->SetComponentParent(new_object);
+					TR_cmp->SetComponentParent(child_go);
+
+					child_go->PushComponent(TR_cmp);
 					
-					new_object->PushComponent(TR_cmp); 
+
+					LOG("FBX imported with %d transform", i);
 				}
 
-				LOG("FBX imported with %d transform", i);
-			}
+				root_go->PushChild(child_go); 
 		}
+
+		App->scene_intro->AddGameObject(root_go);
 		
 		aiReleaseImport(scene);
 		//FIX ME
-		App->scene_intro->AddGameObject(new_object); 
+		
 	}
 
 

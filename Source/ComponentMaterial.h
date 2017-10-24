@@ -17,6 +17,9 @@ public:
 	bool Update();
 	bool Disable();
 
+	void OpenTexture(); 
+	void CloseTexture(); 
+
 	void Set(ComponentMaterial* new_cmp);
 
 	void SetTextureID(GLuint tex);

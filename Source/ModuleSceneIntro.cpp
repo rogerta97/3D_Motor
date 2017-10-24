@@ -35,12 +35,6 @@ bool ModuleSceneIntro::Start()
 
 	srand(time(NULL));
 
-	GameObject* GO = CreateGameObject("Camara Holder", EMPTY_MESH);
-
-	ComponentCamera* new_cam = new ComponentCamera();
-	GO->PushComponent(new_cam); 
-	new_cam->SetActive(true);
-
 	App->performance.SaveInitData(name); 
 
 	return ret;
@@ -73,7 +67,7 @@ GameObject* ModuleSceneIntro::GetGameObject(uint id)
 
 GameObject * ModuleSceneIntro::CreateGameObject(const char * name, mesh_shape shape)
 {
-	GameObject* new_go = new GameObject(shape); 
+	GameObject* new_go = new GameObject(); 
 	new_go->SetName(name); 
 
 	LOG("GameObject '%s' created", name); 
