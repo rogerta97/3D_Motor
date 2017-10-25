@@ -26,14 +26,14 @@ const char * GameObject::GetName()
 	return name.c_str();
 }
 
-void GameObject::SetNumMeshes(uint n_meshes)
+void GameObject::SetID(uint _id)
 {
-	num_meshes = n_meshes;
+	id = _id;
 }
 
-uint GameObject::GetNumMeshes() const
+uint GameObject::GetID()
 {
-	return num_meshes;
+	return id;
 }
 
 GameObject::GameObject()
@@ -44,6 +44,11 @@ GameObject::GameObject()
 	//	{
 			parent = nullptr;
 			SetActive(true);
+
+			int id = App->scene_intro->GetList().size(); 
+			name += " ";
+
+			name += to_string(id + 1);
 
 			//ComponentTransform* trans = new ComponentTransform();
 			//trans->SetIdentityTransform();
@@ -153,6 +158,11 @@ uint GameObject::GetNumComponents()
 	return component_list.size();
 }
 
+GameObject * GameObject::GetParent()
+{
+	return parent;
+}
+
 void GameObject::PushComponent(Component * comp)
 {
 	component_list.push_back(comp); 
@@ -160,6 +170,7 @@ void GameObject::PushComponent(Component * comp)
 
 void GameObject::PushChild(GameObject * child)
 {
+	child->parent = this;
 
 	child_list.push_back(child); 
 }

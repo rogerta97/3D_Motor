@@ -112,8 +112,11 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 void ModuleSceneIntro::AddGameObject(GameObject * GO)
 {
+
 	GO_list.push_back(GO); 
-	current_gameobject_id = GO_list.size() - 1; 
+
+	GO->SetID(GO_list.size() - 1);
+	current_gameobject_id = GO->GetID();
 }
 
 vector<GameObject*> ModuleSceneIntro::GetList()

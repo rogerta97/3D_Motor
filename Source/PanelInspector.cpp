@@ -23,29 +23,89 @@ bool PanelInspector::Draw()
 	{
 		GameObject* go_to_display = App->scene_intro->GetCurrentGO();
 
+		ImGui::Text("%s", go_to_display->GetName()); 
+
 		for (int i = 0; i < go_to_display->GetNumComponents(); i++)
 		{
 			switch (go_to_display->GetComponent(i)->type)
 			{
 			case COMPONENT_TRANSFORM:
+			{		
+					ComponentTransform* curr_cmp = (ComponentTransform*)go_to_display->GetComponent(COMPONENT_TRANSFORM);
 
-				ComponentTransform* curr_cmp = (ComponentTransform*)go_to_display->GetComponent(i);
+					if (curr_cmp == nullptr)
+						continue;
 
-				float3 radians_angle = curr_cmp->GetLocalRotation().ToEulerXYZ();
+					if (ImGui::CollapsingHeader("Component Transform"))
+					{
+					float3 radians_angle = curr_cmp->GetLocalRotation().ToEulerXYZ();
 
-				float pos[3] = { curr_cmp->GetLocalPosition().x,curr_cmp->GetLocalPosition().y,curr_cmp->GetLocalPosition().z };
-				float rot[3] = { RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
-				float s[3] = { curr_cmp->GetLocalScale().x,curr_cmp->GetLocalScale().y,curr_cmp->GetLocalScale().z };
+					float pos[3] = { curr_cmp->GetLocalPosition().x,curr_cmp->GetLocalPosition().y,curr_cmp->GetLocalPosition().z };
+					float rot[3] = { RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
+					float s[3] = { curr_cmp->GetLocalScale().x,curr_cmp->GetLocalScale().y,curr_cmp->GetLocalScale().z };
 
-				if (ImGui::InputFloat3("Pos##transform", pos, 2))
-					curr_cmp->SetPosition(float3(pos[0], pos[1], pos[2]));
-				if (ImGui::InputFloat3("Rot##transform", rot, 2))
-					curr_cmp->SetRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
-				if (ImGui::InputFloat3("Scale##transform", s, 2))
-					curr_cmp->SetScale(float3(s[0], s[1], s[2]));
+					if (ImGui::InputFloat3("Position##transform", pos, 2))
+						curr_cmp->SetPosition(float3(pos[0], pos[1], pos[2]));
+					if (ImGui::InputFloat3("Rotation##transform", rot, 2))
+						curr_cmp->SetRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
+					if (ImGui::InputFloat3("Scale##transform", s, 2))
+						curr_cmp->SetScale(float3(s[0], s[1], s[2]));
+					}
 
 				break;
 			}
+
+			case COMPONENT_MESH_RENDERER:
+			{
+				ComponentMeshRenderer* curr_cmp = (ComponentMeshRenderer*)go_to_display->GetComponent(COMPONENT_MESH_RENDERER);
+
+				if (curr_cmp == nullptr)
+					continue;
+				if (ImGui::CollapsingHeader("Component Mesh Renderer"))
+				{
+					ImGui::Text("Vertices: "); ImGui::SameLine(); 
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->num_vertices);
+					ImGui::Text("Indices: "); ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->num_indices);
+				}
+		
+			}
+
+				break;
+
+			case COMPONENT_MATERIAL:
+			{
+				ComponentMaterial* curr_cmp = (ComponentMaterial*)go_to_display->GetComponent(COMPONENT_MATERIAL);
+
+				if (curr_cmp == nullptr)
+					continue;
+
+				if (ImGui::CollapsingHeader("Component Material"))
+				{
+
+				}
+	
+				break;
+			}
+
+			case COMPONENT_CAMERA:
+			{
+				ComponentCamera* curr_cmp = (ComponentCamera*)go_to_display->GetComponent(COMPONENT_CAMERA);
+
+				if (curr_cmp == nullptr)
+					continue;
+
+				if (ImGui::CollapsingHeader("Component Camera"))
+				{
+
+				}
+
+				break;
+			}
+
+			}
+
+
 		}	
 	}
 	ImGui::End();

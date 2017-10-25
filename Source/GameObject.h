@@ -26,8 +26,8 @@ public:
 
 	void SetName(const char* name);
 	const char* GetName(); 
-	void SetNumMeshes(uint n_meshes);
-	uint GetNumMeshes()const;
+	void SetID(uint id);
+	uint GetID(); 
 
 	Component* GetComponent(component_type new_component, int skip_num = 0);
 	Component* GetComponent(int index); 
@@ -38,7 +38,8 @@ public:
 	bool IsChildEmpty(); 
 
 	uint GetNumChilds(); 
-	uint GetNumComponents(); 
+	uint GetNumComponents();
+	GameObject* GetParent(); 
 
 	void PushComponent(Component* comp); 
 	void PushChild(GameObject* child); 
@@ -48,7 +49,7 @@ private:
 	vector<GameObject*> child_list;
 
 	GameObject* parent; 
-	uint num_meshes;
+	uint id;
 	bool active = false;
 	string name = "GameObject"; 
 

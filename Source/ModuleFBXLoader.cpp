@@ -63,7 +63,6 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 		string new_name = tot_path.substr(cut + 1, extension_name - 1);
 
 		root_go = new GameObject();
-		root_go->SetNumMeshes(scene->mNumMeshes);
 		root_go->SetName(new_name.c_str());
 	}
 		
@@ -212,6 +211,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 				}
 
 				root_go->PushChild(child_go); 
+				App->scene_intro->AddGameObject(child_go); 
 		}
 
 		App->scene_intro->AddGameObject(root_go);

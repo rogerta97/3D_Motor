@@ -14,21 +14,25 @@ bool PanelHierarchy::Draw()
 			for (int i = 0; i < App->scene_intro->GetList().size(); i++)
 			{
 				GameObject* curr_go_drawed = App->scene_intro->GetGameObject(i);
-
+		
+				if (curr_go_drawed->GetParent() != nullptr)			
+					continue;
+									
 				if (!curr_go_drawed->IsChildEmpty())
 				{
-
 					if (ImGui::TreeNode(curr_go_drawed->GetName()))
 					{
 						for (int j = 0; j < curr_go_drawed->GetNumChilds(); j++)
 						{
-							string name(curr_go_drawed->GetChild(j)->GetName()); 
+							//string name(curr_go_drawed->GetChild(j)->GetName()); 
 
-							name += to_string(j + 1); 
+							//name += " ";
+							//name += to_string(j + 1); 
+							//curr_go_drawed->GetChild(j)->SetName(name.c_str()); 
 
-							if (ImGui::MenuItem(name.c_str()))
+							if (ImGui::MenuItem(curr_go_drawed->GetChild(j)->GetName()))
 							{
-								LOG("current %d", j);
+								App->scene_intro->SetCurrentGO(curr_go_drawed->GetChild(j)->GetID());
 							}
 						}
 
