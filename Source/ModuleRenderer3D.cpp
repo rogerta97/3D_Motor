@@ -127,6 +127,8 @@ bool ModuleRenderer3D::Init()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
+	//TODO when we have more cameras assign the current one
+	//now we will assign the basic editor cam
 	App->performance.InitTimer(name); 
 
 	glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -171,35 +173,13 @@ bool ModuleRenderer3D::CleanUp()
 	return true;
 }
 
-
-void ModuleRenderer3D::ChangeProjection(int width, int height)
-{
-	//ComponentCamera* camera = curr_cam;
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	//if (camera == nullptr)
-	//{
-		ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-		glLoadMatrixf(&ProjectionMatrix);
-	//}
-	//else
-		//glLoadMatrixf((GLfloat*)camera->GetOpenGLProjectionMatrix());
-
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-}
-
 void ModuleRenderer3D::OnResize(int width, int height)
 {
-	//ComponentCamera* camera = curr_cam;
-	//if (camera != nullptr)
-	//{
-		//camera->SetAspectRatio((float)width / (float)height);
-		//glViewport(0, 0, width, height);
-	//}
-	ChangeProjection(width,  height);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
+	glLoadMatrixf(&ProjectionMatrix);
+	glMatrixMode(GL_MODELVIEW);
 }
 
 void ModuleRenderer3D::PrintConfigData()

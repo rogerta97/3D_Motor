@@ -27,24 +27,20 @@ public:
 	float GetFOV() const;
 	float GetAspectRatio() const;
 
-	void Look(const float3& position);
-
-
 	void SetNearPlaneDist(float dist);
 	void SetFarPlaneDist(float dist);
 	void SetFOV(float fov);
 	void SetAspectRatio(float aspect_ratio);
 	//---
-
+	void Look(const float3& position);
+	bool HasAABB(AABB& GO_bb);
 	float* GetOpenGLViewMatrix();
 	float* GetOpenGLProjectionMatrix();
-private:
-
+public:
+	Frustum frustum;
 	GameObject* selected_GO = nullptr;
 	bool frustum_culling = false; 
 	bool screen_resized = false;
-public:
-	Frustum frustum;
 
 
 

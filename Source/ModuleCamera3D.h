@@ -22,7 +22,7 @@ public:
 	void Orbit(const vec3& orbit_center, const float& motion_x, const float& motion_y);
 	void Focus(const vec3& focus, const float& distance);
 	void PrintConfigData();
-
+	void SetCamPosition(math::float3 position);
 	ComponentCamera* GetBasicCam()const;
 
 	bool IsCulling(); 

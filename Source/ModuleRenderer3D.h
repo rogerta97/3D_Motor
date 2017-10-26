@@ -20,7 +20,6 @@ public:
 	bool CleanUp();
 
 	void OnResize(int width, int height);
-	void ChangeProjection(int width, int height);
 	void PrintConfigData();
 
 	char* GetGraphicsModel(const char* _module) const; 

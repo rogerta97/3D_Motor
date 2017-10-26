@@ -2,6 +2,8 @@
 #include "OpenGL.h"
 #include "ComponentTransform.h"
 #include "GameObject.h"
+#include "Application.h"
+#include "ModuleRenderer3D.h"
 
 class ComponentTransform; 
 
@@ -35,13 +37,17 @@ bool ComponentMeshRenderer::Update()
 {
 	if (active == false)
 		return true; 
-
+	
 	glEnableClientState(GL_VERTEX_ARRAY);
 
-	ComponentTransform* ctranform = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
+	ComponentTransform* ctransform = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
 	
+	if (App->renderer3D->curr_cam->selected_GO != nullptr)
+	{
+		if (!App->renderer3D->curr_cam->HasAABB(this->bounding_box)) return false;
+	}
 	glPushMatrix(); 
-	glMultMatrixf(ctranform->GetGlobalTransform());
+	glMultMatrixf(ctransform->GetGlobalTransform());
 
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);

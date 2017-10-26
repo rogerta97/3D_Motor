@@ -18,6 +18,7 @@ ModuleFileSystem::ModuleFileSystem(const char * game_path): Module(true)
 ModuleFileSystem::~ModuleFileSystem()
 {
 	//RELEASE(AssimpIO);
+	
 	//deinit physfs
 	PHYSFS_deinit();
 }

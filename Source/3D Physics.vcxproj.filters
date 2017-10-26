@@ -1415,7 +1415,6 @@
     <ClCompile Include="ModuleFyleSystem.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="ComponentCamera.cpp">
       <Filter>GameObject\Components</Filter>
     </ClCompile>
@@ -1430,6 +1429,9 @@
     </ClCompile>
     <ClCompile Include="PanelHierarchy.cpp">
       <Filter>Helpers\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFileSystem.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -41,7 +41,6 @@ public:
 	~Component() {}
 
 protected: 
-
 	bool active = false;
 	GameObject* parent; 
 

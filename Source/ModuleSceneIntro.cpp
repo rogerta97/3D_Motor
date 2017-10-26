@@ -35,6 +35,10 @@ bool ModuleSceneIntro::Start()
 
 	srand(time(NULL));
 
+	float3 initial_pos(0.f, 10.f, 10.f);
+	//App->camera->(initial_pos);
+	float3 initial_look_at(0, 0, 0);
+	//App->camera->LookAt(initial_look_at);
 	App->performance.SaveInitData(name); 
 
 	return ret;

@@ -8,7 +8,7 @@
 #include "ModuleRenderer3D.h"
 #include "GameObject.h"
 
-#define STD_CAM_DISTANCE 10
+#define STD_CAM_DISTANCE 20
 ModuleCamera3D::ModuleCamera3D(bool start_enabled)
 {
 	CalculateViewMatrix();
@@ -76,7 +76,6 @@ update_status ModuleCamera3D::Update(float dt)
 	//------Orbit with Focus
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
-
 		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_RALT) == KEY_REPEAT)
 			//TODO put the last gizmo position to orbit arround it
 		{
@@ -86,9 +85,7 @@ update_status ModuleCamera3D::Update(float dt)
 				Orbit(vec3(0,0,0), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
 			else
 				Orbit(vec3(tmp_trans->GetLocalPosition().x, tmp_trans->GetLocalPosition().y, tmp_trans->GetLocalPosition().z), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
-
-		}
-			
+		}	
 	}
 	//------Focus 
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
@@ -264,6 +261,11 @@ void ModuleCamera3D::PrintConfigData()
 		if (ImGui::Checkbox("Frustum Culling", &frustum_culling)); 
 
 	}
+}
+
+void ModuleCamera3D::SetCamPosition(math::float3 position)
+{
+	basic_camera->frustum.Translate(position);
 }
 
 ComponentCamera * ModuleCamera3D::GetBasicCam() const

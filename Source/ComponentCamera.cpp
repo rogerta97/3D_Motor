@@ -56,12 +56,38 @@ float ComponentCamera::GetAspectRatio() const
 
 void ComponentCamera::Look(const float3& position)
 {
-	float3 dir = position - frustum.pos;
+	//get directional vector
+	float3 direction = position - frustum.pos;
 
-	float3x3 m = float3x3::LookAt(frustum.front, dir.Normalized(), frustum.up, float3::unitY);
+	float3x3 m = float3x3::LookAt(frustum.front, direction.Normalized(), frustum.up, float3(0, 1, 0));
 
 	frustum.front = m.MulDir(frustum.front).Normalized();
 	frustum.up = m.MulDir(frustum.up).Normalized();
+}
+
+bool ComponentCamera::HasAABB(AABB & GO_bb)
+{
+	bool ret = false;
+	int vertex_num = GO_bb.NumVertices();
+	for (int i = 0; i < 6; i++) 
+	{
+		int outside_points = 0;
+		for (int j = 0; j < vertex_num; j++)
+		{
+			Plane plane = frustum.GetPlane(i);
+			if (plane.IsOnPositiveSide(GO_bb.CornerPoint(j)))
+			{
+				outside_points++;
+			}
+		}
+		if (outside_points == 8)
+			return ret;
+		else
+			ret = true;
+	}
+
+
+	return ret;
 }
 
 void ComponentCamera::SetNearPlaneDist(float dist)
