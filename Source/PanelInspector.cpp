@@ -38,6 +38,15 @@ bool PanelInspector::Draw()
 
 					if (ImGui::CollapsingHeader("Component Transform"))
 					{
+
+						if (ImGui::Button("Reset Transform"))
+						{
+							curr_cmp->SetPosition(float3(0,0,0));
+							curr_cmp->SetRotation(DegToRad(float3(0,0,0)));
+							curr_cmp->SetScale(float3(1,1,1));
+							continue; 
+						}
+
 					float3 radians_angle = curr_cmp->GetLocalRotation().ToEulerXYZ();
 
 					float pos[3] = { curr_cmp->GetLocalPosition().x,curr_cmp->GetLocalPosition().y,curr_cmp->GetLocalPosition().z };
@@ -82,6 +91,17 @@ bool PanelInspector::Draw()
 
 				if (ImGui::CollapsingHeader("Component Material"))
 				{
+					ImGui::Text("Material ID: "); ImGui::SameLine(); 
+					ImGui::TextColored(ImVec4(1,1,0,1), "%d", curr_cmp->textures_id);
+
+					ImGui::Text("Width: "); ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->width);
+
+					ImGui::Text("Height: "); ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->height);
+
+					ImGui::Text("Name: "); ImGui::SameLine(); 
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s");
 
 				}
 	

@@ -1,6 +1,7 @@
 #include "ComponentMeshRenderer.h"
 #include "OpenGL.h"
 #include "ComponentTransform.h"
+#include "ComponentMaterial.h"
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
@@ -41,6 +42,7 @@ bool ComponentMeshRenderer::Update()
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	ComponentTransform* ctransform = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
+	ComponentMaterial* cmaterial = (ComponentMaterial*)GetComponentParent()->GetComponent(COMPONENT_MATERIAL);
 	
 	if (App->renderer3D->curr_cam->selected_GO != nullptr)
 	{
@@ -49,24 +51,61 @@ bool ComponentMeshRenderer::Update()
 	glPushMatrix(); 
 	glMultMatrixf(ctransform->GetGlobalTransform());
 
+	//VERTICES
+	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
 
-	//Apply UV if exist
-	if (num_uvs != 0)
+	if (cmaterial->textures_id > 0)
+	{
+		glBindTexture(GL_TEXTURE_2D, cmaterial->textures_id);
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	//TEXTURE_COORDS
+	if (cmaterial->textures_id > 0)
 	{
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, uvs_id);
 		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+
+	//INDICES
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,indices_id);
 	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+
+	// --
+
+	//glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
+	//glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
+
+	////Apply UV if exist
+	//if (num_uvs != 0)
+	//{
+	//	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	//	glBindBuffer(GL_ARRAY_BUFFER, uvs_id);
+	//	glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//}
+
+	////glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
+
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	//glDisableClientState(GL_VERTEX_ARRAY);
 	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 

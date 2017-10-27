@@ -19,7 +19,7 @@ public:
 	GameObject();
 	~GameObject() {}
 
-	virtual void Draw(); 
+	void Draw(); 
 
 	bool Active()const;
 	void SetActive(bool _active);

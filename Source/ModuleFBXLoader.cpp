@@ -126,6 +126,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 				glGenBuffers(1, (GLuint*) &tmp_mr->uvs_id);
 				glBindBuffer(GL_ARRAY_BUFFER, (GLuint)tmp_mr->uvs_id);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_uvs * 3, tmp_mr->uvs, GL_STATIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, 0); 
 
 				LOG("%d texture cordinates", tmp_mr->num_uvs);
 			}
@@ -148,13 +149,13 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 			tmp_mr->tranform_id = i; 
 
 			child_go->PushComponent((Component*)tmp_mr);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		//	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 			LOG("FBX imported with %d meshes", i);
 
 			if (scene != nullptr && scene->HasMaterials())
 			{
-				aiMaterial* mat = scene->mMaterials[0]; //just one material is supported now
+				aiMaterial* mat = scene->mMaterials[m->mMaterialIndex]; //just one material is supported now
 				aiString path;
 
 				ComponentMaterial* MA_tmp;
@@ -182,7 +183,10 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 				{
 					ComponentTransform* TR_cmp = new ComponentTransform();
 
-					aiNode* tmp_node = node->mChildren[i];
+					aiNode* tmp_node = node->mChildren[0];
+
+					if (tmp_node == nullptr)
+						continue; 
 
 					aiVector3D translation;
 					aiVector3D scaling;
