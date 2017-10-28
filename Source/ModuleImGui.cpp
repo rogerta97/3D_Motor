@@ -113,7 +113,6 @@ update_status ModuleImGui::PostUpdate(float dt)
 
 	App->renderer3D->UI_attributes();
 
-
 	inspector.Draw();
 	hierarchy.Draw(); 
 	console.PrintConsole(); 
@@ -224,6 +223,15 @@ void ModuleImGui::UpdateConfigPanel()
 	ImGui::End();
 }
 
+void ModuleImGui::PrintStyleEditor()
+{
+	ImGui::Begin("Style", &show_style_editor);
+
+	ImGui::ShowStyleEditor(); 
+
+	ImGui::End();
+}
+
 void ModuleImGui::AddInConsole(const std::string new_str)
 {
 	console.AddToConsole(new_str); 
@@ -255,16 +263,22 @@ update_status ModuleImGui::PrintTopBar()
 			show_random_number = !show_random_number;
 		}
 
+		if (ImGui::MenuItem("Performance"))
+		{
+			show_performance = !show_performance;
+		}
+
+
+		ImGui::Separator();
+
 		if (ImGui::MenuItem("Configuration"))
 		{
 			show_configuration = !show_configuration;
 		}
 
-		ImGui::Separator();
-
-		if (ImGui::MenuItem("Performance"))
+		if (ImGui::MenuItem("Style"))
 		{
-			show_performance = !show_performance;
+			show_style_editor = !show_style_editor;
 		}
 
 		ImGui::EndMenu();
@@ -328,6 +342,7 @@ update_status ModuleImGui::PrintTopBar()
 	if (show_random_number)PrintRandomNumber();
 	if (show_about) ShowAbout();
 	if (show_performance) App->performance.Update(show_performance);
+	if (show_style_editor) PrintStyleEditor();
 
 	if (App->scene_intro->IsListEmpty() == false)
 		show_inspector = true;

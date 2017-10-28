@@ -28,6 +28,8 @@ private:
 	void PrintRandomNumber();
 	void ShowAbout();
 	void UpdateConfigPanel(); 
+	void PrintStyleEditor(); 
+
 	update_status PrintTopBar(); 
 
 private: 
@@ -47,6 +49,7 @@ private:
 	bool show_configuration = true; 
 	bool show_inspector = false;
 	bool show_hierarchy = true; 
+	bool show_style_editor = false; 
 
 	// Console management -----------
 
