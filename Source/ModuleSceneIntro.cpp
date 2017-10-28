@@ -47,7 +47,8 @@ bool ModuleSceneIntro::Start()
 
 	AABB root_octree_box(vec(-100, -100, -100), vec(100, 100, 100));
 	
-//	octree->Create(root_octree_box);
+	octree = new Octree();
+	octree->Create(root_octree_box);
 
 	return ret;
 }
@@ -93,7 +94,9 @@ GameObject * ModuleSceneIntro::CreateGameObject(const char * name, mesh_shape sh
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
+	octree->DrawOctree();
 	glBindTexture(GL_TEXTURE_2D, 0); 
+	
 	main_plane.Render();
 
 	for (std::vector<GameObject*>::iterator it = GO_list.begin(); it != GO_list.end(); it++)
@@ -107,7 +110,7 @@ update_status ModuleSceneIntro::Update(float dt)
 update_status ModuleSceneIntro::PostUpdate(float dt)
 {
 
-	//octree->DrawOctree(); 
+	
 	return UPDATE_CONTINUE; 
 }
 void ModuleSceneIntro::PrintConfigData()

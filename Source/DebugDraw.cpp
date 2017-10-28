@@ -94,8 +94,12 @@ void DebugDraw(const Sphere & sphere, Color color, const float4x4 & transform)
 }
 void DebugDrawBox(const float3* corners, Color color,bool debug)
 {
-	glColor3f(color.r, color.g, color.b);
+
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glLineWidth(2.0f);
+	glDisable(GL_CULL_FACE);
+
+	glColor3f(color.r, color.g, color.b);
 
 	glBegin(GL_QUADS);
 
@@ -130,8 +134,9 @@ void DebugDrawBox(const float3* corners, Color color,bool debug)
 	glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy,  sz);
 	
 	glEnd();
+	glLineWidth(1.0f);
+	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glColor3f(1.0f, 1.0f, 1.0f);
 
 }
 // ------------------------------------------------------------

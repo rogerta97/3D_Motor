@@ -26,21 +26,46 @@ void Octree::Clear()
 
 void Octree::Insert(GameObject * new_go)
 {
+
 }
 
 void Octree::Remove(GameObject * to_delete)
 {
 }
 
+void Octree::Split()
+{
+}
+
 void Octree::DrawOctree()
 {
-	
-	DebugDraw(root_node->box); 
-
+	if (root_node != nullptr)
+	{
+		root_node->DrawNode();
+	}
 }
 
 OctreeNode::~OctreeNode()
 {
+
+}
+
+bool OctreeNode::IsLeaf()
+{
+	return false;
+}
+
+void OctreeNode::DrawNode()
+{
+	DebugDraw(box, White); 
+
+	if (!child_nodes.empty())
+	{
+		for (int i = 0; i < child_nodes.size(); i++)
+		{
+			child_nodes[i]->DrawNode();
+		}
+	}
 
 }
 

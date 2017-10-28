@@ -30,6 +30,19 @@ public:
 	void SplitFilePath(const char* full_path, std::string* path, std::string* file = nullptr, std::string* extension = nullptr) const;
 	void NormalizePath(char* full_path) const;
 
+	const char* GetFileName(const char* full_path)
+	{
+		std::string full_path_str(full_path);
+		uint cut1 = full_path_str.find_last_of('\\');
+		uint cut2 = full_path_str.find_last_of('.');
+
+		uint lenght = cut2 - cut1;
+
+		std::string final_str = full_path_str.substr(cut1 + 1, cut2 - 1);
+	
+		return final_str.c_str(); 
+	}
+
 	// Open for Read/Write
 	//unsigned int Load(const char* path, const char* file, char** buffer) const;
 	//unsigned int Load(const char* file, char** buffer) const;

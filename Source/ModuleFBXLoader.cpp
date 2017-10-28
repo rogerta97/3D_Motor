@@ -117,7 +117,25 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 		new_go = new GameObject();
 
 		node_name = node->mName.C_Str();
-		new_go->SetName(node_name.c_str());
+
+		if (node_name == "RootNode")
+		{
+			// A function needs to be created for this
+
+			std::string full_path_str(full_path);
+			uint cut1 = full_path_str.find_last_of('\\');
+			uint cut2 = full_path_str.find_last_of('.');
+
+			uint lenght = cut2 - cut1; 
+
+			std::string final_str = full_path_str.substr(cut1 + 1, lenght - 1);
+			node_name = final_str; 
+
+			 // -----------------
+
+		}
+			new_go->SetName(node_name.c_str());
+
 		if (parent != nullptr) parent->PushChild(new_go);
 
 		ComponentTransform* trans = (ComponentTransform*)new_go->GetComponent(COMPONENT_TRANSFORM); 

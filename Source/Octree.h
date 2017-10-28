@@ -14,6 +14,9 @@ public:
 	OctreeNode();
 	~OctreeNode();
 
+	bool IsLeaf(); 
+
+	void DrawNode(); 
 
 public: 
 
@@ -33,6 +36,8 @@ public:
 	void Clear();
 	void Insert(GameObject* new_go);
 	void Remove(GameObject* to_delete);
+
+	void Split(); 
 
 	void DrawOctree();
 
