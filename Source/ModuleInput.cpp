@@ -133,7 +133,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				{
 					LOG("FBX file dragged to window", termination); 					
 
-					App->fbx_loader->LoadFBX(file.c_str());
+					App->fbx_loader->LoadFileScene(file.c_str());
 
 				}				
 

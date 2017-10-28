@@ -78,8 +78,7 @@ bool ModulePhysics3D::Start()
 
 	//// Creating objects 
 
-	main_plane = PPlane(0, 1, 0, 0);
-	main_plane.axis = true;
+
 
 	 // Create cosas 
 	
@@ -178,8 +177,6 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 {
 
 	App->performance.ResumeTimer(name);
-
-	main_plane.Render(); 
 
 	App->performance.SaveRunTimeData(name); 
 

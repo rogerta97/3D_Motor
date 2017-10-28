@@ -38,48 +38,24 @@ uint GameObject::GetID()
 
 GameObject::GameObject()
 {
-	//switch (shape)
-	//{
-	//	case EMPTY_MESH: 
-	//	{
-			parent = nullptr;
-			SetActive(true);
 
-			int id = App->scene_intro->GetList().size(); 
-			name += " ";
+	parent = nullptr;
+	SetActive(true);
+	is_static = false; 
 
-			name += to_string(id + 1);
+	// This will be removed when good FBX loading is implemented
 
-			//ComponentTransform* trans = new ComponentTransform();
-			//trans->SetIdentityTransform();
-			//trans->type = COMPONENT_TRANSFORM;
-			//PushComponent(trans);
+	int id = App->scene_intro->GetList().size(); 
+	name += " ";
+	name += to_string(id + 1);
 
-//			break;
-//		}
-//
-//		case CUBE_MESH: 
-//		{
-//			ComponentMeshRenderer* cube_shape = new ComponentMeshRenderer();
-//			cube_shape->SetCubeVertices({ 0,0,0 }, 1);
-//			cube_shape->type = COMPONENT_MESH_RENDERER;
-//			PushComponent(cube_shape);
-//
-//			parent = nullptr;
-//			SetActive(true);
-//
-//			break;
-//		}
-//
-//		case FBX_MESH:
-//
-//			parent = nullptr;
-//			num_meshes = 0;
-//			SetActive(true);
-//
-//			break; 
-//
-//}
+	// ---------------------
+
+	ComponentTransform* trans = new ComponentTransform();
+	trans->SetIdentityTransform();
+	trans->type = COMPONENT_TRANSFORM;
+	PushComponent(trans);
+
 }
 
 void GameObject::Draw()

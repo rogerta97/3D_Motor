@@ -64,8 +64,6 @@ private:
 	std::vector<Sphere> spheres_list; 
 	std::vector<AABB> cube_list; 
 
-	PPlane main_plane; 
-
 	int object_type = -1;
 	bool create_on_wire = false;
 

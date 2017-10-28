@@ -29,7 +29,9 @@ public:
 	update_status Update(float dt); 
 	bool CleanUp(); 
 
-	void LoadFBX(const char* path);
+	void LoadFBX(const char* path, aiNode* node, const aiScene* scene, GameObject* parent);
+	void LoadFileScene(const char* path); 
+	void GetInnerTransform(aiNode& node, aiVector3D& pos, aiQuaternion& quat, aiVector3D& scale);
 
 	void DrawElement(); 
 	//sizes for the Bounding Box of a new gizmo

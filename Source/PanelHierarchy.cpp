@@ -12,42 +12,11 @@ bool PanelHierarchy::Draw()
 		if (App->scene_intro->IsListEmpty() == false)
 		{
 			for (int i = 0; i < App->scene_intro->GetList().size(); i++)
-			{
-				GameObject* curr_go_drawed = App->scene_intro->GetGameObject(i);
-		
-				if (curr_go_drawed->GetParent() != nullptr)			
-					continue;
-									
-				if (!curr_go_drawed->IsChildEmpty())
-				{
-					if (ImGui::TreeNode(curr_go_drawed->GetName()))
-					{
-						for (int j = 0; j < curr_go_drawed->GetNumChilds(); j++)
-						{
-							//string name(curr_go_drawed->GetChild(j)->GetName()); 
+			{				
+				GameObject* go_to_draw = App->scene_intro->GetGameObject(i); 
 
-							//name += " ";
-							//name += to_string(j + 1); 
-							//curr_go_drawed->GetChild(j)->SetName(name.c_str()); 
-
-							if (ImGui::MenuItem(curr_go_drawed->GetChild(j)->GetName()))
-							{
-								App->scene_intro->SetCurrentGO(curr_go_drawed->GetChild(j)->GetID());
-							}
-						}
-
-						ImGui::TreePop();
-					}
-
-				}
-				else
-				{
-					if (ImGui::MenuItem(curr_go_drawed->GetName()))
-					{
-						App->scene_intro->SetCurrentGO(i);
-					}
-				}
-
+				if (go_to_draw->GetParent() == nullptr)
+					DrawNode(go_to_draw); 
 			}
 		}
 
@@ -57,4 +26,35 @@ bool PanelHierarchy::Draw()
 
 
 	return true; 
+}
+
+void PanelHierarchy::DrawNode(GameObject * go)
+{
+	
+
+	if (!go->IsChildEmpty())
+	{
+		if (ImGui::TreeNode(go->GetName()))
+		{
+			for (int j = 0; j < go->GetNumChilds(); j++)
+			{
+				GameObject* curr_child = go->GetChild(j);
+
+				if (curr_child->GetNumChilds() > 0)
+				{
+					DrawNode(curr_child);
+				}
+				else
+				{
+					if (ImGui::MenuItem(curr_child->GetName()))
+					{
+						App->scene_intro->SetCurrentGO(go->GetChild(j)->GetID());
+					}
+				}
+
+			}
+
+			ImGui::TreePop();
+		}
+	}
 }

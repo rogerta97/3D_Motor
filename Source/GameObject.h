@@ -52,6 +52,7 @@ private:
 	uint id;
 	bool active = false;
 	string name = "GameObject"; 
+	bool is_static = false; 
 
 };
 

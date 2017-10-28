@@ -36,7 +36,7 @@ bool PanelInspector::Draw()
 					if (curr_cmp == nullptr)
 						continue;
 
-					if (ImGui::CollapsingHeader("Component Transform"))
+					if (ImGui::CollapsingHeader("Component Transform"), ImGuiTreeNodeFlags_Leaf)
 					{
 
 						if (ImGui::Button("Reset Transform"))

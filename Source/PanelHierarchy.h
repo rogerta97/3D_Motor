@@ -3,11 +3,15 @@
 
 #include "imgui.h"
 
+class GameObject; 
+
 class PanelHierarchy
 {
 public:
 
 	bool Draw();
+
+	void DrawNode(GameObject* go); 
 
 
 private:

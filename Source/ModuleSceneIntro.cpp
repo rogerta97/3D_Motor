@@ -7,6 +7,7 @@
 #include "ComponentDefs.h"
 #include "OpenGL.h"
 #include "GameObject.h"
+#include "Octree.h"
 #include "ModuleFBXLoader.h"
 
 #include "PhysBody3D.h"
@@ -40,6 +41,13 @@ bool ModuleSceneIntro::Start()
 	float3 initial_look_at(0, 0, 0);
 	//App->camera->LookAt(initial_look_at);
 	App->performance.SaveInitData(name); 
+
+	main_plane = PPlane(0, 1, 0, 0);
+	main_plane.axis = true;
+
+	AABB root_octree_box(vec(-100, -100, -100), vec(100, 100, 100));
+	
+//	octree->Create(root_octree_box);
 
 	return ret;
 }
@@ -85,19 +93,21 @@ GameObject * ModuleSceneIntro::CreateGameObject(const char * name, mesh_shape sh
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	
+	glBindTexture(GL_TEXTURE_2D, 0); 
+	main_plane.Render();
+
 	for (std::vector<GameObject*>::iterator it = GO_list.begin(); it != GO_list.end(); it++)
 	{
 		(*it)->Draw(); 
 	}
-	
+
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleSceneIntro::PostUpdate(float dt)
 {
 
-	
+	//octree->DrawOctree(); 
 	return UPDATE_CONTINUE; 
 }
 void ModuleSceneIntro::PrintConfigData()

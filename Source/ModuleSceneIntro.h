@@ -2,12 +2,14 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Component.h"
+#include "Primitive.h"
 
 class GameObject; 
 struct PhysBody3D;
 struct PhysMotor3D;
 class Cube1; 
 enum mesh_shape; 
+class Octree; 
 
 class ModuleSceneIntro : public Module
 {
@@ -37,8 +39,9 @@ public:
 
 private:
 
+	PPlane main_plane; 
+
 	vector<GameObject*> GO_list;
 	uint current_gameobject_id = 0;
-
-
+	Octree* octree; 
 };

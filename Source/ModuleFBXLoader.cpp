@@ -46,153 +46,215 @@ bool ModuleFBXLoader::CleanUp()
 	return true;
 }
 
-void ModuleFBXLoader::LoadFBX(const char* full_path)
+void ModuleFBXLoader::LoadFileScene(const char * path)
+{
+	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+
+	aiNode* root_node = scene->mRootNode; 
+
+	LoadFBX(path, root_node, scene, nullptr);
+
+	aiReleaseImport(scene);
+
+}
+
+void ModuleFBXLoader::GetInnerTransform(aiNode & node, aiVector3D & pos, aiQuaternion & quat, aiVector3D & scale)
+{
+	std::string node_name(node.mName.C_Str());
+
+	if (node.mNumChildren > 0)
+	{
+		if (node_name.find("$AssimpFbx$_PreRotation") != std::string::npos || node_name.find("$AssimpFbx$_Rotation") != std::string::npos ||
+			node_name.find("$AssimpFbx$_PostRotation") != std::string::npos || node_name.find("$AssimpFbx$_Scaling") != std::string::npos ||
+			node_name.find("$AssimpFbx$_Translation") != std::string::npos)
+		{
+
+			aiVector3D new_pos;
+			aiQuaternion new_quat;
+			aiVector3D new_scale;
+
+			node.mTransformation.Decompose(new_scale, new_quat, new_pos);
+
+			node = *node.mChildren[0]; 
+
+			pos += new_pos; 
+			quat = quat * new_quat; 
+
+			aiVector3D n_scale(scale*new_scale); 
+			scale = n_scale;
+			GetInnerTransform(node, pos, quat, scale);
+		}
+	}
+
+
+}
+
+void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene* scene, GameObject* parent)
 {
 	bool ret = true; 
 
-	const aiScene* scene = aiImportFile(full_path, aiProcessPreset_TargetRealtime_MaxQuality);
-	GameObject* root_go; 
-	
-	if (scene != nullptr)
-	{
-		string tot_path(full_path);
-		int cut = tot_path.find_last_of('\\');
-		int cut2 = tot_path.find_last_of('.');
+	GameObject* new_go = nullptr; 
 
-		int extension_name = cut2 - cut;
-		string new_name = tot_path.substr(cut + 1, extension_name - 1);
+	if (node->mNumMeshes < 1)
+	{		
+		std::string node_name(node->mName.C_Str());
 
-		root_go = new GameObject();
-		root_go->SetName(new_name.c_str());
-	}
-		
-	if (scene != nullptr && scene->HasMeshes())
-	{
-		// Use scene->mNumMeshes to iterate on scene->mMeshes array
-		int i; 
-		for (i = 0; i < scene->mNumMeshes; i++) 
+		aiVector3D pos;
+		aiQuaternion quat;
+		aiVector3D scale;
+
+		if (node_name.find("$AssimpFbx$_PreRotation") != std::string::npos || node_name.find("$AssimpFbx$_Rotation") != std::string::npos ||
+			node_name.find("$AssimpFbx$_PostRotation") != std::string::npos || node_name.find("$AssimpFbx$_Scaling") != std::string::npos ||
+			node_name.find("$AssimpFbx$_Translation") != std::string::npos)
 		{
-			//Vertices
+			GetInnerTransform(*node, pos, quat, scale);
+		}
+		else
+		{
+			node->mTransformation.Decompose(scale, quat, pos); 
+		}
 
-			GameObject* child_go = new GameObject(); 
+		new_go = new GameObject();
 
-			LOG("Loading new mesh...")
+		node_name = node->mName.C_Str();
+		new_go->SetName(node_name.c_str());
+		if (parent != nullptr) parent->PushChild(new_go);
 
-			aiMesh* m = scene->mMeshes[i];
+		ComponentTransform* trans = (ComponentTransform*)new_go->GetComponent(COMPONENT_TRANSFORM); 
 
-			ComponentMeshRenderer* tmp_mr = new ComponentMeshRenderer(); 
+		float3 n_pos(pos.x, pos.y, pos.z);
+		float3 n_scale(scale.x, scale.y, scale.z);
+		Quat n_rot(quat.x, quat.y, quat.z, quat.w);
 
-			tmp_mr->num_vertices = m->mNumVertices;
-			tmp_mr->vertices = new float[tmp_mr->num_vertices*3];
-			memcpy(tmp_mr->vertices, m->mVertices, sizeof(float) * tmp_mr->num_vertices *3 );
+		trans->SetPosition(n_pos);
+		trans->SetRotation(n_rot);
+		trans->SetScale(n_scale);
 		
-			glGenBuffers(1, (GLuint*) &tmp_mr->vertices_id);
-			glBindBuffer(GL_ARRAY_BUFFER, tmp_mr->vertices_id);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * tmp_mr->num_vertices * 3, tmp_mr->vertices, GL_STATIC_DRAW);
+		App->scene_intro->AddGameObject(new_go);
+	}
+	else
+	{
+		if (scene != nullptr && scene->HasMeshes())
+		{
+			// Use scene->mNumMeshes to iterate on scene->mMeshes array
+			
+			for (int i = 0; i < node->mNumMeshes; i++)
+			{
+				//Vertices
+				std::string node_name(node->mName.C_Str());
 
-			LOG("%d vertices", tmp_mr->num_vertices);
+				GameObject* child_go = new GameObject();
+				child_go->SetName(node_name.c_str()); 
 
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			//Indices
+				LOG("Loading new mesh...")
 
-			if (m->HasFaces()) {
-				tmp_mr->num_indices = m->mNumFaces * 3;
-				tmp_mr->indices = new uint[tmp_mr->num_indices];
+				aiMesh* m = scene->mMeshes[node->mMeshes[i]];
 
-				for (uint i = 0; i < m->mNumFaces; ++i)
-				{
-					if (m->mFaces[i].mNumIndices != 3) {
-						LOG("WARNING, geometry face with != 3 indices!");
+				ComponentMeshRenderer* tmp_mr = new ComponentMeshRenderer();
+
+				tmp_mr->num_vertices = m->mNumVertices;
+				tmp_mr->vertices = new float[tmp_mr->num_vertices * 3];
+				memcpy(tmp_mr->vertices, m->mVertices, sizeof(float) * tmp_mr->num_vertices * 3);
+
+				glGenBuffers(1, (GLuint*)&tmp_mr->vertices_id);
+				glBindBuffer(GL_ARRAY_BUFFER, tmp_mr->vertices_id);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * tmp_mr->num_vertices * 3, tmp_mr->vertices, GL_STATIC_DRAW);
+
+				LOG("%d vertices", tmp_mr->num_vertices);
+
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				//Indices
+
+				if (m->HasFaces()) {
+					tmp_mr->num_indices = m->mNumFaces * 3;
+					tmp_mr->indices = new uint[tmp_mr->num_indices];
+
+					for (uint i = 0; i < m->mNumFaces; ++i)
+					{
+						if (m->mFaces[i].mNumIndices != 3) {
+							LOG("WARNING, geometry face with != 3 indices!");
+						}
+						else
+							memcpy(&tmp_mr->indices[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
 					}
-					else
-						memcpy(&tmp_mr->indices[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
+
 				}
 
-			}
+				glGenBuffers(1, (GLuint*)&tmp_mr->indices_id);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tmp_mr->indices_id);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_indices, tmp_mr->indices, GL_STATIC_DRAW);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-			glGenBuffers(1, (GLuint*) &tmp_mr->indices_id);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tmp_mr->indices_id);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_indices, tmp_mr->indices, GL_STATIC_DRAW);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+				LOG("%d indices", tmp_mr->num_indices);
 
-			LOG("%d indices", tmp_mr->num_indices); 
+				if (m->HasTextureCoords(0)) // assume mesh has one texture coords
+				{
+					tmp_mr->num_uvs = m->mNumVertices;
+					tmp_mr->uvs = new float[tmp_mr->num_uvs * 3];
+					memcpy(tmp_mr->uvs, m->mTextureCoords[0], sizeof(float)*tmp_mr->num_uvs * 3);
 
-			if (m->HasTextureCoords(0)) // assume mesh has one texture coords
-			{
-				tmp_mr->num_uvs = m->mNumVertices;
-				tmp_mr->uvs = new float[tmp_mr->num_uvs * 3];
-				memcpy(tmp_mr->uvs, m->mTextureCoords[0], sizeof(float)*tmp_mr->num_uvs * 3);
+					glGenBuffers(1, (GLuint*)&tmp_mr->uvs_id);
+					glBindBuffer(GL_ARRAY_BUFFER, (GLuint)tmp_mr->uvs_id);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_uvs * 3, tmp_mr->uvs, GL_STATIC_DRAW);
+					glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-				glGenBuffers(1, (GLuint*) &tmp_mr->uvs_id);
-				glBindBuffer(GL_ARRAY_BUFFER, (GLuint)tmp_mr->uvs_id);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_uvs * 3, tmp_mr->uvs, GL_STATIC_DRAW);
-				glBindBuffer(GL_ARRAY_BUFFER, 0); 
+					LOG("%d texture cordinates", tmp_mr->num_uvs);
+				}
+				else
+				{
+					LOG("No Texture Coords found");
+				}
+				AABB bbox;
+				bbox.SetNegativeInfinity();
+				bbox.Enclose((float3*)m->mVertices, m->mNumVertices);
 
-				LOG("%d texture cordinates", tmp_mr->num_uvs);
-			}
-			else
-			{
-				LOG("No Texture Coords found");
-			}
-			AABB bbox;
-			bbox.SetNegativeInfinity();
-			bbox.Enclose((float3*)m->mVertices, m->mNumVertices);
-			
-			tmp_mr->SetGizmoBox(bbox);
-			//FIX ME
+				tmp_mr->SetGizmoBox(bbox);
+				//FIX ME
 				//App->camera->Focus(vec3(new_object->GetPosition().x, new_object->GetPosition().y, new_object->GetPosition().z), bbox.Size().Length() *1.2f);
 
-			tmp_mr->type = COMPONENT_MESH_RENDERER; 
-			tmp_mr->Enable(); 
+				tmp_mr->type = COMPONENT_MESH_RENDERER;
+				tmp_mr->Enable();
 
-			tmp_mr->SetComponentParent(child_go);
-			tmp_mr->tranform_id = i; 
+				tmp_mr->SetComponentParent(child_go);
+				tmp_mr->tranform_id = i;
 
-			child_go->PushComponent((Component*)tmp_mr);
-		//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+				child_go->PushComponent((Component*)tmp_mr);
+				//	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-			LOG("FBX imported with %d meshes", i);
+				LOG("FBX imported with %d meshes", i);
 
-			if (scene != nullptr && scene->HasMaterials())
-			{
-				aiMaterial* mat = scene->mMaterials[m->mMaterialIndex]; //just one material is supported now
-				aiString path;
+				if (scene != nullptr && scene->HasMaterials())
+				{
+					aiMaterial* mat = scene->mMaterials[m->mMaterialIndex]; //just one material is supported now
+					aiString path;
 
-				ComponentMaterial* MA_tmp;
-				mat->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+					ComponentMaterial* MA_tmp;
+					mat->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 
-				std::string full_path_str(full_path);
-				uint cut = full_path_str.find_last_of('\\');
+					std::string full_path_str(full_path);
+					uint cut = full_path_str.find_last_of('\\');
 
-				std::string final_str = full_path_str.substr(0, cut + 1);
-				final_str += path.C_Str();
-				MA_tmp = ImportImage(final_str.c_str());
+					std::string final_str = full_path_str.substr(0, cut + 1);
+					final_str += path.C_Str();
+					MA_tmp = ImportImage(final_str.c_str());
 
-				MA_tmp->type = COMPONENT_MATERIAL;
-				MA_tmp->Enable();
+					MA_tmp->type = COMPONENT_MATERIAL;
+					MA_tmp->Enable();
 
-				MA_tmp->SetComponentParent(child_go);
+					MA_tmp->SetComponentParent(child_go);
 
-				child_go->PushComponent(MA_tmp);
-			}
-
-
-				aiNode* node = scene->mRootNode;
+					child_go->PushComponent(MA_tmp);
+				}
 
 				if (node != nullptr)
 				{
-					ComponentTransform* TR_cmp = new ComponentTransform();
-
-					aiNode* tmp_node = node->mChildren[0];
-
-					if (tmp_node == nullptr)
-						continue; 
+					ComponentTransform* TR_cmp = (ComponentTransform*)child_go->GetComponent(COMPONENT_TRANSFORM);
 
 					aiVector3D translation;
 					aiVector3D scaling;
 					aiQuaternion rotation;
 
-					tmp_node->mTransformation.Decompose(scaling, rotation, translation);
+					node->mTransformation.Decompose(scaling, rotation, translation);
 
 					float3 pos(translation.x, translation.y, translation.z);
 					float3 scale(scaling.x, scaling.y, scaling.z);
@@ -206,32 +268,29 @@ void ModuleFBXLoader::LoadFBX(const char* full_path)
 					TR_cmp->type = COMPONENT_TRANSFORM;
 					TR_cmp->Enable();
 
-					TR_cmp->SetComponentParent(child_go);
-
-					child_go->PushComponent(TR_cmp);
-					
-
 					LOG("FBX imported with %d transform", i);
 				}
 
-				root_go->PushChild(child_go); 
-				App->scene_intro->AddGameObject(child_go); 
+				parent->PushChild(child_go);
+				App->scene_intro->AddGameObject(child_go);
+			}
+
+			new_go = parent;
 		}
-
-		App->scene_intro->AddGameObject(root_go);
-		
-		aiReleaseImport(scene);
-		//FIX ME
-		
+		else
+		{
+			LOG("Error loading scene %s", full_path);
+		}
 	}
+		
 
-
-	else
+	for (int i = 0; i < node->mNumChildren; i++)
 	{
-		LOG("Error loading scene %s", full_path);
+		LoadFBX(full_path, node->mChildren[i], scene, new_go);
 	}
-	
 }
+
+
 
 void ModuleFBXLoader::DrawElement()
 {
