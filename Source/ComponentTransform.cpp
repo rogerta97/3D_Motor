@@ -46,8 +46,7 @@ void ComponentTransform::SetIdentityTransform()
 {
 	SetPosition({ 0,0,0 }); 
 	Quat rot; 
-	rot.identity; 
-	SetRotation(rot);
+	SetRotation(rot.identity);
 	SetScale({ 1,1,1 }); 
 }
 

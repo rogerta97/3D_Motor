@@ -68,7 +68,7 @@ bool ModuleImGui::Init()
 	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.96f, 0.93f, 0.07f, 0.35f);
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
 
-
+	panel_octree.Start(); 
 
 	App->performance.SaveInitData(name);
 
@@ -268,6 +268,10 @@ update_status ModuleImGui::PrintTopBar()
 			show_performance = !show_performance;
 		}
 
+		if (ImGui::MenuItem("Octree"))
+		{
+			show_octree_window = !show_octree_window;
+		}
 
 		ImGui::Separator();
 
@@ -291,12 +295,19 @@ update_status ModuleImGui::PrintTopBar()
 		{
 
 			if (ImGui::MenuItem("Empty", NULL))			
-				App->scene_intro->CreateGameObject("GameObject", EMPTY_MESH); 
+				App->scene_intro->CreateGameObject("GameObject"); 
 			
-			if(ImGui::MenuItem("Cube"))
-				App->scene_intro->CreateGameObject("GameObject Cube", CUBE_MESH);
+			if (ImGui::MenuItem("Cube"))
+			{
+				GameObject* cube = App->scene_intro->CreateGameObject("Cube");
 
-		
+				ComponentMeshRenderer* n_mr = new ComponentMeshRenderer(); 
+				n_mr->SetCubeVertices({0,0,0}, 2);
+				n_mr->Enable(); 
+				cube->PushComponent(n_mr); 
+
+			}
+				
 			ImGui::EndMenu(); 
 		}
 
@@ -343,6 +354,7 @@ update_status ModuleImGui::PrintTopBar()
 	if (show_about) ShowAbout();
 	if (show_performance) App->performance.Update(show_performance);
 	if (show_style_editor) PrintStyleEditor();
+	if (show_octree_window) panel_octree.DrawPanel(); 
 
 	if (App->scene_intro->IsListEmpty() == false)
 		show_inspector = true;

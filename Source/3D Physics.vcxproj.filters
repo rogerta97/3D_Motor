@@ -1203,6 +1203,9 @@
     <ClInclude Include="Octree.h">
       <Filter>Containers</Filter>
     </ClInclude>
+    <ClInclude Include="PanelOctree.h">
+      <Filter>Helpers\ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1438,6 +1441,9 @@
     </ClCompile>
     <ClCompile Include="Octree.cpp">
       <Filter>Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelOctree.cpp">
+      <Filter>Helpers\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

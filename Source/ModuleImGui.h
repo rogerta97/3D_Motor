@@ -4,6 +4,7 @@
 #include "PanelConsole.h"
 #include "PanelInspector.h"
 #include "PanelHierarchy.h"
+#include "PanelOctree.h"
 
 #include<vector>
 class ModuleImGui : public Module
@@ -37,6 +38,7 @@ private:
 	PanelInspector inspector;
 	PanelConsole console;
 	PanelHierarchy hierarchy; 
+	PanelOctree panel_octree; 
 
 	bool show_test_window = true;
 	bool show_another_window = false;
@@ -49,6 +51,7 @@ private:
 	bool show_configuration = true; 
 	bool show_inspector = false;
 	bool show_hierarchy = true; 
+	bool show_octree_window = false;
 	bool show_style_editor = false; 
 
 	// Console management -----------

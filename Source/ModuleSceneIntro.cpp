@@ -48,7 +48,9 @@ bool ModuleSceneIntro::Start()
 	AABB root_octree_box(vec(-100, -100, -100), vec(100, 100, 100));
 	
 	octree = new Octree();
+
 	octree->Create(root_octree_box);
+
 
 	return ret;
 }
@@ -78,7 +80,7 @@ GameObject* ModuleSceneIntro::GetGameObject(uint id)
 	return ret;
 }
 
-GameObject * ModuleSceneIntro::CreateGameObject(const char * name, mesh_shape shape)
+GameObject * ModuleSceneIntro::CreateGameObject(const char * name)
 {
 	GameObject* new_go = new GameObject(); 
 	new_go->SetName(name); 

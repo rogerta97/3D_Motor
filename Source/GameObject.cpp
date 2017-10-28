@@ -141,7 +141,8 @@ GameObject * GameObject::GetParent()
 
 void GameObject::PushComponent(Component * comp)
 {
-	component_list.push_back(comp); 
+	comp->SetComponentParent(this);
+	component_list.push_back(comp); 	
 }
 
 void GameObject::PushChild(GameObject * child)

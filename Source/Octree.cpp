@@ -1,5 +1,6 @@
 #include "Octree.h"
 #include "DebugDraw.h"
+#include "ComponentMeshRenderer.h"
 
 Octree::Octree()
 {
@@ -24,9 +25,26 @@ void Octree::Clear()
 {
 }
 
-void Octree::Insert(GameObject * new_go)
+void Octree::Insert(GameObject * new_go, OctreeNode& curr_node)
 {
+	ComponentMeshRenderer* mr = (ComponentMeshRenderer*)new_go->GetComponent(COMPONENT_MESH_RENDERER); 
 
+	if (mr != nullptr && curr_node.box.Contains(mr->bounding_box))
+	{
+		if (curr_node.IsLeaf())
+		{
+			Split(); 
+		}
+		else
+		{
+			for (int i = 0; i < 8; i++)
+			{				
+				Insert(new_go, *curr_node.child_nodes[i]);
+			}
+		}
+	}
+	else
+		LOG("Object need a mesh for being inserted to Octree"); 
 }
 
 void Octree::Remove(GameObject * to_delete)
@@ -52,7 +70,7 @@ OctreeNode::~OctreeNode()
 
 bool OctreeNode::IsLeaf()
 {
-	return false;
+	return child_nodes.empty();
 }
 
 void OctreeNode::DrawNode()

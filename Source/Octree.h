@@ -22,7 +22,8 @@ public:
 
 	AABB box; 
 	vector<AABB*> objects_in_node; 
-	vector<OctreeNode*> child_nodes; 
+	vector<OctreeNode*> child_nodes;
+	OctreeNode* parent_node; 
 };
 
 class Octree
@@ -34,7 +35,7 @@ public:
 
 	void Create(AABB limits);
 	void Clear();
-	void Insert(GameObject* new_go);
+	void Insert(GameObject* new_go, OctreeNode& curr_node);
 	void Remove(GameObject* to_delete);
 
 	void Split(); 

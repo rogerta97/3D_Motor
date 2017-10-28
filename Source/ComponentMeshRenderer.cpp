@@ -30,7 +30,7 @@ ComponentMeshRenderer::~ComponentMeshRenderer()
 
 bool ComponentMeshRenderer::Enable()
 {
-	active = true; 
+
 	return true; 
 }
 
@@ -56,22 +56,24 @@ bool ComponentMeshRenderer::Update()
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
+	if (cmaterial != nullptr)
+	{
+		if (cmaterial->textures_id > 0)
+		{
+			glBindTexture(GL_TEXTURE_2D, cmaterial->textures_id);
+		}
+		else
+		{
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
 
-	if (cmaterial->textures_id > 0)
-	{
-		glBindTexture(GL_TEXTURE_2D, cmaterial->textures_id);
-	}
-	else
-	{
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
-
-	//TEXTURE_COORDS
-	if (cmaterial->textures_id > 0)
-	{
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, uvs_id);
-		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+		//TEXTURE_COORDS
+		if (cmaterial->textures_id > 0)
+		{
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, uvs_id);
+			glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+		}
 	}
 
 
@@ -122,7 +124,8 @@ bool ComponentMeshRenderer::Disable()
 
 ComponentMeshRenderer::ComponentMeshRenderer()
 {
-
+	active = true;
+	type = COMPONENT_MESH_RENDERER; 
 }
 
 uint ComponentMeshRenderer::GetTriNum() const
@@ -136,7 +139,7 @@ void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 	glGenBuffers(1, (GLuint*)&vertices_id);
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 
-	float vertices[8 * 3] =
+	float vertices_arr[8 * 3] =
 	{
 		origin.x - size / 2 ,origin.y + size / 2, origin.z - size / 2,
 		origin.x - size / 2 ,origin.y - size / 2, origin.z - size / 2,
@@ -148,15 +151,16 @@ void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 		origin.x - size / 2 ,origin.y - size / 2, origin.z + size / 2,
 	};
 
+	vertices = vertices_arr; 
+	num_vertices = 8;
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8 * 3, vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-
 	glGenBuffers(1, (GLuint*)&indices_id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
 
-	GLubyte indices[] =
+	uint indices_arr[] =
 	{
 		0,4,2,
 		0,6,4,
@@ -172,6 +176,8 @@ void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 		4,7,5
 	};
 
+	indices = indices_arr; 
+	num_indices = 12 * 3; 
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 12 * 3, indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

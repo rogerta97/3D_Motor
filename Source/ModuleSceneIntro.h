@@ -22,7 +22,7 @@ public:
 	update_status PostUpdate(float dt); 
 	bool CleanUp();
 	GameObject* GetGameObject(uint id);
-	GameObject* CreateGameObject(const char* name, mesh_shape shape = EMPTY_MESH);
+	GameObject* CreateGameObject(const char* name);
 
 	void PrintConfigData();
 	void PrintInspectorData();

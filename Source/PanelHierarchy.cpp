@@ -30,8 +30,6 @@ bool PanelHierarchy::Draw()
 
 void PanelHierarchy::DrawNode(GameObject * go)
 {
-	
-
 	if (!go->IsChildEmpty())
 	{
 		if (ImGui::TreeNode(go->GetName()))
@@ -55,6 +53,13 @@ void PanelHierarchy::DrawNode(GameObject * go)
 			}
 
 			ImGui::TreePop();
+		}
+	}
+	else
+	{
+		if (ImGui::MenuItem(go->GetName()))
+		{
+
 		}
 	}
 }
