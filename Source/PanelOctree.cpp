@@ -17,6 +17,8 @@ void PanelOctree::DrawPanel()
 	{
 		ImGui::Checkbox("Active", &oct_active); 
 
+		App->scene_intro->GetOctree()->SetActive(oct_active); 
+
 		ImGui::Separator(); 
 
 		ImGui::InputFloat3("Min Point", &min_point[0], 2);

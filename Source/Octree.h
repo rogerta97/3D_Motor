@@ -44,6 +44,8 @@ public:
 
 	void DrawOctree();
 
+	void SetActive(bool _active); 
+
 	// utility
 
 	OctreeNode* GetLastLeafNode(); 
@@ -52,6 +54,7 @@ public:
 private: 
 
 	OctreeNode* root_node; 
+	bool active = false; 
 
 };
 

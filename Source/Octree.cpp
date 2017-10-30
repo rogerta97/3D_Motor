@@ -69,10 +69,18 @@ void Octree::Split(OctreeNode* node_to_split)
 
 void Octree::DrawOctree()
 {
+	if (!active)
+		return; 
+
 	if (root_node != nullptr)
 	{
 		root_node->DrawNode();
 	}
+}
+
+void Octree::SetActive(bool _active)
+{
+	active = _active; 
 }
 
 OctreeNode* Octree::GetLastLeafNode()
