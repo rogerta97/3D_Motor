@@ -5,6 +5,7 @@
 #include "Primitive.h"
 
 class GameObject; 
+class ComponentCamera;
 struct PhysBody3D;
 struct PhysMotor3D;
 class Cube1; 
@@ -28,19 +29,20 @@ public:
 	void PrintInspectorData();
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	void AddGameObject(GameObject* GO); 
-	vector<GameObject*> GetList(); 
+	vector<GameObject*> GetList();
+	vector<ComponentCamera*>GetCameraList();
 	bool IsListEmpty(); 
 
 	//p2DynArray<p2Point<int>> GetCollisions(); 
 	void SetCurrentGO(uint id);
 	GameObject* GetCurrentGO(); 
 
-	void ClearGOList(); 
-
+	void ClearGOList();
+public:
+	vector<ComponentCamera*> cameras_list;
 private:
 
 	PPlane main_plane; 
-
 	vector<GameObject*> GO_list;
 	uint current_gameobject_id = 0;
 	Octree* octree; 

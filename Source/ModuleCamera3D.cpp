@@ -20,7 +20,6 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled)
 	Position = vec3(0.0f, 0.0f, 5.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
 	basic_camera = new ComponentCamera();
-
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -149,6 +148,16 @@ void ModuleCamera3D::Orbit(const vec3& orbit_center, const float& motion_x, cons
 void ModuleCamera3D::Look(const float3 &Position, const vec3 &Reference, bool RotateAroundReference)
 {
 	basic_camera->Look(Position);
+}
+
+void ModuleCamera3D::LookAt(const float3 &objective)
+{
+	float3 direction = objective - basic_camera->frustum.pos;
+
+	float3x3 matrix = float3x3::LookAt(basic_camera->frustum.front, direction.Normalized(), basic_camera->frustum.up, float3::unitY);
+
+	basic_camera->frustum.front = matrix.MulDir(basic_camera->frustum.front).Normalized();
+	basic_camera->frustum.up = matrix.MulDir(basic_camera->frustum.up).Normalized();
 }
 
 // -----------------------------------------------------------------

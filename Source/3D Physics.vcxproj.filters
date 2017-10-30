@@ -1182,9 +1182,6 @@
     <ClInclude Include="ModuleMaterials.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleFileSystem.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ComponentCamera.h">
       <Filter>GameObject\Components</Filter>
     </ClInclude>
@@ -1205,6 +1202,9 @@
     </ClInclude>
     <ClInclude Include="PanelOctree.h">
       <Filter>Helpers\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFileSystem.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1418,9 +1418,6 @@
     <ClCompile Include="ModuleMaterials.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleFyleSystem.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ComponentCamera.cpp">
       <Filter>GameObject\Components</Filter>
     </ClCompile>
@@ -1436,14 +1433,14 @@
     <ClCompile Include="PanelHierarchy.cpp">
       <Filter>Helpers\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleFileSystem.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Octree.cpp">
       <Filter>Containers</Filter>
     </ClCompile>
     <ClCompile Include="PanelOctree.cpp">
       <Filter>Helpers\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFileSystem.cpp">
+      <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

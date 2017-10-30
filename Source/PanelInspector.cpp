@@ -53,11 +53,11 @@ bool PanelInspector::Draw()
 					float rot[3] = { RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
 					float s[3] = { curr_cmp->GetLocalScale().x,curr_cmp->GetLocalScale().y,curr_cmp->GetLocalScale().z };
 
-					if (ImGui::InputFloat3("Position##transform", pos, 2))
+					if (ImGui::DragFloat3("Position##transform", pos, 2))
 						curr_cmp->SetPosition(float3(pos[0], pos[1], pos[2]));
-					if (ImGui::InputFloat3("Rotation##transform", rot, 2))
+					if (ImGui::DragFloat3("Rotation##transform", rot, 2))
 						curr_cmp->SetRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
-					if (ImGui::InputFloat3("Scale##transform", s, 2))
+					if (ImGui::DragFloat3("Scale##transform", s, 2))
 						curr_cmp->SetScale(float3(s[0], s[1], s[2]));
 					}
 
@@ -102,7 +102,6 @@ bool PanelInspector::Draw()
 
 					ImGui::Text("Name: "); ImGui::SameLine(); 
 					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s");
-
 				}
 	
 				break;
@@ -117,7 +116,13 @@ bool PanelInspector::Draw()
 
 				if (ImGui::CollapsingHeader("Component Camera"))
 				{
-
+					/*float3 radians_angle = curr_cmp->frustumGetLocalRotation().ToEulerXYZ();
+					float pos[3] = { curr_cmp-> };
+					float rot[3] = { RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
+					*/
+					float nearPlane_aux = curr_cmp->GetNearPlaneDist();
+					if (ImGui::DragFloat("Near Plane Distance##transform", &nearPlane_aux, 0.5f, 0.0f))
+						curr_cmp->SetNearPlaneDist(nearPlane_aux);
 				}
 
 				break;

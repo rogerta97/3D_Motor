@@ -1,6 +1,8 @@
 #include "ComponentCamera.h"
 #include "Color.h"
 #include "DebugDraw.h"
+#include "ModuleSceneIntro.h"
+#include "Application.h"
 
 ComponentCamera::ComponentCamera()
 {
@@ -14,6 +16,9 @@ ComponentCamera::ComponentCamera()
 	frustum.verticalFov = DEGTORAD * 45.0f;
 	SetAspectRatio(1.3f);
 	type = COMPONENT_CAMERA; 
+	
+	//App->scene_intro->cameras_list.push_back(this);
+
 }
 
 ComponentCamera::~ComponentCamera()
@@ -22,6 +27,7 @@ ComponentCamera::~ComponentCamera()
 
 bool ComponentCamera::Update()
 {
+
 	DrawFrustum(frustum, Color(1.0f, 1.0f,0.0f));
 	return true;
 }
