@@ -10,6 +10,7 @@ struct PhysMotor3D;
 class Cube1; 
 enum mesh_shape; 
 class Octree; 
+class OctreeNode; 
 
 class ModuleSceneIntro : public Module
 {
@@ -34,6 +35,8 @@ public:
 	//p2DynArray<p2Point<int>> GetCollisions(); 
 	void SetCurrentGO(uint id);
 	GameObject* GetCurrentGO(); 
+
+	Octree* GetOctree(); 
 
 	void ClearGOList(); 
 

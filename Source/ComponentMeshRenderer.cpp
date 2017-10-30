@@ -154,6 +154,11 @@ void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 	vertices = vertices_arr; 
 	num_vertices = 8;
 
+	float3 a = { origin.x - size / 2 ,origin.y - size / 2, origin.z - size / 2 }; 
+	float3 b = { origin.x + size / 2 ,origin.y + size / 2, origin.z + size / 2 };
+
+	bounding_box = AABB(a,b);
+
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8 * 3, vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 

@@ -158,6 +158,11 @@ GameObject* ModuleSceneIntro::GetCurrentGO()
 	return GO_list.at(current_gameobject_id);
 }
 
+Octree * ModuleSceneIntro::GetOctree()
+{
+	return octree;
+}
+
 void ModuleSceneIntro::ClearGOList()
 {
 	GO_list.clear();

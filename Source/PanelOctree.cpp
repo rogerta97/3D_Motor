@@ -1,4 +1,6 @@
 #include "PanelOctree.h"
+#include "Octree.h"
+#include "Application.h"
 
 void PanelOctree::Start()
 {
@@ -23,6 +25,11 @@ void PanelOctree::DrawPanel()
 		if(ImGui::Button("Create!"))
 		{
 
+		}
+
+		if (ImGui::Button("Add Current Object"))
+		{
+			App->scene_intro->GetOctree()->Insert(App->scene_intro->GetCurrentGO()); 
 		}
 
 		ImGui::End(); 
