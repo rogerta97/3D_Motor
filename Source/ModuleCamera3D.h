@@ -15,6 +15,7 @@ public:
 	bool CleanUp();
 
 	void Look(const float3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
+	void LookAt(const float3 &objective);
 	void Move();
 	void Move(const vec3& pos);
 	float* GetViewMatrix();

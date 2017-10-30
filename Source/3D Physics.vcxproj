@@ -454,7 +454,6 @@
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleFBXLoader.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
-    <ClCompile Include="ModuleFyleSystem.cpp" />
     <ClCompile Include="ModuleImGui.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleMaterials.cpp" />

@@ -4,6 +4,8 @@
 #include "Assimp/include/types.h"
 #include "Application.h"
 
+#pragma comment( lib, "PhysFS/libx86/physfs.lib" )
+
 ModuleFileSystem::ModuleFileSystem(const char * game_path): Module(true)
 {
 	//init physfs

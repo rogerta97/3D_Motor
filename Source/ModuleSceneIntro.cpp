@@ -9,6 +9,8 @@
 #include "GameObject.h"
 #include "Octree.h"
 #include "ModuleFBXLoader.h"
+#include "ModuleCamera3D.h"
+#include "ModuleRenderer3D.h"
 
 #include "PhysBody3D.h"
 
@@ -37,9 +39,10 @@ bool ModuleSceneIntro::Start()
 	srand(time(NULL));
 
 	float3 initial_pos(0.f, 10.f, 10.f);
-	//App->camera->(initial_pos);
+	App->camera->SetCamPosition(initial_pos);
 	float3 initial_look_at(0, 0, 0);
-	//App->camera->LookAt(initial_look_at);
+	App->camera->LookAt(initial_look_at);
+
 	App->performance.SaveInitData(name); 
 
 	main_plane = PPlane(0, 1, 0, 0);
@@ -103,8 +106,17 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	for (std::vector<GameObject*>::iterator it = GO_list.begin(); it != GO_list.end(); it++)
 	{
+		ComponentCamera* camera = (ComponentCamera*)(*it)->GetComponent(COMPONENT_CAMERA);
 		(*it)->Draw(); 
+		if (camera != nullptr && camera->IsActive())
+		{
+			App->renderer3D->curr_cam->DrawFrustum(camera->frustum,White);
+			//App->renderer3D->rendering_cameras.push_back(camera);
+		}
 	}
+	
+
+
 
 	return UPDATE_CONTINUE;
 }
@@ -141,6 +153,11 @@ void ModuleSceneIntro::AddGameObject(GameObject * GO)
 vector<GameObject*> ModuleSceneIntro::GetList()
 {
 	return GO_list;
+}
+
+vector<ComponentCamera*> ModuleSceneIntro::GetCameraList()
+{
+	return cameras_list;
 }
 
 bool ModuleSceneIntro::IsListEmpty()
