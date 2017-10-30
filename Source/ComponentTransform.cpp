@@ -1,5 +1,6 @@
 #include "ComponentTransform.h"
 #include "OpenGL.h"
+#include "GameObject.h"
 #include "MathGeoLib\MathGeoLib.h"
 
 float3 ComponentTransform::GetLocalPosition()
@@ -61,7 +62,9 @@ bool ComponentTransform::Update()
 
 void ComponentTransform::SetPosition(const float3 & _position)
 {
-	position = _position;
+	if (GetComponentParent()->IsStatic() == false)
+		position = _position;
+
 }
 
 void ComponentTransform::SetRotation(const float3& _rotation)
@@ -71,10 +74,14 @@ void ComponentTransform::SetRotation(const float3& _rotation)
 }
 void ComponentTransform::SetRotation(const Quat& _rotation)
 {
-	rotation = _rotation;
+	if (GetComponentParent()->IsStatic() == false)
+		rotation = _rotation;
+	
 }
 
 void ComponentTransform::SetScale(const float3 & scale)
 {
-	this->scale = scale;
+	if (GetComponentParent()->IsStatic() == false)
+		this->scale = scale;
+
 }

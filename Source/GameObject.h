@@ -21,8 +21,11 @@ public:
 
 	void Draw(); 
 
-	bool Active()const;
+	bool IsActive()const;
 	void SetActive(bool _active);
+
+	bool IsStatic()const;
+	void SetStatic(bool _active);
 
 	void SetName(const char* name);
 	const char* GetName(); 
@@ -49,9 +52,10 @@ private:
 	vector<GameObject*> child_list;
 
 	GameObject* parent; 
-	uint id;
-	bool active = false;
+	uint id;	
 	string name = "GameObject"; 
+
+	bool active = false;
 	bool is_static = false; 
 
 };

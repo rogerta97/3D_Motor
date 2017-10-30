@@ -190,6 +190,9 @@ void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 	LOG("Cube created with buffer num %d", vertices_id);
 	LOG("Vertices: 8");
 	LOG("Triangles: 16");
+
+	ComponentTransform* trans = (ComponentTransform*)parent->GetComponent(COMPONENT_TRANSFORM); 
+	trans->SetPosition(origin); 
 }
 
 void ComponentMeshRenderer::SetSphereVertices(float radius, uint rings, uint sectors, float3 origin)

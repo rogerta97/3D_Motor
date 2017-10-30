@@ -6,7 +6,7 @@
 #include <cmath>
 #include "ComponentDefs.h"
 
-bool GameObject::Active() const
+bool GameObject::IsActive() const
 {
 	return active;
 }
@@ -14,6 +14,16 @@ bool GameObject::Active() const
 void GameObject::SetActive(bool _active)
 {
 	active = _active;
+}
+
+bool GameObject::IsStatic() const
+{
+	return is_static;
+}
+
+void GameObject::SetStatic(bool _active)
+{
+	is_static = _active; 
 }
 
 void GameObject::SetName(const char * _name)
@@ -40,26 +50,31 @@ GameObject::GameObject()
 {
 
 	parent = nullptr;
-	SetActive(true);
+	active = true; 
 	is_static = false; 
 
 	// This will be removed when good FBX loading is implemented
 
-	int id = App->scene_intro->GetList().size(); 
+	id = App->scene_intro->GetList().size(); 
 	name += " ";
 	name += to_string(id + 1);
 
 	// ---------------------
 
 	ComponentTransform* trans = new ComponentTransform();
+	PushComponent(trans);
+
 	trans->SetIdentityTransform();
 	trans->type = COMPONENT_TRANSFORM;
-	PushComponent(trans);
+
 
 }
 
 void GameObject::Draw()
 {
+	if (!active)
+		return; 
+
 	if (!component_list.empty())
 	{
 		for (int i = 0; i < component_list.size(); i++)

@@ -19,12 +19,9 @@ bool PanelHierarchy::Draw()
 					DrawNode(go_to_draw); 
 			}
 		}
-
 		ImGui::End();
 	}
 	
-
-
 	return true; 
 }
 
@@ -59,7 +56,7 @@ void PanelHierarchy::DrawNode(GameObject * go)
 	{
 		if (ImGui::MenuItem(go->GetName()))
 		{
-
+			App->scene_intro->SetCurrentGO(go->GetID());
 		}
 	}
 }

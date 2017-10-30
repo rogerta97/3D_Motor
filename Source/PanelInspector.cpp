@@ -25,6 +25,20 @@ bool PanelInspector::Draw()
 
 		ImGui::Text("%s", go_to_display->GetName()); 
 
+		ImGui::Separator(); 
+
+		bool static_bool = go_to_display->IsStatic(); 
+		bool active_bool = go_to_display->IsActive();
+
+		ImGui::Checkbox("Active", &active_bool); ImGui::SameLine(); 
+
+		ImGui::Checkbox("Static", &static_bool);
+
+		ImGui::Separator();
+
+		go_to_display->SetActive(active_bool);
+		go_to_display->SetStatic(static_bool);
+
 		for (int i = 0; i < go_to_display->GetNumComponents(); i++)
 		{
 			switch (go_to_display->GetComponent(i)->type)
@@ -55,8 +69,10 @@ bool PanelInspector::Draw()
 
 					if (ImGui::DragFloat3("Position##transform", pos, 2))
 						curr_cmp->SetPosition(float3(pos[0], pos[1], pos[2]));
+
 					if (ImGui::DragFloat3("Rotation##transform", rot, 2))
 						curr_cmp->SetRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
+
 					if (ImGui::DragFloat3("Scale##transform", s, 2))
 						curr_cmp->SetScale(float3(s[0], s[1], s[2]));
 					}
@@ -101,7 +117,7 @@ bool PanelInspector::Draw()
 					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->height);
 
 					ImGui::Text("Name: "); ImGui::SameLine(); 
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s");
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), "TextureName");
 				}
 	
 				break;
