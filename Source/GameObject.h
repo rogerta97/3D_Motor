@@ -28,21 +28,21 @@ public:
 	void SetStatic(bool _active);
 
 	void SetName(const char* name);
-	const char* GetName(); 
+	const char* GetName()const; 
 	void SetID(uint id);
-	uint GetID(); 
+	uint GetID()const; 
 
 	Component* GetComponent(component_type new_component, int skip_num = 0);
 	Component* GetComponent(int index); 
 
-	GameObject* GetChild(uint id); 
+	GameObject* GetChild(uint id)const; 
 
 	bool IsCompEmpty(); 
 	bool IsChildEmpty(); 
 
-	uint GetNumChilds(); 
-	uint GetNumComponents();
-	GameObject* GetParent(); 
+	uint GetNumChilds()const; 
+	uint GetNumComponents()const;
+	GameObject* GetParent()const; 
 
 	void PushComponent(Component* comp); 
 	void PushChild(GameObject* child); 

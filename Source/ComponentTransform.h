@@ -18,13 +18,13 @@ public:
 	void SetRotation(const float3& rotation);
 	void SetScale(const float3& scale);
 
-	float3 GetLocalPosition();
-	Quat GetLocalRotation();
-	float3 GetLocalScale(); 
+	float3 GetLocalPosition()const;
+	Quat GetLocalRotation()const;
+	float3 GetLocalScale()const;
 
 	void SetTransformMatrix();
 	const float* GetGlobalTransform(); 
-	int GetTransformID(); 
+	int GetTransformID()const; 
 
 	void SetIdentityTransform(); 
 

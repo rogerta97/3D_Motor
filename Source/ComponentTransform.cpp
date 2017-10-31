@@ -3,17 +3,17 @@
 #include "GameObject.h"
 #include "MathGeoLib\MathGeoLib.h"
 
-float3 ComponentTransform::GetLocalPosition()
+float3 ComponentTransform::GetLocalPosition()const
 {
 	return position;
 }
 
-Quat ComponentTransform::GetLocalRotation()
+Quat ComponentTransform::GetLocalRotation()const
 {
 	return rotation;
 }
 
-float3 ComponentTransform::GetLocalScale()
+float3 ComponentTransform::GetLocalScale()const
 {
 	return scale;
 }
@@ -39,7 +39,7 @@ const float* ComponentTransform::GetGlobalTransform()
 	return transform_matrix.Transposed().ptr();
 }
 
-int ComponentTransform::GetTransformID()
+int ComponentTransform::GetTransformID()const
 {
 	return transform_id;
 }

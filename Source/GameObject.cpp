@@ -31,7 +31,7 @@ void GameObject::SetName(const char * _name)
 	name = _name; 
 }
 
-const char * GameObject::GetName()
+const char * GameObject::GetName()const
 {
 	return name.c_str();
 }
@@ -41,7 +41,7 @@ void GameObject::SetID(uint _id)
 	id = _id;
 }
 
-uint GameObject::GetID()
+uint GameObject::GetID()const
 {
 	return id;
 }
@@ -124,7 +124,7 @@ Component * GameObject::GetComponent(int index)
 	}
 }
 
-GameObject * GameObject::GetChild(uint id)
+GameObject * GameObject::GetChild(uint id)const
 {
 	return child_list.at(id);
 }
@@ -139,17 +139,17 @@ bool GameObject::IsChildEmpty()
 	return child_list.empty();
 }
 
-uint GameObject::GetNumChilds()
+uint GameObject::GetNumChilds()const
 {
 	return child_list.size();
 }
 
-uint GameObject::GetNumComponents()
+uint GameObject::GetNumComponents()const
 {
 	return component_list.size();
 }
 
-GameObject * GameObject::GetParent()
+GameObject * GameObject::GetParent()const
 {
 	return parent;
 }

@@ -127,7 +127,7 @@ void ComponentCamera::SetAspectRatio(float aspect_ratio)
 	screen_resized = true;
 }
 
-float * ComponentCamera::GetOpenGLViewMatrix()
+float * ComponentCamera::GetOpenGLViewMatrix()const
 {
 	float4x4 matrix;
 	matrix = frustum.ViewMatrix();
@@ -135,7 +135,7 @@ float * ComponentCamera::GetOpenGLViewMatrix()
 	return (float*)matrix.v;
 }
 
-float * ComponentCamera::GetOpenGLProjectionMatrix()
+float * ComponentCamera::GetOpenGLProjectionMatrix()const
 {
 	float4x4 matrix;
 	matrix = frustum.ProjectionMatrix();
