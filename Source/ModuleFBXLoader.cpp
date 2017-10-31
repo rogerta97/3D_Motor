@@ -306,6 +306,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 	{
 		LoadFBX(full_path, node->mChildren[i], scene, new_go);
 	}
+
+	App->scene_intro->SetCurrentGO(new_go->GetID()); 
 }
 
 

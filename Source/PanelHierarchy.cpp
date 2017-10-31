@@ -31,6 +31,11 @@ void PanelHierarchy::DrawNode(GameObject * go)
 	{
 		if (ImGui::TreeNode(go->GetName()))
 		{
+
+
+			if (!inner_child_selected)
+				App->scene_intro->SetCurrentGO(go->GetID());
+
 			for (int j = 0; j < go->GetNumChilds(); j++)
 			{
 				GameObject* curr_child = go->GetChild(j);
@@ -44,6 +49,7 @@ void PanelHierarchy::DrawNode(GameObject * go)
 					if (ImGui::MenuItem(curr_child->GetName()))
 					{
 						App->scene_intro->SetCurrentGO(go->GetChild(j)->GetID());
+						inner_child_selected = true;
 					}
 				}
 
@@ -51,6 +57,12 @@ void PanelHierarchy::DrawNode(GameObject * go)
 
 			ImGui::TreePop();
 		}
+		else
+		{
+			App->scene_intro->SetCurrentGO(go->GetID());
+			inner_child_selected = false;
+		}
+			
 	}
 	else
 	{

@@ -14,6 +14,14 @@ bool GameObject::IsActive() const
 void GameObject::SetActive(bool _active)
 {
 	active = _active;
+
+	if (!child_list.empty())
+	{
+		for (int i = 0; i < child_list.size(); i++)
+		{
+			child_list[i]->SetActive(_active); 
+		}
+	}
 }
 
 bool GameObject::IsStatic() const
