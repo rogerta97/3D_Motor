@@ -18,8 +18,9 @@ float3 ComponentTransform::GetLocalScale()
 	return scale;
 }
 
-ComponentTransform::ComponentTransform()
+ComponentTransform::ComponentTransform(GameObject* _parent)
 {
+	parent = _parent; 
 	active = true; 	
 }
 

@@ -168,7 +168,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 
 				aiMesh* m = scene->mMeshes[node->mMeshes[i]];
 
-				ComponentMeshRenderer* tmp_mr = new ComponentMeshRenderer();
+				ComponentMeshRenderer* tmp_mr = new ComponentMeshRenderer(child_go);
 
 				tmp_mr->num_vertices = m->mNumVertices;
 				tmp_mr->vertices = new float[tmp_mr->num_vertices * 3];
@@ -243,7 +243,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 
 				if (scene != nullptr && scene->HasMaterials())
 				{
-					aiMaterial* mat = scene->mMaterials[m->mMaterialIndex]; //just one material is supported now
+					aiMaterial* mat = scene->mMaterials[m->mMaterialIndex];
 					aiString path;
 
 					ComponentMaterial* MA_tmp;
@@ -340,7 +340,7 @@ ComponentMaterial* ModuleFBXLoader::ImportImage(const char * path)
 	ilGenImages(1, &imageID);
 	ilBindImage(imageID);
 
-	ComponentMaterial* new_component = new ComponentMaterial();
+	ComponentMaterial* new_component = new ComponentMaterial(nullptr);
 
 	success = ilLoadImage(path);
 

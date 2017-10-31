@@ -61,7 +61,7 @@ GameObject::GameObject()
 
 	// ---------------------
 
-	ComponentTransform* trans = new ComponentTransform();
+	ComponentTransform* trans = new ComponentTransform(this);
 	PushComponent(trans);
 
 	trans->SetIdentityTransform();
@@ -156,7 +156,6 @@ GameObject * GameObject::GetParent()
 
 void GameObject::PushComponent(Component * comp)
 {
-	comp->SetComponentParent(this);
 	component_list.push_back(comp); 	
 }
 

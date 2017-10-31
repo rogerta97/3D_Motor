@@ -301,11 +301,10 @@ update_status ModuleImGui::PrintTopBar()
 			{
 				GameObject* cube = App->scene_intro->CreateGameObject("Cube");
 
-				ComponentMeshRenderer* n_mr = new ComponentMeshRenderer();
+				ComponentMeshRenderer* n_mr = new ComponentMeshRenderer(cube);
+				n_mr->SetCubeVertices({ 0,0,0 }, 2);
 				cube->PushComponent(n_mr);
-				n_mr->SetCubeVertices({0,0,0}, 2);
-				n_mr->Enable(); 
-				
+								
 			}
 				
 			ImGui::EndMenu(); 

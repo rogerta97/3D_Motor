@@ -14,7 +14,7 @@ class ComponentMeshRenderer : public Component
 {
 
 public: 
-	ComponentMeshRenderer(); 
+	ComponentMeshRenderer(GameObject* parent); 
 
 	~ComponentMeshRenderer();
 

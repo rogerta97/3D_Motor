@@ -4,7 +4,7 @@
 #include "ModuleSceneIntro.h"
 #include "Application.h"
 
-ComponentCamera::ComponentCamera()
+ComponentCamera::ComponentCamera(GameObject* parent)
 {
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.pos = float3::zero;

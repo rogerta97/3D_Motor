@@ -30,7 +30,6 @@ ComponentMeshRenderer::~ComponentMeshRenderer()
 
 bool ComponentMeshRenderer::Enable()
 {
-
 	return true; 
 }
 
@@ -122,9 +121,10 @@ bool ComponentMeshRenderer::Disable()
 	return true;
 }
 
-ComponentMeshRenderer::ComponentMeshRenderer()
+ComponentMeshRenderer::ComponentMeshRenderer(GameObject* _parent)
 {
 	active = true;
+	parent = _parent; 
 	type = COMPONENT_MESH_RENDERER; 
 }
 
