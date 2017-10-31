@@ -40,11 +40,15 @@ public:
 	bool IsCompEmpty(); 
 	bool IsChildEmpty(); 
 
+	bool IsRoot() const; 
+	void SetRoot(const bool& _root); 
+
 	uint GetNumChilds()const; 
 	uint GetNumComponents()const;
 	GameObject* GetParent()const; 
 
 	void PushComponent(Component* comp); 
+	void PushRootComponent(Component* comp); // In case of a root object selected the texture will need to be aded to all it's childs
 	void PushChild(GameObject* child); 
 
 private:
@@ -57,6 +61,7 @@ private:
 
 	bool active = false;
 	bool is_static = false; 
+	bool is_root = false; 
 
 };
 

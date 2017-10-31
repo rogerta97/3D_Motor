@@ -131,7 +131,7 @@ bool PanelInspector::Draw()
 					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->height);
 
 					ImGui::Text("Name: "); ImGui::SameLine(); 
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "TextureName");
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", curr_cmp->path.c_str());
 				}
 	
 				break;

@@ -31,8 +31,6 @@ void PanelHierarchy::DrawNode(GameObject * go)
 	{
 		if (ImGui::TreeNode(go->GetName()))
 		{
-
-
 			if (!inner_child_selected)
 				App->scene_intro->SetCurrentGO(go->GetID());
 

@@ -60,21 +60,13 @@ GameObject::GameObject()
 	parent = nullptr;
 	active = true; 
 	is_static = false; 
-
-	// This will be removed when good FBX loading is implemented
-
-	id = App->scene_intro->GetList().size(); 
-	name += " ";
-	name += to_string(id + 1);
-
-	// ---------------------
+	is_root = false; 
 
 	ComponentTransform* trans = new ComponentTransform(this);
 	PushComponent(trans);
 
 	trans->SetIdentityTransform();
 	trans->type = COMPONENT_TRANSFORM;
-
 
 }
 
@@ -147,6 +139,16 @@ bool GameObject::IsChildEmpty()
 	return child_list.empty();
 }
 
+bool GameObject::IsRoot() const
+{
+	return is_root;;
+}
+
+void GameObject::SetRoot(const bool & _root)
+{
+	is_root = _root; 
+}
+
 uint GameObject::GetNumChilds()const
 {
 	return child_list.size();
@@ -164,7 +166,28 @@ GameObject * GameObject::GetParent()const
 
 void GameObject::PushComponent(Component * comp)
 {
-	component_list.push_back(comp); 	
+	if (IsRoot())
+	{
+		PushRootComponent(comp);
+	}
+	else if(GetComponent(comp->type) != nullptr)
+	{
+		ComponentMaterial* mat = (ComponentMaterial*)GetComponent(COMPONENT_MATERIAL); 
+		mat->Set((ComponentMaterial*)comp); 
+	}
+	else
+		component_list.push_back(comp);		
+}
+
+void GameObject::PushRootComponent(Component * comp)
+{
+	for (int i = 0; i < child_list.size(); i++)
+	{
+		if (child_list[i]->GetComponent(COMPONENT_TRANSFORM) != nullptr)
+		{
+			child_list[i]->PushComponent(comp);
+		}
+	}
 }
 
 void GameObject::PushChild(GameObject * child)

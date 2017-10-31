@@ -144,11 +144,13 @@ update_status ModuleInput::PreUpdate(float dt)
 
 					if (App->scene_intro->GetCurrentGO() != nullptr)
 					{
+						
 						ComponentMaterial* new_material = nullptr;
 						new_material = App->fbx_loader->ImportImage(file.c_str());
 						new_material->SetComponentParent(App->scene_intro->GetCurrentGO());
 
-						App->scene_intro->GetCurrentGO()->PushComponent(new_material);
+						App->scene_intro->GetCurrentGO()->PushComponent(new_material); 
+					
 					}
 					else
 						LOG("No gameobject selected where PNG can be dragged"); 

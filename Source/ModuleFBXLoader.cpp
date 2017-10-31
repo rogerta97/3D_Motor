@@ -121,6 +121,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 		if (node_name == "RootNode")
 		{
 			// A function needs to be created for this
+			new_go->SetRoot(true); 
 
 			std::string full_path_str(full_path);
 			uint cut1 = full_path_str.find_last_of('\\');
@@ -363,6 +364,13 @@ ComponentMaterial* ModuleFBXLoader::ImportImage(const char * path)
 		new_component->width = ilGetInteger(IL_IMAGE_WIDTH);
 		new_component->height = ilGetInteger(IL_IMAGE_HEIGHT);
 		new_component->type = COMPONENT_MATERIAL;
+
+		std::string full_path_str(path);
+		uint cut1 = full_path_str.find_last_of('\\');
+
+		std::string final_str = full_path_str.substr(cut1 + 1, full_path_str.size() - cut1);
+
+		new_component->path = final_str; 
 			
 		if (!success)
 		{

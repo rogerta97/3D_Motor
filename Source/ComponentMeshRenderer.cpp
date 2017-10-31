@@ -151,8 +151,9 @@ void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 		origin.x - size / 2 ,origin.y - size / 2, origin.z + size / 2,
 	};
 
-	vertices = vertices_arr; 
 	num_vertices = 8;
+
+	memcpy(vertices, &vertices_arr[0], sizeof(float) * 8 * 3);
 
 	float3 a = { origin.x - size / 2 ,origin.y - size / 2, origin.z - size / 2 }; 
 	float3 b = { origin.x + size / 2 ,origin.y + size / 2, origin.z + size / 2 };
@@ -181,8 +182,9 @@ void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 		4,7,5
 	};
 
-	indices = indices_arr; 
 	num_indices = 12 * 3; 
+
+	memcpy(indices, &indices_arr[0], sizeof(float) * num_indices);
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 12 * 3, indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

@@ -16,6 +16,8 @@ public:
 
 	bool IsLeaf(); 
 
+	bool InsertToNode(AABB& new_go);
+
 	void DrawNode(); 
 
 public: 
