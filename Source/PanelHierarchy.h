@@ -17,6 +17,7 @@ public:
 private:
 
 	bool show_hierarchy = true;
+	bool inner_child_selected = false; 
 
 };
 

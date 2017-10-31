@@ -58,6 +58,20 @@ bool PanelInspector::Draw()
 							curr_cmp->SetPosition(float3(0,0,0));
 							curr_cmp->SetRotation(DegToRad(float3(0,0,0)));
 							curr_cmp->SetScale(float3(1,1,1));
+
+							if (curr_cmp->GetComponentParent()->GetNumChilds() > 0)
+							{
+								GameObject* curr_go = curr_cmp->GetComponentParent();
+
+								for (int i = 0; i < curr_go->GetNumChilds(); i++)
+								{
+									ComponentTransform* trans = (ComponentTransform*) curr_go->GetChild(i)->GetComponent(COMPONENT_TRANSFORM);
+
+									trans->SetPosition(float3(0, 0, 0));
+									trans->SetRotation(DegToRad(float3(0, 0, 0)));
+									trans->SetScale(float3(1, 1, 1));
+								}
+							}
 							continue; 
 						}
 
