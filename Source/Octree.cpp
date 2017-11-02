@@ -37,9 +37,7 @@ void Octree::Insert(GameObject * new_go)
 
 	curr_node->InsertToNode(mr->bounding_box);
 
-
-
-	while (curr_node != nullptr)
+	/*while (curr_node != nullptr)
 	{
 		if (curr_node->box.Contains(mr->bounding_box))
 		{
@@ -51,29 +49,29 @@ void Octree::Insert(GameObject * new_go)
 			{
 				for (int i = 0; i < curr_node->child_nodes.size(); i++)
 				{
-					//curr_node->child_nodes[i]->
+					curr_node->child_nodes[i]->
 				}
 			}
 		}
 
 
-		//if (curr_node->objects_in_node.size() == 2)
-		//{
+		if (curr_node->objects_in_node.size() == 2)
+		{
 
-		//}
+		}
 
-		//if (curr_node->box.Contains(mr->bounding_box))
-		//{
-		//	if (curr_node->objects_in_node.size() < 2)
-		//	{
-		//		curr_node->objects_in_node.push_back(&mr->bounding_box); 
-		//	}
-		//	else
-		//	{
-		//		Split(curr_node); 
-		//	}
-		//}
-	}
+		if (curr_node->box.Contains(mr->bounding_box))
+		{
+			if (curr_node->objects_in_node.size() < 2)
+			{
+				curr_node->objects_in_node.push_back(&mr->bounding_box); 
+			}
+			else
+			{
+				Split(curr_node); 
+			}
+		}
+	}*/
 	
 
 }

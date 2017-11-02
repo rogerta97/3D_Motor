@@ -23,8 +23,10 @@ public:
 	float3 GetLocalScale()const;
 
 	void SetTransformMatrix();
-	const float* GetGlobalTransform(); 
+	const float* GetLocalTransform(); 
 	int GetTransformID()const; 
+
+	float4x4 GetTransformMatrix(); 
 
 	void SetIdentityTransform(); 
 

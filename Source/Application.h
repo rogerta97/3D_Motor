@@ -16,7 +16,7 @@
 #include "MathGeoLib\MathGeoLib.h"
 #include "DeviceId\DeviceId.h"
 #include "JSON.h"
-#include "ModuleFileSystem.h"
+//#include "ModuleFileSystem.h"
 #include "Hardware.h"
 #include <queue>
 #include <string>
@@ -28,7 +28,7 @@
 class Application
 {
 public:
-	ModuleFileSystem* file_system;
+	//ModuleFileSystem* file_system;
 	JSON*		json;
 	ModuleWindow* window;
 	ModuleInput* input;

@@ -16,7 +16,7 @@ Application::Application()
 	capped_ms = 1000 / 60;
 	fps_counter = 0;
 
-	file_system = new ModuleFileSystem(true);
+	//file_system = new ModuleFileSystem(true);
 	json = new JSON(true);
 	window = new ModuleWindow(true);
 	input = new ModuleInput(true);
@@ -34,7 +34,7 @@ Application::Application()
 	// They will CleanUp() in reverse order
 
 	// Main Modules
-	AddModule(file_system);
+	//AddModule(file_system);
 	AddModule(json);
 	AddModule(window);
 	AddModule(camera);
