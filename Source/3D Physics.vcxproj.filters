@@ -61,6 +61,9 @@
     <Filter Include="Helpers\ImGui">
       <UniqueIdentifier>{f7bcb8fa-80b6-4c5b-bd4f-0fbca43849ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tools\OwnFileFormat">
+      <UniqueIdentifier>{26c33934-171b-4306-bf5b-85f69ecb1562}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -316,9 +319,6 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="Hardware.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="JSON.h">
       <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
@@ -1206,6 +1206,9 @@
     <ClInclude Include="ModuleFileSystem.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="JSON.h">
+      <Filter>Tools\OwnFileFormat</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1376,9 +1379,6 @@
     <ClCompile Include="Hardware.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="JSON.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
@@ -1441,6 +1441,9 @@
     </ClCompile>
     <ClCompile Include="ModuleFileSystem.cpp">
       <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="JSON.cpp">
+      <Filter>Tools\OwnFileFormat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

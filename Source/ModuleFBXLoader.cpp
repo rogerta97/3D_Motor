@@ -229,7 +229,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 
 				tmp_mr->SetGizmoBox(bbox);
 				//FIX ME
-				//App->camera->Focus(vec3(new_object->GetPosition().x, new_object->GetPosition().y, new_object->GetPosition().z), bbox.Size().Length() *1.2f);
+				//App->camera->Focus(vec3(m->g.x, child_go->GetPosition().y, child_go->GetPosition().z), bbox.Size().Length() *1.2f);
 
 				tmp_mr->type = COMPONENT_MESH_RENDERER;
 				tmp_mr->Enable();
