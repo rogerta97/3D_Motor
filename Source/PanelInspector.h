@@ -17,6 +17,7 @@ public:
 private:
 
 	bool show_inspector = true; 
+	bool show_aabb = false; 
 
 };
 

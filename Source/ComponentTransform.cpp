@@ -1,4 +1,5 @@
 #include "ComponentTransform.h"
+#include "ComponentMeshRenderer.h"
 #include "OpenGL.h"
 #include "GameObject.h"
 #include "MathGeoLib\MathGeoLib.h"
@@ -33,7 +34,7 @@ void ComponentTransform::SetTransformMatrix()
 	
 }
 
-const float* ComponentTransform::GetGlobalTransform()
+const float* ComponentTransform::GetLocalTransform()
 {
 	transform_matrix = transform_matrix.FromTRS(position, rotation, scale);
 	return transform_matrix.Transposed().ptr();
@@ -42,6 +43,12 @@ const float* ComponentTransform::GetGlobalTransform()
 int ComponentTransform::GetTransformID()const
 {
 	return transform_id;
+}
+
+float4x4 ComponentTransform::GetTransformMatrix()
+{
+	transform_matrix = transform_matrix.FromTRS(position, rotation, scale);
+	return transform_matrix;
 }
 
 void ComponentTransform::SetIdentityTransform()
@@ -64,7 +71,20 @@ bool ComponentTransform::Update()
 void ComponentTransform::SetPosition(const float3 & _position)
 {
 	if (GetComponentParent()->IsStatic() == false)
+	{
+		float3 translation = _position - position;
 		position = _position;
+
+		ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponentParent()->GetComponent(COMPONENT_MESH_RENDERER); 
+
+		if (mr != nullptr)
+		{					
+			mr->bounding_box.Translate(translation);
+		}
+	
+	}
+		
+		
 
 }
 
@@ -80,9 +100,21 @@ void ComponentTransform::SetRotation(const Quat& _rotation)
 	
 }
 
-void ComponentTransform::SetScale(const float3 & scale)
+void ComponentTransform::SetScale(const float3 & _scale)
 {
 	if (GetComponentParent()->IsStatic() == false)
-		this->scale = scale;
+	{
+		scale = _scale;
+
+		ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponentParent()->GetComponent(COMPONENT_MESH_RENDERER);
+
+		if (mr != nullptr)
+		{
+			vec temp_scale = vec(scale[0], scale[1], scale[2]);
+			vec center_point = mr->bounding_box.CenterPoint(); 
+			mr->bounding_box.Scale(center_point, temp_scale);
+		}
+	}
+		
 
 }

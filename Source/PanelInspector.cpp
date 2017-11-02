@@ -106,6 +106,14 @@ bool PanelInspector::Draw()
 					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->num_vertices);
 					ImGui::Text("Indices: "); ImGui::SameLine();
 					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->num_indices);
+
+					ImGui::Checkbox("AABB active", &show_aabb); 
+
+					if (show_aabb)
+					{
+						DebugDraw(curr_cmp->bounding_box, Red);
+					}
+
 				}
 		
 			}
