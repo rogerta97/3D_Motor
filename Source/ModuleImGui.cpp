@@ -301,6 +301,12 @@ update_status ModuleImGui::PrintTopBar()
 			{
 				GameObject* cube = App->scene_intro->CreateGameObject("Cube");
 
+				//Check name collisions in hierarchy 
+	
+				string new_name("Cube "); 
+				new_name += to_string(App->scene_intro->GetList().size());
+				cube->SetName(new_name.c_str()); 
+									
 				ComponentMeshRenderer* n_mr = new ComponentMeshRenderer(cube);				
 				n_mr->SetCubeVertices({ 0,0,0 }, 2);
 				cube->PushComponent(n_mr);

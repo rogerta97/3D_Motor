@@ -55,7 +55,7 @@ void ComponentTransform::SetIdentityTransform()
 {
 	SetPosition({ 0,0,0 }); 
 	Quat rot; 
-	SetRotation(rot.identity);
+	SetRotation({ 0.0f, 0.0f, 0.0f });
 	SetScale({ 1,1,1 }); 
 }
 
@@ -90,30 +90,47 @@ void ComponentTransform::SetPosition(const float3 & _position)
 
 void ComponentTransform::SetRotation(const float3& _rotation)
 {
-	Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
-	rotation =  mod;
-}
-void ComponentTransform::SetRotation(const Quat& _rotation)
-{
-	if (GetComponentParent()->IsStatic() == false)
-		rotation = _rotation;
-	
-}
-
-void ComponentTransform::SetScale(const float3 & _scale)
-{
 	if (GetComponentParent()->IsStatic() == false)
 	{
-		scale = _scale;
+		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
+		rotation = mod;
 
 		ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponentParent()->GetComponent(COMPONENT_MESH_RENDERER);
 
 		if (mr != nullptr)
 		{
-			vec temp_scale = vec(scale[0], scale[1], scale[2]);
+
+			int min[3]; 
+			int max[3];
+
+			mr->bounding_box.SetNegativeInfinity(); 
+			mr->bounding_box.Enclose(mr->vertices, mr->num_vertices); 
+	/*		mr->bounding_box.ExtremePointsAlongAABB(mr->vertices, mr->num_vertices, min[0], max[0], min[1], max[1], min[2], max[2]); 
+
+			AABB n_box(vec(mr->vertices[min[0]].x, mr->vertices[min[1]].y, mr->vertices[min[2]].z), vec(mr->vertices[max[0]].x, mr->vertices[max[1]].y, mr->vertices[max[2]].z));
+			mr->bounding_box = n_box;*/
+		}
+	}
+}
+
+
+void ComponentTransform::SetScale(const float3 & _scale)
+{
+	if (GetComponentParent()->IsStatic() == false)
+	{
+		
+		ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponentParent()->GetComponent(COMPONENT_MESH_RENDERER);
+
+		if (mr != nullptr)
+		{
+			vec temp_scale = _scale;
 			vec center_point = mr->bounding_box.CenterPoint(); 
+
+			mr->bounding_box = AABB(vec(-1, -1, -1), vec(1, 1, 1)); 
 			mr->bounding_box.Scale(center_point, temp_scale);
 		}
+
+		scale = _scale;
 	}
 		
 

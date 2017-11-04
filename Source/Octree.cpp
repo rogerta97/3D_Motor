@@ -142,30 +142,58 @@ bool OctreeNode::InsertToNode(AABB& new_go_AABB)
 {
 	bool ret = true; 
 
-	if (box.Contains(new_go_AABB))
-	{
-		if (IsLeaf())
+	//if () //Before starting we check if the object is already in the octree
+	//{
+		if (box.Contains(new_go_AABB))
 		{
-
-		}
-		else
-		{
-			for (int i = 0; i < child_nodes.size(); i++)
+			if (IsLeaf())
 			{
-				if(child_nodes[i]->box.Contains(new_go_AABB))
-					child_nodes[i]->InsertToNode(new_go_AABB);
+				switch (objects_in_node.size())
+				{
+				case 0:
+					objects_in_node.push_back(&new_go_AABB);
+					break;
+
+				case 1:
+					Split(); 
+					break;
+
+				}
+			}
+			else
+			{
+				for (int i = 0; i < child_nodes.size(); i++)
+				{
+					if (child_nodes[i]->box.Contains(new_go_AABB))
+						child_nodes[i]->InsertToNode(new_go_AABB);
+				}
 			}
 		}
-	}
-	else
-		ret = false; 
+		else
+			ret = false;
+	//}
+
 
 	return ret; 
 }
 
+void OctreeNode::Split()
+{
+
+	vec new_size = box.HalfSize(); 	
+
+	OctreeNode* new_node = new OctreeNode(); 
+
+	new_node->box = AABB(vec(-new_size.x, 0, 0), vec(0, -new_size.x, new_size.x));
+	new_node->leaf = true; 
+
+	child_nodes.push_back(new_node); 
+
+}
+
 void OctreeNode::DrawNode()
 {
-	DebugDraw(box, White); 
+	DebugDraw(box, Green); 
 
 	if (!child_nodes.empty())
 	{

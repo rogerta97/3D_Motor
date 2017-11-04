@@ -107,9 +107,9 @@ bool PanelInspector::Draw()
 					ImGui::Text("Indices: "); ImGui::SameLine();
 					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->num_indices);
 
-					ImGui::Checkbox("AABB active", &show_aabb); 
+					ImGui::Checkbox("AABB active", &curr_cmp->show_bb); 
 
-					if (show_aabb)
+					if (curr_cmp->show_bb)
 					{
 						DebugDraw(curr_cmp->bounding_box, Red);
 					}

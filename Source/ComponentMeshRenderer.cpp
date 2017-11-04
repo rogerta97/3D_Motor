@@ -125,6 +125,7 @@ ComponentMeshRenderer::ComponentMeshRenderer(GameObject* _parent)
 {
 	active = true;
 	parent = _parent; 
+	show_bb = false; 
 	type = COMPONENT_MESH_RENDERER; 
 }
 
@@ -139,20 +140,44 @@ void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 	glGenBuffers(1, (GLuint*)&vertices_id);
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 
-	float vertices_arr[8 * 3] =
+	num_vertices = 8;
+	vertices = new vec[num_vertices];
+
 	{
-		origin.x - size / 2 ,origin.y + size / 2, origin.z - size / 2,
-		origin.x - size / 2 ,origin.y - size / 2, origin.z - size / 2,
-		origin.x + size / 2 ,origin.y + size / 2, origin.z - size / 2,
-		origin.x + size / 2 ,origin.y - size / 2, origin.z - size / 2,
-		origin.x + size / 2 ,origin.y + size / 2, origin.z + size / 2,
-		origin.x + size / 2 ,origin.y - size / 2, origin.z + size / 2,
-		origin.x - size / 2 ,origin.y + size / 2, origin.z + size / 2,
-		origin.x - size / 2 ,origin.y - size / 2, origin.z + size / 2,
+		vertices[0].x = origin.x - size / 2; 
+		vertices[0].y = origin.y + size / 2;
+		vertices[0].z = origin.z - size / 2;
+
+		vertices[1].x = origin.x - size / 2;
+		vertices[1].y = origin.y - size / 2;
+		vertices[1].z = origin.z - size / 2;
+
+		vertices[2].x = origin.x + size / 2;
+		vertices[2].y = origin.y + size / 2;
+		vertices[2].z = origin.z - size / 2;
+
+		vertices[3].x = origin.x + size / 2;
+		vertices[3].y = origin.y - size / 2;
+		vertices[3].z = origin.z - size / 2;
+
+		vertices[4].x = origin.x + size / 2;
+		vertices[4].y = origin.y + size / 2;
+		vertices[4].z = origin.z + size / 2;
+
+		vertices[5].x = origin.x + size / 2;
+		vertices[5].y = origin.y - size / 2;
+		vertices[5].z = origin.z + size / 2;
+
+		vertices[6].x = origin.x - size / 2;
+		vertices[6].y = origin.y + size / 2;
+		vertices[6].z = origin.z + size / 2;
+
+		vertices[7].x = origin.x - size / 2;
+		vertices[7].y = origin.y - size / 2;
+		vertices[7].z = origin.z + size / 2;
+
 	};
 
-	vertices = vertices_arr;
-	num_vertices = 8;
 
 	//memcpy(vertices, &vertices_arr[0], sizeof(float) * 8 * 3);
 
@@ -167,27 +192,16 @@ void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 	glGenBuffers(1, (GLuint*)&indices_id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
 
-	uint indices_arr[] =
-	{
-		0,4,2,
-		0,6,4,
-		2,3,1,
-		0,2,1,
-		2,4,3,
-		4,5,3,
-		1,3,7,
-		7,3,5,
-		6,0,1,
-		6,1,7,
-		4,6,7,
-		4,7,5
-	};
+	num_indices = 36;
+	indices = new uint[num_indices]; 
 
-	indices = indices_arr; 
-	num_indices = 12 * 3; 
-
-	//memcpy(indices, &indices_arr[0], sizeof(float) * num_indices);
-
+	indices[0] = 0;	indices[1] = 4;	indices[2] = 2;	indices[3] = 0;	indices[4] = 6;	indices[5] = 4,
+	indices[6] = 2;	indices[7] = 3;	indices[8] = 1;	indices[9] = 0;	indices[10] = 2; indices[11] = 1;
+	indices[12] = 2; indices[13] = 4; indices[14] = 3;	indices[15] = 4; indices[16] = 5; indices[17] = 3;
+	indices[18] = 1; indices[19] = 3; indices[20] = 7;	indices[21] = 7; indices[22] = 3; indices[23] = 5;
+	indices[24] = 6; indices[25] = 0; indices[26] = 1;	indices[27] = 6; indices[28] = 1; indices[29] = 7;
+	indices[30] = 4; indices[31] = 6; indices[32] = 7;	indices[33] = 4; indices[34] = 7; indices[35] = 5;
+	
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 12 * 3, indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
@@ -201,6 +215,7 @@ void ComponentMeshRenderer::SetSphereVertices(float radius, uint rings, uint sec
 	float const R = 1. / (float)(rings - 1);
 	float const S = 1. / (float)(sectors - 1);
 	int r, s;
+	int count = 0; 
 
 	for (r = 0; r < rings; r++)
 	{
@@ -210,9 +225,11 @@ void ComponentMeshRenderer::SetSphereVertices(float radius, uint rings, uint sec
 			float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
 			float const y = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
 
-			*vertices++ = x * radius;
-			*vertices++ = y * radius;
-			*vertices++ = z * radius;
+			vertices[count].x = x * radius;
+			vertices[count].y = y * radius;
+			vertices[count].z = z * radius;
+
+			count++; 
 
 
 		}

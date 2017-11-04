@@ -33,7 +33,7 @@ public:
 
 public: 
 
-	float* vertices;
+	vec* vertices;
 	int num_vertices = 0;
 
 	uint* indices;
@@ -52,10 +52,10 @@ public:
 	uint tranform_id = 0; 
 
 	AABB bounding_box;
+	bool show_bb;
 
 private:
 
-	bool show_bb; 
 	mesh_shape shape_mesh; 
 
 };

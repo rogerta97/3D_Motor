@@ -146,7 +146,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 		Quat n_rot(quat.x, quat.y, quat.z, quat.w);
 
 		trans->SetPosition(n_pos);
-		trans->SetRotation(n_rot);
+		trans->SetRotation(n_rot.ToEulerXYX());
 		trans->SetScale(n_scale);
 		
 		App->scene_intro->AddGameObject(new_go);
@@ -172,12 +172,12 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 				ComponentMeshRenderer* tmp_mr = new ComponentMeshRenderer(child_go);
 
 				tmp_mr->num_vertices = m->mNumVertices;
-				tmp_mr->vertices = new float[tmp_mr->num_vertices * 3];
-				memcpy(tmp_mr->vertices, m->mVertices, sizeof(float) * tmp_mr->num_vertices * 3);
+				tmp_mr->vertices = new vec[tmp_mr->num_vertices];
+				memcpy(tmp_mr->vertices, m->mVertices, sizeof(vec) * tmp_mr->num_vertices);
 
 				glGenBuffers(1, (GLuint*)&tmp_mr->vertices_id);
 				glBindBuffer(GL_ARRAY_BUFFER, tmp_mr->vertices_id);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * tmp_mr->num_vertices * 3, tmp_mr->vertices, GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(vec) * tmp_mr->num_vertices, tmp_mr->vertices, GL_STATIC_DRAW);
 
 				LOG("%d vertices", tmp_mr->num_vertices);
 
@@ -281,7 +281,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 
 
 					TR_cmp->SetPosition(pos);
-					TR_cmp->SetRotation(rot);
+					TR_cmp->SetRotation(rot.ToEulerXYX());
 					TR_cmp->SetScale(scale);
 
 					TR_cmp->type = COMPONENT_TRANSFORM;

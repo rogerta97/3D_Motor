@@ -14,7 +14,6 @@ public:
 	bool Update();
 
 	void SetPosition(const float3& position);
-	void SetRotation(const Quat& rotation);
 	void SetRotation(const float3& rotation);
 	void SetScale(const float3& scale);
 
@@ -31,6 +30,7 @@ public:
 	void SetIdentityTransform(); 
 
 private:
+
 	float3 position = float3::zero;
 	Quat rotation = Quat::identity;
 	float3 scale = float3::one;

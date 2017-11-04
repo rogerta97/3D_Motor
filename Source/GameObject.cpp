@@ -97,16 +97,10 @@ void GameObject::Draw()
 
 Component * GameObject::GetComponent(component_type new_component_type, int skip_num)
 {
-	//here we will create the component and add it to the list
-
-	int components_skipped = 0; 
 
 	for (vector<Component*>::iterator it = component_list.begin();it != component_list.end(); it++)
 	{
-		if ((*it)->type == new_component_type)	
-			components_skipped++; 
-		
-		if(components_skipped > skip_num)		
+		if ((*it)->type == new_component_type)		
 			return (*it); 
 	}
 
@@ -164,7 +158,7 @@ GameObject * GameObject::GetParent()const
 	return parent;
 }
 
-void GameObject::PushComponent(Component * comp)
+void GameObject::PushComponent(Component* comp)
 {
 	if (IsRoot())
 	{
@@ -172,10 +166,12 @@ void GameObject::PushComponent(Component * comp)
 	}
 	else if(GetComponent(comp->type) != nullptr)
 	{
+		// If it already exists we modify it 
+
 		ComponentMaterial* mat = (ComponentMaterial*)GetComponent(COMPONENT_MATERIAL); 
 		mat->Set((ComponentMaterial*)comp); 
 	}
-	else
+	else // if not we push it to the component list 
 		component_list.push_back(comp);		
 }
 
