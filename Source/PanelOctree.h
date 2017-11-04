@@ -14,4 +14,6 @@ private:
 
 	float min_point[3];
 	float max_point[3];
+
+	int obj_amount = 0; 
 }; 

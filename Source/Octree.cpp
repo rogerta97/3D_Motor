@@ -24,6 +24,7 @@ void Octree::Create(AABB limits)
 
 void Octree::Clear()
 {
+
 }
 
 void Octree::Insert(GameObject * new_go)
@@ -128,6 +129,13 @@ OctreeNode * Octree::GetCurrentChildNode(GameObject* go)
 	return nullptr;
 }
 
+OctreeNode * Octree::GetRootNode()
+{
+	return root_node;
+}
+
+
+
 OctreeNode::~OctreeNode()
 {
 
@@ -157,7 +165,6 @@ bool OctreeNode::InsertToNode(AABB& new_go_AABB)
 				case 1:
 					Split(); 
 					break;
-
 				}
 			}
 			else
@@ -177,18 +184,73 @@ bool OctreeNode::InsertToNode(AABB& new_go_AABB)
 	return ret; 
 }
 
+void OctreeNode::DeleteNode()
+{
+	if (!child_nodes.empty())
+	{
+		objects_in_node.clear();
+		parent_node = nullptr; 
+
+		delete(this);
+	}
+		
+	else
+	{
+		for (int i = 0; i < child_nodes.size(); i++)
+		{
+			child_nodes[i]->DeleteNode(); 
+		}
+	}
+}
+
 void OctreeNode::Split()
 {
 
-	vec new_size = box.HalfSize(); 	
+	float new_size = box.HalfSize().x; 
 
-	OctreeNode* new_node = new OctreeNode(); 
+	vec pivot_point = GetCenter(); 
+	vec max_points_new_childs[8]; 
 
-	new_node->box = AABB(vec(-new_size.x, 0, 0), vec(0, -new_size.x, new_size.x));
-	new_node->leaf = true; 
+	max_points_new_childs[0] = vec(-new_size, new_size, -new_size); 
+	max_points_new_childs[1] = vec(new_size, new_size, -new_size);
+	max_points_new_childs[2] = vec(new_size, new_size, new_size);
+	max_points_new_childs[3] = vec(-new_size, new_size, new_size);
+	max_points_new_childs[4] = vec(-new_size, -new_size, -new_size);
+	max_points_new_childs[5] = vec(new_size, -new_size, -new_size);
+	max_points_new_childs[6] = vec(new_size, -new_size, new_size);
+	max_points_new_childs[7] = vec(-new_size, -new_size, new_size);
 
-	child_nodes.push_back(new_node); 
+	for (int i = 0; i < 8; i++)
+	{
+		OctreeNode* new_node = new OctreeNode();
 
+		new_node->box = AABB(pivot_point, max_points_new_childs[i]);
+		new_node->leaf = true;
+
+		child_nodes.push_back(new_node);
+	}
+
+}
+
+vec OctreeNode::GetCenter() const
+{
+	return box.CenterPoint(); 
+}
+
+void OctreeNode::GetObjectsInNode(int& amount)
+{
+
+	if (!child_nodes.empty())
+	{
+		for (int i = 0 ; i < child_nodes.size(); i++)
+		{
+			child_nodes[i]->GetObjectsInNode(amount); 
+		}
+	}
+	else
+	{
+		amount += objects_in_node.size(); 
+	}
 }
 
 void OctreeNode::DrawNode()

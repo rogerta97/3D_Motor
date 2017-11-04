@@ -270,6 +270,7 @@ update_status ModuleImGui::PrintTopBar()
 
 		if (ImGui::MenuItem("Octree"))
 		{
+			panel_octree.Start();
 			show_octree_window = !show_octree_window;
 		}
 
@@ -362,7 +363,11 @@ update_status ModuleImGui::PrintTopBar()
 	if (show_about) ShowAbout();
 	if (show_performance) App->performance.Update(show_performance);
 	if (show_style_editor) PrintStyleEditor();
-	if (show_octree_window) panel_octree.DrawPanel(); 
+	if (show_octree_window)
+	{
+	
+		panel_octree.DrawPanel();
+	}
 
 	if (App->scene_intro->IsListEmpty() == false)
 		show_inspector = true;

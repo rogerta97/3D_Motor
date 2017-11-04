@@ -17,9 +17,14 @@ public:
 	bool IsLeaf(); 
 
 	bool InsertToNode(AABB& new_go);
-	void Split(); 
 
+	void DeleteNode(); 
+	
 	void DrawNode(); 
+	void Split();
+
+	vec GetCenter() const; 
+	void GetObjectsInNode(int& amount);
 
 public: 
 
@@ -53,6 +58,7 @@ public:
 
 	OctreeNode* GetLastLeafNode(); 
 	OctreeNode* GetCurrentChildNode(GameObject* go); 
+	OctreeNode* GetRootNode(); 
 
 private: 
 
