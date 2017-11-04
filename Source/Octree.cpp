@@ -37,44 +37,6 @@ void Octree::Insert(GameObject * new_go)
 		curr_node = root_node;
 
 	curr_node->InsertToNode(mr->bounding_box);
-
-	/*while (curr_node != nullptr)
-	{
-		if (curr_node->box.Contains(mr->bounding_box))
-		{
-			if (curr_node->IsLeaf())
-			{
-
-			}
-			else
-			{
-				for (int i = 0; i < curr_node->child_nodes.size(); i++)
-				{
-					curr_node->child_nodes[i]->
-				}
-			}
-		}
-
-
-		if (curr_node->objects_in_node.size() == 2)
-		{
-
-		}
-
-		if (curr_node->box.Contains(mr->bounding_box))
-		{
-			if (curr_node->objects_in_node.size() < 2)
-			{
-				curr_node->objects_in_node.push_back(&mr->bounding_box); 
-			}
-			else
-			{
-				Split(curr_node); 
-			}
-		}
-	}*/
-	
-
 }
 
 void Octree::Remove(GameObject * to_delete)
@@ -159,10 +121,11 @@ bool OctreeNode::InsertToNode(AABB& new_go_AABB)
 				switch (objects_in_node.size())
 				{
 				case 0:
-					objects_in_node.push_back(&new_go_AABB);
+					objects_in_node.push_back(new_go_AABB);
 					break;
 
 				case 1:
+					objects_in_node.push_back(new_go_AABB);
 					Split(); 
 					break;
 				}
@@ -206,6 +169,8 @@ void OctreeNode::DeleteNode()
 void OctreeNode::Split()
 {
 
+	// First we split the node in 9 childs
+
 	float new_size = box.HalfSize().x; 
 
 	vec pivot_point = GetCenter(); 
@@ -226,8 +191,27 @@ void OctreeNode::Split()
 
 		new_node->box = AABB(pivot_point, max_points_new_childs[i]);
 		new_node->leaf = true;
+		new_node->parent_node = this; 
+
+		// Here we modify each parent 
+
+		for (int j = 0; j < objects_in_node.size(); j++)
+		{
+			if (new_node->box.Contains(objects_in_node[j]))
+			{
+				new_node->objects_in_node.push_back(objects_in_node[j]);
+			}
+		}
 
 		child_nodes.push_back(new_node);
+		leaf = false; 
+
+		// We check if everything is correct in case more than 2 objects in the same node
+
+		if (new_node->objects_in_node.size() == 2)
+		{
+			new_node->Split(); 
+		}
 	}
 
 }
@@ -239,8 +223,7 @@ vec OctreeNode::GetCenter() const
 
 void OctreeNode::GetObjectsInNode(int& amount)
 {
-
-	if (!child_nodes.empty())
+	if (leaf == false)
 	{
 		for (int i = 0 ; i < child_nodes.size(); i++)
 		{
@@ -251,11 +234,17 @@ void OctreeNode::GetObjectsInNode(int& amount)
 	{
 		amount += objects_in_node.size(); 
 	}
+
 }
 
 void OctreeNode::DrawNode()
 {
 	DebugDraw(box, Green); 
+
+	for (int i = 0; i < objects_in_node.size(); i++)
+	{
+		DebugDraw(objects_in_node[i], Red);
+	}
 
 	if (!child_nodes.empty())
 	{

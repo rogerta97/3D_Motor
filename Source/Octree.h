@@ -29,7 +29,7 @@ public:
 public: 
 
 	AABB box; 
-	vector<AABB*> objects_in_node; 
+	vector<AABB> objects_in_node; 
 	vector<OctreeNode*> child_nodes;
 	OctreeNode* parent_node; 
 

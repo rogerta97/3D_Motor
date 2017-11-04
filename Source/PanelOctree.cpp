@@ -57,8 +57,7 @@ void PanelOctree::DrawPanel()
 
 		if (ImGui::Button("Add Current Object"))
 		{
-			App->scene_intro->GetOctree()->Insert(App->scene_intro->GetCurrentGO()); 
-		
+			App->scene_intro->GetOctree()->Insert(App->scene_intro->GetCurrentGO()); 		
 			App->scene_intro->GetOctree()->GetRootNode()->GetObjectsInNode(obj_amount);
 		}
 

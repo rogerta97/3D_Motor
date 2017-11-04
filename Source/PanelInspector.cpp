@@ -170,6 +170,17 @@ bool PanelInspector::Draw()
 
 
 		}	
+
+		ImGui::Separator();
+		ImGui::Separator();
+
+		if (ImGui::Button("Add Component"))
+		{
+			ImGui::OpenPopup("Select"); 
+		}
+
+	
+
 	}
 	ImGui::End();
 
