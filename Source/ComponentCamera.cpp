@@ -4,7 +4,7 @@
 #include "ModuleSceneIntro.h"
 #include "Application.h"
 
-ComponentCamera::ComponentCamera(GameObject* parent)
+ComponentCamera::ComponentCamera(GameObject* _parent)
 {
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.pos = float3::zero;
@@ -17,6 +17,8 @@ ComponentCamera::ComponentCamera(GameObject* parent)
 	SetAspectRatio(1.3f);
 	type = COMPONENT_CAMERA; 
 	
+	parent = _parent; 
+	active = true; 
 	//App->scene_intro->cameras_list.push_back(this);
 
 }
@@ -27,7 +29,6 @@ ComponentCamera::~ComponentCamera()
 
 bool ComponentCamera::Update()
 {
-
 	DrawFrustum(frustum, Color(1.0f, 1.0f,0.0f));
 	return true;
 }

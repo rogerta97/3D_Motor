@@ -13,10 +13,14 @@ public:
 
 	bool Draw(); 
 
+	bool ShowWarningModal(); 
+
 
 private:
 
 	bool show_inspector = true; 
+	bool show_component_popup = false; 
+	bool modal_window = false; 
 
 };
 

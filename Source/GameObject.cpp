@@ -167,9 +167,8 @@ void GameObject::PushComponent(Component* comp)
 	else if(GetComponent(comp->type) != nullptr)
 	{
 		// If it already exists we modify it 
-
-		ComponentMaterial* mat = (ComponentMaterial*)GetComponent(COMPONENT_MATERIAL); 
-		mat->Set((ComponentMaterial*)comp); 
+		ComponentMaterial* mat = (ComponentMaterial*)GetComponent(COMPONENT_MATERIAL);
+		mat->Set((ComponentMaterial*)comp);
 	}
 	else // if not we push it to the component list 
 		component_list.push_back(comp);		

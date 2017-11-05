@@ -176,7 +176,64 @@ bool PanelInspector::Draw()
 
 		if (ImGui::Button("Add Component"))
 		{
-			ImGui::OpenPopup("Select"); 
+			show_component_popup = !show_component_popup; 			
+		}
+
+		if (show_component_popup)
+		{
+			int selected_fish = -1;
+			const char* components[] = { "Mesh Renderer", "Material", "Camera"};
+
+			// Simple selection popup
+			// (If you want to show the current selection inside the Button itself, you may want to build a string using the "###" operator to preserve a constant ID with a variable label)		
+			ImGui::OpenPopup("compos");
+
+			if (ImGui::BeginPopup("compos"))
+			{
+
+				for (int i = 0; i < IM_ARRAYSIZE(components); i++)
+					if (ImGui::Selectable(components[i]))
+					{
+						selected_fish = i;
+						show_component_popup = false;
+					}
+						
+
+				ImGui::EndPopup();
+			}
+
+			GameObject* curr_go = App->scene_intro->GetCurrentGO();
+
+			bool replace = false;
+
+			switch (selected_fish)
+				{
+					case 1: 
+					{
+					
+						if (curr_go->GetComponent(COMPONENT_MATERIAL) != nullptr)
+						{
+							replace = ShowWarningModal();
+						}
+
+						if (replace || curr_go->GetComponent(COMPONENT_MATERIAL) == nullptr)
+						{
+							ComponentMaterial* new_mat = new ComponentMaterial(curr_go);
+							curr_go->PushComponent(new_mat);
+						}
+					
+						break;
+					}
+						
+
+					case 2: 
+					{
+						ComponentCamera* new_cam = new ComponentCamera(curr_go);
+						curr_go->PushComponent(new_cam);
+						break;
+					}
+			
+				}
 		}
 
 	
@@ -185,6 +242,32 @@ bool PanelInspector::Draw()
 	ImGui::End();
 
 	return true; 
+}
+
+bool PanelInspector::ShowWarningModal()
+{
+
+	bool ret = false; 
+
+	if (ImGui::BeginPopupModal("WARNING", &modal_window, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("The component you are trying to add already exist in this object.\nDo you want to override it?");
+
+		if (ImGui::Button("OMG DO IT"))
+		{
+			ret = true; 
+		}
+
+		if (ImGui::Button("FUCK IT"))
+		{
+			ret = false;
+		}
+
+
+		ImGui::EndPopup();
+	}
+
+	return ret; 
 }
 		
 

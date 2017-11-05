@@ -22,7 +22,8 @@ float3 ComponentTransform::GetLocalScale()const
 ComponentTransform::ComponentTransform(GameObject* _parent)
 {
 	parent = _parent; 
-	active = true; 	
+	active = true; 
+	type = COMPONENT_TRANSFORM; 
 }
 
 ComponentTransform::~ComponentTransform()

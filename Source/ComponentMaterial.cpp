@@ -3,6 +3,7 @@
 ComponentMaterial::ComponentMaterial(GameObject* _parent)
 {
 	parent = _parent; 
+	type = COMPONENT_MATERIAL; 
 }
 
 ComponentMaterial::~ComponentMaterial()
