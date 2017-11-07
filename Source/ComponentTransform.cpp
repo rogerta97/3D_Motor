@@ -88,8 +88,6 @@ void ComponentTransform::SetPosition(const float3 & _position)
 		transform_modified = true; 
 	}
 		
-		
-
 }
 
 void ComponentTransform::SetRotation(const float3& _rotation)

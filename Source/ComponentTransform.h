@@ -38,6 +38,7 @@ private:
 	float3 scale = float3::one;
 
 	float4x4 transform_matrix; 
+	float4x4 prev_local_transform; 
 
 	int transform_id; 
 

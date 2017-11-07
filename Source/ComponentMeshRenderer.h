@@ -27,6 +27,7 @@ public:
 	void SetCylinderVertices(float r, int sides, int height);
 	uint GetTriNum() const;
 
+	void AdaptBoundingBox(float4x4 transform); 
 	void SetGizmoBox(AABB _box);
 	AABB GetGizmoBox() const;
 	bool PrintBB(); 
