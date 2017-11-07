@@ -36,7 +36,7 @@ void Octree::Insert(GameObject * new_go)
 	if (root_node != nullptr)
 		curr_node = root_node;
 
-	curr_node->InsertToNode(mr->bounding_box);
+	curr_node->InsertToNode(mr->GetBBox());
 }
 
 void Octree::Remove(GameObject * to_delete)

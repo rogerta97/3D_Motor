@@ -8,12 +8,12 @@
 
 class ComponentTransform; 
 
-void ComponentMeshRenderer::SetGizmoBox(AABB _box)
+void ComponentMeshRenderer::SetBBox(AABB _box)
 {
 	bounding_box = _box;
 }
 
-AABB ComponentMeshRenderer::GetGizmoBox() const
+AABB ComponentMeshRenderer::GetBBox() const
 {
 	return bounding_box;
 }
@@ -21,6 +21,101 @@ AABB ComponentMeshRenderer::GetGizmoBox() const
 bool ComponentMeshRenderer::PrintBB()
 {
 	return false;
+}
+
+int ComponentMeshRenderer::GetNumVertices() const
+{
+	return num_vertices;
+}
+
+uint ComponentMeshRenderer::GetVerticesID() const
+{
+	return vertices_id;
+}
+
+vec * ComponentMeshRenderer::GetVertices() const
+{
+	return vertices;
+}
+
+int ComponentMeshRenderer::GetNumIndices() const
+{
+	return num_indices;
+}
+
+uint ComponentMeshRenderer::GetIndicesID() const
+{
+	return indices_id;
+}
+
+uint * ComponentMeshRenderer::GetIndices() const
+{
+	return indices;
+}
+
+int ComponentMeshRenderer::GetNumUVS() const
+{
+	return num_uvs;
+}
+
+uint ComponentMeshRenderer::GetUVSID() const
+{
+	return uvs_id;
+}
+
+float * ComponentMeshRenderer::GetUVS() const
+{
+	return uvs;
+}
+
+void ComponentMeshRenderer::SetNumVertices(int num)
+{
+	num_vertices = num;
+}
+
+void ComponentMeshRenderer::SetVerticesId(uint id)
+{
+	vertices_id = id;
+}
+
+void ComponentMeshRenderer::SetVertices(vec * vec)
+{
+	vertices = vec;
+}
+
+void ComponentMeshRenderer::SetNumIndices(int num)
+{
+	num_indices = num;
+}
+
+void ComponentMeshRenderer::SetIndicesId(uint id)
+{
+	indices_id = id;
+}
+
+void ComponentMeshRenderer::SetIndices(uint * ind)
+{
+	indices = ind;
+}
+
+void ComponentMeshRenderer::SetNumUVS(int num)
+{
+	num_uvs = num;
+}
+
+void ComponentMeshRenderer::SetUVSId(uint id)
+{
+	uvs_id = id;
+}
+
+void ComponentMeshRenderer::SetUVS(float * uvs)
+{
+	this->uvs = uvs;
+}
+
+bool ComponentMeshRenderer::IsBBoxShowing() const
+{
+	return show_bb;
 }
 
 ComponentMeshRenderer::~ComponentMeshRenderer()
@@ -74,8 +169,6 @@ bool ComponentMeshRenderer::Update()
 			glTexCoordPointer(3, GL_FLOAT, 0, NULL);
 		}
 	}
-
-
 	//INDICES
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,indices_id);
 	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
@@ -118,6 +211,33 @@ ComponentMeshRenderer::ComponentMeshRenderer(GameObject* _parent)
 	parent = _parent; 
 	show_bb = false; 
 	type = COMPONENT_MESH_RENDERER; 
+}
+
+ComponentMeshRenderer::ComponentMeshRenderer(uint num_ver, float * ver, uint num_ind, uint * ind, uint num_uv, float * uv, uint num_norm, float * norm)
+{
+	//Load vertices to vram
+	glGenBuffers(1, (GLuint*)&vertices_id);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
+	glBufferData(GL_ARRAY_BUFFER,sizeof(float) * num_vertices * 3, ver, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Load indices to vram
+	glGenBuffers(1, (GLuint*)&indices_id);
+	glBindBuffer(GL_ARRAY_BUFFER, indices_id);
+	glBufferData(GL_ARRAY_BUFFER,sizeof(uint) * num_indices, ind, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Load uv to vram
+	if (uv != nullptr)
+	{
+		glGenBuffers(1, (GLuint*)&uvs_id);
+		glBindBuffer(GL_ARRAY_BUFFER, uvs_id);
+		glBufferData(GL_ARRAY_BUFFER,sizeof(float) * num_uv * 3, uv, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	bounding_box.SetNegativeInfinity();
+	bounding_box.Enclose((float3*)ver, num_ver);
 }
 
 uint ComponentMeshRenderer::GetTriNum() const
@@ -221,11 +341,8 @@ void ComponentMeshRenderer::SetSphereVertices(float radius, uint rings, uint sec
 			vertices[count].z = z * radius;
 
 			count++; 
-
-
 		}
 	}
-
 
 	for (r = 0; r < rings - 1; r++) for (s = 0; s < sectors - 1; s++) {
 		*indices++ = r * sectors + s;

@@ -171,22 +171,22 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 
 				ComponentMeshRenderer* tmp_mr = new ComponentMeshRenderer(child_go);
 
-				tmp_mr->num_vertices = m->mNumVertices;
-				tmp_mr->vertices = new vec[tmp_mr->num_vertices];
-				memcpy(tmp_mr->vertices, m->mVertices, sizeof(vec) * tmp_mr->num_vertices);
+				tmp_mr->SetNumVertices(m->mNumVertices);
+				tmp_mr->SetVertices(new vec[tmp_mr->GetNumVertices()]);
+				memcpy(tmp_mr->GetVertices(), m->mVertices, sizeof(vec) * tmp_mr->GetNumVertices());
 
-				glGenBuffers(1, (GLuint*)&tmp_mr->vertices_id);
-				glBindBuffer(GL_ARRAY_BUFFER, tmp_mr->vertices_id);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(vec) * tmp_mr->num_vertices, tmp_mr->vertices, GL_STATIC_DRAW);
+				glGenBuffers(1, (GLuint*)tmp_mr->GetVerticesID());
+				glBindBuffer(GL_ARRAY_BUFFER, tmp_mr->GetVerticesID());
+				glBufferData(GL_ARRAY_BUFFER, sizeof(vec) * tmp_mr->GetNumVertices(), tmp_mr->GetVertices(), GL_STATIC_DRAW);
 
-				LOG("%d vertices", tmp_mr->num_vertices);
+				LOG("%d vertices", tmp_mr->GetNumVertices());
 
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 				//Indices
 
 				if (m->HasFaces()) {
-					tmp_mr->num_indices = m->mNumFaces * 3;
-					tmp_mr->indices = new uint[tmp_mr->num_indices];
+					tmp_mr->SetNumIndices(m->mNumFaces * 3);
+					tmp_mr->SetIndices(new uint[tmp_mr->GetNumVertices()]);
 
 					for (uint i = 0; i < m->mNumFaces; ++i)
 					{
@@ -194,30 +194,30 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 							LOG("WARNING, geometry face with != 3 indices!");
 						}
 						else
-							memcpy(&tmp_mr->indices[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
+							memcpy(&tmp_mr->GetIndices()[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
 					}
 
 				}
 
-				glGenBuffers(1, (GLuint*)&tmp_mr->indices_id);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tmp_mr->indices_id);
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_indices, tmp_mr->indices, GL_STATIC_DRAW);
+				glGenBuffers(1, (GLuint*)tmp_mr->GetIndicesID());
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tmp_mr->GetIndicesID());
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * tmp_mr->GetNumIndices(), tmp_mr->GetIndices(), GL_STATIC_DRAW);
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-				LOG("%d indices", tmp_mr->num_indices);
+				LOG("%d indices", tmp_mr->GetNumIndices());
 
 				if (m->HasTextureCoords(0)) // assume mesh has one texture coords
 				{
-					tmp_mr->num_uvs = m->mNumVertices;
-					tmp_mr->uvs = new float[tmp_mr->num_uvs * 3];
-					memcpy(tmp_mr->uvs, m->mTextureCoords[0], sizeof(float)*tmp_mr->num_uvs * 3);
+					tmp_mr->SetNumUVS(m->mNumVertices);
+					tmp_mr->SetUVS(new float[tmp_mr->GetNumUVS() * 3]);
+					memcpy(tmp_mr->GetUVS(), m->mTextureCoords[0], sizeof(float)*tmp_mr->GetNumUVS() * 3);
 
-					glGenBuffers(1, (GLuint*)&tmp_mr->uvs_id);
-					glBindBuffer(GL_ARRAY_BUFFER, (GLuint)tmp_mr->uvs_id);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_uvs * 3, tmp_mr->uvs, GL_STATIC_DRAW);
+					glGenBuffers(1, (GLuint*)tmp_mr->GetUVSID());
+					glBindBuffer(GL_ARRAY_BUFFER, (GLuint)tmp_mr->GetUVSID());
+					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * tmp_mr->GetNumUVS() * 3, tmp_mr->GetUVS(), GL_STATIC_DRAW);
 					glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-					LOG("%d texture cordinates", tmp_mr->num_uvs);
+					LOG("%d texture cordinates", tmp_mr->GetNumUVS());
 				}
 				else
 				{
@@ -227,7 +227,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 				bbox.SetNegativeInfinity();
 				bbox.Enclose((float3*)m->mVertices, m->mNumVertices);
 
-				tmp_mr->SetGizmoBox(bbox);
+				tmp_mr->SetBBox(bbox);
 				//FIX ME
 				//App->camera->Focus(vec3(m->g.x, child_go->GetPosition().y, child_go->GetPosition().z), bbox.Size().Length() *1.2f);
 
@@ -235,7 +235,6 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 				tmp_mr->Enable();
 
 				tmp_mr->SetComponentParent(child_go);
-				tmp_mr->tranform_id = i;
 
 				child_go->PushComponent((Component*)tmp_mr);
 				//	glBindBuffer(GL_ARRAY_BUFFER, 0);

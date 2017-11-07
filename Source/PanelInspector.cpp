@@ -103,15 +103,15 @@ bool PanelInspector::Draw()
 				if (ImGui::CollapsingHeader("Component Mesh Renderer"))
 				{
 					ImGui::Text("Vertices: "); ImGui::SameLine(); 
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->num_vertices);
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumVertices());
 					ImGui::Text("Indices: "); ImGui::SameLine();
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->num_indices);
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumIndices());
 
 					ImGui::Checkbox("AABB active", &curr_cmp->show_bb); 
 
-					if (curr_cmp->show_bb)
+					if (curr_cmp->IsBBoxShowing())
 					{
-						DebugDraw(curr_cmp->bounding_box, Red);
+						DebugDraw(curr_cmp->GetBBox(), Red);
 					}
 
 				}

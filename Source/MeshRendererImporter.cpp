@@ -3,7 +3,6 @@
 #include "Application.h"
 #include "ModuleSceneIntro.h"
 #include "GameObject.h"
-//#include "MeshRenderer.h"/
 #include "ComponentMeshRenderer.h"
 //#include "ComponentMeshManager.h"
 #include "ComponentTransform.h"
@@ -18,6 +17,7 @@
 #include "Assimp\include\scene.h"
 #include "Assimp\include\postprocess.h"
 #include "Assimp\include\cfileio.h"
+#include "AssimpLogger.h"
 #include "Assimp\include\DefaultLogger.hpp"
 #include "Assimp\include\Logger.hpp"
 
@@ -35,8 +35,8 @@ bool MeshRendererImporter::Awake(json_file * config)
 {
 	bool ret = true;
 
-	//App->CreateFolder("Assets\\Meshes");
-	//App->CreateFolder("Library\\Meshes");
+	App->CreateFolder("Assets\\Meshes");
+	App->CreateFolder("Library\\Meshes");
 
 	return ret;
 }
@@ -48,7 +48,7 @@ bool MeshRendererImporter::Start()
 	Assimp::DefaultLogger::create();
 	const uint severity = Assimp::Logger::Debugging | Assimp::Logger::Info | Assimp::Logger::Err | Assimp::Logger::Warn;
 	//PAU
-	//Assimp::DefaultLogger::get()->attachStream(new AssimpLogger(), severity);
+	Assimp::DefaultLogger::get()->attachStream(new AssimpLogger(), severity);
 
 	//LoadFile("Library\\Meshes\\mesh_0.tromesh");
 
@@ -255,15 +255,8 @@ bool MeshRendererImporter::ImportMesh(aiMesh * mesh, GameObject * owner, const s
 		else //valid mesh, add to the list
 		{
 			//PAU
-			//ComponentMeshRenderer* new_mesh = new ComponentMeshRenderer(num_vertices, vert, num_indices, indices, num_uv, uv, num_normals, normals);
-			//meshes.push_back(new_mesh);
-
-			//add a mesh renderer to owner game object
-			ComponentMeshRenderer* mr = (ComponentMeshRenderer*)owner->AddEmptyComponent(component_type::COMPONENT_MESH_RENDERER);
-
-			//Set this mesh to the mesh renderer
-			//PAU
-			//mr->SetMesh(new_mesh);
+			ComponentMeshRenderer* new_mesh = new ComponentMeshRenderer(num_vertices, vert, num_indices, indices, num_uv, uv, num_normals, normals);
+			meshes.push_back(new_mesh);
 
 			//Set corresponding material
 			ComponentMaterial* material = (ComponentMaterial*)owner->AddEmptyComponent(component_type::COMPONENT_MATERIAL);
@@ -282,8 +275,8 @@ void MeshRendererImporter::SaveToLibrary(ComponentMeshRenderer * mesh)
 	// amount of indices / vertices / texture_coords
 	// indices / vertices / texture_coords data
 
-	uint elements_num[3] = { mesh->num_indices, mesh->num_vertices * 3, mesh->num_uvs };
-	uint total_size = sizeof(elements_num) + sizeof(uint)*mesh->num_indices + sizeof(float)*(mesh->num_vertices * 3 + mesh->num_uvs * 3);
+	uint elements_num[3] = { mesh->GetNumIndices(), mesh->GetNumVertices() * 3, mesh->GetNumUVS() };
+	uint total_size = sizeof(elements_num) + sizeof(uint)*mesh->GetNumIndices() + sizeof(float)*(mesh->GetNumVertices() * 3 + mesh->GetNumUVS() * 3);
 
 	char* data = new char[total_size];
 	char* cursor = data;
@@ -295,17 +288,17 @@ void MeshRendererImporter::SaveToLibrary(ComponentMeshRenderer * mesh)
 
 	//store indices
 	size = sizeof(uint)*elements_num[0];
-	memcpy(cursor, mesh->indices, size);
+	memcpy(cursor, mesh->GetIndices(), size);
 	cursor += size;
 
 	//store vertices
 	size = sizeof(float)*elements_num[1];
-	memcpy(cursor, mesh->vertices, size);
+	memcpy(cursor, mesh->GetVertices(), size);
 	cursor += size;
 
 	//store texture_coords
 	size = sizeof(float)*elements_num[2];
-	memcpy(cursor, mesh->uvs, size);
+	memcpy(cursor, mesh->GetUVS(), size);
 	cursor += size;
 
 	//Serialize data to file
@@ -360,9 +353,8 @@ void MeshRendererImporter::LoadFile(const char * path)
 	cursor += size;
 
 	//Create a mesh with this info
-	//PAU
-	//ComponentMeshRenderer* geo = new ComponentMeshRenderer(elements_num[1] / 3, vert, elements_num[0], ind, elements_num[2] / 3, tex_coords);
-	//meshes.push_back(geo);
+	ComponentMeshRenderer* geo = new ComponentMeshRenderer(elements_num[1] / 3, vert, elements_num[0], ind, elements_num[2] / 3, tex_coords);
+	meshes.push_back(geo); 
 
 	//TEST
 	//GameObject* go = App->scene_intro->CreateGameObject();

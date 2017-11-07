@@ -12,9 +12,9 @@
 
 class ComponentMeshRenderer : public Component
 {
-
 public: 
-	ComponentMeshRenderer(GameObject* parent); 
+	ComponentMeshRenderer(GameObject* parent);
+	ComponentMeshRenderer(uint num_ver, float* ver, uint num_ind, uint* ind, uint num_uv = 0, float* uv = nullptr, uint num_norm = 0, float* norm = nullptr);
 
 	~ComponentMeshRenderer();
 
@@ -23,17 +23,43 @@ public:
 	bool Disable(); 
 	void CleanUp();
 
-
 	void SetCubeVertices(float3 origin, uint edge_size);
 	void SetSphereVertices(float radius, uint rings, uint sectors, float3 origin);
 	void SetCylinderVertices(float r, int sides, int height);
 	uint GetTriNum() const;
 
-	void SetGizmoBox(AABB _box);
-	AABB GetGizmoBox() const;
+	void SetBBox(AABB _box);
+	AABB GetBBox() const;
 	bool PrintBB(); 
 
-public: 
+	int GetNumVertices()const;
+	uint GetVerticesID()const;
+	vec* GetVertices()const;
+
+	int GetNumIndices()const;
+	uint GetIndicesID()const;
+	uint* GetIndices()const;
+
+	int GetNumUVS()const;
+	uint GetUVSID()const;
+	float* GetUVS()const;
+
+	void SetNumVertices(int num);
+	void SetVerticesId(uint id);
+	void SetVertices(vec* vec);
+
+	void SetNumIndices(int num);
+	void SetIndicesId(uint id);
+	void SetIndices(uint* ind);
+
+	void SetNumUVS(int num);
+	void SetUVSId(uint id);
+	void SetUVS(float* uvs);
+
+	bool IsBBoxShowing()const;
+	bool show_bb;
+
+private: 
 
 	vec* vertices;
 	int num_vertices = 0;
@@ -53,7 +79,6 @@ public:
 	uint tranform_id = 0; 
 
 	AABB bounding_box;
-	bool show_bb;
 
 private:
 
