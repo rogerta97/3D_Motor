@@ -89,6 +89,9 @@ bool PanelInspector::Draw()
 
 					if (ImGui::DragFloat3("Scale##transform", s, 2))
 						curr_cmp->SetScale(float3(s[0], s[1], s[2]));
+
+
+
 					}
 
 				break;

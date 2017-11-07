@@ -8,6 +8,15 @@
 
 class ComponentTransform; 
 
+
+
+void ComponentMeshRenderer::AdaptBoundingBox(float4x4 transform)
+{
+	bounding_box.SetNegativeInfinity(); 
+	bounding_box.Enclose(vertices, num_vertices); 
+	bounding_box.TransformAsAABB(transform); 
+}
+
 void ComponentMeshRenderer::SetBBox(AABB _box)
 {
 	bounding_box = _box;
@@ -188,7 +197,7 @@ bool ComponentMeshRenderer::Update()
 
 	if (tmp->IsModified())
 	{
-		bounding_box.Enclose(vertices, num_vertices); 
+		AdaptBoundingBox(tmp->GetTransformMatrix()); 
 		tmp->SetModified(false); 
 	}
 

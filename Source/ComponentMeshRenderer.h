@@ -28,8 +28,11 @@ public:
 	void SetCylinderVertices(float r, int sides, int height);
 	uint GetTriNum() const;
 
+
+	void AdaptBoundingBox(float4x4 transform); 
 	void SetBBox(AABB _box);
 	AABB GetBBox() const;
+
 	bool PrintBB(); 
 
 	int GetNumVertices()const;

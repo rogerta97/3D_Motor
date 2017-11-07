@@ -278,13 +278,15 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 					float3 scale(scaling.x, scaling.y, scaling.z);
 					Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
 
-
 					TR_cmp->SetPosition(pos);
 					TR_cmp->SetRotation(rot.ToEulerXYX());
 					TR_cmp->SetScale(scale);
 
 					TR_cmp->type = COMPONENT_TRANSFORM;
 					TR_cmp->Enable();
+
+					tmp_mr->AdaptBoundingBox(TR_cmp->GetTransformMatrix()); 
+					TR_cmp->SetModified(false); 
 
 					LOG("FBX imported with %d transform", i);
 				}
