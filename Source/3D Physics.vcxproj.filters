@@ -64,6 +64,15 @@
     <Filter Include="Tools\OwnFileFormat">
       <UniqueIdentifier>{26c33934-171b-4306-bf5b-85f69ecb1562}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules\Importers">
+      <UniqueIdentifier>{fba3da68-1837-4f96-b283-885e5b760fae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Importers\Mesh">
+      <UniqueIdentifier>{8f688d03-6d02-4daa-bfd2-df759812e13b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Importers\Materials">
+      <UniqueIdentifier>{cd56d968-7fc5-411d-b4b9-4c8a1dd0e0d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -1209,6 +1218,9 @@
     <ClInclude Include="JSON.h">
       <Filter>Tools\OwnFileFormat</Filter>
     </ClInclude>
+    <ClInclude Include="MeshRendererImporter.h">
+      <Filter>Modules\Importers\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1444,6 +1456,9 @@
     </ClCompile>
     <ClCompile Include="JSON.cpp">
       <Filter>Tools\OwnFileFormat</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRendererImporter.cpp">
+      <Filter>Modules\Importers\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

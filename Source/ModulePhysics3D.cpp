@@ -40,7 +40,7 @@ ModulePhysics3D::~ModulePhysics3D()
 }
 
 // Render not available yet----------------------------------
-bool ModulePhysics3D::Init()
+bool ModulePhysics3D::Init(json_file* config)
 {
 	name = "Physics";
 	App->performance.InitTimer(name); 

@@ -9,7 +9,7 @@ public:
 	ModuleCamera3D(bool start_enabled = true);
 	~ModuleCamera3D();
 
-	bool Init(); 
+	bool Init(json_file* config);
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();

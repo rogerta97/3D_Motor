@@ -16,7 +16,7 @@ ModuleImGui::~ModuleImGui()
 {
 }
 
-bool ModuleImGui::Init()
+bool ModuleImGui::Init(json_file* config)
 {
 	name = "ImGui";
 	App->performance.InitTimer(name);

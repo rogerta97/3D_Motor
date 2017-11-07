@@ -174,6 +174,49 @@ void GameObject::PushComponent(Component* comp)
 		component_list.push_back(comp);		
 }
 
+Component * GameObject::AddEmptyComponent(component_type type)
+{
+	Component* new_comp = nullptr;
+
+	switch (type)
+	{
+	case component_type::COMPONENT_NULL:
+		break;
+	case component_type::COMPONENT_TRANSFORM:
+	{
+		ComponentTransform* t = new ComponentTransform(this);
+		component_list.push_back(t);
+		new_comp = t;
+		break;
+	}
+	case component_type::COMPONENT_MESH_RENDERER:
+	{
+		ComponentMeshRenderer* mr = new ComponentMeshRenderer(this);
+		component_list.push_back(mr);
+		new_comp = mr;
+		break;
+	}
+	case component_type::COMPONENT_MATERIAL:
+	{
+		ComponentMaterial* cm = new ComponentMaterial(this);
+		component_list.push_back(cm);
+		new_comp = cm;
+		break;
+	}
+	case component_type::COMPONENT_CAMERA:
+	{
+		ComponentCamera* cam = new ComponentCamera(this);
+		component_list.push_back(cam);
+		new_comp = cam;
+	}
+	break;
+	default:
+		break;
+	}
+
+	return new_comp;
+}
+
 void GameObject::PushRootComponent(Component * comp)
 {
 	for (int i = 0; i < child_list.size(); i++)

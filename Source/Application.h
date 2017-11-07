@@ -85,7 +85,8 @@ public:
 	bool Init();
 	update_status Update();
 	void PrintConfigData();
-	void LoadConfig();
+	json_file * LoadConfig();
+	json_file * CreateDefaultConfig();
 	void SaveConfig(Module* module);
 	bool CleanUp();
 	const char* GetAppName();
@@ -102,7 +103,12 @@ public:
 	//For performance
 
 	PerformanceWindow performance;
+	//Files Functions
+	//Try to create path folder. Return true if created or already exist, false if not created or don't exist
+	bool CreateFolder(const char* path) const;
 
+	//Copy file to target folder
+	bool CopyFileTo(const char* file, const char* target);
 private:
 
 	void AddModule(Module* mod);
