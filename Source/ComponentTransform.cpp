@@ -24,6 +24,7 @@ ComponentTransform::ComponentTransform(GameObject* _parent)
 	parent = _parent; 
 	active = true; 
 	type = COMPONENT_TRANSFORM; 
+	transform_modified = false; 
 }
 
 ComponentTransform::~ComponentTransform()
@@ -60,6 +61,16 @@ void ComponentTransform::SetIdentityTransform()
 	SetScale({ 1,1,1 }); 
 }
 
+bool ComponentTransform::IsModified() const
+{
+	return transform_modified;
+}
+
+void ComponentTransform::SetModified(bool n_value)
+{
+	transform_modified = n_value; 
+}
+
 bool ComponentTransform::Update()
 {
 
@@ -73,16 +84,8 @@ void ComponentTransform::SetPosition(const float3 & _position)
 {
 	if (GetComponentParent()->IsStatic() == false)
 	{
-		float3 translation = _position - position;
-		position = _position;
-
-		ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponentParent()->GetComponent(COMPONENT_MESH_RENDERER); 
-
-		if (mr != nullptr)
-		{					
-			mr->bounding_box.Translate(translation);
-		}
-	
+		position = _position;	
+		transform_modified = true; 
 	}
 		
 		
@@ -96,21 +99,8 @@ void ComponentTransform::SetRotation(const float3& _rotation)
 		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
 		rotation = mod;
 
-		ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponentParent()->GetComponent(COMPONENT_MESH_RENDERER);
+		transform_modified = true;
 
-		if (mr != nullptr)
-		{
-
-			int min[3]; 
-			int max[3];
-
-			mr->bounding_box.SetNegativeInfinity(); 
-			mr->bounding_box.Enclose(mr->vertices, mr->num_vertices); 
-	/*		mr->bounding_box.ExtremePointsAlongAABB(mr->vertices, mr->num_vertices, min[0], max[0], min[1], max[1], min[2], max[2]); 
-
-			AABB n_box(vec(mr->vertices[min[0]].x, mr->vertices[min[1]].y, mr->vertices[min[2]].z), vec(mr->vertices[max[0]].x, mr->vertices[max[1]].y, mr->vertices[max[2]].z));
-			mr->bounding_box = n_box;*/
-		}
 	}
 }
 
@@ -119,19 +109,9 @@ void ComponentTransform::SetScale(const float3 & _scale)
 {
 	if (GetComponentParent()->IsStatic() == false)
 	{
-		
-		ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponentParent()->GetComponent(COMPONENT_MESH_RENDERER);
-
-		if (mr != nullptr)
-		{
-			vec temp_scale = _scale;
-			vec center_point = mr->bounding_box.CenterPoint(); 
-
-			mr->bounding_box = AABB(vec(-1, -1, -1), vec(1, 1, 1)); 
-			mr->bounding_box.Scale(center_point, temp_scale);
-		}
-
 		scale = _scale;
+
+		transform_modified = true;
 	}
 		
 

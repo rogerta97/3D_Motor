@@ -87,30 +87,17 @@ bool ComponentMeshRenderer::Update()
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
 
-	// --
-
-	//glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
-	//glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
-
-	////Apply UV if exist
-	//if (num_uvs != 0)
-	//{
-	//	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	//	glBindBuffer(GL_ARRAY_BUFFER, uvs_id);
-	//	glTexCoordPointer(3, GL_FLOAT, 0, NULL);
-	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//}
-
-	////glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
-
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	//glDisableClientState(GL_VERTEX_ARRAY);
-	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
 	glPopMatrix();
+
+	//We modify the AABB if it is necessary 
+
+	ComponentTransform* tmp = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM); 
+
+	if (tmp->IsModified())
+	{
+		bounding_box.Enclose(vertices, num_vertices); 
+		tmp->SetModified(false); 
+	}
 
 	return true;
 }

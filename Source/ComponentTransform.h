@@ -26,8 +26,10 @@ public:
 	int GetTransformID()const; 
 
 	float4x4 GetTransformMatrix(); 
-
 	void SetIdentityTransform(); 
+
+	bool IsModified() const; 
+	void SetModified(bool value);
 
 private:
 
@@ -38,6 +40,8 @@ private:
 	float4x4 transform_matrix; 
 
 	int transform_id; 
+
+	bool transform_modified = false; 
 };
 
 #endif 
