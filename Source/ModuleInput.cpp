@@ -19,7 +19,7 @@ ModuleInput::~ModuleInput()
 }
 
 // Called before render is available
-bool ModuleInput::Init()
+bool ModuleInput::Init(json_file* config)
 {
 
 	name = "Input";

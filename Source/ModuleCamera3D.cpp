@@ -27,7 +27,7 @@ ModuleCamera3D::~ModuleCamera3D()
 	RELEASE(basic_camera);
 }
 
-bool ModuleCamera3D::Init() 
+bool ModuleCamera3D::Init(json_file* config)
 {
 	name = "Camera";
 	App->performance.InitTimer(name);

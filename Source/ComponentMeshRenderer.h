@@ -21,6 +21,8 @@ public:
 	bool Enable(); 
 	bool Update(); 
 	bool Disable(); 
+	void CleanUp();
+
 
 	void SetCubeVertices(float3 origin, uint edge_size);
 	void SetSphereVertices(float radius, uint rings, uint sectors, float3 origin);
@@ -35,16 +37,15 @@ public:
 
 	vec* vertices;
 	int num_vertices = 0;
+	uint vertices_id = 0;
 
 	uint* indices;
 	int num_indices = 0;
+	uint indices_id = 0;
 
 	float* uvs;
 	int num_uvs = 0;
-
-	uint vertices_id = 0;
 	uint uvs_id = 0;
-	uint indices_id = 0;
 
 	// As this motor can have infinite meshes per gameobject we must set an ID for apliying to 
 	// each mesh its corresponding transformation

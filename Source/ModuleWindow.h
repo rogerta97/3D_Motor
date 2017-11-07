@@ -15,7 +15,7 @@ public:
 	// Destructor
 	virtual ~ModuleWindow();
 
-	bool Init();
+	bool Init(json_file* config);
 	void PrintConfigData(); 
 	bool CleanUp();
 

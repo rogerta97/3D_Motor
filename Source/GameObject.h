@@ -48,6 +48,7 @@ public:
 	GameObject* GetParent()const; 
 
 	void PushComponent(Component* comp); 
+	Component* AddEmptyComponent(component_type type);
 	void PushRootComponent(Component* comp); // In case of a root object selected the texture will need to be aded to all it's childs
 	void PushChild(GameObject* child); 
 

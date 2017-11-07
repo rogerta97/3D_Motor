@@ -14,7 +14,7 @@ public:
 	ModuleAudio(bool start_enabled = true);
 	~ModuleAudio();
 
-	bool Init();
+	bool Init(json_file* config);
 	void PrintConfigData(); 
 	bool CleanUp();
 

@@ -22,7 +22,7 @@ public:
 	virtual ~Module()
 	{}
 
-	virtual bool Init() 
+	virtual bool Init(json_file* config) 
 	{
 		return true; 
 	}

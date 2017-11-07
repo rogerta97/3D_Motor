@@ -66,13 +66,16 @@ bool Application::Init()
 	bool ret = true;
 
 	// Call Init() in all modules
-	LoadConfig();
+	json_file*  config = LoadConfig();
+	//make sure we have a config
+	if (config == nullptr)
+		config = CreateDefaultConfig();
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); item++)
 	{
 		if (ret == true)
 		{
-			ret = (*item)->Init();
+			ret = (*item)->Init(config);
 		}	
 	}
 	// After all Init calls we call Start() in all modules
@@ -323,6 +326,42 @@ bool Application::CleanUp()
 	return ret;
 }
 
+bool Application::CreateFolder(const char * path) const
+{
+	bool ret = true;
+
+	if (!CreateDirectory(path, NULL))
+	{
+		if (GetLastError() == ERROR_ALREADY_EXISTS)
+		{
+			LOG("Can't create the folder. %s already exist", path);
+		}
+		else if (GetLastError() == ERROR_PATH_NOT_FOUND)
+		{
+			LOG("Can't creat folder %s. One or more intermediate directories do not exist", path);
+			ret = false;
+		}
+	}
+	return ret;
+}
+
+bool Application::CopyFileTo(const char * file, const char * target)
+{
+	bool ret = true;
+
+	std::string curr_file = file;
+	uint cut = curr_file.find_last_of("\\");
+	std::string dest_file = target;
+	if (dest_file.find_last_of("\\") == dest_file.size() - 1)
+		dest_file += curr_file.substr(cut + 1, curr_file.size() - cut + 1);
+	else
+		dest_file += curr_file.substr(cut, curr_file.size() - cut);
+
+	CopyFile(file, dest_file.c_str(), false);
+
+	return ret;
+}
+
 void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);
@@ -346,9 +385,9 @@ Module* Application::GetModule(int index)
 	return nullptr;
 	
 }
-void Application::LoadConfig()
+json_file *  Application::LoadConfig()
 {
-	config = json->LoadJSONFile("config.json");
+	return json->LoadJSONFile("config.json");
 
 	if (config != nullptr)
 	{
@@ -364,26 +403,47 @@ void Application::LoadConfig()
 		}
 	}
 }
+json_file * Application::CreateDefaultConfig()
+{
+	json_file* config = nullptr;
 
+	config = json->LoadJSONFile("config.json");
+
+	config->SetNumber("window.width", 1280);
+	config->SetNumber("window.height", 980);
+	config->SetNumber("window.screen_size", 1);
+	config->SetNumber("window.brightness", 1);
+	config->SetString("window.window_mode", "windowed");
+	config->SetBool("window.resizable", true);
+	config->SetBool("window.borderless", false);
+
+	config->SetString("app.title", "TroEngine");
+	config->SetString("app.organization", "UPC CITM");
+	config->SetNumber("app.max_fps", 0);
+
+	config->SetBool("renderer.vsync", true);
+
+	config->Save();
+
+	return config;
+}
 void Application::SaveConfig(Module* module)
 {
-	if (config != nullptr)
+	LOG("Saving actual config....")
+	json_file* config = LoadConfig();
+
+	config->SetString("app.organization", organization.c_str());
+	config->SetNumber("app.max_fps", last_fps);
+
+	std::list<Module*>::iterator item = list_modules.begin();
+
+	while (item != list_modules.end())
 	{
-		config->SetString("app.title", App->GetAppName());
-		config->SetString("app.organization", App->GetOrgName());
-		config->SetNumber("app.max_fps", App->GetCapFPS());
-
-		for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
-		{
-			if (module == nullptr)
-				(*item)->OnSaveConfig(config);
-
-			else if (module == (*item))
-				(*item)->OnSaveConfig(config);
-		}
-
-		config->Save();
+		(*item)->OnSaveConfig(config);
+		++item;
 	}
+
+	config->Save();
 }
 const char * Application::GetAppName()
 {

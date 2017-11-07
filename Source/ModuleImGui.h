@@ -14,7 +14,7 @@ public:
 	ModuleImGui(bool start_enabled = true); 
 	~ModuleImGui();
 
-	bool Init();
+	bool Init(json_file* config);
 	update_status PreUpdate(float dt); 
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);

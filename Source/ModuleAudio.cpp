@@ -12,7 +12,7 @@ ModuleAudio::~ModuleAudio()
 {}
 
 // Called before render is available
-bool ModuleAudio::Init()
+bool ModuleAudio::Init(json_file* config)
 {
 
 	name = "Audio";

@@ -108,6 +108,10 @@ bool ComponentMeshRenderer::Disable()
 	return true;
 }
 
+void ComponentMeshRenderer::CleanUp()
+{
+}
+
 ComponentMeshRenderer::ComponentMeshRenderer(GameObject* _parent)
 {
 	active = true;

@@ -25,7 +25,7 @@ public:
 	ModulePhysics3D(bool start_enabled = true);
 	~ModulePhysics3D();
 
-	bool Init();
+	bool Init(json_file* config);
 	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
