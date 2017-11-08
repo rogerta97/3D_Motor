@@ -13,7 +13,7 @@ class ComponentCamera : public Component
 {
 public: 
 
-	ComponentCamera(GameObject* parent); 
+	ComponentCamera(GameObject* parent, float far_plane = 0.1f, float near_plane = 300.0f, float fov = 45.0f, float aspect_ratio = 1.3f);
 
 	~ComponentCamera(); 
 

@@ -145,9 +145,9 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 		float3 n_scale(scale.x, scale.y, scale.z);
 		Quat n_rot(quat.x, quat.y, quat.z, quat.w);
 
-		trans->SetPosition(n_pos);
-		trans->SetRotation(n_rot.ToEulerXYZ());
-		trans->SetScale(n_scale);
+		trans->SetLocalPosition(n_pos);
+		trans->SetLocalRotation(n_rot.ToEulerXYZ());
+		trans->SetLocalScale(n_scale);
 		
 		App->scene_intro->AddGameObject(new_go);
 	}
@@ -277,14 +277,14 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 					float3 scale(scaling.x, scaling.y, scaling.z);
 					Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
 
-					TR_cmp->SetPosition(pos);
-					TR_cmp->SetRotation(rot.ToEulerXYZ());
-					TR_cmp->SetScale(scale);
+					TR_cmp->SetLocalPosition(pos);
+					TR_cmp->SetLocalRotation(rot.ToEulerXYZ());
+					TR_cmp->SetLocalScale(scale);
 
 					TR_cmp->type = COMPONENT_TRANSFORM;
 					TR_cmp->Enable();
 
-					tmp_mr->AdaptBoundingBox(TR_cmp->GetTransformMatrix()); 
+					tmp_mr->AdaptBoundingBox(TR_cmp->GetLocalTransform()); 
 					TR_cmp->SetModified(false); 
 
 					LOG("FBX imported with %d transform", i);

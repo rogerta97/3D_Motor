@@ -17,21 +17,32 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled)
 	Y = vec3(0.0f, 1.0f, 0.0f);
 	Z = vec3(0.0f, 0.0f, 1.0f);
 
+	mov_speed = 0.1f;
+	rot_speed = 0.25f;
+	zm_speed = 0.1f;
+	mouse_wheel_speed = 2.0f;
+	
+	near_plane = 0.1f;
+	far_plane = 100.0f;
+	field_of_view = 45.0f;
+	aspect_ratio = 1.3;
+
 	Position = vec3(0.0f, 0.0f, 5.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
-	basic_camera = new ComponentCamera(nullptr);
+
+	editor_camera = new ComponentCamera(nullptr, far_plane, near_plane, field_of_view, aspect_ratio);
 }
 
 ModuleCamera3D::~ModuleCamera3D()
 {
-	RELEASE(basic_camera);
+	RELEASE(editor_camera);
 }
 
 bool ModuleCamera3D::Init(json_file* config)
 {
 	name = "Camera";
 	App->performance.InitTimer(name);
-	App->renderer3D->curr_cam = basic_camera;
+	App->renderer3D->curr_cam = editor_camera;
 	App->performance.SaveInitData(name);
 
 	return true; 
@@ -61,7 +72,7 @@ update_status ModuleCamera3D::Update(float dt)
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 	GameObject* aux;
-	Frustum frustum = basic_camera->frustum;//AQUI
+	Frustum frustum = editor_camera->frustum;//AQUI
 
 	ComponentTransform* tmp_trans= nullptr; 
 
@@ -150,17 +161,17 @@ void ModuleCamera3D::Orbit(const vec3& orbit_center, const float& motion_x, cons
 // -----------------------------------------------------------------
 void ModuleCamera3D::Look(const float3 &Position, const vec3 &Reference, bool RotateAroundReference)
 {
-	basic_camera->Look(Position);
+	editor_camera->Look(Position);
 }
 
 void ModuleCamera3D::LookAt(const float3 &objective)
 {
-	float3 direction = objective - basic_camera->frustum.pos;
+	float3 direction = objective - editor_camera->frustum.pos;
 
-	float3x3 matrix = float3x3::LookAt(basic_camera->frustum.front, direction.Normalized(), basic_camera->frustum.up, float3::unitY);
+	float3x3 matrix = float3x3::LookAt(editor_camera->frustum.front, direction.Normalized(), editor_camera->frustum.up, float3::unitY);
 
-	basic_camera->frustum.front = matrix.MulDir(basic_camera->frustum.front).Normalized();
-	basic_camera->frustum.up = matrix.MulDir(basic_camera->frustum.up).Normalized();
+	editor_camera->frustum.front = matrix.MulDir(editor_camera->frustum.front).Normalized();
+	editor_camera->frustum.up = matrix.MulDir(editor_camera->frustum.up).Normalized();
 }
 
 // -----------------------------------------------------------------
@@ -249,40 +260,43 @@ void ModuleCamera3D::PrintConfigData()
 	if (ImGui::CollapsingHeader("Camera"))
 	{
 		ImGui::DragFloat3("Position", &Position.x, 0.1f);
-		if (ImGui::Button("Original Position") == true)
+		ImGui::DragFloat("Mov Speed", &mov_speed, 0.1f, 0.1f);
+		ImGui::DragFloat("Rot Speed", &rot_speed, 0.05f, 0.01f);
+		ImGui::DragFloat("Zoom Speed", &mouse_wheel_speed, 0.1f, 2.0f,50.0f);
+		
+		if (ImGui::Button("Reset"))
 		{
 			Position.x = 1.0f;
 			Position.y = 1.0f;
 			Position.z = 5.0f;
-		}
 
-		ImGui::DragFloat("Mov Speed", &mov_speed, 0.1f, 0.1f);
-		ImGui::DragFloat("Rot Speed", &rot_speed, 0.05f, 0.01f);
-		ImGui::DragFloat("Zoom Speed", &mouse_wheel_speed, 0.1f, 2.0f,50.0f);
-
-		
-		if (ImGui::Button("Original Speeds") == true)
-		{
 			mov_speed = 0.1f;
 			rot_speed = 0.25f;
 			zm_speed = 0.1f;
 		}
 
 		ImGui::Separator(); 
+		ImGui::Separator();
 
 		if (ImGui::Checkbox("Frustum Culling", &frustum_culling)); 
+
+		ImGui::DragFloat("Near Plane", &near_plane, 0.1f, 0.1f);
+		ImGui::DragFloat("Far Plane", &far_plane, 0.1f, 0.1f);
+		ImGui::DragFloat("Field Of View", &field_of_view, 0.1f, 0.1f);
+		ImGui::DragFloat("Aspect Ratio", &aspect_ratio, 0.1f, 0.1f);
+
 
 	}
 }
 
 void ModuleCamera3D::SetCamPosition(math::float3 position)
 {
-	basic_camera->frustum.Translate(position);
+	editor_camera->frustum.Translate(position);
 }
 
-ComponentCamera * ModuleCamera3D::GetBasicCam() const
+ComponentCamera * ModuleCamera3D::GetEditorCam() const
 {
-	return basic_camera;
+	return editor_camera;
 }
 
 bool ModuleCamera3D::IsCulling()

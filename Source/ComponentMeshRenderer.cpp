@@ -152,7 +152,7 @@ bool ComponentMeshRenderer::Update()
 		if (!App->renderer3D->curr_cam->HasAABB(this->bounding_box)) return false;
 	}
 	glPushMatrix(); 
-	glMultMatrixf(ctransform->GetLocalTransform());
+	glMultMatrixf(ctransform->GetLocalTransform().Transposed().ptr());
 
 	//VERTICES
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -197,7 +197,7 @@ bool ComponentMeshRenderer::Update()
 
 	if (tmp->IsModified())
 	{
-		AdaptBoundingBox(tmp->GetTransformMatrix()); 
+		AdaptBoundingBox(tmp->GetLocalTransform()); 
 		tmp->SetModified(false); 
 	}
 

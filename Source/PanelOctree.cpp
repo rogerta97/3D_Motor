@@ -59,10 +59,7 @@ void PanelOctree::DrawPanel()
 				App->scene_intro->octree = new Octree();
 				AABB limits(min_point, max_point);
 				App->scene_intro->octree->Create(limits);
-			}
-
-		
-			
+			}		
 
 			ImGui::TreePop(); 
 		}

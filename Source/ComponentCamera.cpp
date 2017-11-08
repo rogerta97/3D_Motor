@@ -4,17 +4,17 @@
 #include "ModuleSceneIntro.h"
 #include "Application.h"
 
-ComponentCamera::ComponentCamera(GameObject* _parent)
+ComponentCamera::ComponentCamera(GameObject* _parent, float far_plane, float near_plane, float fov, float aspect_ratio)
 {
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.pos = float3::zero;
 	frustum.front = float3::unitZ;
 	frustum.up = float3::unitY;
 
-	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 100.0f;
-	frustum.verticalFov = DEGTORAD * 45.0f;
-	SetAspectRatio(1.3f);
+	frustum.nearPlaneDistance = near_plane;
+	frustum.farPlaneDistance = far_plane;
+	frustum.verticalFov = DEGTORAD * fov;
+	SetAspectRatio(aspect_ratio);
 	type = COMPONENT_CAMERA; 
 	
 	parent = _parent; 

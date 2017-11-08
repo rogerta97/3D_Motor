@@ -161,9 +161,9 @@ bool MeshRendererImporter::ImportNode(const aiScene * scene, aiNode * node, Game
 
 		//set the transform to the go
 		ComponentTransform* trans = (ComponentTransform*)go->GetComponent(component_type::COMPONENT_TRANSFORM);
-		trans->SetPosition(pos); 
-		trans->SetRotation(rot.ToEulerXYZ()*RADTODEG);
-		trans->SetScale(scale);
+		trans->SetLocalPosition(pos); 
+		trans->SetLocalRotation(rot.ToEulerXYZ()*RADTODEG);
+		trans->SetLocalScale(scale);
 	
 
 		//import mesh

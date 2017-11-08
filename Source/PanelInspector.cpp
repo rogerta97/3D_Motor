@@ -55,9 +55,9 @@ bool PanelInspector::Draw()
 
 						if (ImGui::Button("Reset Transform"))
 						{
-							curr_cmp->SetPosition(float3(0,0,0));
-							curr_cmp->SetRotation(DegToRad(float3(0,0,0)));
-							curr_cmp->SetScale(float3(1,1,1));
+							curr_cmp->SetLocalPosition(float3(0,0,0));
+							curr_cmp->SetLocalRotation(DegToRad(float3(0,0,0)));
+							curr_cmp->SetLocalScale(float3(1,1,1));
 
 							if (curr_cmp->GetComponentParent()->GetNumChilds() > 0)
 							{
@@ -67,9 +67,9 @@ bool PanelInspector::Draw()
 								{
 									ComponentTransform* trans = (ComponentTransform*) curr_go->GetChild(i)->GetComponent(COMPONENT_TRANSFORM);
 
-									trans->SetPosition(float3(0, 0, 0));
-									trans->SetRotation(DegToRad(float3(0, 0, 0)));
-									trans->SetScale(float3(1, 1, 1));
+									trans->SetLocalPosition(float3(0, 0, 0));
+									trans->SetLocalRotation(DegToRad(float3(0, 0, 0)));
+									trans->SetLocalScale(float3(1, 1, 1));
 								}
 							}
 							continue; 
@@ -82,13 +82,13 @@ bool PanelInspector::Draw()
 					float s[3] = { curr_cmp->GetLocalScale().x,curr_cmp->GetLocalScale().y,curr_cmp->GetLocalScale().z };
 
 					if (ImGui::DragFloat3("Position##transform", pos, 2))
-						curr_cmp->SetPosition(float3(pos[0], pos[1], pos[2]));
+						curr_cmp->SetLocalPosition(float3(pos[0], pos[1], pos[2]));
 
 					if (ImGui::DragFloat3("Rotation##transform", rot, 2))
-						curr_cmp->SetRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
+						curr_cmp->SetLocalRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
 
 					if (ImGui::DragFloat3("Scale##transform", s, 2))
-						curr_cmp->SetScale(float3(s[0], s[1], s[2]));
+						curr_cmp->SetLocalScale(float3(s[0], s[1], s[2]));
 
 
 
@@ -234,7 +234,7 @@ bool PanelInspector::Draw()
 
 					case 2: 
 					{
-						ComponentCamera* new_cam = new ComponentCamera(curr_go);
+						ComponentCamera* new_cam = new ComponentCamera(curr_go, App->camera->far_plane, App->camera->near_plane, App->camera->field_of_view, App->camera->aspect_ratio);
 						curr_go->PushComponent(new_cam);
 						break;
 					}

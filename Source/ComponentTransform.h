@@ -13,23 +13,33 @@ public:
 
 	bool Update();
 
-	void SetPosition(const float3& position);
-	void SetRotation(const float3& rotation);
-	void SetScale(const float3& scale);
+	// Local Pos Setters & Getters
+
+	void SetLocalPosition(const float3& position);
+	void SetLocalRotation(const float3& rotation);
+	void SetLocalScale(const float3& scale);
 
 	float3 GetLocalPosition()const;
 	Quat GetLocalRotation()const;
 	float3 GetLocalScale()const;
 
-	void SetTransformMatrix();
-	const float* GetLocalTransform(); 
-	int GetTransformID()const; 
+	// Local Transform Setters & Getters
 
-	float4x4 GetTransformMatrix(); 
+	void SetLocalTransform(float4x4 new_transform);
+	float4x4 GetLocalTransform();
+
 	void SetIdentityTransform(); 
+
+	// Global Transform Setters & Getters 
+
+	void SetGlobalTransform(float4x4 new_transform);
+	float4x4 GetGlobalTransform();
+
+	// Utility
 
 	bool IsModified() const; 
 	void SetModified(bool value);
+	void UpdateTransform(); 
 
 private:
 
@@ -37,10 +47,8 @@ private:
 	Quat rotation = Quat::identity;
 	float3 scale = float3::one;
 
-	float4x4 transform_matrix; 
-	float4x4 prev_local_transform; 
-
-	int transform_id; 
+	float4x4 local_transform; 
+	float4x4 global_transform;
 
 	bool transform_modified = false; 
 };

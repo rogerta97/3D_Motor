@@ -24,7 +24,8 @@ public:
 	void Focus(const vec3& focus, const float& distance);
 	void PrintConfigData();
 	void SetCamPosition(math::float3 position);
-	ComponentCamera* GetBasicCam()const;
+
+	ComponentCamera* GetEditorCam()const;
 
 	bool IsCulling(); 
 
@@ -34,15 +35,23 @@ private:
 public:
 	
 	vec3 X, Y, Z, Position, Reference;
-	float mov_speed = 0.1f;
-	float rot_speed = 0.25f;
-	float zm_speed = 0.1f;
-	float mouse_wheel_speed = 2.0f;
+
+	float mov_speed;
+	float rot_speed;
+	float zm_speed;
+	float mouse_wheel_speed;
+
+	float near_plane;
+	float far_plane;
+	float field_of_view;
+	float aspect_ratio;
 
 	bool frustum_culling = false; 
 
 private:
 	mat4x4 ViewMatrix, ViewMatrixInverse;
-	ComponentCamera* basic_camera = nullptr;
+
+	ComponentCamera* editor_camera = nullptr;
+	ComponentCamera* main_camera = nullptr; 
 
 };

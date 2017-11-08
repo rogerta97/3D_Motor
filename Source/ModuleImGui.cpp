@@ -315,7 +315,7 @@ update_status ModuleImGui::PrintTopBar()
 				cube->PushComponent(n_mr);
 
 				ComponentTransform* trans = (ComponentTransform*)cube->GetComponent(COMPONENT_TRANSFORM);
-				trans->SetPosition({ 0,0,0 });
+				trans->SetLocalPosition({ 0,0,0 });
 											
 			}
 				
