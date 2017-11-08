@@ -75,11 +75,34 @@ bool PanelInspector::Draw()
 							continue; 
 						}
 
-					float3 radians_angle = curr_cmp->GetLocalRotation().ToEulerXYZ();
+						static int e = 0;
+						ImGui::RadioButton("Local", &e, 0); ImGui::SameLine();
+						ImGui::RadioButton("Global", &e, 1);
 
-					float pos[3] = { curr_cmp->GetLocalPosition().x,curr_cmp->GetLocalPosition().y,curr_cmp->GetLocalPosition().z };
-					float rot[3] = { RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
-					float s[3] = { curr_cmp->GetLocalScale().x,curr_cmp->GetLocalScale().y,curr_cmp->GetLocalScale().z };
+						float3 radians_angle;
+						float pos[3];
+						float rot[3];
+						float s[3];
+
+						switch (e)
+						{
+						case 0:
+							radians_angle = curr_cmp->GetLocalRotation().ToEulerXYZ();
+
+							pos[0] = curr_cmp->GetLocalPosition().x; pos[1] = curr_cmp->GetLocalPosition().y; pos[2] = curr_cmp->GetLocalPosition().z;						
+							rot[0] = RadToDeg(radians_angle.x); rot[1] = RadToDeg(radians_angle.y); rot[2] = RadToDeg(radians_angle.z); 					
+							s[0] = curr_cmp->GetLocalScale().x; s[1] = curr_cmp->GetLocalScale().y; s[2] = curr_cmp->GetLocalScale().z;
+
+							break;
+
+						case 1:
+							radians_angle = curr_cmp->GetGlobalRotation().ToEulerXYZ();
+
+							pos[0] = curr_cmp->GetGlobalPosition().x; pos[1] = curr_cmp->GetGlobalPosition().y; pos[2] = curr_cmp->GetGlobalPosition().z;
+							rot[0] = RadToDeg(radians_angle.x); rot[1] = RadToDeg(radians_angle.y); rot[2] = RadToDeg(radians_angle.z);
+							s[0] = curr_cmp->GetGlobalScale().x; s[1] = curr_cmp->GetGlobalScale().y; s[2] = curr_cmp->GetGlobalScale().z;
+							break; 
+						}
 
 					if (ImGui::DragFloat3("Position##transform", pos, 2))
 						curr_cmp->SetLocalPosition(float3(pos[0], pos[1], pos[2]));
@@ -89,10 +112,8 @@ bool PanelInspector::Draw()
 
 					if (ImGui::DragFloat3("Scale##transform", s, 2))
 						curr_cmp->SetLocalScale(float3(s[0], s[1], s[2]));
-
-
-
 					}
+
 
 				break;
 			}

@@ -23,11 +23,12 @@ bool ComponentMaterial::Update()
 	if (active == false)
 		return true;
 
-	//glEnable(GL_TEXTURE_2D);
-	//glBindTexture(GL_TEXTURE_2D, textures_id);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, textures_id);
 
-	//glDisableClientState(GL_VERTEX_ARRAY);
-	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glBindTexture(GL_TEXTURE_2D, 0); 
 
 	return true;
 }

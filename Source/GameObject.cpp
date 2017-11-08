@@ -231,7 +231,6 @@ void GameObject::PushRootComponent(Component * comp)
 void GameObject::PushChild(GameObject * child)
 {
 	child->parent = this;
-
 	child_list.push_back(child); 
 }
 
@@ -260,7 +259,7 @@ bool Component::SetActive(bool _active)
 	active = _active;
 	return active;
 }
-void Component::SetComponentParent(GameObject * _parent)
+void Component::SetComponentParent(GameObject* _parent)
 {
 	parent = _parent; 
 }

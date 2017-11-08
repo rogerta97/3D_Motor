@@ -23,6 +23,10 @@ public:
 	Quat GetLocalRotation()const;
 	float3 GetLocalScale()const;
 
+	float3 GetGlobalPosition()const;
+	Quat GetGlobalRotation()const;
+	float3 GetGlobalScale()const;
+
 	// Local Transform Setters & Getters
 
 	void SetLocalTransform(float4x4 new_transform);
@@ -46,6 +50,10 @@ private:
 	float3 position = float3::zero;
 	Quat rotation = Quat::identity;
 	float3 scale = float3::one;
+
+	float3 global_position = float3::zero;
+	Quat global_rotation = Quat::identity;
+	float3 global_scale = float3::one;
 
 	float4x4 local_transform; 
 	float4x4 global_transform;

@@ -2,6 +2,7 @@
 #include "ComponentMeshRenderer.h"
 #include "OpenGL.h"
 #include "GameObject.h"
+#include "Application.h"
 #include "MathGeoLib\MathGeoLib.h"
 
 float3 ComponentTransform::GetLocalPosition()const
@@ -15,6 +16,23 @@ Quat ComponentTransform::GetLocalRotation()const
 }
 
 float3 ComponentTransform::GetLocalScale()const
+{
+
+	return scale;
+}
+
+float3 ComponentTransform::GetGlobalPosition() const
+{
+
+	return position;
+}
+
+Quat ComponentTransform::GetGlobalRotation() const
+{
+	return rotation;
+}
+
+float3 ComponentTransform::GetGlobalScale() const
 {
 	return scale;
 }

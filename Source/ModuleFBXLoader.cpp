@@ -263,6 +263,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 					child_go->PushComponent(MA_tmp);
 				}
 
+				parent->PushChild(child_go);  // Child is pushed here bc we need the parent for constructing the clobal matrix
+
 				if (node != nullptr)
 				{
 					ComponentTransform* TR_cmp = (ComponentTransform*)child_go->GetComponent(COMPONENT_TRANSFORM);
@@ -277,6 +279,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 					float3 scale(scaling.x, scaling.y, scaling.z);
 					Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
 
+					TR_cmp->SetComponentParent(child_go);
+
 					TR_cmp->SetLocalPosition(pos);
 					TR_cmp->SetLocalRotation(rot.ToEulerXYZ());
 					TR_cmp->SetLocalScale(scale);
@@ -290,7 +294,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 					LOG("FBX imported with %d transform", i);
 				}
 
-				parent->PushChild(child_go);
+				
 				App->scene_intro->AddGameObject(child_go);
 			}
 
