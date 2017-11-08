@@ -146,7 +146,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 		Quat n_rot(quat.x, quat.y, quat.z, quat.w);
 
 		trans->SetPosition(n_pos);
-		trans->SetRotation(n_rot.ToEulerXYX());
+		trans->SetRotation(n_rot.ToEulerXYZ());
 		trans->SetScale(n_scale);
 		
 		App->scene_intro->AddGameObject(new_go);
@@ -171,13 +171,13 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 
 				ComponentMeshRenderer* tmp_mr = new ComponentMeshRenderer(child_go);
 
-				tmp_mr->SetNumVertices(m->mNumVertices);
-				tmp_mr->SetVertices(new vec[tmp_mr->GetNumVertices()]);
-				memcpy(tmp_mr->GetVertices(), m->mVertices, sizeof(vec) * tmp_mr->GetNumVertices());
+				tmp_mr->num_vertices = m->mNumVertices;
+				tmp_mr->vertices = new vec[tmp_mr->num_vertices]; 
+				memcpy(tmp_mr->vertices, m->mVertices, sizeof(vec) * tmp_mr->num_vertices);
 
-				glGenBuffers(1, (GLuint*)tmp_mr->GetVerticesID());
-				glBindBuffer(GL_ARRAY_BUFFER, tmp_mr->GetVerticesID());
-				glBufferData(GL_ARRAY_BUFFER, sizeof(vec) * tmp_mr->GetNumVertices(), tmp_mr->GetVertices(), GL_STATIC_DRAW);
+				glGenBuffers(1, (GLuint*)&tmp_mr->vertices_id);
+				glBindBuffer(GL_ARRAY_BUFFER, tmp_mr->vertices_id);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(vec) * tmp_mr->num_vertices, tmp_mr->vertices, GL_STATIC_DRAW);
 
 				LOG("%d vertices", tmp_mr->GetNumVertices());
 
@@ -185,39 +185,38 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 				//Indices
 
 				if (m->HasFaces()) {
-					tmp_mr->SetNumIndices(m->mNumFaces * 3);
-					tmp_mr->SetIndices(new uint[tmp_mr->GetNumVertices()]);
-
+					tmp_mr->num_indices = m->mNumFaces * 3;
+					tmp_mr->indices = new uint[tmp_mr->num_indices];
 					for (uint i = 0; i < m->mNumFaces; ++i)
 					{
 						if (m->mFaces[i].mNumIndices != 3) {
 							LOG("WARNING, geometry face with != 3 indices!");
 						}
 						else
-							memcpy(&tmp_mr->GetIndices()[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
+							memcpy(&tmp_mr->indices[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
 					}
 
 				}
 
-				glGenBuffers(1, (GLuint*)tmp_mr->GetIndicesID());
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tmp_mr->GetIndicesID());
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * tmp_mr->GetNumIndices(), tmp_mr->GetIndices(), GL_STATIC_DRAW);
+				glGenBuffers(1, (GLuint*)&tmp_mr->indices_id);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tmp_mr->indices_id);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_indices, tmp_mr->indices, GL_STATIC_DRAW);
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 				LOG("%d indices", tmp_mr->GetNumIndices());
 
 				if (m->HasTextureCoords(0)) // assume mesh has one texture coords
 				{
-					tmp_mr->SetNumUVS(m->mNumVertices);
-					tmp_mr->SetUVS(new float[tmp_mr->GetNumUVS() * 3]);
-					memcpy(tmp_mr->GetUVS(), m->mTextureCoords[0], sizeof(float)*tmp_mr->GetNumUVS() * 3);
+					tmp_mr->num_uvs = m->mNumVertices;
+					tmp_mr->uvs = new float[tmp_mr->num_uvs * 3];
+					memcpy(tmp_mr->uvs, m->mTextureCoords[0], sizeof(float)*tmp_mr->num_uvs * 3);
 
-					glGenBuffers(1, (GLuint*)tmp_mr->GetUVSID());
-					glBindBuffer(GL_ARRAY_BUFFER, (GLuint)tmp_mr->GetUVSID());
-					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * tmp_mr->GetNumUVS() * 3, tmp_mr->GetUVS(), GL_STATIC_DRAW);
+					glGenBuffers(1, (GLuint*)&tmp_mr->uvs_id);
+					glBindBuffer(GL_ARRAY_BUFFER, (GLuint)tmp_mr->uvs_id);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_uvs * 3, tmp_mr->uvs, GL_STATIC_DRAW);
 					glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-					LOG("%d texture cordinates", tmp_mr->GetNumUVS());
+					LOG("%d texture cordinates", tmp_mr->num_uvs);
 				}
 				else
 				{
@@ -279,7 +278,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 					Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
 
 					TR_cmp->SetPosition(pos);
-					TR_cmp->SetRotation(rot.ToEulerXYX());
+					TR_cmp->SetRotation(rot.ToEulerXYZ());
 					TR_cmp->SetScale(scale);
 
 					TR_cmp->type = COMPONENT_TRANSFORM;

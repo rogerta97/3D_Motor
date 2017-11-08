@@ -62,7 +62,7 @@ public:
 	bool IsBBoxShowing()const;
 	bool show_bb;
 
-private: 
+public: 
 
 	vec* vertices;
 	int num_vertices = 0;
