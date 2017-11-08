@@ -48,13 +48,6 @@ bool ModuleSceneIntro::Start()
 	main_plane = PPlane(0, 1, 0, 0);
 	main_plane.axis = true;
 
-	AABB root_octree_box(vec(-100, -100, -100), vec(100, 100, 100));
-	
-	octree = new Octree();
-
-	octree->Create(root_octree_box);
-
-
 	return ret;
 }
 
@@ -99,7 +92,9 @@ GameObject * ModuleSceneIntro::CreateGameObject(const char * name)
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	octree->DrawOctree();
+	if(octree != nullptr)
+		octree->DrawOctree();
+
 	glBindTexture(GL_TEXTURE_2D, 0); 
 	
 	main_plane.Render();
@@ -115,9 +110,6 @@ update_status ModuleSceneIntro::Update(float dt)
 		}
 	}
 	
-
-
-
 	return UPDATE_CONTINUE;
 }
 

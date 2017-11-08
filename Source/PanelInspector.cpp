@@ -143,6 +143,9 @@ bool PanelInspector::Draw()
 
 					ImGui::Text("Name: "); ImGui::SameLine(); 
 					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", curr_cmp->path.c_str());
+
+					ImTextureID img = (void*)curr_cmp->textures_id;
+					ImGui::Image(img, ImVec2(100, 100));
 				}
 	
 				break;

@@ -69,6 +69,8 @@ bool ModuleImGui::Init(json_file* config)
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
 
 	panel_octree.Start(); 
+	
+	show_console = true; 
 
 	App->performance.SaveInitData(name);
 

@@ -12,8 +12,8 @@ public:
 private:
 	bool oct_active = false; 
 
-	float min_point[3];
-	float max_point[3];
+	float3 min_point;
+	float3 max_point;
 
 	int obj_amount = 0; 
 }; 

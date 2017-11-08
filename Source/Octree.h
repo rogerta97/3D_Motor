@@ -11,9 +11,10 @@ class OctreeNode
 
 public:
 
-	OctreeNode();
+	OctreeNode(AABB box);
 	~OctreeNode();
 
+	bool IsFull(); 
 	bool IsLeaf(); 
 
 	bool InsertToNode(AABB& new_go);
@@ -21,16 +22,15 @@ public:
 	void DeleteNode(); 
 	
 	void DrawNode(); 
-	void Split();
+	void SplitNode();
 
 	vec GetCenter() const; 
-	void GetObjectsInNode(int& amount);
 
 public: 
 
 	AABB box; 
 	vector<AABB> objects_in_node; 
-	vector<OctreeNode*> child_nodes;
+	OctreeNode* child_nodes[8];
 	OctreeNode* parent_node; 
 
 	bool leaf = true; 
@@ -48,7 +48,7 @@ public:
 	void Insert(GameObject* new_go);
 	void Remove(GameObject* to_delete);
 
-	void Split(OctreeNode* node_to_split); 
+	void Split(); 
 
 	void DrawOctree();
 
@@ -59,11 +59,13 @@ public:
 	OctreeNode* GetLastLeafNode(); 
 	OctreeNode* GetCurrentChildNode(GameObject* go); 
 	OctreeNode* GetRootNode(); 
+	uint GetNumObjects(); 
 
 private: 
 
 	OctreeNode* root_node; 
 	bool active = false; 
+	uint num_objects_added; 
 
 };
 
