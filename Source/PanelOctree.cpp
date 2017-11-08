@@ -42,25 +42,42 @@ void PanelOctree::DrawPanel()
 			ImGui::InputFloat3("Min Point", &min_point[0], 2);
 			ImGui::InputFloat3("Max Point", &max_point[0], 2);
 
-			if (ImGui::Button("Create!"))
-			{
-				Octree* oct = App->scene_intro->GetOctree(); 
-				oct = new Octree(); 
+			if (ImGui::Button("Create"))
+			{				
+				App->scene_intro->octree = new Octree(); 
 				AABB limits(min_point, max_point);
-				oct->Create(limits);				
+				App->scene_intro->octree->Create(limits);
 			}
+
+			ImGui::Separator(); 
+			ImGui::TextWrapped("Creates an octree with size of 200 and center point {0,0,0}");
+
+			if (ImGui::Button("Create default"))
+			{
+				min_point = { -100, -100, -100 }; 
+				max_point = { 100, 100, 100 }; 
+				App->scene_intro->octree = new Octree();
+				AABB limits(min_point, max_point);
+				App->scene_intro->octree->Create(limits);
+			}
+
+		
+			
 
 			ImGui::TreePop(); 
 		}
 
-		ImGui::Text("Min Point: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "(%.2f, %.2f, %.2f)", min_point.x, min_point.y, min_point.z); 
+		if (App->scene_intro->octree != nullptr)
+		{
+			ImGui::Text("Min Point: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "(%.2f, %.2f, %.2f)", App->scene_intro->octree->GetRootNode()->box.minPoint.x, App->scene_intro->octree->GetRootNode()->box.minPoint.y, App->scene_intro->octree->GetRootNode()->box.minPoint.z);
 
-		ImGui::Text("Max Point: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "(%.2f, %.2f, %.2f)", max_point.x, max_point.y, max_point.z);
+			ImGui::Text("Max Point: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "(%.2f, %.2f, %.2f)", App->scene_intro->octree->GetRootNode()->box.maxPoint.x, App->scene_intro->octree->GetRootNode()->box.maxPoint.y, App->scene_intro->octree->GetRootNode()->box.maxPoint.z);
+		}
 
-		if(App->scene_intro->GetOctree() != nullptr)
-			App->scene_intro->GetOctree()->SetActive(oct_active); 
+		if(App->scene_intro->octree!= nullptr)
+			App->scene_intro->octree->SetActive(oct_active); 
  
 		ImGui::Text("Objects Inside Octree: "); ImGui::SameLine(); 
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", obj_amount);
@@ -71,8 +88,8 @@ void PanelOctree::DrawPanel()
 		{
 			if (App->scene_intro->GetCurrentGO() != nullptr && App->scene_intro->GetCurrentGO()->IsStatic() == true)
 			{
-				App->scene_intro->GetOctree()->Insert(App->scene_intro->GetCurrentGO());
-				obj_amount = App->scene_intro->GetOctree()->GetNumObjects();
+				App->scene_intro->octree->Insert(App->scene_intro->GetCurrentGO());
+				obj_amount = App->scene_intro->octree->GetNumObjects();
 			}
 			else
 				LOG("Select a STATIC GameObject to add."); 

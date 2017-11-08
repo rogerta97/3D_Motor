@@ -164,7 +164,10 @@ void ModuleSceneIntro::SetCurrentGO(uint id)
 
 GameObject* ModuleSceneIntro::GetCurrentGO()
 {
-	return GO_list.at(current_gameobject_id);
+	if (!GO_list.empty())
+		return GO_list.at(current_gameobject_id);
+	else
+		return nullptr; 
 }
 
 Octree * ModuleSceneIntro::GetOctree()

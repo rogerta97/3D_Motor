@@ -45,11 +45,12 @@ public:
 
 public:
 	vector<ComponentCamera*> cameras_list;
+	Octree* octree = nullptr;
 
 private:
 
 	PPlane main_plane; 
 	vector<GameObject*> GO_list;
 	uint current_gameobject_id = 0;
-	Octree* octree = nullptr; 
+	
 };
