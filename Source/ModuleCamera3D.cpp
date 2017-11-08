@@ -63,7 +63,7 @@ update_status ModuleCamera3D::Update(float dt)
 	GameObject* aux;
 	Frustum frustum = basic_camera->frustum;//AQUI
 
-	ComponentTransform* tmp_trans; 
+	ComponentTransform* tmp_trans= nullptr; 
 
 	if (App->scene_intro->GetGameObject(0) != nullptr)
 		 aux = App->scene_intro->GetGameObject(0);
@@ -78,9 +78,10 @@ update_status ModuleCamera3D::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_RALT) == KEY_REPEAT)
 			//TODO put the last gizmo position to orbit arround it
 		{
-			tmp_trans = (ComponentTransform*)App->scene_intro->GetGameObject(0)->GetComponent(COMPONENT_TRANSFORM);
+			if (App->scene_intro->GetGameObject(0) != nullptr)
+				tmp_trans = (ComponentTransform*)App->scene_intro->GetGameObject(0)->GetComponent(COMPONENT_TRANSFORM);
 			
-				if (aux == nullptr)
+				if (tmp_trans == nullptr)
 					Orbit(vec3(0, 0, 0), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
 				else
 					Orbit(vec3(tmp_trans->GetLocalPosition().x, tmp_trans->GetLocalPosition().y, tmp_trans->GetLocalPosition().z), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
