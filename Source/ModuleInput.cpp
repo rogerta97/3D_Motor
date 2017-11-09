@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "Functions.h"
 #include "ComponentMaterial.h"
 
 #define MAX_KEYS 300
@@ -127,11 +128,12 @@ update_status ModuleInput::PreUpdate(float dt)
 
 				std::string file = e.drop.file;
 
-				std::string termination = file.substr(file.size() - 3, 3);
+				char* termination; 
+				GetPathTermination(e.drop.file, &termination[0]);
 
 				if (termination == "fbx" || termination == "FBX")
 				{
-					LOG("FBX file dragged to window", termination); 					
+					LOG("%s file dragged to window", termination); 					
 
 					App->fbx_loader->LoadFileScene(file.c_str());
 
@@ -140,11 +142,10 @@ update_status ModuleInput::PreUpdate(float dt)
 				if (termination == "png" || termination == "PNG")
 				{
 					//For now we set the texture in the last obect created (the unique in the scene) 
-					LOG("PNG file dragged to window", termination);
+					LOG("%s file dragged to window", termination);
 
 					if (App->scene_intro->GetCurrentGO() != nullptr)
-					{
-						
+					{						
 						ComponentMaterial* new_material = nullptr;
 						new_material = App->fbx_loader->ImportImage(file.c_str());
 						new_material->SetComponentParent(App->scene_intro->GetCurrentGO());

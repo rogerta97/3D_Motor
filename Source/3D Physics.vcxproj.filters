@@ -1224,6 +1224,9 @@
     <ClInclude Include="AssimpLogger.h">
       <Filter>Modules\Importers\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="Functions.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">

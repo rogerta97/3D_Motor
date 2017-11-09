@@ -154,7 +154,10 @@ bool PanelInspector::Draw()
 				if (ImGui::CollapsingHeader("Component Material"))
 				{
 					ImGui::Text("Material ID: "); ImGui::SameLine(); 
-					ImGui::TextColored(ImVec4(1,1,0,1), "%d", curr_cmp->textures_id);
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->textures_id);
+
+					ImTextureID img = (void*)curr_cmp->textures_id;
+					ImGui::Image(img, ImVec2(100, 100));
 
 					ImGui::Text("Width: "); ImGui::SameLine();
 					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->width);
@@ -163,10 +166,7 @@ bool PanelInspector::Draw()
 					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->height);
 
 					ImGui::Text("Name: "); ImGui::SameLine(); 
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", curr_cmp->path.c_str());
-
-					ImTextureID img = (void*)curr_cmp->textures_id;
-					ImGui::Image(img, ImVec2(100, 100));
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", curr_cmp->path.c_str()); ImGui::SameLine(); 		
 				}
 	
 				break;
@@ -181,10 +181,6 @@ bool PanelInspector::Draw()
 
 				if (ImGui::CollapsingHeader("Component Camera"))
 				{
-					/*float3 radians_angle = curr_cmp->frustumGetLocalRotation().ToEulerXYZ();
-					float pos[3] = { curr_cmp-> };
-					float rot[3] = { RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
-					*/
 					float nearPlane_aux = curr_cmp->GetNearPlaneDist();
 					if (ImGui::DragFloat("Near Plane Distance##transform", &nearPlane_aux, 0.5f, 0.0f))
 						curr_cmp->SetNearPlaneDist(nearPlane_aux);
@@ -194,6 +190,8 @@ bool PanelInspector::Draw()
 			}
 
 			}
+
+			//if(ImGui::Button("Delete Component"))
 
 
 		}	
