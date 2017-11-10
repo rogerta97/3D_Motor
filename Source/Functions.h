@@ -1,15 +1,13 @@
 #pragma once
+
 #include <string>
+#include "Globals.h"
 
-const char* GetLastPathCommand(const char* full_path)
-{
-	return ""; 
-}
+using namespace std;
 
-void GetPathTermination(const char* path, char* termination)
-{
-	std::string full_path(path); 
-	std::string term = full_path.substr(full_path.size() - 3, 3);
-	strcpy(termination, term.c_str()); 
-}		
+string GetLastPathCommand(const char* full_path, bool want_termination);
+
+string TillLastBar(const char* full_path);
+
+int GetPathTermination(const char* path);
 

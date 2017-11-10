@@ -128,37 +128,43 @@ update_status ModuleInput::PreUpdate(float dt)
 
 				std::string file = e.drop.file;
 
-				char* termination; 
-				GetPathTermination(e.drop.file, &termination[0]);
+				file_format format = FF_NULL; 
 
-				if (termination == "fbx" || termination == "FBX")
+				format = (file_format)GetPathTermination(e.drop.file);
+
+				if (format != FF_NULL)
 				{
-					LOG("%s file dragged to window", termination); 					
+					if (format == FF_FBX)
+					{
+						LOG("FBX file dragged to window");
 
-					App->fbx_loader->LoadFileScene(file.c_str());
+						App->fbx_loader->LoadFileScene(file.c_str());
 
-				}				
-
-				if (termination == "png" || termination == "PNG")
-				{
-					//For now we set the texture in the last obect created (the unique in the scene) 
-					LOG("%s file dragged to window", termination);
-
-					if (App->scene_intro->GetCurrentGO() != nullptr)
-					{						
-						ComponentMaterial* new_material = nullptr;
-						new_material = App->fbx_loader->ImportImage(file.c_str());
-						new_material->SetComponentParent(App->scene_intro->GetCurrentGO());
-
-						App->scene_intro->GetCurrentGO()->PushComponent(new_material); 
-					
 					}
-					else
-						LOG("No gameobject selected where PNG can be dragged"); 
-		
+
+					if (format == FF_PNG)
+					{
+						//For now we set the texture in the last obect created (the unique in the scene) 
+						LOG("PNG file dragged to window");
+
+						if (App->scene_intro->GetCurrentGO() != nullptr)
+						{
+							ComponentMaterial* new_material = nullptr;
+							new_material = App->fbx_loader->ImportImage(file.c_str());
+							new_material->SetComponentParent(App->scene_intro->GetCurrentGO());
+
+							App->scene_intro->GetCurrentGO()->PushComponent(new_material);
+
+						}
+						else
+							LOG("No gameobject selected where PNG can be dragged");
+
+					}
+
+					break;
 				}
-					
-				break;
+				else
+					LOG("Error getting the path");
 		}
 	}
 

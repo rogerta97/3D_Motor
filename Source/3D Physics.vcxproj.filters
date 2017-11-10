@@ -1466,6 +1466,9 @@
     <ClCompile Include="MeshRendererImporter.cpp">
       <Filter>Modules\Importers\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="Functions.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Geometry\KDTree.inl">

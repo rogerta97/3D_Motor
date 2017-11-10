@@ -12,6 +12,13 @@ enum KEY_STATE
 	KEY_UP
 };
 
+enum file_format
+{
+	FF_FBX, 
+	FF_PNG, 
+	FF_NULL
+};
+
 class ModuleInput : public Module
 {
 public:

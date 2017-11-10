@@ -3,6 +3,7 @@
 #include "ModuleFBXLoader.h"
 #include "ModuleSceneIntro.h"
 #include "ComponentDefs.h"
+#include "Functions.h"
 #include "ModuleCamera3D.h"
 #include "GameObject.h"
 #include <vector>
@@ -120,20 +121,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 
 		if (node_name == "RootNode")
 		{
-			// A function needs to be created for this
 			new_go->SetRoot(true); 
-
-			std::string full_path_str(full_path);
-			uint cut1 = full_path_str.find_last_of('\\');
-			uint cut2 = full_path_str.find_last_of('.');
-
-			uint lenght = cut2 - cut1; 
-
-			std::string final_str = full_path_str.substr(cut1 + 1, lenght - 1);
-			node_name = final_str; 
-
-			 // -----------------
-
+			node_name = GetLastPathCommand(full_path, false); 
 		}
 			new_go->SetName(node_name.c_str());
 
@@ -248,11 +237,13 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 					ComponentMaterial* MA_tmp;
 					mat->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 
-					std::string full_path_str(full_path);
-					uint cut = full_path_str.find_last_of('\\');
+					string final_str = TillLastBar(full_path);
+					string text_name = GetLastPathCommand(path.C_Str(), true);
 
-					std::string final_str = full_path_str.substr(0, cut + 1);
-					final_str += path.C_Str();
+					int term = GetPathTermination(full_path); 
+
+					final_str += text_name;
+
 					MA_tmp = ImportImage(final_str.c_str());
 
 					MA_tmp->type = COMPONENT_MATERIAL;
