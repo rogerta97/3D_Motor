@@ -1,6 +1,7 @@
 #include "ComponentCamera.h"
 #include "Color.h"
 #include "DebugDraw.h"
+#include "ComponentTransform.h"
 #include "ModuleSceneIntro.h"
 #include "Application.h"
 
@@ -30,6 +31,15 @@ ComponentCamera::~ComponentCamera()
 bool ComponentCamera::Update()
 {
 	DrawFrustum(frustum, Color(1.0f, 1.0f,0.0f));
+
+	ComponentTransform* trans = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
+
+	if (trans->IsModified())
+	{
+		frustum.pos = trans->GetLocalPosition(); 
+	
+	}
+
 	return true;
 }
 

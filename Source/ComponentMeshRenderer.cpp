@@ -249,7 +249,7 @@ ComponentMeshRenderer::ComponentMeshRenderer(uint num_ver, float * ver, uint num
 	bounding_box.Enclose((float3*)ver, num_ver);
 }
 
-uint ComponentMeshRenderer::GetTriNum() const
+uint ComponentMeshRenderer::GetNumTriangles() const
 {
 	return (num_vertices / 3);
 }

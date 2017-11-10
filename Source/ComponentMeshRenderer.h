@@ -26,7 +26,7 @@ public:
 	void SetCubeVertices(float3 origin, uint edge_size);
 	void SetSphereVertices(float radius, uint rings, uint sectors, float3 origin);
 	void SetCylinderVertices(float r, int sides, int height);
-	uint GetTriNum() const;
+	uint GetNumTriangles() const;
 
 
 	void AdaptBoundingBox(float4x4 transform); 

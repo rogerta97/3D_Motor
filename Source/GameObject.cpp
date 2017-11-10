@@ -166,12 +166,24 @@ void GameObject::PushComponent(Component* comp)
 	}
 	else if(GetComponent(comp->type) != nullptr)
 	{
+		switch (comp->type)
+		{
+		case COMPONENT_MATERIAL: 
+			ComponentMaterial* mat = (ComponentMaterial*)GetComponent(COMPONENT_MATERIAL);
+			mat->Set((ComponentMaterial*)comp);
+			LOG("Component Material %d Substituted", mat->textures_id); 
+			break; 
+		}
+
 		// If it already exists we modify it 
-		ComponentMaterial* mat = (ComponentMaterial*)GetComponent(COMPONENT_MATERIAL);
-		mat->Set((ComponentMaterial*)comp);
+	
 	}
 	else // if not we push it to the component list 
-		component_list.push_back(comp);		
+	{
+		component_list.push_back(comp);
+		LOG("New component added succesfully to %s", name); 
+	}
+			
 }
 
 Component * GameObject::AddEmptyComponent(component_type type)

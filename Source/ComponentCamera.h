@@ -36,6 +36,7 @@ public:
 	bool HasAABB(AABB& GO_bb);
 	float* GetOpenGLViewMatrix()const;
 	float* GetOpenGLProjectionMatrix()const;
+
 public:
 	Frustum frustum;
 	GameObject* selected_GO = nullptr;

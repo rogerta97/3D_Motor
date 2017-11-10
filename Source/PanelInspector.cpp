@@ -43,157 +43,27 @@ bool PanelInspector::Draw()
 		{
 			switch (go_to_display->GetComponent(i)->type)
 			{
-			case COMPONENT_TRANSFORM:
-			{		
-					ComponentTransform* curr_cmp = (ComponentTransform*)go_to_display->GetComponent(COMPONENT_TRANSFORM);
-
-					if (curr_cmp == nullptr)
-						continue;
-
-					if (ImGui::CollapsingHeader("Component Transform"), ImGuiTreeNodeFlags_Leaf)
-					{
-
-						if (ImGui::Button("Reset Transform"))
-						{
-							curr_cmp->SetLocalPosition(float3(0,0,0));
-							curr_cmp->SetLocalRotation(DegToRad(float3(0,0,0)));
-							curr_cmp->SetLocalScale(float3(1,1,1));
-
-							if (curr_cmp->GetComponentParent()->GetNumChilds() > 0)
-							{
-								GameObject* curr_go = curr_cmp->GetComponentParent();
-
-								for (int i = 0; i < curr_go->GetNumChilds(); i++)
-								{
-									ComponentTransform* trans = (ComponentTransform*) curr_go->GetChild(i)->GetComponent(COMPONENT_TRANSFORM);
-
-									trans->SetLocalPosition(float3(0, 0, 0));
-									trans->SetLocalRotation(DegToRad(float3(0, 0, 0)));
-									trans->SetLocalScale(float3(1, 1, 1));
-								}
-							}
-							continue; 
-						}
-
-						static int e = 0;
-						ImGui::RadioButton("Local", &e, 0); ImGui::SameLine();
-						ImGui::RadioButton("Global", &e, 1);
-
-						float3 radians_angle;
-						float pos[3];
-						float rot[3];
-						float s[3];
-
-						switch (e)
-						{
-						case 0:
-							radians_angle = curr_cmp->GetLocalRotation().ToEulerXYZ();
-
-							pos[0] = curr_cmp->GetLocalPosition().x; pos[1] = curr_cmp->GetLocalPosition().y; pos[2] = curr_cmp->GetLocalPosition().z;						
-							rot[0] = RadToDeg(radians_angle.x); rot[1] = RadToDeg(radians_angle.y); rot[2] = RadToDeg(radians_angle.z); 					
-							s[0] = curr_cmp->GetLocalScale().x; s[1] = curr_cmp->GetLocalScale().y; s[2] = curr_cmp->GetLocalScale().z;
-
-							break;
-
-						case 1:
-							radians_angle = curr_cmp->GetGlobalRotation().ToEulerXYZ();
-
-							pos[0] = curr_cmp->GetGlobalPosition().x; pos[1] = curr_cmp->GetGlobalPosition().y; pos[2] = curr_cmp->GetGlobalPosition().z;
-							rot[0] = RadToDeg(radians_angle.x); rot[1] = RadToDeg(radians_angle.y); rot[2] = RadToDeg(radians_angle.z);
-							s[0] = curr_cmp->GetGlobalScale().x; s[1] = curr_cmp->GetGlobalScale().y; s[2] = curr_cmp->GetGlobalScale().z;
-							break; 
-						}
-
-					if (ImGui::DragFloat3("Position##transform", pos, 2))
-						curr_cmp->SetLocalPosition(float3(pos[0], pos[1], pos[2]));
-
-					if (ImGui::DragFloat3("Rotation##transform", rot, 2))
-						curr_cmp->SetLocalRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
-
-					if (ImGui::DragFloat3("Scale##transform", s, 2))
-						curr_cmp->SetLocalScale(float3(s[0], s[1], s[2]));
-					}
-
-
+			case COMPONENT_TRANSFORM:		
+				PrintTransformComponent(go_to_display);
 				break;
-			}
+			
 
 			case COMPONENT_MESH_RENDERER:
-			{
-				ComponentMeshRenderer* curr_cmp = (ComponentMeshRenderer*)go_to_display->GetComponent(COMPONENT_MESH_RENDERER);
-
-				if (curr_cmp == nullptr)
-					continue;
-				if (ImGui::CollapsingHeader("Component Mesh Renderer"))
-				{
-					ImGui::Text("Vertices: "); ImGui::SameLine(); 
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumVertices());
-					ImGui::Text("Indices: "); ImGui::SameLine();
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumIndices());
-
-					ImGui::Checkbox("AABB active", &curr_cmp->show_bb); 
-
-					if (curr_cmp->IsBBoxShowing())
-					{
-						DebugDraw(curr_cmp->GetBBox(), Red);
-					}
-
-				}
-		
-			}
-
+				PrintMeshComponent(go_to_display);
 				break;
 
 			case COMPONENT_MATERIAL:
-			{
-				ComponentMaterial* curr_cmp = (ComponentMaterial*)go_to_display->GetComponent(COMPONENT_MATERIAL);
-
-				if (curr_cmp == nullptr)
-					continue;
-
-				if (ImGui::CollapsingHeader("Component Material"))
-				{
-					ImGui::Text("Material ID: "); ImGui::SameLine(); 
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->textures_id);
-
-					ImTextureID img = (void*)curr_cmp->textures_id;
-					ImGui::Image(img, ImVec2(100, 100));
-
-					ImGui::Text("Width: "); ImGui::SameLine();
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->width);
-
-					ImGui::Text("Height: "); ImGui::SameLine();
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->height);
-
-					ImGui::Text("Name: "); ImGui::SameLine(); 
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", curr_cmp->path.c_str()); ImGui::SameLine(); 		
-				}
-	
-				break;
-			}
+				PrintMaterialComponent(go_to_display);
+				break; 
+			
 
 			case COMPONENT_CAMERA:
-			{
-				ComponentCamera* curr_cmp = (ComponentCamera*)go_to_display->GetComponent(COMPONENT_CAMERA);
-
-				if (curr_cmp == nullptr)
-					continue;
-
-				if (ImGui::CollapsingHeader("Component Camera"))
-				{
-					float nearPlane_aux = curr_cmp->GetNearPlaneDist();
-					if (ImGui::DragFloat("Near Plane Distance##transform", &nearPlane_aux, 0.5f, 0.0f))
-						curr_cmp->SetNearPlaneDist(nearPlane_aux);
-				}
-
-				break;
-			}
+				PrintCameraComponent(go_to_display);
+				break; 
+			
 
 			}
-
 			//if(ImGui::Button("Delete Component"))
-
-
 		}	
 
 		ImGui::Separator();
@@ -250,19 +120,14 @@ bool PanelInspector::Draw()
 						break;
 					}
 						
-
 					case 2: 
 					{
 						ComponentCamera* new_cam = new ComponentCamera(curr_go, App->camera->far_plane, App->camera->near_plane, App->camera->field_of_view, App->camera->aspect_ratio);
 						curr_go->PushComponent(new_cam);
 						break;
-					}
-			
+					}		
 				}
 		}
-
-	
-
 	}
 	ImGui::End();
 
@@ -294,107 +159,145 @@ bool PanelInspector::ShowWarningModal()
 
 	return ret; 
 }
+
+void PanelInspector::PrintMeshComponent(GameObject* GO_to_draw)
+{
+	ComponentMeshRenderer* curr_cmp = (ComponentMeshRenderer*)GO_to_draw->GetComponent(COMPONENT_MESH_RENDERER);
+
+	if (curr_cmp == nullptr)
+		return;
+
+	if (ImGui::CollapsingHeader("Component Mesh Renderer"))
+	{
+		ImGui::Text("Vertices: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumVertices());
+		ImGui::Text("Indices: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumIndices());
+		ImGui::Text("Triangles: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumTriangles());
+
+		ImGui::Checkbox("AABB active", &curr_cmp->show_bb);
+
+		if (curr_cmp->IsBBoxShowing())
+		{
+			DebugDraw(curr_cmp->GetBBox(), Red);
+		}
+
+	}
+}
+
+void PanelInspector::PrintMaterialComponent(GameObject* GO_to_draw)
+{
+	ComponentMaterial* curr_cmp = (ComponentMaterial*)GO_to_draw->GetComponent(COMPONENT_MATERIAL);
+
+	if (curr_cmp == nullptr)
+		return;
+
+	if (ImGui::CollapsingHeader("Component Material"))
+	{
+		ImGui::Text("Material ID: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->textures_id);
+
+		ImTextureID img = (void*)curr_cmp->textures_id;
+		ImGui::Image(img, ImVec2(100, 100));
+
+		ImGui::Text("Width: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->width);
+
+		ImGui::Text("Height: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->height);
+
+		ImGui::Text("Name: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", curr_cmp->path.c_str()); ImGui::SameLine();
+	}
+}
+
+void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
+{
+	ComponentTransform* curr_cmp = (ComponentTransform*)GO_to_draw->GetComponent(COMPONENT_TRANSFORM);
+
+	if (curr_cmp == nullptr)
+		return;
+
+	if (ImGui::CollapsingHeader("Component Transform"), ImGuiTreeNodeFlags_Leaf)
+	{
+
+		if (ImGui::Button("Reset Transform"))
+		{
+			curr_cmp->SetLocalPosition(float3(0, 0, 0));
+			curr_cmp->SetLocalRotation(DegToRad(float3(0, 0, 0)));
+			curr_cmp->SetLocalScale(float3(1, 1, 1));
+
+			if (curr_cmp->GetComponentParent()->GetNumChilds() > 0)
+			{
+				GameObject* curr_go = curr_cmp->GetComponentParent();
+
+				for (int i = 0; i < curr_go->GetNumChilds(); i++)
+				{
+					ComponentTransform* trans = (ComponentTransform*)curr_go->GetChild(i)->GetComponent(COMPONENT_TRANSFORM);
+
+					trans->SetLocalPosition(float3(0, 0, 0));
+					trans->SetLocalRotation(DegToRad(float3(0, 0, 0)));
+					trans->SetLocalScale(float3(1, 1, 1));
+				}
+			}
+			return;
+		}
+
+		static int e = 0;
+		ImGui::RadioButton("Local", &e, 0); ImGui::SameLine();
+		ImGui::RadioButton("Global", &e, 1);
+
+		float3 radians_angle;
+		float pos[3];
+		float rot[3];
+		float s[3];
+
+		switch (e)
+		{
+		case 0:
+			radians_angle = curr_cmp->GetLocalRotation().ToEulerXYZ();
+
+			pos[0] = curr_cmp->GetLocalPosition().x; pos[1] = curr_cmp->GetLocalPosition().y; pos[2] = curr_cmp->GetLocalPosition().z;
+			rot[0] = RadToDeg(radians_angle.x); rot[1] = RadToDeg(radians_angle.y); rot[2] = RadToDeg(radians_angle.z);
+			s[0] = curr_cmp->GetLocalScale().x; s[1] = curr_cmp->GetLocalScale().y; s[2] = curr_cmp->GetLocalScale().z;
+
+			break;
+
+		case 1:
+			radians_angle = curr_cmp->GetGlobalRotation().ToEulerXYZ();
+
+			pos[0] = curr_cmp->GetGlobalPosition().x; pos[1] = curr_cmp->GetGlobalPosition().y; pos[2] = curr_cmp->GetGlobalPosition().z;
+			rot[0] = RadToDeg(radians_angle.x); rot[1] = RadToDeg(radians_angle.y); rot[2] = RadToDeg(radians_angle.z);
+			s[0] = curr_cmp->GetGlobalScale().x; s[1] = curr_cmp->GetGlobalScale().y; s[2] = curr_cmp->GetGlobalScale().z;
+			break;
+		}
+
+		if (ImGui::DragFloat3("Position##transform", pos, 2))
+			curr_cmp->SetLocalPosition(float3(pos[0], pos[1], pos[2]));
+
+		if (ImGui::DragFloat3("Rotation##transform", rot, 2))
+			curr_cmp->SetLocalRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
+
+		if (ImGui::DragFloat3("Scale##transform", s, 2))
+			curr_cmp->SetLocalScale(float3(s[0], s[1], s[2]));
+	}
+}
+
+void PanelInspector::PrintCameraComponent(GameObject* GO_to_draw)
+{
+	ComponentCamera* curr_cmp = (ComponentCamera*)GO_to_draw->GetComponent(COMPONENT_CAMERA);
+
+	if (curr_cmp == nullptr)
+		return;
+
+	if (ImGui::CollapsingHeader("Component Camera"))
+	{
+		ImGui::DragFloat("Near Plane Distance##transform", &curr_cmp->frustum.nearPlaneDistance, 0.1f, 0.0f);
+		//curr_cmp->SetNearPlaneDist(nearPlane_aux);
+
+		ImGui::DragFloat("Far Plane Distance##transform", &curr_cmp->frustum.farPlaneDistance, 0.1f, 0.0f);
+		//curr_cmp->SetNearPlaneDist(nearPlane_aux);
+	}
+}
 		
-
-//	
-//			for (int i = 0; i < go_to_display->GetNumMeshes(); i++)
-//			{
-//				string secction;
-//
-//				if (go_to_display->GetNumMeshes() == 1)
-//					secction = go_to_display->GetName();
-//				else
-//				{
-//					secction = "Section: ";
-//					secction += to_string(i + 1);
-//				}
-//
-//				if (ImGui::CollapsingHeader(secction.c_str()))
-//				{
-//					ComponentTransform* ct_aux = (ComponentTransform*)go_to_display->GetComponent(COMPONENT_TRANSFORM, i);
-//
-//					if (ct_aux != nullptr)
-//					{
-//						string title("Component Transform ");
-//						title += '('; title += to_string(i + 1); title += ')';
-//
-//						if (ImGui::TreeNode(title.c_str()))
-//						{
-//							float3 radians_angle = ct_aux->GetLocalRotation().ToEulerXYZ();
-//
-//							float pos[3] = { ct_aux->GetLocalPosition().x,ct_aux->GetLocalPosition().y,ct_aux->GetLocalPosition().z };
-//							float rot[3] = { RadToDeg(radians_angle.x),RadToDeg(radians_angle.y),RadToDeg(radians_angle.z), };
-//							float s[3] = { ct_aux->GetLocalScale().x,ct_aux->GetLocalScale().y,ct_aux->GetLocalScale().z };
-//
-//							if (ImGui::InputFloat3("Pos##transform", pos, 2))
-//								ct_aux->SetPosition(float3(pos[0], pos[1], pos[2]));
-//							if (ImGui::InputFloat3("Rot##transform", rot, 2))
-//								ct_aux->SetRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
-//							if (ImGui::InputFloat3("Scale##transform", s, 2))
-//								ct_aux->SetScale(float3(s[0], s[1], s[2]));
-//
-//
-//							ImGui::TreePop();
-//						}
-//						ImGui::Separator();
-//					}
-//
-//
-//
-//					ComponentMeshRenderer* cmr_aux = (ComponentMeshRenderer*)go_to_display->GetComponent(COMPONENT_MESH_RENDERER, i);
-//
-//					if (cmr_aux != nullptr)
-//					{
-//						string title("Component Mesh Renderer ");
-//						title += '('; title += to_string(i + 1); title += ')';
-//
-//						if (ImGui::TreeNode(title.c_str()))
-//						{
-//
-//							ImGui::Text("Vertices: "); ImGui::SameLine();
-//							ImGui::TextColored(ImVec4{ 1,1,0,1 }, "%d", cmr_aux->num_vertices);
-//							ImGui::Text("Indices: "); ImGui::SameLine();
-//							ImGui::TextColored(ImVec4{ 1,1,0,1 }, "%d", cmr_aux->num_indices);
-//
-//							ImGui::TreePop();
-//						}
-//						ImGui::Separator();
-//					}
-//
-//					ComponentMaterial* cm_aux = (ComponentMaterial*)go_to_display->GetComponent(COMPONENT_MATERIAL, i);
-//
-//					if (cm_aux != nullptr)
-//					{
-//						string title("Component Material ");
-//						title += '('; title += to_string(i + 1); title += ')';
-//
-//						if (ImGui::TreeNode(title.c_str()))
-//						{
-//
-//							ImGui::Text("Texture ID: "); ImGui::SameLine();
-//							ImGui::TextColored(ImVec4{ 1,1,0,1 }, "%d", cm_aux->textures_id);
-//							ImGui::Text("Texture Width: "); ImGui::SameLine();
-//							ImGui::TextColored(ImVec4{ 1,1,0,1 }, "%d", cm_aux->width);
-//							ImGui::Text("Texture Height: "); ImGui::SameLine();
-//							ImGui::TextColored(ImVec4{ 1,1,0,1 }, "%d", cm_aux->height);
-//							ImGui::Text("Path: ");
-//							ImGui::TextColored(ImVec4{ 1,1,0,1 }, "%s", cm_aux->path);
-//
-//							ImGui::TreePop();
-//						}
-//						ImGui::Separator();
-//					}
-//				
-//			}
-//		}
-//
-//		else
-//		{
-//
-//		}
-//		ImGui::End();
-//	}
-//
-//	return true; 
-//}
-

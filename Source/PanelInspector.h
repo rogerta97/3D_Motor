@@ -3,6 +3,8 @@
 
 #include "imgui.h"
 
+class GameObject; 
+
 class PanelInspector
 {
 public: 
@@ -15,6 +17,12 @@ public:
 
 	bool ShowWarningModal(); 
 
+private:
+
+	void PrintMeshComponent(GameObject* GO_to_draw); 
+	void PrintMaterialComponent(GameObject* GO_to_draw);
+	void PrintTransformComponent(GameObject* GO_to_draw);
+	void PrintCameraComponent(GameObject* GO_to_draw);
 
 private:
 
