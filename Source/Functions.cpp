@@ -44,6 +44,9 @@ int GetPathTermination(const char* path)
 	else if (term == "png" || term == "PNG")
 		return 1;
 
-	else
+	else if (term == "tga" || term == "TGA")
 		return 2;
+
+	else
+		return 3;
 }

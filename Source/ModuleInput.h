@@ -16,6 +16,7 @@ enum file_format
 {
 	FF_FBX, 
 	FF_PNG, 
+	FF_TGA,
 	FF_NULL
 };
 

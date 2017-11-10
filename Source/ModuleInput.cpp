@@ -142,7 +142,7 @@ update_status ModuleInput::PreUpdate(float dt)
 
 					}
 
-					if (format == FF_PNG)
+					if (format == FF_PNG || format == FF_TGA)
 					{
 						//For now we set the texture in the last obect created (the unique in the scene) 
 						LOG("PNG file dragged to window");

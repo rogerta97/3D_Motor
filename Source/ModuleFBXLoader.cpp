@@ -51,12 +51,17 @@ void ModuleFBXLoader::LoadFileScene(const char * path)
 {
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 
-	aiNode* root_node = scene->mRootNode; 
+	if (scene != nullptr)
+	{
+		aiNode* root_node = scene->mRootNode;
 
-	LoadFBX(path, root_node, scene, nullptr);
+		LoadFBX(path, root_node, scene, nullptr);
 
-	aiReleaseImport(scene);
-
+		aiReleaseImport(scene);
+	}
+	else
+		LOG("Object can not be loaded"); 
+	
 }
 
 void ModuleFBXLoader::GetInnerTransform(aiNode & node, aiVector3D & pos, aiQuaternion & quat, aiVector3D & scale)
