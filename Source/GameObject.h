@@ -35,6 +35,8 @@ public:
 	Component* GetComponent(component_type new_component, int skip_num = 0);
 	Component* GetComponent(int index); 
 
+	AABB GetBoundingBox(); 
+
 	GameObject* GetChild(uint id)const; 
 	bool IsChild(const GameObject* go) const;
 

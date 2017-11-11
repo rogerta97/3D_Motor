@@ -36,8 +36,8 @@ bool ComponentCamera::Update()
 
 	if (trans->IsModified())
 	{
-		frustum.pos = trans->GetLocalPosition(); 
-	
+		frustum.pos = trans->GetLocalPosition(); 	
+		trans->SetModified(false); 
 	}
 
 	return true;

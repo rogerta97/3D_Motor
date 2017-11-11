@@ -30,7 +30,7 @@ void Octree::Insert(GameObject * new_go)
 	if (root_node != nullptr)
 		curr_node = root_node;
 
-	if (curr_node->InsertToNode(mr->GetBBox()))
+	if (curr_node->InsertToNode(new_go))
 	{
 		num_objects_added++;
 		LOG("GameObject '%s' added to Octree succesfully", new_go->GetName()); 
@@ -108,16 +108,16 @@ bool OctreeNode::IsFull()
 		return false; 
 }
 
-bool OctreeNode::InsertToNode(AABB& new_go_AABB)
+bool OctreeNode::InsertToNode(GameObject* new_go)
 {
 	bool ret = false; 
 
-		if (box.Contains(new_go_AABB))
+		if (box.Contains(new_go->GetBoundingBox()))
 		{
 			if (IsLeaf())
 			{
 				ret = true; 
-				objects_in_node.push_back(new_go_AABB); 
+				objects_in_node.push_back(new_go);
 
 				if (objects_in_node.size() == 2)
 				{
@@ -128,9 +128,9 @@ bool OctreeNode::InsertToNode(AABB& new_go_AABB)
 			{
 				for (int i = 0; i < 8; i++)
 				{
-					if (child_nodes[i]->box.Contains(new_go_AABB))
+					if (child_nodes[i]->box.Contains(new_go->GetBoundingBox()))
 					{
-						child_nodes[i]->InsertToNode(new_go_AABB);
+						child_nodes[i]->InsertToNode(new_go);
 						ret = true; 
 					}
 						
@@ -184,7 +184,7 @@ void OctreeNode::DrawNode()
 
 	for (int i = 0; i < objects_in_node.size(); i++)
 	{
-		DebugDraw(objects_in_node[i], Red);
+		DebugDraw(objects_in_node[i]->GetBoundingBox(), Red);
 	}
 
 	if (child_nodes[0] != nullptr)
@@ -246,7 +246,7 @@ void OctreeNode::SplitNode()
 			{
 				for (int i = 0; i < objects_in_node.size(); i++)
 				{
-					if (child_nodes[j]->box.Contains(objects_in_node[i]))
+					if (child_nodes[j]->box.Contains(objects_in_node[i]->GetBoundingBox()))
 					{
 						child_nodes[j]->objects_in_node.push_back(objects_in_node[i]);
 						objects_in_node.erase(objects_in_node.begin() + i);
@@ -275,4 +275,23 @@ OctreeNode::OctreeNode(AABB limits)
 	box = limits;
 	objects_in_node.clear();
 	leaf = true;
+}
+
+void OctreeNode::CollectIntersections(list<GameObject*>& objects, AABB* tester)
+{
+	if (box.Contains(*tester))
+	{
+		for (int i = 0; i < objects_in_node.size(); i++)
+		{
+			objects.push_back(objects_in_node[i]); 
+		}
+	}
+
+	for (int i = 0; i < 8; i++)
+	{
+		if (child_nodes[i] != nullptr)
+		{
+			child_nodes[i]->CollectIntersections(objects, tester); 
+		}
+	}
 }

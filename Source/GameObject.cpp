@@ -127,6 +127,20 @@ Component * GameObject::GetComponent(int index)
 	}
 }
 
+AABB GameObject::GetBoundingBox()
+{
+	AABB ret; 
+
+	ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponent(COMPONENT_MESH_RENDERER); 
+
+	if (mr != nullptr)
+	{
+		ret = mr->bounding_box; 
+	}
+
+	return ret;
+}
+
 GameObject * GameObject::GetChild(uint id)const
 {
 	return child_list.at(id);

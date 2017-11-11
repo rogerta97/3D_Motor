@@ -38,13 +38,11 @@ public:
 	float* GetOpenGLProjectionMatrix()const;
 
 public:
+
 	Frustum frustum;
 	GameObject* selected_GO = nullptr;
 	bool frustum_culling = false; 
 	bool screen_resized = false;
-
-
-
 };
 
 #endif

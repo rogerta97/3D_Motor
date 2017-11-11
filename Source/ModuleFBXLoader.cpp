@@ -179,7 +179,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 				//Indices
-
+				
 				if (m->HasFaces()) {
 					tmp_mr->num_indices = m->mNumFaces * 3;
 					tmp_mr->indices = new uint[tmp_mr->num_indices];
@@ -289,7 +289,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 					TR_cmp->Enable();
 
 					tmp_mr->AdaptBoundingBox(TR_cmp->GetLocalTransform()); 
-					TR_cmp->SetModified(false); 
+					//TR_cmp->SetModified(false); 
 
 					LOG("FBX imported with %d transform", i);
 				}

@@ -17,19 +17,19 @@ public:
 	bool IsFull(); 
 	bool IsLeaf(); 
 
-	bool InsertToNode(AABB& new_go);
-
-	void DeleteNode(); 
-	
+	bool InsertToNode(GameObject* new_go);
+	void DeleteNode(); 	
 	void DrawNode(); 
 	void SplitNode();
+
+	void CollectIntersections(list<GameObject*>& objects, AABB* tester);
 
 	vec GetCenter() const; 
 
 public: 
 
 	AABB box; 
-	vector<AABB> objects_in_node; 
+	vector<GameObject*> objects_in_node; 
 	OctreeNode* child_nodes[8];
 	OctreeNode* parent_node; 
 
@@ -68,5 +68,3 @@ private:
 	uint num_objects_added; 
 
 };
-
-
