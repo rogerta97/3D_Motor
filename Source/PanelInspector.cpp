@@ -23,7 +23,10 @@ bool PanelInspector::Draw()
 	{
 		GameObject* go_to_display = App->scene_intro->GetCurrentGO();
 
-		ImGui::Text("%s", go_to_display->GetName()); 
+		char* name; 
+		name = (char*)go_to_display->name.c_str(); 
+
+		ImGui::InputText("Name", name, 30);
 
 		ImGui::Separator(); 
 
@@ -32,7 +35,12 @@ bool PanelInspector::Draw()
 
 		ImGui::Checkbox("Active", &active_bool); ImGui::SameLine(); 
 
-		ImGui::Checkbox("Static", &static_bool);
+		ImGui::Checkbox("Static", &static_bool); ImGui::SameLine();
+
+		if (ImGui::Button("Assign parent"))
+		{
+			
+		}
 
 		ImGui::Separator();
 
@@ -47,7 +55,6 @@ bool PanelInspector::Draw()
 				PrintTransformComponent(go_to_display);
 				break;
 			
-
 			case COMPONENT_MESH_RENDERER:
 				PrintMeshComponent(go_to_display);
 				break;
@@ -245,13 +252,18 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 		}
 
 		static int e = 0;
-		ImGui::RadioButton("Local", &e, 0); ImGui::SameLine();
-		ImGui::RadioButton("Global", &e, 1);
+		ImGui::RadioButton("Local", &e, 0); 
+
+		if (curr_cmp->GetComponentParent()->GetParent() != nullptr)
+		{
+			ImGui::SameLine();
+			ImGui::RadioButton("Global", &e, 1);
+		}
 
 		float3 radians_angle;
-		float pos[3];
-		float rot[3];
-		float s[3];
+		static float pos[3];
+		static float rot[3];
+		static float s[3];
 
 		switch (e)
 		{
@@ -276,7 +288,7 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 		if (ImGui::DragFloat3("Position##transform", pos, 2))
 			curr_cmp->SetLocalPosition(float3(pos[0], pos[1], pos[2]));
 
-		if (ImGui::DragFloat3("Rotation##transform", rot, 2))
+		if (ImGui::SliderFloat3("Rotation##transform", rot, 0.0f, 180.0f))
 			curr_cmp->SetLocalRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
 
 		if (ImGui::DragFloat3("Scale##transform", s, 2))

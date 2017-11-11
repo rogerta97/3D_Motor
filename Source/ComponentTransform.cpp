@@ -88,6 +88,7 @@ void ComponentTransform::SetModified(bool n_value)
 
 void ComponentTransform::UpdateTransform()
 {
+
 	local_transform.Set(float4x4::FromTRS(position, rotation, scale)); 
 
 	if (GetComponentParent()->GetParent() == nullptr)
@@ -125,6 +126,15 @@ void ComponentTransform::SetLocalPosition(const float3 & _position)
 		transform_modified = true; 
 
 		UpdateTransform();
+
+		if (GetComponentParent()->GetNumChilds() > 0)
+		{
+			for (int i = 0; i < GetComponentParent()->GetNumChilds(); i++)
+			{
+				ComponentTransform* child_trans = (ComponentTransform*)GetComponentParent()->GetChild(i)->GetComponent(COMPONENT_TRANSFORM); 
+				child_trans->SetLocalPosition(position); 
+			}
+		}
 	}
 		
 }
@@ -140,6 +150,15 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 
 		UpdateTransform(); 
 
+		if (GetComponentParent()->GetNumChilds() > 0)
+		{
+			for (int i = 0; i < GetComponentParent()->GetNumChilds(); i++)
+			{
+				ComponentTransform* child_trans = (ComponentTransform*)GetComponentParent()->GetChild(i)->GetComponent(COMPONENT_TRANSFORM);
+				child_trans->SetLocalRotation(position);
+			}
+		}
+
 	}
 }
 
@@ -153,6 +172,15 @@ void ComponentTransform::SetLocalScale(const float3 & _scale)
 		transform_modified = true;
 
 		UpdateTransform();
+
+		if (GetComponentParent()->GetNumChilds() > 0)
+		{
+			for (int i = 0; i < GetComponentParent()->GetNumChilds(); i++)
+			{
+				ComponentTransform* child_trans = (ComponentTransform*)GetComponentParent()->GetChild(i)->GetComponent(COMPONENT_TRANSFORM);
+				child_trans->SetLocalScale(position);
+			}
+		}
 	}
 		
 

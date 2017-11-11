@@ -68,9 +68,12 @@ bool ModuleImGui::Init(json_file* config)
 	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.96f, 0.93f, 0.07f, 0.35f);
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
 
+	style.ItemSpacing.y = 6; 
+	style.GrabRounding = 3; 
+
 	panel_octree.Start(); 
 	
-	show_console = true; 
+	console.SetBoolean(true); 
 
 	App->performance.SaveInitData(name);
 

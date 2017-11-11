@@ -42,7 +42,7 @@ private:
 
 	bool show_test_window = true;
 	bool show_another_window = false;
-	bool show_console = false; 
+	bool show_console = true; 
 	bool show_random_number = false;
 	bool show_properties = true;
 	bool show_about = false; 
