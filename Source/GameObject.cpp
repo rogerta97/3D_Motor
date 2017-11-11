@@ -94,7 +94,16 @@ void GameObject::Draw()
 		}
 	}
 }
+bool GameObject::IsChild(const GameObject* go) const
+{
+	for (vector<GameObject*>::const_iterator it = go->child_list.begin(); it != go->child_list.end(); ++it)
+	{
+		if (this == *it || IsChild(*it) == true)
+			return true;
+	}
 
+	return false;
+}
 Component * GameObject::GetComponent(component_type new_component_type, int skip_num)
 {
 

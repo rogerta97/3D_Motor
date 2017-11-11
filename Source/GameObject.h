@@ -36,6 +36,7 @@ public:
 	Component* GetComponent(int index); 
 
 	GameObject* GetChild(uint id)const; 
+	bool IsChild(const GameObject* go) const;
 
 	bool IsCompEmpty(); 
 	bool IsChildEmpty(); 
@@ -52,7 +53,7 @@ public:
 	void PushRootComponent(Component* comp); // In case of a root object selected the texture will need to be aded to all it's childs
 	void PushChild(GameObject* child); 
 
-private:
+public:
 	vector<Component*> component_list;
 	vector<GameObject*> child_list;
 

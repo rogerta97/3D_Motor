@@ -17,6 +17,7 @@ public:
 private:
 
 	bool show_hierarchy = true;
+	bool open_selected = false;
 	bool inner_child_selected = false; 
 	bool outter_child_selected = false; 
 

@@ -27,48 +27,59 @@ bool PanelHierarchy::Draw()
 
 void PanelHierarchy::DrawNode(GameObject * go)
 {
-	if (!go->IsChildEmpty())
+	uint flags = 0;// ImGuiTreeNodeFlags_OpenOnArrow;
+
+	if (go->GetNumChilds() == 0)
+		flags |= ImGuiTreeNodeFlags_Leaf;
+
+	if (go == App->scene_intro->GetCurrentGO())
 	{
-		if (ImGui::TreeNode(go->GetName()))
+		flags |= ImGuiTreeNodeFlags_Selected;
+		open_selected = false;
+	}
+
+	if (open_selected == true && App->scene_intro->GetCurrentGO()->IsChild(go) == true)
+		ImGui::SetNextTreeNodeOpen(true);
+
+	if (ImGui::TreeNodeEx(go->GetName(), flags))
+	{
+		if (ImGui::IsItemHovered())
 		{
-			if (!inner_child_selected)
+			if (ImGui::IsMouseClicked(0)) {
 				App->scene_intro->SetCurrentGO(go->GetID());
-
-			for (int j = 0; j < go->GetNumChilds(); j++)
-			{
-				GameObject* curr_child = go->GetChild(j);
-
-				if (curr_child->GetNumChilds() > 0)
-				{
-					DrawNode(curr_child);
-				}
-				else
-				{
-					if (ImGui::MenuItem(curr_child->GetName()))
-					{
-						App->scene_intro->SetCurrentGO(go->GetChild(j)->GetID());
-						inner_child_selected = true;
-						outter_child_selected = false; 
-					}
-				}
-
 			}
 
-			ImGui::TreePop();
+		/*	if (ImGui::IsMouseDoubleClicked(0))
+			{
+				float radius = go->global_bbox.MinimalEnclosingSphere().r;
+				App->camera->CenterOn(go->GetGlobalPosition(), std::fmaxf(radius, 5.0f) * 2.0f);
+			}*/
 		}
-		else if (outter_child_selected = false)
-		{
+
+		if (ImGui::IsItemClicked(0)) {
 			App->scene_intro->SetCurrentGO(go->GetID());
-			inner_child_selected = false;
 		}
-			
+
+
+		for (vector<GameObject*>::const_iterator it = go->child_list.begin(); it != go->child_list.end(); ++it)
+			DrawNode(*it);
+
+		ImGui::TreePop();
 	}
 	else
 	{
-		if (ImGui::MenuItem(go->GetName()))
+		if (ImGui::IsItemHovered())
 		{
-			App->scene_intro->SetCurrentGO(go->GetID());
-			outter_child_selected = true; 
+			if (ImGui::IsMouseClicked(0)) {
+				App->scene_intro->SetCurrentGO(go->GetID());
+			}
+
+			/*	if (ImGui::IsMouseDoubleClicked(0))
+			{
+			float radius = go->global_bbox.MinimalEnclosingSphere().r;
+			App->camera->CenterOn(go->GetGlobalPosition(), std::fmaxf(radius, 5.0f) * 2.0f);
+			}*/
 		}
+
 	}
 }
