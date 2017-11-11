@@ -23,9 +23,9 @@ public:
 	Quat GetLocalRotation()const;
 	float3 GetLocalScale()const;
 
-	float3 GetGlobalPosition()const;
-	Quat GetGlobalRotation()const;
-	float3 GetGlobalScale()const;
+	float3 GetGlobalPosition();
+	Quat GetGlobalRotation();
+	float3 GetGlobalScale();
 
 	// Local Transform Setters & Getters
 

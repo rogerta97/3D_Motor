@@ -151,8 +151,16 @@ bool ComponentMeshRenderer::Update()
 	{
 		if (!App->renderer3D->curr_cam->HasAABB(this->bounding_box)) return false;
 	}
+
+	bool keep = ctransform->IsModified(); 
+
 	glPushMatrix(); 
-	glMultMatrixf(ctransform->GetLocalTransform().Transposed().ptr());
+
+	ctransform->UpdateTransform(); 
+	glMultMatrixf(ctransform->GetGlobalTransform().Transposed().ptr());
+
+	if(keep)
+		ctransform->SetModified(true); 
 
 	//VERTICES
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -193,12 +201,10 @@ bool ComponentMeshRenderer::Update()
 
 	//We modify the AABB if it is necessary 
 
-	ComponentTransform* tmp = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM); 
-
-	if (tmp->IsModified())
+	if (ctransform->IsModified())
 	{
-		AdaptBoundingBox(tmp->GetLocalTransform()); 
-		tmp->SetModified(false); 
+		AdaptBoundingBox(ctransform->GetLocalTransform());
+		ctransform->SetModified(false);
 	}
 
 	return true;

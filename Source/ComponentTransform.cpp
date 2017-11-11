@@ -21,20 +21,22 @@ float3 ComponentTransform::GetLocalScale()const
 	return scale;
 }
 
-float3 ComponentTransform::GetGlobalPosition() const
+float3 ComponentTransform::GetGlobalPosition()
 {
 
-	return position;
+	return global_position;
 }
 
-Quat ComponentTransform::GetGlobalRotation() const
+Quat ComponentTransform::GetGlobalRotation()
 {
-	return rotation;
+
+	return global_rotation;
 }
 
-float3 ComponentTransform::GetGlobalScale() const
+float3 ComponentTransform::GetGlobalScale()
 {
-	return scale;
+
+	return global_scale;
 }
 
 ComponentTransform::ComponentTransform(GameObject* _parent)
@@ -73,7 +75,7 @@ void ComponentTransform::SetGlobalTransform(float4x4 new_transform)
 
 float4x4 ComponentTransform::GetGlobalTransform()
 {
-	return float4x4();
+	return global_transform;
 }
 
 bool ComponentTransform::IsModified() const
@@ -88,30 +90,26 @@ void ComponentTransform::SetModified(bool n_value)
 
 void ComponentTransform::UpdateTransform()
 {
+		local_transform.Set(float4x4::FromTRS(position, rotation, scale));
+		global_transform = local_transform;
 
-	local_transform.Set(float4x4::FromTRS(position, rotation, scale)); 
-
-	if (GetComponentParent()->GetParent() == nullptr)
-		global_transform = local_transform; 
-
-	else
-	{
-		GameObject* parent_go = GetComponentParent()->GetParent(); 
+		GameObject* parent_go = GetComponentParent()->GetParent();
 
 		while (parent_go != nullptr)
 		{
-			ComponentTransform* p_trans = (ComponentTransform*)parent_go->GetComponent(COMPONENT_TRANSFORM);
+			ComponentTransform* parent_trans = (ComponentTransform*)parent_go->GetComponent(COMPONENT_TRANSFORM);
 
-			global_transform = p_trans->GetLocalTransform().Mul(local_transform);
-			parent_go = parent_go->GetParent(); 
+			global_transform = parent_trans->local_transform.Mul(local_transform);
+
+			parent_go = parent_go->parent;
 		}
-	}
 
+		global_transform.Decompose(global_position, global_rotation, global_scale);
+	
 }
 
 bool ComponentTransform::Update()
 {
-
 
 	return false;
 }
@@ -124,19 +122,7 @@ void ComponentTransform::SetLocalPosition(const float3 & _position)
 	{
 		position = _position;	
 		transform_modified = true; 
-
-		UpdateTransform();
-
-		if (GetComponentParent()->GetNumChilds() > 0)
-		{
-			for (int i = 0; i < GetComponentParent()->GetNumChilds(); i++)
-			{
-				ComponentTransform* child_trans = (ComponentTransform*)GetComponentParent()->GetChild(i)->GetComponent(COMPONENT_TRANSFORM); 
-				child_trans->SetLocalPosition(position); 
-			}
-		}
-	}
-		
+	}	
 }
 
 void ComponentTransform::SetLocalRotation(const float3& _rotation)
@@ -147,18 +133,6 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 		rotation = mod;
 
 		transform_modified = true;
-
-		UpdateTransform(); 
-
-		if (GetComponentParent()->GetNumChilds() > 0)
-		{
-			for (int i = 0; i < GetComponentParent()->GetNumChilds(); i++)
-			{
-				ComponentTransform* child_trans = (ComponentTransform*)GetComponentParent()->GetChild(i)->GetComponent(COMPONENT_TRANSFORM);
-				child_trans->SetLocalRotation(position);
-			}
-		}
-
 	}
 }
 
@@ -170,18 +144,5 @@ void ComponentTransform::SetLocalScale(const float3 & _scale)
 		scale = _scale;
 
 		transform_modified = true;
-
-		UpdateTransform();
-
-		if (GetComponentParent()->GetNumChilds() > 0)
-		{
-			for (int i = 0; i < GetComponentParent()->GetNumChilds(); i++)
-			{
-				ComponentTransform* child_trans = (ComponentTransform*)GetComponentParent()->GetChild(i)->GetComponent(COMPONENT_TRANSFORM);
-				child_trans->SetLocalScale(position);
-			}
-		}
 	}
-		
-
 }

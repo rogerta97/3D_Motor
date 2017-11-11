@@ -235,6 +235,9 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 			curr_cmp->SetLocalRotation(DegToRad(float3(0, 0, 0)));
 			curr_cmp->SetLocalScale(float3(1, 1, 1));
 
+			if (curr_cmp->IsModified())
+				curr_cmp->UpdateTransform(); 
+
 			if (curr_cmp->GetComponentParent()->GetNumChilds() > 0)
 			{
 				GameObject* curr_go = curr_cmp->GetComponentParent();
@@ -274,25 +277,43 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 			rot[0] = RadToDeg(radians_angle.x); rot[1] = RadToDeg(radians_angle.y); rot[2] = RadToDeg(radians_angle.z);
 			s[0] = curr_cmp->GetLocalScale().x; s[1] = curr_cmp->GetLocalScale().y; s[2] = curr_cmp->GetLocalScale().z;
 
+			if (ImGui::DragFloat3("Position##transform", pos, 2))
+				curr_cmp->SetLocalPosition(float3(pos[0], pos[1], pos[2]));
+
+			if (ImGui::SliderFloat3("Rotation##transform", rot, 0.0f, 180.0f))
+				curr_cmp->SetLocalRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
+
+			if (ImGui::DragFloat3("Scale##transform", s, 2))
+				curr_cmp->SetLocalScale(float3(s[0], s[1], s[2]));
+
+			if (curr_cmp->IsModified())
+				curr_cmp->UpdateTransform(); 
+
 			break;
 
 		case 1:
+
+			curr_cmp->UpdateTransform();
+
 			radians_angle = curr_cmp->GetGlobalRotation().ToEulerXYZ();
 
 			pos[0] = curr_cmp->GetGlobalPosition().x; pos[1] = curr_cmp->GetGlobalPosition().y; pos[2] = curr_cmp->GetGlobalPosition().z;
 			rot[0] = RadToDeg(radians_angle.x); rot[1] = RadToDeg(radians_angle.y); rot[2] = RadToDeg(radians_angle.z);
 			s[0] = curr_cmp->GetGlobalScale().x; s[1] = curr_cmp->GetGlobalScale().y; s[2] = curr_cmp->GetGlobalScale().z;
+			
+			ImGui::Text("----- Read Only -----"); 
+
+			ImGui::DragFloat3("Position##transform", pos, 2);
+			ImGui::DragFloat3("Rotation##transform", rot, 0.0f, 180.0f);
+			ImGui::DragFloat3("Scale##transform", s, 2);
+		
 			break;
 		}
 
-		if (ImGui::DragFloat3("Position##transform", pos, 2))
-			curr_cmp->SetLocalPosition(float3(pos[0], pos[1], pos[2]));
+	
 
-		if (ImGui::SliderFloat3("Rotation##transform", rot, 0.0f, 180.0f))
-			curr_cmp->SetLocalRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
 
-		if (ImGui::DragFloat3("Scale##transform", s, 2))
-			curr_cmp->SetLocalScale(float3(s[0], s[1], s[2]));
+	
 	}
 }
 

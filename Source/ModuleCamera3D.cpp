@@ -255,6 +255,16 @@ void ModuleCamera3D::CalculateViewMatrix()
 	ViewMatrixInverse = inverse(ViewMatrix);
 }
 
+float* ModuleCamera3D::GetFrustumViewMatrix()
+{
+	static float4x4 m;
+
+	m = editor_camera->frustum.ViewMatrix();
+	m.Transpose();
+
+	return (float*)m.v; 
+}
+
 void ModuleCamera3D::PrintConfigData()
 {
 	if (ImGui::CollapsingHeader("Camera"))

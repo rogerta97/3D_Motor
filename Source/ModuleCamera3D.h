@@ -26,12 +26,13 @@ public:
 	void SetCamPosition(math::float3 position);
 
 	ComponentCamera* GetEditorCam()const;
+	float* GetFrustumViewMatrix();
 
 	bool IsCulling(); 
 
 private:
 	void CalculateViewMatrix();
-
+	
 public:
 	
 	vec3 X, Y, Z, Position, Reference;
