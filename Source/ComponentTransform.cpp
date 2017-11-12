@@ -104,7 +104,7 @@ void ComponentTransform::UpdateTransform()
 			parent_go = parent_go->parent;
 		}
 
-		global_transform.Decompose(global_position, global_rotation, global_scale);
+		//global_transform.Decompose(global_position, global_rotation, global_scale);
 	
 }
 
@@ -121,7 +121,7 @@ void ComponentTransform::SetLocalPosition(const float3 & _position)
 	if (GetComponentParent()->IsStatic() == false)
 	{
 		position = _position;	
-		transform_modified = true; 
+		UpdateTransform(); 
 	}	
 }
 
@@ -132,7 +132,7 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
 		rotation = mod;
 
-		transform_modified = true;
+		UpdateTransform();
 	}
 }
 
@@ -143,6 +143,6 @@ void ComponentTransform::SetLocalScale(const float3 & _scale)
 	{
 		scale = _scale;
 
-		transform_modified = true;
+		UpdateTransform();
 	}
 }

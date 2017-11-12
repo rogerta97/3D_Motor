@@ -234,9 +234,7 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 			curr_cmp->SetLocalPosition(float3(0, 0, 0));
 			curr_cmp->SetLocalRotation(DegToRad(float3(0, 0, 0)));
 			curr_cmp->SetLocalScale(float3(1, 1, 1));
-		
-			curr_cmp->UpdateTransform(); 
-			curr_cmp->SetModified(false); 
+
 
 			if (curr_cmp->GetComponentParent()->GetNumChilds() > 0)
 			{
@@ -249,7 +247,7 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 					trans->SetLocalPosition(float3(0, 0, 0));
 					trans->SetLocalRotation(DegToRad(float3(0, 0, 0)));
 					trans->SetLocalScale(float3(1, 1, 1));
-					trans->SetModified(false); 
+
 				}
 			}
 			return;
@@ -287,14 +285,10 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 			if (ImGui::DragFloat3("Scale##transform", s, 2))
 				curr_cmp->SetLocalScale(float3(s[0], s[1], s[2]));
 
-			curr_cmp->UpdateTransform(); 
-			curr_cmp->SetModified(true); 
 
 			break;
 
 		case 1:
-
-			curr_cmp->UpdateTransform();
 
 			radians_angle = curr_cmp->GetGlobalRotation().ToEulerXYZ();
 

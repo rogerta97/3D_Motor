@@ -16,12 +16,12 @@ ComponentCamera::ComponentCamera(GameObject* _parent, float far_plane, float nea
 	frustum.farPlaneDistance = far_plane;
 	frustum.verticalFov = DEGTORAD * fov;
 	SetAspectRatio(aspect_ratio);
+
 	type = COMPONENT_CAMERA; 
 	
 	parent = _parent; 
 	active = true; 
 	//App->scene_intro->cameras_list.push_back(this);
-
 }
 
 ComponentCamera::~ComponentCamera()
@@ -34,12 +34,9 @@ bool ComponentCamera::Update()
 
 	ComponentTransform* trans = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
 
-	if (trans->IsModified())
-	{
-		frustum.pos = trans->GetLocalPosition(); 	
-		trans->SetModified(false); 
-	}
+	frustum.pos = trans->GetLocalPosition(); 	
 
+	
 	return true;
 }
 

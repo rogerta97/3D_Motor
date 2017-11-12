@@ -142,8 +142,6 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 		trans->SetLocalPosition(n_pos);
 		trans->SetLocalRotation(n_rot.ToEulerXYZ());
 		trans->SetLocalScale(n_scale);
-
-		trans->UpdateTransform(); 
 		
 		App->scene_intro->AddGameObject(new_go);
 	}
@@ -282,8 +280,6 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 					TR_cmp->SetLocalPosition(pos);
 					TR_cmp->SetLocalRotation(rot.ToEulerXYZ());
 					TR_cmp->SetLocalScale(scale);
-
-					TR_cmp->UpdateTransform(); 
 
 					TR_cmp->type = COMPONENT_TRANSFORM;
 					TR_cmp->Enable();
