@@ -76,7 +76,7 @@ void ComponentCamera::Look(const float3& position)
 	frustum.up = m.MulDir(frustum.up).Normalized();
 }
 
-bool ComponentCamera::HasAABB(AABB & GO_bb)
+bool ComponentCamera::IsInside(AABB & GO_bb)
 {
 	bool ret = false;
 	int vertex_num = GO_bb.NumVertices();
@@ -130,6 +130,80 @@ void ComponentCamera::SetAspectRatio(float aspect_ratio)
 {
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspect_ratio);
 	screen_resized = true;
+}
+
+void ComponentCamera::MoveForward(const float & speed)
+{
+	float3 vec = float3::zero;
+	vec += frustum.Front() * speed;
+	frustum.Translate(vec);
+}
+
+void ComponentCamera::MoveBackwards(const float & speed)
+{
+	float3 vec = float3::zero;
+	vec -= frustum.Front() * speed;
+	frustum.Translate(vec);
+}
+
+void ComponentCamera::MoveRight(const float & speed)
+{
+	float3 vec = float3::zero;
+	vec += frustum.WorldRight() * speed;
+	frustum.Translate(vec);
+}
+
+void ComponentCamera::MoveLeft(const float & speed)
+{
+	float3 vec = float3::zero;
+	vec -= frustum.WorldRight() * speed;
+	frustum.Translate(vec);
+}
+
+void ComponentCamera::MoveUp(const float & speed)
+{
+	float3 vec = float3::zero;
+	vec += float3::unitY * speed;
+	frustum.Translate(vec);
+}
+
+void ComponentCamera::MoveDown(const float & speed)
+{
+	float3 vec = float3::zero;
+	vec -= float3::unitY * speed;
+	frustum.Translate(vec);
+}
+
+void ComponentCamera::Orbit(const float3 & point, const float & motion_x, const float & motion_y)
+{
+	float3 vec = frustum.Pos() - point;
+
+	Quat X(frustum.WorldRight(), motion_y);
+	Quat Y(frustum.Up(), motion_x);
+
+	vec = X.Transform(vec);
+	vec = Y.Transform(vec);
+
+	frustum.SetPos(vec + point);
+}
+
+void ComponentCamera::Rotate(const float & motion_x, const float & motion_y)
+{
+	Quat rotation_x = Quat::RotateY(motion_x);
+	frustum.SetFront(rotation_x.Mul(frustum.Front()).Normalized());
+	frustum.SetUp(rotation_x.Mul(frustum.Up()).Normalized());
+
+	Quat rotation_y = Quat::RotateAxisAngle(frustum.WorldRight(), motion_y);
+	frustum.SetFront(rotation_y.Mul(frustum.Front()).Normalized());
+	frustum.SetUp(rotation_y.Mul(frustum.Up()).Normalized());
+}
+
+void ComponentCamera::Focus(const float3 & focus_center, const float & distance)
+{
+	float3 dir = frustum.Pos() - focus_center;
+	frustum.SetPos(dir.Normalized() * distance);
+
+	Look(focus_center);
 }
 
 float * ComponentCamera::GetOpenGLViewMatrix()const

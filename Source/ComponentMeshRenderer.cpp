@@ -149,7 +149,7 @@ bool ComponentMeshRenderer::Update()
 	
 	if (App->renderer3D->curr_cam->selected_GO != nullptr)
 	{
-		if (!App->renderer3D->curr_cam->HasAABB(this->bounding_box)) return false;
+		if (!App->renderer3D->curr_cam->IsInside(this->bounding_box)) return false;
 	}
 
 	glPushMatrix(); 

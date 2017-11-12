@@ -38,8 +38,8 @@ public:
 	
 	vec3 X, Y, Z, Position, Reference;
 
-	float mov_speed;
-	float rot_speed;
+	float mov_speed = 2.5f;//we should load it from config
+	float rot_speed = 0.25f;
 	float zm_speed;
 	float mouse_wheel_speed;
 

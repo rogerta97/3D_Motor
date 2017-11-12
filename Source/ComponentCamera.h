@@ -32,8 +32,19 @@ public:
 	void SetFOV(float fov);
 	void SetAspectRatio(float aspect_ratio);
 	//---
-	void Look(const float3& position);
-	bool HasAABB(AABB& GO_bb);
+	void MoveForward(const float& speed);
+	void MoveBackwards(const float& speed);
+	void MoveRight(const float& speed);
+	void MoveLeft(const float& speed);
+	void MoveUp(const float& speed);
+	void MoveDown(const float& speed);
+
+	void Orbit(const float3& point, const float& motion_x, const float& motion_y);
+	void Rotate(const float& motion_x, const float& motion_y);
+	void Focus(const float3& point, const float& distance);
+
+	void Look(const float3& pos);
+	bool IsInside(AABB& bbox);	
 
 	float* GetOpenGLViewMatrix()const;
 	float* GetOpenGLProjectionMatrix()const;

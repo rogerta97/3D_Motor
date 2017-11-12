@@ -72,7 +72,7 @@ update_status ModuleCamera3D::Update(float dt)
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 	GameObject* aux;
-	Frustum frustum = editor_camera->frustum;//AQUI
+	Frustum frustum = editor_camera->frustum;
 
 	ComponentTransform* tmp_trans= nullptr; 
 
@@ -84,43 +84,31 @@ update_status ModuleCamera3D::Update(float dt)
 	//------Move
 	Move();
 	//------Orbit with Focus
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_RALT) == KEY_REPEAT))
 	{
-		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_RALT) == KEY_REPEAT)
-			//TODO put the last gizmo position to orbit arround it
-		{
-			if (App->scene_intro->GetGameObject(0) != nullptr)
-				tmp_trans = (ComponentTransform*)App->scene_intro->GetGameObject(0)->GetComponent(COMPONENT_TRANSFORM);
-			
-				if (tmp_trans == nullptr)
-					Orbit(vec3(0, 0, 0), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
-				else
-					Orbit(vec3(tmp_trans->GetLocalPosition().x, tmp_trans->GetLocalPosition().y, tmp_trans->GetLocalPosition().z), App->input->GetMouseXMotion(), App->input->GetMouseYMotion());
-			
-			
-		}	
-	}
+		int dx = -App->input->GetMouseXMotion();
+		int dy = -App->input->GetMouseYMotion();
+
+		editor_camera->Rotate(-App->input->GetMouseXMotion()*rot_speed*0.01f, -App->input->GetMouseYMotion()*rot_speed*0.01f);
+	}	
+	Position -= Reference;
+
 	//------Focus 
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
-	{
-		//insert last gizmo position and the distance
-		//distance has to change depending on the size of the imported fbx
-		tmp_trans = (ComponentTransform*)App->scene_intro->GetGameObject(0)->GetComponent(COMPONENT_TRANSFORM);
+	//if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	//{
+	//	//insert last gizmo position and the distance
+	//	//distance has to change depending on the size of the imported fbx
+	//	tmp_trans = (ComponentTransform*)App->scene_intro->GetGameObject(0)->GetComponent(COMPONENT_TRANSFORM);
 
-		if(aux== NULL)
-			Focus(vec3(0, 0, 0), STD_CAM_DISTANCE);
-		else
-			Focus(vec3(tmp_trans->GetLocalPosition().x, tmp_trans->GetLocalPosition().y, tmp_trans->GetLocalPosition().z), STD_CAM_DISTANCE);
-
-	}
-
-	//------ Mouse motion ----------------
-
-	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-		FreeOrbit();
+	//	if(aux== NULL)
+	//		Focus(vec3(0, 0, 0), STD_CAM_DISTANCE);
+	//	else
+	//		Focus(vec3(tmp_trans->GetLocalPosition().x, tmp_trans->GetLocalPosition().y, tmp_trans->GetLocalPosition().z), STD_CAM_DISTANCE);
+	//}
 
 	// ------ Recalculate matrix -------------
-	CalculateViewMatrix();
+	//CalculateViewMatrix();
 
 	DebugDraw(editor_camera->frustum, Red);
 
@@ -188,22 +176,20 @@ void ModuleCamera3D::Move()
 
 	if (App->input->IsMouseInWindow() == 0)
 	{
-		if (App->input->GetMouseWheel() == 1) move_aux -= Z *temporal_speed*mouse_wheel_speed;
-		if (App->input->GetMouseWheel() == -1) move_aux += Z *temporal_speed*mouse_wheel_speed;
+		if (App->input->GetMouseWheel() == 1) editor_camera->MoveForward(temporal_speed);
+		if (App->input->GetMouseWheel() == -1) editor_camera->MoveBackwards(temporal_speed);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) move_aux -= Z *temporal_speed;
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) move_aux += Z *temporal_speed;
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) editor_camera->MoveForward(temporal_speed);
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) editor_camera->MoveBackwards(temporal_speed);
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) move_aux -= X * temporal_speed;
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) move_aux += X * temporal_speed;
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) editor_camera->MoveLeft(temporal_speed);
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) editor_camera->MoveRight(temporal_speed);
 
-	Position += move_aux;
-	Reference += move_aux;
 
 	float3 frustum_move(move_aux.x, move_aux.y, move_aux.z); 
 	editor_camera->frustum.SetPos(editor_camera->frustum.pos + frustum_move);
 
-	CalculateViewMatrix();
+	//CalculateViewMatrix();
 }
 
 void ModuleCamera3D::Move(const vec3 & pos)
@@ -300,10 +286,14 @@ void ModuleCamera3D::PrintConfigData()
 
 		if (ImGui::Checkbox("Frustum Culling", &frustum_culling)); 
 
-		ImGui::DragFloat("Near Plane", &near_plane, 0.1f, 0.1f);
-		ImGui::DragFloat("Far Plane", &far_plane, 0.1f, 0.1f);
-		ImGui::DragFloat("Field Of View", &field_of_view, 0.1f, 0.1f);
-		ImGui::DragFloat("Aspect Ratio", &aspect_ratio, 0.1f, 0.1f);
+		if (ImGui::DragFloat("Near Plane", &near_plane, 0.1f, 0.1f))
+			editor_camera->SetNearPlaneDist(near_plane);
+		if(ImGui::DragFloat("Far Plane", &far_plane, 0.1f, 0.1f))
+			editor_camera->SetFarPlaneDist(far_plane);
+		if(ImGui::DragFloat("Field Of View", &field_of_view, 0.1f, 0.1f))
+			editor_camera->SetFOV(field_of_view);
+		if(ImGui::DragFloat("Aspect Ratio", &aspect_ratio, 0.1f, 0.1f))
+			editor_camera->SetAspectRatio(aspect_ratio);
 
 
 	}
