@@ -216,6 +216,20 @@ void PanelInspector::PrintMaterialComponent(GameObject* GO_to_draw)
 
 		ImGui::Text("Name: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", curr_cmp->path.c_str()); ImGui::SameLine();
+
+	/*	if (ImGui::Button("Assign Color"))
+		{
+			if (ImGui::Begin("Color Editor"))
+			{
+
+				static float* st_color;
+				ImGui::ColorPicker4("Ambient color##4", st_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_RGB | ImGuiColorEditFlags_AlphaPreview, NULL);
+
+				curr_cmp->GetColor()->Set(st_color[0], st_color[1], st_color[2], st_color[3]);
+
+				ImGui::End(); 
+			}
+		}*/
 	}
 }
 

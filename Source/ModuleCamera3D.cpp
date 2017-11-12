@@ -110,8 +110,6 @@ update_status ModuleCamera3D::Update(float dt)
 	// ------ Recalculate matrix -------------
 	//CalculateViewMatrix();
 
-	DebugDraw(editor_camera->frustum, Red);
-
 	App->performance.SaveRunTimeData(name); 
 
 	return UPDATE_CONTINUE;
@@ -170,6 +168,7 @@ void ModuleCamera3D::LookAt(const float3 &objective)
 void ModuleCamera3D::Move()
 {
 	vec3 move_aux(0.0f, 0.0f, 0.0f);
+
 	float temporal_speed = mov_speed;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		temporal_speed = temporal_speed * 0.3f;
@@ -185,8 +184,7 @@ void ModuleCamera3D::Move()
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) editor_camera->MoveLeft(temporal_speed);
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) editor_camera->MoveRight(temporal_speed);
 
-
-	float3 frustum_move(move_aux.x, move_aux.y, move_aux.z); 
+	float3 frustum_move(move_aux.x, move_aux.y, move_aux.z);
 	editor_camera->frustum.SetPos(editor_camera->frustum.pos + frustum_move);
 
 	//CalculateViewMatrix();

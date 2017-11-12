@@ -5,6 +5,7 @@
 #include "OpenGL.h"
 #include <string>
 #include "Component.h"
+#include "Color.h"
 
 class ComponentMaterial : public Component
 {
@@ -31,6 +32,8 @@ public:
 	uint height = 0;
 
 	std::string path;
+
+
 };
 
 #endif

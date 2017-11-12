@@ -1,11 +1,13 @@
 #ifndef _RAYCAST_H_
 #define _RAYCAST_H_
 
-#include <list>
+#include <vector>
 #include "MathGeoLib\MathGeoLib.h"
 #include "imgui.h"
 
 using namespace std; 
+class ComponentCamera; 
+class GameObject; 
 
 class RayCast
 {
@@ -14,14 +16,21 @@ public:
 	RayCast(); 
 
 	void Update(); 
+	GameObject* GetHit(); 
+	void GetObjectsByDistance(vector<GameObject*>& objects);
+	GameObject* RayTest();
 
 	~RayCast(); 
 
-private: 
+private:
 
-	LineSegment ray; 
+	void DrawRay(); 
 
-	list<AABB*> aabb_list; 
+private:
+
+	LineSegment ray;
+	vector<GameObject*> candidate_list;
+
 };
 
 #endif

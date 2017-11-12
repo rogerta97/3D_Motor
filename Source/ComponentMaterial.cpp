@@ -70,3 +70,8 @@ uint ComponentMaterial::GetTexSize() const
 	return 0;
 }
 
+//Color* ComponentMaterial::GetColor()
+//{
+//	return color;
+//}
+

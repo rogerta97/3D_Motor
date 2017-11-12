@@ -181,6 +181,8 @@ bool ComponentMeshRenderer::Update()
 			glTexCoordPointer(3, GL_FLOAT, 0, NULL);
 		}
 	}
+
+
 	//INDICES
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,indices_id);
 	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);
@@ -190,7 +192,6 @@ bool ComponentMeshRenderer::Update()
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
 
 	glPopMatrix();
 
