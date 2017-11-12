@@ -121,6 +121,7 @@ update_status ModuleImGui::PostUpdate(float dt)
 	inspector.Draw();
 	hierarchy.Draw(); 
 	console.PrintConsole(); 
+	raycast.Update();
 
 	ImGui::Render();
 	App->renderer3D->CustomAttributes();

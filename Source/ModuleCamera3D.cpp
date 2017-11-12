@@ -122,6 +122,8 @@ update_status ModuleCamera3D::Update(float dt)
 	// ------ Recalculate matrix -------------
 	CalculateViewMatrix();
 
+	DebugDraw(editor_camera->frustum, Red);
+
 	App->performance.SaveRunTimeData(name); 
 
 	return UPDATE_CONTINUE;
@@ -198,6 +200,9 @@ void ModuleCamera3D::Move()
 	Position += move_aux;
 	Reference += move_aux;
 
+	float3 frustum_move(move_aux.x, move_aux.y, move_aux.z); 
+	editor_camera->frustum.SetPos(editor_camera->frustum.pos + frustum_move);
+
 	CalculateViewMatrix();
 }
 
@@ -263,6 +268,11 @@ float* ModuleCamera3D::GetFrustumViewMatrix()
 	m.Transpose();
 
 	return (float*)m.v; 
+}
+
+float * ModuleCamera3D::GetFrustumProjectionMatrix()
+{
+	return editor_camera->GetOpenGLProjectionMatrix(); 
 }
 
 void ModuleCamera3D::PrintConfigData()

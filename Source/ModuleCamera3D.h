@@ -27,6 +27,7 @@ public:
 
 	ComponentCamera* GetEditorCam()const;
 	float* GetFrustumViewMatrix();
+	float* GetFrustumProjectionMatrix(); 
 
 	bool IsCulling(); 
 

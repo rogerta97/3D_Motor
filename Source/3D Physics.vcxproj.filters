@@ -1227,6 +1227,9 @@
     <ClInclude Include="Functions.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="RayCast.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1468,6 +1471,9 @@
     </ClCompile>
     <ClCompile Include="Functions.cpp">
       <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="RayCast.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

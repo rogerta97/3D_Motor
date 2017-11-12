@@ -7,15 +7,12 @@
 
 ComponentCamera::ComponentCamera(GameObject* _parent, float far_plane, float near_plane, float fov, float aspect_ratio)
 {
-	frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.pos = float3::zero;
-	frustum.front = float3::unitZ;
-	frustum.up = float3::unitY;
+	frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumHandedness::FrustumRightHanded);
 
-	frustum.nearPlaneDistance = near_plane;
-	frustum.farPlaneDistance = far_plane;
-	frustum.verticalFov = DEGTORAD * fov;
-	SetAspectRatio(aspect_ratio);
+	frustum.type = FrustumType::PerspectiveFrustum;
+	frustum.SetFrame({0, 2, -5}, float3::unitZ, float3::unitY);
+	frustum.SetPerspective(DEGTORAD * 90.0f, DEGTORAD * 59.0f);
+	frustum.SetViewPlaneDistances(0.1f, 300.0f);
 
 	type = COMPONENT_CAMERA; 
 	

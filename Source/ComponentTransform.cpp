@@ -104,7 +104,7 @@ void ComponentTransform::UpdateTransform()
 			parent_go = parent_go->parent;
 		}
 
-		//global_transform.Decompose(global_position, global_rotation, global_scale);
+	//global_transform.Decompose(global_position, global_rotation, global_scale);
 	
 }
 

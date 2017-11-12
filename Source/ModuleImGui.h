@@ -5,6 +5,7 @@
 #include "PanelInspector.h"
 #include "PanelHierarchy.h"
 #include "PanelOctree.h"
+#include "RayCast.h"
 
 #include<vector>
 class ModuleImGui : public Module
@@ -39,6 +40,7 @@ private:
 	PanelConsole console;
 	PanelHierarchy hierarchy; 
 	PanelOctree panel_octree; 
+	RayCast raycast; 
 
 	bool show_test_window = true;
 	bool show_another_window = false;
