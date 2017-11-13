@@ -1,9 +1,16 @@
+#include "OpenGL.h"
 #include "ComponentMaterial.h"
+
 
 ComponentMaterial::ComponentMaterial(GameObject* _parent)
 {
 	parent = _parent; 
 	type = COMPONENT_MATERIAL; 
+}
+
+ComponentMaterial::ComponentMaterial()
+{
+	type = COMPONENT_MATERIAL;
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -60,7 +67,7 @@ void ComponentMaterial::Set(ComponentMaterial * new_cmp)
 	type = new_cmp->type;
 }
 
-void ComponentMaterial::SetTextureID(GLuint tex)
+void ComponentMaterial::SetTextureID(uint tex)
 {
 	textures_id = tex;
 }

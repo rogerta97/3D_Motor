@@ -4,10 +4,9 @@
 #include "ModuleSceneIntro.h"
 #include "GameObject.h"
 #include "ComponentMeshRenderer.h"
-//#include "ComponentMeshManager.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
-//#include "ComponentMaterialManager.h"
+#include "MaterialsImporter.h"
 #include "ModuleCamera3D.h"
 #include "ModuleImGui.h"
 #include "ComponentMaterial.h"
@@ -142,7 +141,7 @@ bool MeshRendererImporter::ImportNode(const aiScene * scene, aiNode * node, Game
 
 	//Import node meshes
 	uint num_meshes = node->mNumMeshes;
-	GameObject* first_go = parent; //store the first mesh go as the parent of children meshes, if the node has no meshes this node parent is the parent
+	GameObject* first_go = parent; 
 	for (uint i = 0; i < num_meshes; ++i)
 	{
 		GameObject* go = nullptr;
@@ -254,14 +253,14 @@ bool MeshRendererImporter::ImportMesh(aiMesh * mesh, GameObject * owner, const s
 		}
 		else //valid mesh, add to the list
 		{
-			//PAU
+			
 			ComponentMeshRenderer* new_mesh = new ComponentMeshRenderer(num_vertices, vert, num_indices, indices, num_uv, uv, num_normals, normals);
 			meshes.push_back(new_mesh);
 
 			//Set corresponding material
 			ComponentMaterial* material = (ComponentMaterial*)owner->AddEmptyComponent(component_type::COMPONENT_MATERIAL);
 			//PAU
-			//material->SetMaterial(mats[mesh->mMaterialIndex]);
+			material->Set(mats[mesh->mMaterialIndex]);
 		}
 	}
 
@@ -303,7 +302,7 @@ void MeshRendererImporter::SaveToLibrary(ComponentMeshRenderer * mesh)
 
 	//Serialize data to file
 	char file[69];
-	sprintf_s(file, "Library\\Meshes\\mesh_%d.tromesh", save_id++);
+	sprintf_s(file, "Library\\Meshes\\mesh_%d.ownmesh", save_id++);
 
 	FILE* f = fopen(file, "wb");
 	fwrite(data, sizeof(char), total_size, f);
@@ -356,11 +355,7 @@ void MeshRendererImporter::LoadFile(const char * path)
 	ComponentMeshRenderer* geo = new ComponentMeshRenderer(elements_num[1] / 3, vert, elements_num[0], ind, elements_num[2] / 3, tex_coords);
 	meshes.push_back(geo); 
 
-	//TEST
-	//GameObject* go = App->scene_intro->CreateGameObject();
-	//MeshRenderer* mr = (MeshRenderer*)go->AddComponent(Component::Type::MeshRenderer);
-	//mr->SetMesh(geo);
-	//go->AddEmptyComponent(Component::Type::Camera);
+	
 
 	RELEASE_ARRAY(data);
 }
@@ -380,31 +375,3 @@ void MeshRendererImporter::RemoveMesh(ComponentMeshRenderer * m)
 	}
 }
 
-void MeshRendererImporter::CubeMesh()
-{
-	//float ver[24] =
-	//{
-	//	15.f,5.f,5.f,
-	//	10.f,5.f,5.f,
-	//	10.f,0.f,5.f,
-	//	15.f,0.f,5.f,
-	//	15.f,0.f,0.f,
-	//	15.f,5.f,0.f,
-	//	10.f,5.f,0.f,
-	//	10.f,0.f,0.f
-	//};
-
-	//uint indices[36] =
-	//{
-	//	0,1,2, 2,3,0,
-	//	0,3,4, 4,5,0,
-	//	0,5,6, 6,1,0,
-	//	1,6,7, 7,2,1,
-	//	7,4,3, 3,2,7,
-	//	4,7,6, 6,5,4
-	//};
-
-	//cube = new ComponentMeshRenderer(24, ver, 36, indices);
-	//meshes.push_back(cube);
-	return;
-}

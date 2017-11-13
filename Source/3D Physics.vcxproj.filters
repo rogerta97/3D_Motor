@@ -1230,6 +1230,9 @@
     <ClInclude Include="RayCast.h">
       <Filter>Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="MaterialsImporter.h">
+      <Filter>Modules\Importers\Materials</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1474,6 +1477,9 @@
     </ClCompile>
     <ClCompile Include="RayCast.cpp">
       <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialsImporter.cpp">
+      <Filter>Modules\Importers\Materials</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

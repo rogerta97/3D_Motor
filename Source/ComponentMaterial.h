@@ -2,15 +2,16 @@
 #define _COMPONENTMATERIAL_H_
 
 #include "Globals.h"
-#include "OpenGL.h"
 #include <string>
 #include "Component.h"
 #include "Color.h"
+
 
 class ComponentMaterial : public Component
 {
 public: 
 	ComponentMaterial(GameObject* parent);
+	ComponentMaterial();
 
 	~ComponentMaterial();
 
@@ -23,7 +24,7 @@ public:
 
 	void Set(ComponentMaterial* new_cmp);
 
-	void SetTextureID(GLuint tex);
+	void SetTextureID(uint tex);
 	uint GetTexSize()const;
 
 	uint textures_id = 0;

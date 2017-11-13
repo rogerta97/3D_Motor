@@ -300,6 +300,7 @@
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_sdl.h" />
     <ClInclude Include="imgui_internal.h" />
+    <ClInclude Include="MaterialsImporter.h" />
     <ClInclude Include="MeshRendererImporter.h" />
     <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="ModuleMaterials.h" />
@@ -418,6 +419,7 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MaterialsImporter.cpp" />
     <ClCompile Include="MathGeoLib\Algorithm\GJK.cpp" />
     <ClCompile Include="MathGeoLib\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="MathGeoLib\Geometry\AABB.cpp" />

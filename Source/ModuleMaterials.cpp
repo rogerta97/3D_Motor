@@ -1,5 +1,6 @@
 #include "ModuleMaterials.h"
 #include "DevIL_Windows_SDK\include\IL\il.h"
+#include "DevIL_Windows_SDK\include\IL\ilu.h"
 #include "DevIL_Windows_SDK\include\IL\ilut.h"
 #include "JSON.h"
 
