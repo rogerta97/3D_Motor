@@ -62,7 +62,7 @@ void RayCast::GetObjectsByDistance(vector<GameObject*>& objects)
 
 		if (ray.Intersects(curr_candidate->GetBoundingBox()))
 		{
-			LOG("Candidate %d Hit", i);
+			LOG("Bounding Box %d Hit", i);
 			objects.push_back(curr_candidate); 
 		}
 	}
