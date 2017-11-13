@@ -32,6 +32,7 @@ public:
 	virtual bool Enable();
 	virtual bool Update();
 	virtual bool Disable();
+
 	bool IsActive()const;
 	bool SetActive(bool _active);
 

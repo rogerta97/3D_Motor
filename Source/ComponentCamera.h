@@ -39,6 +39,7 @@ public:
 	void MoveUp(const float& speed);
 	void MoveDown(const float& speed);
 
+	void SetPosition(const float3& pos);
 	void Orbit(const float3& point, const float& motion_x, const float& motion_y);
 	void Rotate(const float& motion_x, const float& motion_y);
 	void Focus(const float3& point, const float& distance);

@@ -47,7 +47,7 @@ void ComponentCamera::DrawFrustum(Frustum & frustum, Color color)
 
 float ComponentCamera::GetNearPlaneDist() const
 {
-	return frustum.farPlaneDistance;
+	return frustum.nearPlaneDistance;
 }
 
 float ComponentCamera::GetFarPlaneDist() const
@@ -172,6 +172,11 @@ void ComponentCamera::MoveDown(const float & speed)
 	float3 vec = float3::zero;
 	vec -= float3::unitY * speed;
 	frustum.Translate(vec);
+}
+
+void ComponentCamera::SetPosition(const float3 & pos)
+{
+	frustum.SetPos(pos);
 }
 
 void ComponentCamera::Orbit(const float3 & point, const float & motion_x, const float & motion_y)

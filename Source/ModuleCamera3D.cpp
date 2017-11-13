@@ -266,7 +266,6 @@ void ModuleCamera3D::PrintConfigData()
 {
 	if (ImGui::CollapsingHeader("Camera"))
 	{
-		ImGui::DragFloat3("Position", &Position.x, 0.1f);
 		ImGui::DragFloat("Mov Speed", &mov_speed, 0.1f, 0.1f);
 		ImGui::DragFloat("Rot Speed", &rot_speed, 0.05f, 0.01f);
 		ImGui::DragFloat("Zoom Speed", &mouse_wheel_speed, 0.1f, 2.0f,50.0f);
@@ -276,6 +275,7 @@ void ModuleCamera3D::PrintConfigData()
 			Position.x = 1.0f;
 			Position.y = 1.0f;
 			Position.z = 5.0f;
+			editor_camera->SetPosition({ Position.x,Position.y,Position.z });
 
 			mov_speed = 0.1f;
 			rot_speed = 0.25f;
@@ -287,14 +287,21 @@ void ModuleCamera3D::PrintConfigData()
 
 		if (ImGui::Checkbox("Frustum Culling", &frustum_culling)); 
 
-		if (ImGui::DragFloat("Near Plane", &near_plane, 0.1f, 0.1f))
-			editor_camera->SetNearPlaneDist(near_plane);
-		if(ImGui::DragFloat("Far Plane", &far_plane, 0.1f, 0.1f))
-			editor_camera->SetFarPlaneDist(far_plane);
-		if(ImGui::DragFloat("Field Of View", &field_of_view, 0.1f, 0.1f))
-			editor_camera->SetFOV(field_of_view);
-		if(ImGui::DragFloat("Aspect Ratio", &aspect_ratio, 0.1f, 0.1f))
-			editor_camera->SetAspectRatio(aspect_ratio);
+		float aux_n_p = editor_camera->GetNearPlaneDist();
+		if (ImGui::DragFloat("Near Plane", &aux_n_p, 0.1f, 0.1f, 1000.0f))
+			editor_camera->SetNearPlaneDist(aux_n_p);
+
+		float aux_f_p = editor_camera->GetFarPlaneDist();
+		if(ImGui::DragFloat("Far Plane", &aux_f_p, 0.1f, 0.1f, 10000.0f))
+			editor_camera->SetFarPlaneDist(aux_f_p);
+
+		float aux_FOV = editor_camera->GetFOV();
+		if(ImGui::DragFloat("Field Of View", &aux_FOV, 0.1f, 0.1f))
+			editor_camera->SetFOV(aux_FOV);
+
+		float aux_AR = editor_camera->GetAspectRatio();
+		if(ImGui::DragFloat("Aspect Ratio", &aux_AR, 0.1f, 0.1f, 10000.0f))
+			editor_camera->SetAspectRatio(aux_AR);
 
 
 	}
