@@ -132,7 +132,7 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 	{
 		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
 		rotation = mod;
-
+		
 		UpdateTransform();
 		transform_modified = true;
 	}

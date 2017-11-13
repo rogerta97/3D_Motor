@@ -32,8 +32,8 @@ bool ComponentCamera::Update()
 	ComponentTransform* trans = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
 
 	frustum.pos = trans->GetLocalPosition(); 	
-
-	
+	frustum.SetFront(trans->GetGlobalTransform().WorldZ().Normalized());
+	frustum.SetUp(trans->GetGlobalTransform().WorldY().Normalized());
 	return true;
 }
 

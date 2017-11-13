@@ -236,6 +236,7 @@ void PanelInspector::PrintMaterialComponent(GameObject* GO_to_draw)
 void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 {
 	ComponentTransform* curr_cmp = (ComponentTransform*)GO_to_draw->GetComponent(COMPONENT_TRANSFORM);
+	ComponentCamera* cam_cmp = (ComponentCamera*)GO_to_draw->GetComponent(COMPONENT_CAMERA);
 
 	if (curr_cmp == nullptr)
 		return;
@@ -288,12 +289,17 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 			pos[0] = curr_cmp->GetLocalPosition().x; pos[1] = curr_cmp->GetLocalPosition().y; pos[2] = curr_cmp->GetLocalPosition().z;
 			rot[0] = RadToDeg(radians_angle.x); rot[1] = RadToDeg(radians_angle.y); rot[2] = RadToDeg(radians_angle.z);
 			s[0] = curr_cmp->GetLocalScale().x; s[1] = curr_cmp->GetLocalScale().y; s[2] = curr_cmp->GetLocalScale().z;
-
 			if (ImGui::DragFloat3("Position##transform", pos, 2))
+			{
 				curr_cmp->SetLocalPosition(float3(pos[0], pos[1], pos[2]));
+				//cam_cmp->frustum.SetPos(vec(pos[0], pos[1], pos[2]));
+			}
 
 			if (ImGui::SliderFloat3("Rotation##transform", rot, 0.0f, 180.0f))
+			{
 				curr_cmp->SetLocalRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
+			}
+				
 
 			if (ImGui::DragFloat3("Scale##transform", s, 2))
 				curr_cmp->SetLocalScale(float3(s[0], s[1], s[2]));

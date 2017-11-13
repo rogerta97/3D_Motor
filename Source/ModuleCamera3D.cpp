@@ -90,7 +90,7 @@ update_status ModuleCamera3D::Update(float dt)
 		int dx = -App->input->GetMouseXMotion();
 		int dy = -App->input->GetMouseYMotion();
 
-		editor_camera->Rotate(-App->input->GetMouseXMotion()*rot_speed*0.01f, -App->input->GetMouseYMotion()*rot_speed*0.01f);
+		editor_camera->Rotate(dx*rot_speed*0.01f, dy*rot_speed*0.01f);
 	}	
 	Position -= Reference;
 
