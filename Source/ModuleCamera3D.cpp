@@ -95,12 +95,12 @@ update_status ModuleCamera3D::Update(float dt)
 	Position -= Reference;
 
 	//------Focus 
-	//if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	//(if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	//{
 	//	//insert last gizmo position and the distance
 	//	//distance has to change depending on the size of the imported fbx
 	//	tmp_trans = (ComponentTransform*)App->scene_intro->GetGameObject(0)->GetComponent(COMPONENT_TRANSFORM);
-
+	//
 	//	if(aux== NULL)
 	//		Focus(vec3(0, 0, 0), STD_CAM_DISTANCE);
 	//	else
@@ -183,6 +183,9 @@ void ModuleCamera3D::Move()
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) editor_camera->MoveLeft(temporal_speed);
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) editor_camera->MoveRight(temporal_speed);
+
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) editor_camera->MoveDown(temporal_speed);
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) editor_camera->MoveUp(temporal_speed);
 
 	float3 frustum_move(move_aux.x, move_aux.y, move_aux.z);
 	editor_camera->frustum.SetPos(editor_camera->frustum.pos + frustum_move);

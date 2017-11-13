@@ -253,7 +253,7 @@ ComponentMeshRenderer::ComponentMeshRenderer(uint num_ver, float * ver, uint num
 
 uint ComponentMeshRenderer::GetNumTriangles() const
 {
-	return (num_vertices / 3);
+	return num_triangles;
 }
 
 void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
@@ -315,6 +315,7 @@ void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
 
 	num_indices = 36;
+	num_triangles = num_indices / 3;
 	indices = new uint[num_indices]; 
 
 	indices[0] = 0;	indices[1] = 4;	indices[2] = 2;	indices[3] = 0;	indices[4] = 6;	indices[5] = 4,

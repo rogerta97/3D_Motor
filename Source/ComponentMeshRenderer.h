@@ -28,7 +28,6 @@ public:
 	void SetCylinderVertices(float r, int sides, int height);
 	uint GetNumTriangles() const;
 
-
 	void AdaptBoundingBox(float4x4 transform); 
 	void SetBBox(AABB _box);
 	AABB GetBBox() const;
@@ -76,10 +75,7 @@ public:
 	int num_uvs = 0;
 	uint uvs_id = 0;
 
-	// As this motor can have infinite meshes per gameobject we must set an ID for apliying to 
-	// each mesh its corresponding transformation
-
-	uint tranform_id = 0; 
+	uint num_triangles = 0; 
 
 	AABB bounding_box;
 
