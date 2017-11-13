@@ -129,6 +129,14 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	//TODO when we have more cameras assign the current one
 	//now we will assign the basic editor cam
+	ComponentCamera* cam = App->camera->GetEditorCam();
+
+	// Adjust projection if needed
+	if (cam->screen_resized == true)
+	{
+		ChangeRenderView();
+		cam->screen_resized = false;
+	}
 	App->performance.InitTimer(name); 
 
 	glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -137,7 +145,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->GetFrustumViewMatrix());
+	glLoadMatrixf(cam->GetOpenGLViewMatrix());
 
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);	
@@ -181,7 +189,17 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glLoadMatrixf(App->camera->GetFrustumProjectionMatrix());
 	glMatrixMode(GL_MODELVIEW);
 }
+void ModuleRenderer3D::ChangeRenderView()
+{
+	ComponentCamera* cam = App->camera->GetEditorCam();
 
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glLoadMatrixf((GLfloat*)cam->GetOpenGLProjectionMatrix());
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
 void ModuleRenderer3D::PrintConfigData()
 {
 	if (ImGui::CollapsingHeader(name))

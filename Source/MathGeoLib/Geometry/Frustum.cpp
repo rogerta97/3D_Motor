@@ -163,7 +163,7 @@ void Frustum::ProjectionMatrixChanged()
 
 float Frustum::AspectRatio() const
 {
-	return Tan(horizontalFov*0.5f) / Tan(verticalFov*0.5f);
+	return horizontalFov/verticalFov;
 }
 
 void Frustum::SetHorizontalFovAndAspectRatio(float hFov, float aspectRatio)

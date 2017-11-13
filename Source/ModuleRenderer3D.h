@@ -19,6 +19,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
+	void ChangeRenderView();
 	void OnResize(int width, int height);
 	void PrintConfigData();
 
