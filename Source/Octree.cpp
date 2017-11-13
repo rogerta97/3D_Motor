@@ -276,22 +276,22 @@ OctreeNode::OctreeNode(AABB limits)
 	objects_in_node.clear();
 	leaf = true;
 }
-
-void OctreeNode::CollectIntersections(list<GameObject*>& objects, AABB* tester)
-{
-	if (box.Contains(*tester))
-	{
-		for (int i = 0; i < objects_in_node.size(); i++)
-		{
-			objects.push_back(objects_in_node[i]); 
-		}
-	}
-
-	for (int i = 0; i < 8; i++)
-	{
-		if (child_nodes[i] != nullptr)
-		{
-			child_nodes[i]->CollectIntersections(objects, tester); 
-		}
-	}
-}
+//
+//void OctreeNode::CollectIntersections(list<GameObject*>& objects, LineSegment* tester)
+//{
+//	if (box.Contains(*tester))
+//	{
+//		for (int i = 0; i < objects_in_node.size(); i++)
+//		{
+//			objects.push_back(objects_in_node[i]); 
+//		}
+//	}
+//
+//	for (int i = 0; i < 8; i++)
+//	{
+//		if (child_nodes[i] != nullptr)
+//		{
+//			child_nodes[i]->CollectIntersections(objects, tester); 
+//		}
+//	}
+//}

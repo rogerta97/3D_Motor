@@ -3,6 +3,7 @@
 #include "ModuleCamera3D.h"
 #include "ComponentMeshRenderer.h"
 #include "ComponentTransform.h"
+#include "Octree.h"
 #include "moduleImGui.h"
 
 RayCast::RayCast()
@@ -28,19 +29,20 @@ void RayCast::Update()
 
 		if (c != nullptr)
 		{
+			App->scene_intro->SetCurrentGO(c->GetID()); 
+			DebugDraw(c->GetBoundingBox(), Red); 
 			LOG("Object %s was hitted and returned succesfully", c->GetName()); 
 		}
-	}
+	}	
 
-	DrawRay(); 
-	
+	DebugDraw(ray); 
 }
 
 GameObject * RayCast::GetHit()
 {
 	GameObject* ret; 
 	// First we get the list of AABB's the ray is coliding with ordered by distance
-
+	//App->scene_intro->octree->CollectIntersections(candidate_list, ray); 
 	GetObjectsByDistance(candidate_list); 
 
 	// We check collisions for every triangle of the mesh of selected objects
