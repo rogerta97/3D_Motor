@@ -17,6 +17,7 @@ public:
 
 	void Update(); 
 	GameObject* GetHit(); 
+
 	void GetObjectsByDistance(vector<GameObject*>& objects);
 	GameObject* RayTest();
 

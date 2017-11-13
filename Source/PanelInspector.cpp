@@ -249,7 +249,6 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 			curr_cmp->SetLocalRotation(DegToRad(float3(0, 0, 0)));
 			curr_cmp->SetLocalScale(float3(1, 1, 1));
 
-
 			if (curr_cmp->GetComponentParent()->GetNumChilds() > 0)
 			{
 				GameObject* curr_go = curr_cmp->GetComponentParent();

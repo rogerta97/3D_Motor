@@ -131,7 +131,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 		}
 			new_go->SetName(node_name.c_str());
 
-		if (parent != nullptr) parent->PushChild(new_go);
+		if (parent != nullptr) 
+			parent->PushChild(new_go);
 
 		ComponentTransform* trans = (ComponentTransform*)new_go->GetComponent(COMPONENT_TRANSFORM); 
 
@@ -221,8 +222,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 				bbox.Enclose((float3*)m->mVertices, m->mNumVertices);
 
 				tmp_mr->SetBBox(bbox);
-				//FIX ME
-				//App->camera->Focus(vec3(m->g.x, child_go->GetPosition().y, child_go->GetPosition().z), bbox.Size().Length() *1.2f);
+				tmp_mr->num_triangles = tmp_mr->num_indices / 3; 
 
 				tmp_mr->type = COMPONENT_MESH_RENDERER;
 				tmp_mr->Enable();
@@ -230,9 +230,6 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 				tmp_mr->SetComponentParent(child_go);
 
 				child_go->PushComponent((Component*)tmp_mr);
-				//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-				LOG("FBX imported with %d meshes", i);
 
 				if (scene != nullptr && scene->HasMaterials())
 				{
@@ -285,12 +282,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 					TR_cmp->Enable();
 
 					tmp_mr->AdaptBoundingBox(TR_cmp->GetLocalTransform()); 
-					//TR_cmp->SetModified(false); 
-
-					LOG("FBX imported with %d transform", i);
-				}
-
-				
+				}				
 				App->scene_intro->AddGameObject(child_go);
 			}
 

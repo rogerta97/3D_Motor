@@ -204,7 +204,7 @@ void GameObject::PushComponent(Component* comp)
 	else // if not we push it to the component list 
 	{
 		component_list.push_back(comp);
-		LOG("New component added succesfully to %s", name); 
+		LOG("New component added succesfully to %s", name.c_str()); 
 	}
 			
 }

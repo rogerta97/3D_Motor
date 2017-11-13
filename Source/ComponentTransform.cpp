@@ -122,6 +122,7 @@ void ComponentTransform::SetLocalPosition(const float3 & _position)
 	{
 		position = _position;	
 		UpdateTransform(); 
+		transform_modified = true; 
 	}	
 }
 
@@ -133,6 +134,7 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 		rotation = mod;
 
 		UpdateTransform();
+		transform_modified = true;
 	}
 }
 
@@ -144,5 +146,6 @@ void ComponentTransform::SetLocalScale(const float3 & _scale)
 		scale = _scale;
 
 		UpdateTransform();
+		transform_modified = true;
 	}
 }
