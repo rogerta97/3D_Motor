@@ -32,8 +32,6 @@ public:
 	uint height = 0;
 
 	std::string path;
-
-
 };
 
 #endif

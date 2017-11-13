@@ -106,16 +106,20 @@ bool PanelInspector::Draw()
 
 			GameObject* curr_go = App->scene_intro->GetCurrentGO();
 
+			switch (selected_fish)
+			{
+				
+			}
+
 			bool replace = false;
 
 			switch (selected_fish)
 				{
 					case 1: 
-					{
-					
+					{				
 						if (curr_go->GetComponent(COMPONENT_MATERIAL) != nullptr)
 						{
-							replace = ShowWarningModal();
+							modal_window = true;
 						}
 
 						if (replace || curr_go->GetComponent(COMPONENT_MATERIAL) == nullptr)
@@ -134,6 +138,9 @@ bool PanelInspector::Draw()
 						break;
 					}		
 				}
+
+			if (modal_window)
+				ShowWarningModal(); 
 		}
 	}
 	ImGui::End();
@@ -145,7 +152,7 @@ bool PanelInspector::ShowWarningModal()
 {
 
 	bool ret = false; 
-
+	ImGui::OpenPopup("WARNING");
 	if (ImGui::BeginPopupModal("WARNING", &modal_window, ImGuiWindowFlags_AlwaysAutoResize))
 	{
 		ImGui::Text("The component you are trying to add already exist in this object.\nDo you want to override it?");
@@ -163,6 +170,7 @@ bool PanelInspector::ShowWarningModal()
 
 		ImGui::EndPopup();
 	}
+	
 
 	return ret; 
 }

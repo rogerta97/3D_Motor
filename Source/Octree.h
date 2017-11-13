@@ -22,7 +22,8 @@ public:
 	void DrawNode(); 
 	void SplitNode();
 
-	void CollectIntersections(list<GameObject*>& objects, AABB* tester);
+	template <typename TYPE>
+	void CollectIntersections(list<GameObject*>& objects, const TYPE& tester);
 
 	vec GetCenter() const; 
 
@@ -54,6 +55,9 @@ public:
 
 	void SetActive(bool _active); 
 
+	template <typename TYPE>
+	void CollectIntersections(list<GameObject*>& objects, const TYPE& tester);
+
 	// utility
 
 	OctreeNode* GetLastLeafNode(); 
@@ -68,3 +72,26 @@ private:
 	uint num_objects_added; 
 
 };
+
+template<typename TYPE>
+inline void OctreeNode::CollectIntersections(list<GameObject*>& objects, const TYPE & tester)
+{
+	if (tester.Intersects(box))
+	{
+		for (std::list<GameObject*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
+		{
+			if (primitive.Intersects((*it)->global_bbox))
+				objects.push_back(*it);
+		}
+
+		for (int i = 0; i < 4; ++i)
+			if (childs[i] != nullptr) childs[i]->CollectIntersections(objects, primitive);
+	}
+}
+
+template<typename TYPE>
+inline void Octree::CollectIntersections(list<GameObject*>& objects, const TYPE & tester)
+{
+	if (root_node != nullptr)
+		root_node->CollectIntersections(objects, tester); 
+}

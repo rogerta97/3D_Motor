@@ -187,12 +187,14 @@ void GameObject::PushComponent(Component* comp)
 	{
 		PushRootComponent(comp);
 	}
+
 	else if(GetComponent(comp->type) != nullptr)
 	{
 		switch (comp->type)
 		{
 		case COMPONENT_MATERIAL: 
 			ComponentMaterial* mat = (ComponentMaterial*)GetComponent(COMPONENT_MATERIAL);
+			
 			mat->Set((ComponentMaterial*)comp);
 			LOG("Component Material %d Substituted", mat->textures_id); 
 			break; 
