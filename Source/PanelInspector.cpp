@@ -133,7 +133,7 @@ bool PanelInspector::Draw()
 						
 					case 2: 
 					{
-						ComponentCamera* new_cam = new ComponentCamera(curr_go, App->camera->far_plane, App->camera->near_plane, App->camera->field_of_view, App->camera->aspect_ratio);
+						ComponentCamera* new_cam = new ComponentCamera(curr_go, 0.1f, 100.0f, 45.0f, 1.3f);
 						curr_go->PushComponent(new_cam);
 						break;
 					}		

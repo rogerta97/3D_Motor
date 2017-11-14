@@ -24,13 +24,14 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled)
 	
 	near_plane = 0.1f;
 	far_plane = 100.0f;
-	field_of_view = 45.0f;
+	h_field_of_view = 45.0f;
+	v_field_of_view = 60.0f;
 	aspect_ratio = 1.3;
 
 	Position = vec3(0.0f, 0.0f, 5.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
 
-	editor_camera = new ComponentCamera(nullptr, far_plane, near_plane, field_of_view, aspect_ratio);
+	editor_camera = new ComponentCamera(nullptr, far_plane, near_plane, h_field_of_view, h_field_of_view / v_field_of_view);
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -304,18 +305,10 @@ void ModuleCamera3D::PrintConfigData()
 		}
 		
 
-		float aux_HFOV = editor_camera->GetHFOV();
-		if (ImGui::SliderFloat("Horizontal Of View", &aux_HFOV, 1, 180))
-		{
-			editor_camera->SetFOV(aux_HFOV);
-			editor_camera->frustum.SetPerspective(aux_HFOV, editor_camera->frustum.verticalFov);
-		}
-
-		float aux_VFOV = editor_camera->GetVFOV();
-		if (ImGui::SliderFloat("Vertical Of View", &aux_VFOV, 1, 180))
+		float aux_VFOV = editor_camera->GetFOV();
+		if (ImGui::SliderFloat("Field Of View", &aux_VFOV, 1.0f, 179.0f, "%.2f"))
 		{
 			editor_camera->SetFOV(aux_VFOV);
-			editor_camera->frustum.SetPerspective(editor_camera->frustum.horizontalFov, aux_VFOV);
 		}
 			
 

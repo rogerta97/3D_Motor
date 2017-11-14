@@ -47,7 +47,8 @@ public:
 
 	float near_plane;
 	float far_plane;
-	float field_of_view;
+	float h_field_of_view;
+	float v_field_of_view;
 	float aspect_ratio;
 
 	bool frustum_culling = false; 

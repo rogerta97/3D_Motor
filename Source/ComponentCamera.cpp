@@ -55,14 +55,9 @@ float ComponentCamera::GetFarPlaneDist() const
 	return frustum.farPlaneDistance;
 }
 
-float ComponentCamera::GetVFOV() const
+float ComponentCamera::GetFOV() const
 {
 	return frustum.verticalFov * RADTODEG;
-}
-
-float ComponentCamera::GetHFOV() const
-{
-	return frustum.horizontalFov * RADTODEG;
 }
 
 float ComponentCamera::GetAspectRatio() const
@@ -134,7 +129,10 @@ void ComponentCamera::SetFOV(float fov)
 void ComponentCamera::SetAspectRatio(float aspect_ratio)
 {
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspect_ratio);
+	
+	frustum.SetPerspective(frustum.horizontalFov, frustum.verticalFov);
 	screen_resized = true;
+
 }
 
 void ComponentCamera::MoveForward(const float & speed)

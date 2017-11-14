@@ -24,8 +24,7 @@ public:
 	//--frustrum get&set functions
 	float GetNearPlaneDist() const;
 	float GetFarPlaneDist() const;
-	float GetVFOV() const;
-	float GetHFOV() const;
+	float GetFOV() const;
 	float GetAspectRatio() const;
 
 	void SetNearPlaneDist(float dist);
