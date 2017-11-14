@@ -24,7 +24,17 @@
 
 #define FPS_LOG_SIZE 100
 #define MEM_LOG_SIZE 100
+enum State {
 
+	play,
+	stop,
+	pause,
+	waiting_play,
+	waiting_stop,
+	waiting_pause,
+	waiting_unpause
+
+};
 class Application
 {
 public:
@@ -119,6 +129,7 @@ private:
 	std::string		   organization = "-";
 	float				max_fps = 0.0f;
 
+	State state = State::stop;
 	json_file*			config = nullptr;
 };
 

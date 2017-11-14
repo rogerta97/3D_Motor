@@ -59,6 +59,7 @@ GameObject::GameObject()
 {
 	math::LCG random;
 	UUID = random.Int();
+
 	parent = nullptr;
 	active = true; 
 	is_static = false; 
