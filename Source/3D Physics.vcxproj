@@ -298,6 +298,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Hardware.h" />
     <ClInclude Include="imgui.h" />
+    <ClInclude Include="ImGuizmo.h" />
     <ClInclude Include="imgui_impl_sdl.h" />
     <ClInclude Include="imgui_internal.h" />
     <ClInclude Include="MaterialsImporter.h" />
@@ -412,6 +413,7 @@
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="Hardware.cpp" />
     <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="ImGuizmo.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
     <ClCompile Include="imgui_impl_sdl.cpp" />

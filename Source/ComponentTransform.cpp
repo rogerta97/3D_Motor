@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "MathGeoLib\MathGeoLib.h"
+#include "ImGuizmo.h"
 
 float3 ComponentTransform::GetLocalPosition()const
 {

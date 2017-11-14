@@ -73,6 +73,9 @@
     <Filter Include="Modules\Importers\Materials">
       <UniqueIdentifier>{cd56d968-7fc5-411d-b4b9-4c8a1dd0e0d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Helpers\ImGuizmo">
+      <UniqueIdentifier>{93e35db9-141a-428c-8bb2-36dd55e0941c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -1233,6 +1236,9 @@
     <ClInclude Include="MaterialsImporter.h">
       <Filter>Modules\Importers\Materials</Filter>
     </ClInclude>
+    <ClInclude Include="ImGuizmo.h">
+      <Filter>Helpers\ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1480,6 +1486,9 @@
     </ClCompile>
     <ClCompile Include="MaterialsImporter.cpp">
       <Filter>Modules\Importers\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo.cpp">
+      <Filter>Helpers\ImGuizmo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
