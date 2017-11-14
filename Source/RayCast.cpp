@@ -35,7 +35,7 @@ void RayCast::Update()
 		}
 	}	
 
-	DebugDraw(ray); 
+	DebugDraw(ray, Green); 
 }
 
 GameObject * RayCast::GetHit()
@@ -58,16 +58,44 @@ void RayCast::GetObjectsByDistance(vector<GameObject*>& objects)
 {
 	// This has to be improved with octree algorithm
 
+	vector<float> hit_distance_list; 
+
 	for (int i = 0; i < App->scene_intro->GetList().size(); i++)
 	{
 		GameObject* curr_candidate = App->scene_intro->GetGameObject(i);
 
-		if (ray.Intersects(curr_candidate->GetBoundingBox()))
+		float hit_distance; 
+		float out_distance;
+
+		if (ray.Intersects(curr_candidate->GetBoundingBox(), hit_distance, out_distance))
 		{
 			LOG("Bounding Box %d Hit", i);
+
 			objects.push_back(curr_candidate); 
+			hit_distance_list.push_back(hit_distance); 
 		}
 	}
+
+	// This is for ordering the collisions
+
+	bool changed = true; 
+
+	while (changed)
+	{
+		changed = false; 
+
+		for (int i = 0; i < objects.size() - 1; i++)
+		{
+			if (hit_distance_list[i] > hit_distance_list[i + 1])
+			{
+				swap(hit_distance_list[i], hit_distance_list[i + 1]);
+				swap(objects[i], objects[i + 1]);
+				changed = true;
+			}
+				
+		}
+	}
+
 }
 
 GameObject * RayCast::RayTest()
@@ -93,7 +121,7 @@ GameObject * RayCast::RayTest()
 
 			Triangle tri(tri_point_1, tri_point_2, tri_point_3);
 
-			tri.Transform(tmp_trans->GetGlobalTransform());
+			//tri.Transform(tmp_trans->GetGlobalTransform()); 
 
 			float distance;
 			float3 hit_point;
@@ -104,6 +132,7 @@ GameObject * RayCast::RayTest()
 				{
 					best_distance = distance;
 					ret = candidate_list[i]; 
+					break; 
 				}					
 			}
 		}

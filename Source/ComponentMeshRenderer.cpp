@@ -154,7 +154,6 @@ bool ComponentMeshRenderer::Update()
 
 	glPushMatrix(); 
 
-	ctransform->UpdateTransform(); 
 	glMultMatrixf(ctransform->GetGlobalTransform().Transposed().ptr());
 
 	//VERTICES
@@ -196,12 +195,6 @@ bool ComponentMeshRenderer::Update()
 	glPopMatrix();
 
 	//We modify the AABB if it is necessary 
-
-	if (ctransform->IsModified())
-	{
-		AdaptBoundingBox(ctransform->GetLocalTransform());
-		ctransform->SetModified(false);
-	}
 
 	return true;
 }

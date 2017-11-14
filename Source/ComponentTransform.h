@@ -43,7 +43,7 @@ public:
 
 	bool IsModified() const; 
 	void SetModified(bool value);
-	void UpdateTransform(); 
+	void UpdateTransform(GameObject* curr_go); 
 
 private:
 

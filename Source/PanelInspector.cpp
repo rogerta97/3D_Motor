@@ -300,7 +300,6 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 			if (ImGui::DragFloat3("Position##transform", pos, 2))
 			{
 				curr_cmp->SetLocalPosition(float3(pos[0], pos[1], pos[2]));
-				//cam_cmp->frustum.SetPos(vec(pos[0], pos[1], pos[2]));
 			}
 
 			if (ImGui::SliderFloat3("Rotation##transform", rot, 0.0f, 180.0f))

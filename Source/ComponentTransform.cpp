@@ -71,10 +71,31 @@ void ComponentTransform::SetIdentityTransform()
 
 void ComponentTransform::SetGlobalTransform(float4x4 new_transform)
 {
+	local_transform = new_transform; 
 }
 
 float4x4 ComponentTransform::GetGlobalTransform()
 {
+
+	if (GetComponentParent()->GetParent() == nullptr)
+		global_transform = local_transform; 
+
+	else
+	{
+		GameObject* parent_go = GetComponentParent()->GetParent();
+
+		while (parent_go != nullptr)
+		{
+			ComponentTransform* parent_trans = (ComponentTransform*)parent_go->GetComponent(COMPONENT_TRANSFORM);
+
+			global_transform = parent_trans->local_transform.Mul(local_transform);
+
+			parent_go = parent_go->parent;
+		}
+	}
+
+	global_transform.Decompose(global_position, global_rotation, global_scale);
+
 	return global_transform;
 }
 
@@ -88,21 +109,44 @@ void ComponentTransform::SetModified(bool n_value)
 	transform_modified = n_value; 
 }
 
-void ComponentTransform::UpdateTransform()
+void ComponentTransform::UpdateTransform(GameObject* curr_go)
 {
 		local_transform.Set(float4x4::FromTRS(position, rotation, scale));
-		global_transform = local_transform;
 
-		GameObject* parent_go = GetComponentParent()->GetParent();
+		ComponentMeshRenderer* mr = (ComponentMeshRenderer*)curr_go->GetComponent(COMPONENT_MESH_RENDERER);
 
-		while (parent_go != nullptr)
+		if (mr != nullptr)
+			mr->AdaptBoundingBox(GetGlobalTransform());
+
+		for(int i = 0; i < curr_go->child_list.size(); i++)
 		{
-			ComponentTransform* parent_trans = (ComponentTransform*)parent_go->GetComponent(COMPONENT_TRANSFORM);
-
-			global_transform = parent_trans->local_transform.Mul(local_transform);
-
-			parent_go = parent_go->parent;
+			mr = (ComponentMeshRenderer*)curr_go->child_list[i]->GetComponent(COMPONENT_MESH_RENDERER);
+			ComponentTransform* trans = (ComponentTransform*)curr_go->child_list[i]->GetComponent(COMPONENT_TRANSFORM);
+			
+			trans->UpdateTransform(curr_go->child_list[i]);
+	
 		}
+
+
+
+		
+
+		
+			
+			
+		
+		//global_transform = local_transform;
+
+		//GameObject* parent_go = GetComponentParent()->GetParent();
+
+		//while (parent_go != nullptr)
+		//{
+		//	ComponentTransform* parent_trans = (ComponentTransform*)parent_go->GetComponent(COMPONENT_TRANSFORM);
+
+		//	global_transform = parent_trans->local_transform.Mul(local_transform);
+
+		//	parent_go = parent_go->parent;
+		//}
 
 	//global_transform.Decompose(global_position, global_rotation, global_scale);
 	
@@ -121,7 +165,7 @@ void ComponentTransform::SetLocalPosition(const float3 & _position)
 	if (GetComponentParent()->IsStatic() == false)
 	{
 		position = _position;	
-		UpdateTransform(); 
+		UpdateTransform(GetComponentParent()); 
 		transform_modified = true; 
 	}	
 }
@@ -133,7 +177,7 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
 		rotation = mod;
 		
-		UpdateTransform();
+		UpdateTransform(GetComponentParent());
 		transform_modified = true;
 	}
 }
@@ -145,7 +189,7 @@ void ComponentTransform::SetLocalScale(const float3 & _scale)
 	{
 		scale = _scale;
 
-		UpdateTransform();
+		UpdateTransform(GetComponentParent());
 		transform_modified = true;
 	}
 }
