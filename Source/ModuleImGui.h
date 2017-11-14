@@ -5,6 +5,7 @@
 #include "PanelInspector.h"
 #include "PanelHierarchy.h"
 #include "PanelOctree.h"
+#include "ImGuizmo.h"
 #include "RayCast.h"
 
 #include<vector>
@@ -23,7 +24,7 @@ public:
 
 	void AddInConsole(const std::string);
 	void ImGuiInput(SDL_Event* e)const; 
-
+	void SetInitColors();
 private:
 
 	void PrintProperties();
@@ -74,7 +75,7 @@ private:
 	uint properties_panel_h = 200;
 
 	ImVec4 clear_color = ImColor(114, 144, 154);
-
-
+	ImGuizmo::OPERATION curr_operation;
+	ImGuizmo::MODE curr_mode;
 
 };
