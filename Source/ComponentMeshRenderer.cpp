@@ -152,9 +152,11 @@ bool ComponentMeshRenderer::Update()
 		if (!App->renderer3D->curr_cam->IsInside(this->bounding_box)) return false;
 	}
 
-	glPushMatrix(); 
+	AdaptBoundingBox(ctransform->GetGlobalTransform());
 
+	glPushMatrix(); 
 	glMultMatrixf(ctransform->GetGlobalTransform().Transposed().ptr());
+	
 
 	//VERTICES
 	glEnableClientState(GL_VERTEX_ARRAY);

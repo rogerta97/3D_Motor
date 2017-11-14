@@ -80,7 +80,7 @@ void RayCast::GetObjectsByDistance(vector<GameObject*>& objects)
 
 	bool changed = true; 
 
-	while (changed)
+	while (changed && !objects.empty())
 	{
 		changed = false; 
 

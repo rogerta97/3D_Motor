@@ -55,9 +55,14 @@ float ComponentCamera::GetFarPlaneDist() const
 	return frustum.farPlaneDistance;
 }
 
-float ComponentCamera::GetFOV() const
+float ComponentCamera::GetVFOV() const
 {
 	return frustum.verticalFov * RADTODEG;
+}
+
+float ComponentCamera::GetHFOV() const
+{
+	return frustum.horizontalFov * RADTODEG;
 }
 
 float ComponentCamera::GetAspectRatio() const

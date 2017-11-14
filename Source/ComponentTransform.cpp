@@ -114,42 +114,19 @@ void ComponentTransform::UpdateTransform(GameObject* curr_go)
 {
 		local_transform.Set(float4x4::FromTRS(position, rotation, scale));
 
-		ComponentMeshRenderer* mr = (ComponentMeshRenderer*)curr_go->GetComponent(COMPONENT_MESH_RENDERER);
+		//ComponentMeshRenderer* mr = (ComponentMeshRenderer*)curr_go->GetComponent(COMPONENT_MESH_RENDERER);
 
-		if (mr != nullptr)
-			mr->AdaptBoundingBox(GetGlobalTransform());
+		//if (mr != nullptr)
+		//	mr->AdaptBoundingBox(GetGlobalTransform());
 
-		for(int i = 0; i < curr_go->child_list.size(); i++)
-		{
-			mr = (ComponentMeshRenderer*)curr_go->child_list[i]->GetComponent(COMPONENT_MESH_RENDERER);
-			ComponentTransform* trans = (ComponentTransform*)curr_go->child_list[i]->GetComponent(COMPONENT_TRANSFORM);
-			
-			trans->UpdateTransform(curr_go->child_list[i]);
-	
-		}
-
-
-
-		
-
-		
-			
-			
-		
-		//global_transform = local_transform;
-
-		//GameObject* parent_go = GetComponentParent()->GetParent();
-
-		//while (parent_go != nullptr)
+		//for (int i = 0; i < curr_go->child_list.size(); i++)
 		//{
-		//	ComponentTransform* parent_trans = (ComponentTransform*)parent_go->GetComponent(COMPONENT_TRANSFORM);
+		//	mr = (ComponentMeshRenderer*)curr_go->child_list[i]->GetComponent(COMPONENT_MESH_RENDERER);
+		//	ComponentTransform* trans = (ComponentTransform*)curr_go->child_list[i]->GetComponent(COMPONENT_TRANSFORM);
 
-		//	global_transform = parent_trans->local_transform.Mul(local_transform);
+		//	trans->UpdateTransform(curr_go->child_list[i]);
 
-		//	parent_go = parent_go->parent;
 		//}
-
-	//global_transform.Decompose(global_position, global_rotation, global_scale);
 	
 }
 

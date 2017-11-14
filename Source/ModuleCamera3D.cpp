@@ -286,18 +286,38 @@ void ModuleCamera3D::PrintConfigData()
 		ImGui::Separator();
 
 		if (ImGui::Checkbox("Frustum Culling", &frustum_culling)); 
+		//editor_camera->frustum.SetFrame({ 0, 2, -5 }, float3::unitZ, float3::unitY);
 
 		float aux_n_p = editor_camera->GetNearPlaneDist();
 		if (ImGui::DragFloat("Near Plane", &aux_n_p, 0.1f, 0.1f, 1000.0f))
+		{
 			editor_camera->SetNearPlaneDist(aux_n_p);
+			editor_camera->frustum.SetViewPlaneDistances(aux_n_p, editor_camera->frustum.farPlaneDistance);
+		}
+			
 
 		float aux_f_p = editor_camera->GetFarPlaneDist();
-		if(ImGui::DragFloat("Far Plane", &aux_f_p, 0.1f, 0.1f, 10000.0f))
+		if (ImGui::DragFloat("Far Plane", &aux_f_p, 0.1f, 0.1f, 10000.0f))
+		{
 			editor_camera->SetFarPlaneDist(aux_f_p);
+			editor_camera->frustum.SetViewPlaneDistances(editor_camera->frustum.nearPlaneDistance, aux_f_p);
+		}
+		
 
-		float aux_FOV = editor_camera->GetFOV();
-		if(ImGui::DragFloat("Field Of View", &aux_FOV, 0.1f, 0.1f))
-			editor_camera->SetFOV(aux_FOV);
+		float aux_HFOV = editor_camera->GetHFOV();
+		if (ImGui::SliderFloat("Horizontal Of View", &aux_HFOV, 1, 180))
+		{
+			editor_camera->SetFOV(aux_HFOV);
+			editor_camera->frustum.SetPerspective(aux_HFOV, editor_camera->frustum.verticalFov);
+		}
+
+		float aux_VFOV = editor_camera->GetVFOV();
+		if (ImGui::SliderFloat("Vertical Of View", &aux_VFOV, 1, 180))
+		{
+			editor_camera->SetFOV(aux_VFOV);
+			editor_camera->frustum.SetPerspective(editor_camera->frustum.horizontalFov, aux_VFOV);
+		}
+			
 
 		float aux_AR = editor_camera->GetAspectRatio();
 		if(ImGui::DragFloat("Aspect Ratio", &aux_AR, 0.1f, 0.1f, 10000.0f))

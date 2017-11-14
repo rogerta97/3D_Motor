@@ -18,6 +18,7 @@ public:
 	void LookAt(const float3 &objective);
 	void Move();
 	void Move(const vec3& pos);
+
 	float* GetViewMatrix();
 	void FreeOrbit();
 	void Orbit(const vec3& orbit_center, const float& motion_x, const float& motion_y);
@@ -26,6 +27,7 @@ public:
 	void SetCamPosition(math::float3 position);
 
 	ComponentCamera* GetEditorCam()const;
+
 	float* GetFrustumViewMatrix();
 	float* GetFrustumProjectionMatrix(); 
 
