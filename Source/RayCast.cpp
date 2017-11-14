@@ -42,11 +42,11 @@ GameObject * RayCast::GetHit()
 {
 	GameObject* ret; 
 	// First we get the list of AABB's the ray is coliding with ordered by distance
+
 	//App->scene_intro->octree->CollectIntersections(candidate_list, ray); 
 	GetObjectsByDistance(candidate_list); 
 
 	// We check collisions for every triangle of the mesh of selected objects
-
 	ret = RayTest(); 
 	
 	candidate_list.clear(); 
@@ -108,20 +108,21 @@ GameObject * RayCast::RayTest()
 		ComponentMeshRenderer* tmp_mr = (ComponentMeshRenderer*)candidate_list[i]->GetComponent(COMPONENT_MESH_RENDERER); //For getting triangles points
 		ComponentTransform* tmp_trans = (ComponentTransform*)candidate_list[i]->GetComponent(COMPONENT_TRANSFORM); //For gettin triangle points transformation
 
-		for (int j = 0; j < tmp_mr->GetNumTriangles();)
+		ray.Transform(tmp_trans->GetGlobalTransform().Inverted());
+
+		int tri_count = 0;
+		for (int j = 0; j < tmp_mr->GetNumTriangles();j++)
 		{
-			float3 tri_point_1 = tmp_mr->vertices[tmp_mr->indices[j]]; 
-			j++;
+			float3 tri_point_1 = tmp_mr->vertices[tmp_mr->indices[tri_count]];
+			tri_count++;
 
-			float3 tri_point_2 = tmp_mr->vertices[tmp_mr->indices[j]];
-			j++; 
+			float3 tri_point_2 = tmp_mr->vertices[tmp_mr->indices[tri_count]];
+			tri_count++;
 
-			float3 tri_point_3 = tmp_mr->vertices[tmp_mr->indices[j]];
-			j++;
+			float3 tri_point_3 = tmp_mr->vertices[tmp_mr->indices[tri_count]];
+			tri_count++;
 
 			Triangle tri(tri_point_1, tri_point_2, tri_point_3);
-
-			//tri.Transform(tmp_trans->GetGlobalTransform()); 
 
 			float distance;
 			float3 hit_point;

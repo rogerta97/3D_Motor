@@ -281,7 +281,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 					TR_cmp->type = COMPONENT_TRANSFORM;
 					TR_cmp->Enable();
 
-					tmp_mr->AdaptBoundingBox(TR_cmp->GetLocalTransform()); 
+					child_go->AdaptBoundingBox(TR_cmp->GetLocalTransform()); 
 				}				
 				App->scene_intro->AddGameObject(child_go);
 			}

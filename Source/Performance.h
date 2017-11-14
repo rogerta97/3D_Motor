@@ -37,6 +37,7 @@ private:
 	std::vector<float> render_perf_buffer;
 	std::vector<float> scene_perf_buffer;
 	std::vector<float> window_perf_buffer;
+	std::vector<float> gameobject_perf_buffer;
 
 	int audio_perf_init;
 	int camera_perf_init;
@@ -57,6 +58,7 @@ public:
 	Timer render_perf_timer;
 	Timer scene_perf_timer;
 	Timer window_perf_timer;
+	Timer gameobject_perf_timer; 
 
 };
 

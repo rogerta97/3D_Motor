@@ -40,6 +40,8 @@ public:
 	GameObject* GetChild(uint id)const; 
 	bool IsChild(const GameObject* go) const;
 
+	void AdaptBoundingBox(float4x4 transform); 
+
 	bool IsCompEmpty(); 
 	bool IsChildEmpty(); 
 

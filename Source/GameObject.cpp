@@ -75,6 +75,8 @@ GameObject::GameObject()
 
 void GameObject::Draw()
 {
+	App->performance.gameobject_perf_timer.Start(); 
+
 	if (!active)
 		return; 
 
@@ -96,6 +98,8 @@ void GameObject::Draw()
 			child_list[i]->Draw();
 		}
 	}
+
+	App->performance.SaveRunTimeData("gameobject"); 
 }
 bool GameObject::IsChild(const GameObject* go) const
 {
@@ -106,6 +110,33 @@ bool GameObject::IsChild(const GameObject* go) const
 	}
 
 	return false;
+}
+
+void GameObject::AdaptBoundingBox(float4x4 transform)
+{
+	LOG("adapted");
+
+	ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponent(COMPONENT_MESH_RENDERER);
+
+	if (mr != nullptr)
+	{
+		mr->bounding_box.SetNegativeInfinity();
+		mr->bounding_box.Enclose(mr->vertices, mr->num_vertices);
+		mr->bounding_box.TransformAsAABB(transform);
+	}
+
+
+	if (!child_list.empty())
+	{
+		for (int i = 0; i < child_list.size(); i++)
+		{
+			ComponentMeshRenderer* child_mr = (ComponentMeshRenderer*)child_list[i]->GetComponent(COMPONENT_MESH_RENDERER);
+			ComponentTransform* child_trans = (ComponentTransform*)child_list[i]->GetComponent(COMPONENT_TRANSFORM);
+
+			if (child_mr != nullptr)
+				AdaptBoundingBox(child_trans->GetGlobalTransform());
+		}
+	}
 }
 Component * GameObject::GetComponent(component_type new_component_type, int skip_num)
 {

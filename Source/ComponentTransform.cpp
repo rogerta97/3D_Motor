@@ -133,7 +133,8 @@ void ComponentTransform::UpdateTransform(GameObject* curr_go)
 bool ComponentTransform::Update()
 {
 
-	return false;
+
+	return true;
 }
 
 

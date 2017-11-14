@@ -10,12 +10,7 @@ class ComponentTransform;
 
 
 
-void ComponentMeshRenderer::AdaptBoundingBox(float4x4 transform)
-{
-	bounding_box.SetNegativeInfinity(); 
-	bounding_box.Enclose(vertices, num_vertices); 
-	bounding_box.TransformAsAABB(transform); 
-}
+
 
 void ComponentMeshRenderer::SetBBox(AABB _box)
 {
@@ -152,7 +147,12 @@ bool ComponentMeshRenderer::Update()
 		if (!App->renderer3D->curr_cam->IsInside(this->bounding_box)) return false;
 	}
 
-	AdaptBoundingBox(ctransform->GetGlobalTransform());
+	if (ctransform->IsModified())
+	{
+		GetComponentParent()->AdaptBoundingBox(ctransform->GetGlobalTransform());
+		ctransform->SetModified(false); 
+	}
+	
 
 	glPushMatrix(); 
 	glMultMatrixf(ctransform->GetGlobalTransform().Transposed().ptr());

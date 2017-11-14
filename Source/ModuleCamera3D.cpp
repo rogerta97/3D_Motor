@@ -21,10 +21,9 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled)
 	rot_speed = 0.25f;
 	zm_speed = 0.1f;
 	mouse_wheel_speed = 2.0f;
-	
 	near_plane = 0.1f;
 	far_plane = 100.0f;
-	h_field_of_view = 45.0f;
+	h_field_of_view = 60.85f;
 	v_field_of_view = 60.0f;
 	aspect_ratio = 1.3;
 

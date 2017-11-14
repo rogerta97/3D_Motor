@@ -28,7 +28,6 @@ public:
 	void SetCylinderVertices(float r, int sides, int height);
 	uint GetNumTriangles() const;
 
-	void AdaptBoundingBox(float4x4 transform); 
 	void SetBBox(AABB _box);
 	AABB GetBBox() const;
 

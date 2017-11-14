@@ -29,6 +29,9 @@ bool PerformanceWindow::Update(bool& show_window)
 	ImGui::PlotLines("", &input_perf_buffer[0], input_perf_buffer.size(), 0, "Input", 0.0f, 5.0f, ImVec2(300, 100));
 	ImGui::PlotLines("", &physics_perf_buffer[0], physics_perf_buffer.size(), 0, "Physics", 0.0f, 5.0f, ImVec2(300, 100));
 	ImGui::PlotLines("", &render_perf_buffer[0], render_perf_buffer.size(), 0, "Render", 0.0f, 5.0f, ImVec2(300, 100));
+
+	if(!gameobject_perf_buffer.empty()) ImGui::PlotLines("", &gameobject_perf_buffer[0], gameobject_perf_buffer.size(), 0, "GameObject", 0.0f, 5.0f, ImVec2(300, 100));
+
 	
 	ImGui::End(); 
 
@@ -62,6 +65,7 @@ bool PerformanceWindow::SaveRunTimeData(const char * module)
 	if (module == "Render") curr_list = &render_perf_buffer;
 	if (module == "Scene") curr_list = &scene_perf_buffer;
 	if (module == "Window") curr_list = &window_perf_buffer;
+	if (module == "gameobject") curr_list = &gameobject_perf_buffer; 
 
 	if (curr_list->size() > HISTOGRAM_FR_LENGHT)
 		curr_list->erase(curr_list->begin()); 
@@ -104,6 +108,11 @@ bool PerformanceWindow::SaveRunTimeData(const char * module)
 	if (module == "Window") 
 	{
 		curr_list->push_back(window_perf_timer.Read()); window_perf_timer.Start();
+	}
+
+	if (module == "gameobject")
+	{
+		curr_list->push_back(gameobject_perf_timer.Read()); gameobject_perf_timer.Start();
 	}
 
 	return true;
