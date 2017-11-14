@@ -153,15 +153,15 @@ void ModuleWindow::PrintConfigData()
 }
 void ModuleWindow::OnLoadConfig(json_file * config)
 {
-	width = config->GetNumber("window.width", 900);
-	height = config->GetNumber("window.height", 900);
+	width = config->GetInt("window.width", 900);
+	height = config->GetInt("window.height", 900);
 	fullscreen = config->GetBool("window.fullscreen", false);
 	
 }
 
 void ModuleWindow::OnSaveConfig(json_file * config)
 {
-	config->SetNumber("window.width", width);
-	config->SetNumber("window.height", height);
+	config->SetInt("window.width", width);
+	config->SetInt("window.height", height);
 	config->SetBool("window.fullscreen", fullscreen);
 }

@@ -48,6 +48,7 @@ void log(const char file[], int line, const char* format, ...);
 	 }
 
 typedef unsigned int uint;
+typedef long long UID;
 using namespace std; 
 
 enum update_status

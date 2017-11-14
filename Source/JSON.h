@@ -12,22 +12,42 @@ class json_file
 		 json_file(JSON_Value* value, JSON_Object* object, const char* path);
 		 ~json_file();
 
-		 void SetString(const char* set, const char* str);
-		 void SetBool(const char* set, bool bo);
-		 void SetNumber(const char* set, double nu);
-		 const char* GetString(const char* str, const char* defaul = "");
-		 bool GetBool(const char* bo, bool defaul = false);
-		 double GetNumber(const char* nu, double defaul = 0);
+		 void SetString(const char* set, const char* data);
+		 void SetBool(const char* set, bool data);
+		 void SetDouble(const char* set, double data);
+		 void SetFloat(const char* set, double data);
+		 void SetInt(const char* set, int data);
+		 void SetUInt(const char* set, uint data);
+		 void SetUID(const char* set, UID data);
+		 void SetArray(const char* array_name);
+		 void SetArrayBool(const char* set, const bool* data, int size);
+		 void SetArrayInt(const char* set, const int* data, int size);
+		 void SetArrayUInt(const char* set, const uint* data, int size);
+		 void SetArrayFloat(const char* set, const float* data, int size);
+		 void SetArrayString(const char* set, const char** data, int size);
+		 void SetFloat3(const char* set, const float3& data);
+
+		 const char* GetString(const char* str, const char* defaul = "", int id = -1)const;
+		 bool GetBool(const char* bo, bool defaul = false, int id = -1)const;
+		 double GetDouble(const char* nu, double defaul = 0, int id = -1)const;
+		 int GetInt(const char* set, int defaul, int id = -1)const;
+		 float GetFloat(const char* set, int defaul,int id = -1)const;
+		 uint GetUInt(const char* set, uint defaul, int id = -1)const;
+		 UID GetUID(const char* set, UID defaul, int id = -1)const;
+		 float3 GetFloat3(const char* field, const float3& default = float3::zero);
 
 		 const char* GetPath();
 		 void Save();
 		 void CleanUp();
 
 	 private:
-		 bool FindValue(const char* str, json_value_type type);
+		 bool FindValue(const char* str, json_value_type type,int index)const;
+		 JSON_Value * GetValue(const char * field, int index) const;
+
 	 private:
-		 JSON_Value* value = nullptr;
+		JSON_Value* value = nullptr;
 		JSON_Object* object = nullptr;
+		JSON_Array* array = nullptr;
 		std::string path;
 };
 

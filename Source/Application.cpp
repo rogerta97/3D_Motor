@@ -393,7 +393,7 @@ json_file *  Application::LoadConfig()
 	{
 		engine_name = config->GetString("app.engine_name", "No title");
 		organization = config->GetString("app.organization", "No org");
-		max_fps = config->GetNumber("app.max_fps", 60.0f);
+		max_fps = config->GetInt("app.max_fps", 60.0f);
 		CapFPS(max_fps);
 
 		
@@ -409,17 +409,17 @@ json_file * Application::CreateDefaultConfig()
 
 	config = json->LoadJSONFile("config.json");
 
-	config->SetNumber("window.width", 1280);
-	config->SetNumber("window.height", 980);
-	config->SetNumber("window.screen_size", 1);
-	config->SetNumber("window.brightness", 1);
+	config->SetInt("window.width", 1280);
+	config->SetInt("window.height", 980);
+	config->SetInt("window.screen_size", 1);
+	config->SetInt("window.brightness", 1);
 	config->SetString("window.window_mode", "windowed");
 	config->SetBool("window.resizable", true);
 	config->SetBool("window.borderless", false);
 
 	config->SetString("app.title", "TroEngine");
 	config->SetString("app.organization", "UPC CITM");
-	config->SetNumber("app.max_fps", 0);
+	config->SetInt("app.max_fps", 0);
 
 	config->SetBool("renderer.vsync", true);
 
@@ -433,7 +433,7 @@ void Application::SaveConfig(Module* module)
 	json_file* config = LoadConfig();
 
 	config->SetString("app.organization", organization.c_str());
-	config->SetNumber("app.max_fps", last_fps);
+	config->SetInt("app.max_fps", last_fps);
 
 	std::list<Module*>::iterator item = list_modules.begin();
 

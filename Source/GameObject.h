@@ -60,7 +60,7 @@ public:
 	vector<GameObject*> child_list;
 
 	GameObject* parent; 
-	uint id;	
+	uint id = 0;	
 	string name = "GameObject"; 
 
 	bool active = false;
