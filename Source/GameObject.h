@@ -67,6 +67,8 @@ public:
 	bool is_static = false; 
 	bool is_root = false; 
 
+	UID UUID;
+
 };
 
 #endif

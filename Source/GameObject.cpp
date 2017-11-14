@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "MathGeoLib\MathGeoLib.h"
+#include "MathGeoLib\Algorithm\Random\LCG.h"
 #include <cmath>
 #include "ComponentDefs.h"
 
@@ -56,7 +57,8 @@ uint GameObject::GetID()const
 
 GameObject::GameObject()
 {
-
+	math::LCG random;
+	UUID = random.Int();
 	parent = nullptr;
 	active = true; 
 	is_static = false; 
