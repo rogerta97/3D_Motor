@@ -63,6 +63,17 @@ void PanelOctree::DrawPanel()
 				App->scene_intro->octree->Create(limits, 2);
 			}		
 
+			if (App->scene_intro->octree != nullptr)
+			{
+				if (ImGui::Button("Delete Octree"))
+				{
+					App->scene_intro->octree->ClearOctree(); 
+					App->scene_intro->octree = nullptr;
+					delete (App->scene_intro->octree); 
+					LOG("Octree Deleted Succesfully")
+				}
+			}
+
 			ImGui::TreePop(); 
 		}
 

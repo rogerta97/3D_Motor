@@ -12,13 +12,29 @@ Octree::~Octree()
 
 void Octree::Create(AABB limits, int _max_objects)
 {
+	if (root_node != nullptr)
+		ClearOctree(); 
+
 	root_node = new OctreeNode(limits); 
 	num_objects_added = 0; 
 	max_objects = _max_objects; 
+
+	LOG("New Octree has been created"); 
 }
 
-void Octree::Clear()
+void Octree::ClearOctree()
 {
+	if (root_node == nullptr)
+	{
+		LOG("Octree deleted");
+	}
+
+	else
+	{
+		root_node->ClearOctreeNode(); 
+
+
+	}
 
 }
 
@@ -98,6 +114,27 @@ bool OctreeNode::IsLeaf()
 	else
 		return false; 
 
+}
+
+void OctreeNode::ClearOctreeNode()
+{
+
+	if (child_nodes[0] == nullptr)
+	{
+		objects_in_node.clear();
+
+		if(parent_node != nullptr)
+			delete(parent_node);
+
+		delete(this); 
+	}
+	else
+	{
+		for (int i = 0; 8 < 8; i++)
+		{
+			child_nodes[i]->ClearOctreeNode(); 
+		}
+	}
 }
 
 bool OctreeNode::IsFull()

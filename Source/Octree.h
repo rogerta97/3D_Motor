@@ -1,6 +1,7 @@
 #pragma once 
 
 #include <vector>
+#include <map>
 #include "GameObject.h"
 #include "MathGeoLib\MathGeoLib.h"
 
@@ -16,6 +17,7 @@ public:
 
 	bool IsFull(); 
 	bool IsLeaf(); 
+	void ClearOctreeNode(); 
 
 	bool InsertToNode(GameObject* new_go, uint max_objects);
 	void DeleteNode(); 	
@@ -23,7 +25,7 @@ public:
 	void SplitNode(int max);
 
 	template <typename TYPE>
-	void CollectIntersections(list<GameObject*>& objects, const TYPE& tester);
+	void CollectIntersections(std::map<float, GameObject*>& objects, const TYPE& tester);
 
 	vec GetCenter() const; 
 
@@ -32,7 +34,7 @@ public:
 	AABB box; 
 	vector<GameObject*> objects_in_node; 
 	OctreeNode* child_nodes[8];
-	OctreeNode* parent_node; 
+	OctreeNode* parent_node = nullptr; 
 
 	bool leaf = true; 
 };
@@ -45,7 +47,7 @@ public:
 	~Octree(); 
 
 	void Create(AABB limits, int max_objects);
-	void Clear();
+	void ClearOctree();
 	void Insert(GameObject* new_go);
 	void Remove(GameObject* to_delete);
 
@@ -56,7 +58,7 @@ public:
 	void SetActive(bool _active); 
 
 	template <typename TYPE>
-	void CollectIntersections(list<GameObject*>& objects, const TYPE& tester);
+	void CollectIntersections(std::map<float, GameObject*>& objects, const TYPE& tester);
 
 	// utility
 
@@ -67,7 +69,7 @@ public:
 
 private: 
 
-	OctreeNode* root_node; 
+	OctreeNode* root_node = nullptr; 
 	bool active = false; 
 	uint num_objects_added; 
 	uint max_objects; 
@@ -75,24 +77,28 @@ private:
 };
 
 template<typename TYPE>
-inline void OctreeNode::CollectIntersections(list<GameObject*>& objects, const TYPE & tester)
+inline void OctreeNode::CollectIntersections(std::map<float, GameObject*>& objects, const TYPE & tester)
 {
 	if (tester.Intersects(box))
 	{
-		for (std::list<GameObject*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
+
+		float close_distance, far_distance; 
+		for (std::vector<GameObject*>::iterator it = objects_in_node.begin(); it != objects_in_node.end(); ++it)
 		{
-			if (primitive.Intersects((*it)->global_bbox))
-				objects.push_back(*it);
+			if (tester.Intersects((*it)->GetBoundingBox(), close_distance, far_distance))
+				objects[close_distance] = (*it);
 		}
 
 		for (int i = 0; i < 4; ++i)
-			if (childs[i] != nullptr) childs[i]->CollectIntersections(objects, primitive);
+			if (child_nodes[i] != nullptr) child_nodes[i]->CollectIntersections(objects, tester);
 	}
 }
 
 template<typename TYPE>
-inline void Octree::CollectIntersections(list<GameObject*>& objects, const TYPE & tester)
+inline void Octree::CollectIntersections(std::map<float, GameObject*>& objects, const TYPE & tester)
 {
 	if (root_node != nullptr)
 		root_node->CollectIntersections(objects, tester); 
+
+		
 }
