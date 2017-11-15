@@ -84,14 +84,23 @@ update_status ModuleCamera3D::Update(float dt)
 	//------Move
 	Move();
 	//------Orbit with Focus
+
+	//if((App->input->GetKey(SDL_SCANCODE_LALT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RALT) == KEY_DOWN))
+	//	is_rotating = true;
+
+	//else if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_UP|| App->input->GetKey(SDL_SCANCODE_RALT) == KEY_UP)
+	//	is_rotating = false;
 	
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_RALT) == KEY_REPEAT))
 	{
 		int dx = -App->input->GetMouseXMotion();
 		int dy = -App->input->GetMouseYMotion();
 
-		editor_camera->Rotate(dx*rot_speed*0.01f, dy*rot_speed*0.01f);
-	}	
+		editor_camera->Rotate(dx*rot_speed*0.01f, dy*rot_speed*0.01f);		
+	}
+
+		
+
 	Position -= Reference;
 
 	//------Focus 

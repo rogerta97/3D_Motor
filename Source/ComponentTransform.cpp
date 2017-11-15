@@ -113,21 +113,6 @@ void ComponentTransform::SetModified(bool n_value)
 void ComponentTransform::UpdateTransform(GameObject* curr_go)
 {
 		local_transform.Set(float4x4::FromTRS(position, rotation, scale));
-
-		//ComponentMeshRenderer* mr = (ComponentMeshRenderer*)curr_go->GetComponent(COMPONENT_MESH_RENDERER);
-
-		//if (mr != nullptr)
-		//	mr->AdaptBoundingBox(GetGlobalTransform());
-
-		//for (int i = 0; i < curr_go->child_list.size(); i++)
-		//{
-		//	mr = (ComponentMeshRenderer*)curr_go->child_list[i]->GetComponent(COMPONENT_MESH_RENDERER);
-		//	ComponentTransform* trans = (ComponentTransform*)curr_go->child_list[i]->GetComponent(COMPONENT_TRANSFORM);
-
-		//	trans->UpdateTransform(curr_go->child_list[i]);
-
-		//}
-	
 }
 
 bool ComponentTransform::Update()

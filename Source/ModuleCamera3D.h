@@ -52,6 +52,7 @@ public:
 	float aspect_ratio;
 
 	bool frustum_culling = false; 
+	bool is_rotating = false; 
 
 private:
 	mat4x4 ViewMatrix, ViewMatrixInverse;

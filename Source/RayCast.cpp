@@ -12,7 +12,7 @@ RayCast::RayCast()
 
 void RayCast::Update()
 {
-	if (ImGui::IsMouseClicked(0) && App->input->IsMouseInWindow() == false)
+	if (ImGui::IsMouseClicked(0) && App->input->IsMouseInWindow() == false && App->camera->is_rotating == false)
 	{
 		int width = App->window->width; 
 		int height = App->window->height;
