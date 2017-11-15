@@ -276,7 +276,7 @@ update_status ModuleImGui::PrintTopBar()
 				//Check name collisions in hierarchy 
 	
 				string new_name("Cube "); 
-				new_name += to_string(App->scene_intro->GetList().size());
+				new_name += to_string(App->scene_intro->GetGameObjectsNum());
 				cube->SetName(new_name.c_str()); 
 									
 				ComponentMeshRenderer* n_mr = new ComponentMeshRenderer(cube);				

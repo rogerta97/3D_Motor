@@ -319,133 +319,133 @@ void ModulePhysics3D::PrintConfigData()
 {
 	if (ImGui::CollapsingHeader(name))
 	{
-		if (ImGui::TreeNode("Object Creator"))
-		{
-			ImGui::Combo("Object Type", &object_type, "Cube\0Sphere\0Cylinder\0", 3);
+		//if (ImGui::TreeNode("Object Creator"))
+		//{
+		//	ImGui::Combo("Object Type", &object_type, "Cube\0Sphere\0Cylinder\0", 3);
 
-			ImGui::Separator(); 
+		//	ImGui::Separator(); 
 
-			static float3 origin_vector = { 0.0f, 0.0f, 0.0f };
-			static int size = 0;
+		//	static float3 origin_vector = { 0.0f, 0.0f, 0.0f };
+		//	static int size = 0;
 
-			bool create_obj = false; 
+		//	bool create_obj = false; 
 
-			ImGui::InputFloat("X", &origin_vector.x, 0.1f, 5.0f, 2);
-			ImGui::InputFloat("Y", &origin_vector.y, 0.1f, 5.0f, 2);
-			ImGui::InputFloat("Z", &origin_vector.z, 0.1f, 5.0f, 2);
+		//	ImGui::InputFloat("X", &origin_vector.x, 0.1f, 5.0f, 2);
+		//	ImGui::InputFloat("Y", &origin_vector.y, 0.1f, 5.0f, 2);
+		//	ImGui::InputFloat("Z", &origin_vector.z, 0.1f, 5.0f, 2);
 
-			ImGui::Separator(); 
+		//	ImGui::Separator(); 
 
-			switch (object_type)
-			{
-			case 0:
-				if (size < 0)
-					size = 0; 
+		//	switch (object_type)
+		//	{
+		//	case 0:
+		//		if (size < 0)
+		//			size = 0; 
 
-				ImGui::InputInt("Edge", &size, 1, 50);
+		//		ImGui::InputInt("Edge", &size, 1, 50);
 
-				ImGui::Separator(); 
+		//		ImGui::Separator(); 
 
-				if (ImGui::Button("Create!"))
-				{
-					if (size == 0)
-					{
-						LOG("Error crating cube, size must be +0");
-						break;
-					}
-					//	
-					//if (!App->scene_intro->obj_list.empty())
-					//{
-					//	//LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
-					//	delete(App->scene_intro->obj_list[0]);
-					//	App->scene_intro->obj_list.clear();
-					//}
+		//		if (ImGui::Button("Create!"))
+		//		{
+		//			if (size == 0)
+		//			{
+		//				LOG("Error crating cube, size must be +0");
+		//				break;
+		//			}
+		//			//	
+		//			//if (!App->scene_intro->obj_list.empty())
+		//			//{
+		//			//	//LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
+		//			//	delete(App->scene_intro->obj_list[0]);
+		//			//	App->scene_intro->obj_list.clear();
+		//			//}
 
-					//MeshRenderer mr; 
-					//mr.SetCubeVertices(origin_vector, size);
+		//			//MeshRenderer mr; 
+		//			//mr.SetCubeVertices(origin_vector, size);
 
-					//GLGizmo* new_go = new GLGizmo; 
-					//new_go->mr_list.push_back(mr); 
+		//			//GLGizmo* new_go = new GLGizmo; 
+		//			//new_go->mr_list.push_back(mr); 
 
-					//App->scene_intro->obj_list.push_back(new_go);
-				}							
-				break;
+		//			//App->scene_intro->obj_list.push_back(new_go);
+		//		}							
+		//		break;
 
-			case 1:
+		//	case 1:
 
-				static int rings; 
-				static int sectors; 
-				static float radius;
+		//		static int rings; 
+		//		static int sectors; 
+		//		static float radius;
 
-				if (radius < 0) radius = 0;
-				if (rings < 0) rings = 0; 
-				if (sectors < 0) sectors = 0; 
+		//		if (radius < 0) radius = 0;
+		//		if (rings < 0) rings = 0; 
+		//		if (sectors < 0) sectors = 0; 
 
-				ImGui::InputFloat("Radius", &radius, 1, 50, 2);
-				ImGui::InputInt("Rings", &rings, 1, 50);
-				ImGui::InputInt("Sectors", &sectors, 1, 50);
+		//		ImGui::InputFloat("Radius", &radius, 1, 50, 2);
+		//		ImGui::InputInt("Rings", &rings, 1, 50);
+		//		ImGui::InputInt("Sectors", &sectors, 1, 50);
 
-				ImGui::Separator();
+		//		ImGui::Separator();
 
-				if (ImGui::Button("Create!"))
-				{
+		//		if (ImGui::Button("Create!"))
+		//		{
 
-					if (radius == 0 || rings < 2 || sectors < 2)
-					{
-						LOG("Radius should be +2 / Rings & sectors should be +2");
-						break;
-					}
+		//			if (radius == 0 || rings < 2 || sectors < 2)
+		//			{
+		//				LOG("Radius should be +2 / Rings & sectors should be +2");
+		//				break;
+		//			}
 
-					if (!App->scene_intro->GetList().empty())
-					{
-					//	LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
-						delete(App->scene_intro->GetList()[0]);
-						App->scene_intro->GetList().clear();
-					}
+		//			if (!App->scene_intro->GetList().empty())
+		//			{
+		//			//	LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
+		//				delete(App->scene_intro->GetList()[0]);
+		//				App->scene_intro->GetList().clear();
+		//			}
 
-					
-					//App->scene_intro->obj_list.push_back((Gizmo*)AddSphere(origin_vector, radius, rings, sectors));
-				}					
-				break;
+		//			
+		//			//App->scene_intro->obj_list.push_back((Gizmo*)AddSphere(origin_vector, radius, rings, sectors));
+		//		}					
+		//		break;
 
 
-			case 2:
-				static int height;
-				static int sides;
-				static float r; 
+		//	case 2:
+		//		static int height;
+		//		static int sides;
+		//		static float r; 
 
-				if (r < 0) r = 0;
-				if (sides < 0) sides = 0;
-				if (height < 0) height = 0;
+		//		if (r < 0) r = 0;
+		//		if (sides < 0) sides = 0;
+		//		if (height < 0) height = 0;
 
-				ImGui::InputFloat("Radius", &r, 1, 50, 2);
-				ImGui::InputInt("Height", &height, 1, 50);
-				ImGui::InputInt("Sides", &sides, 1, 50);
+		//		ImGui::InputFloat("Radius", &r, 1, 50, 2);
+		//		ImGui::InputInt("Height", &height, 1, 50);
+		//		ImGui::InputInt("Sides", &sides, 1, 50);
 
-				ImGui::Separator();
+		//		ImGui::Separator();
 
-				if (ImGui::Button("Create!"))
-				{
+		//		if (ImGui::Button("Create!"))
+		//		{
 
-					if (r == 0 || height == 0 || sides == 0)
-					{
-						LOG("All properties must be +0"); 
-						break;
-					}
-						
-					if (!App->scene_intro->GetList().empty())
-					{
-						//LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
-						delete(App->scene_intro->GetList()[0]);
-						App->scene_intro->GetList().clear();
-					}
+		//			if (r == 0 || height == 0 || sides == 0)
+		//			{
+		//				LOG("All properties must be +0"); 
+		//				break;
+		//			}
+		//				
+		//			if (!App->scene_intro->GetList().empty())
+		//			{
+		//				//LOG("Deleting Gizmo with buffer num %d", App->scene_intro->obj_list[0]->mr_list.begin().vertices_id_t);
+		//				delete(App->scene_intro->GetList()[0]);
+		//				App->scene_intro->GetList().clear();
+		//			}
 
-					//App->scene_intro->obj_list.push_back((Gizmo*)AddCylinder(origin_vector, r, height, sides));
-				}								
-				break;
-			}
-			ImGui::TreePop(); 
-		}
+		//			//App->scene_intro->obj_list.push_back((Gizmo*)AddCylinder(origin_vector, r, height, sides));
+		//		}								
+		//		break;
+		//	}
+		//	ImGui::TreePop(); 
+		//}
 	}
 }
 //

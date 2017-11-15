@@ -11,7 +11,7 @@ bool PanelHierarchy::Draw()
 	{
 		if (!App->scene_intro->IsSceneEmpty())
 		{
-			for (int i = 0; i < App->scene_intro->GetList().size(); i++)
+			for (int i = 0; i < App->scene_intro->GetGameObjectsNum(); i++)
 			{				
 				GameObject* go_to_draw = App->scene_intro->GetGameObject(i); 
 
@@ -49,11 +49,6 @@ void PanelHierarchy::DrawNode(GameObject * go)
 				App->scene_intro->SetCurrentGO(go->GetID());
 			}
 
-		/*	if (ImGui::IsMouseDoubleClicked(0))
-			{
-				float radius = go->global_bbox.MinimalEnclosingSphere().r;
-				App->camera->CenterOn(go->GetGlobalPosition(), std::fmaxf(radius, 5.0f) * 2.0f);
-			}*/
 		}
 
 		if (ImGui::IsItemClicked(0)) {
@@ -73,12 +68,6 @@ void PanelHierarchy::DrawNode(GameObject * go)
 			if (ImGui::IsMouseClicked(0)) {
 				App->scene_intro->SetCurrentGO(go->GetID());
 			}
-
-			/*	if (ImGui::IsMouseDoubleClicked(0))
-			{
-			float radius = go->global_bbox.MinimalEnclosingSphere().r;
-			App->camera->CenterOn(go->GetGlobalPosition(), std::fmaxf(radius, 5.0f) * 2.0f);
-			}*/
 		}
 
 	}

@@ -35,15 +35,17 @@ public:
 	GameObject* GetCurrentGO();
 
 	// Lists management
-	void ClearGOList();
-	vector<GameObject*> GetList();
+	void ClearSceneGOList();
+	vector<GameObject*> GetSceneList();
 	vector<ComponentCamera*>GetCameraList();
 
 	void FromDynamicToStatic(GameObject* to_change);
 	void FromStaticToDynamic(GameObject* to_change);
 
-	int IsInDynamic(GameObject* to_check);
-	int IsInStatic(GameObject* to_check);
+	int IsInDynamic(const int& to_search);
+	int IsInStatic(const int& to_search);
+
+	int GetGameObjectsNum(); 
 
 	// UI Data
 	void PrintConfigData();
@@ -63,6 +65,8 @@ private:
 
 	vector<GameObject*> GO_list;
 	vector<GameObject*> static_GO_list;
+
+	vector<GameObject*> scene_GO_list;
 
 	uint current_gameobject_id = 0;
 	

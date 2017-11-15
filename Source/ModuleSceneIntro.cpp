@@ -120,13 +120,26 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	for (std::vector<GameObject*>::iterator it = GO_list.begin(); it != GO_list.end(); it++)
 	{
-		ComponentCamera* camera = (ComponentCamera*)(*it)->GetComponent(COMPONENT_CAMERA);
+		//ComponentCamera* camera = (ComponentCamera*)(*it)->GetComponent(COMPONENT_CAMERA);
 		(*it)->Draw(); 
-		if (camera != nullptr && camera->IsActive())
-		{
-			App->renderer3D->curr_cam->DrawFrustum(camera->frustum,White);
-			//App->renderer3D->rendering_cameras.push_back(camera);
-		}
+
+		//if (camera != nullptr && camera->IsActive())
+		//{
+		//	App->renderer3D->curr_cam->DrawFrustum(camera->frustum,White);
+		//	//App->renderer3D->rendering_cameras.push_back(camera);
+		//}
+	}
+
+	for (std::vector<GameObject*>::iterator it2 = static_GO_list.begin(); it2 != static_GO_list.end(); it2++)
+	{
+		//ComponentCamera* camera = (ComponentCamera*)(*it2)->GetComponent(COMPONENT_CAMERA);
+		(*it2)->Draw();
+
+		//if (camera != nullptr && camera->IsActive())
+		//{
+		//	App->renderer3D->curr_cam->DrawFrustum(camera->frustum, White);
+		//	//App->renderer3D->rendering_cameras.push_back(camera);
+		//}
 	}
 	
 	return UPDATE_CONTINUE;
@@ -161,14 +174,15 @@ void ModuleSceneIntro::AddGameObject(GameObject * GO)
 {
 
 	GO_list.push_back(GO); 
+	scene_GO_list.push_back(GO); 
 
-	GO->SetID(GO_list.size() - 1);
+	GO->SetID(GetGameObjectsNum() - 1);
 	current_gameobject_id = GO->GetID();
 }
 
-vector<GameObject*> ModuleSceneIntro::GetList()
+vector<GameObject*> ModuleSceneIntro::GetSceneList()
 {
-	return GO_list;
+	return scene_GO_list;
 }
 
 vector<ComponentCamera*> ModuleSceneIntro::GetCameraList()
@@ -178,43 +192,58 @@ vector<ComponentCamera*> ModuleSceneIntro::GetCameraList()
 
 void ModuleSceneIntro::FromDynamicToStatic(GameObject* to_change)
 {
-	if (IsInDynamic(to_change) != -1)
+
+	if (IsInDynamic(to_change->GetID()) != -1)
 	{
-		int pos = IsInDynamic(to_change); 
+		int pos = IsInDynamic(to_change->GetID());
 
 		GO_list.erase(GO_list.begin() + pos);
 		static_GO_list.push_back(to_change); 
 
-		if (IsInDynamic(to_change) == -1 && IsInStatic(to_change) != -1)
-			LOG("%s moved to static list"); 
+		if (IsInDynamic(to_change->GetID()) == -1 && IsInStatic(to_change->GetID()) != -1)
+			LOG("%s moved to static list", to_change->GetName()); 
 	}	
 }
 
 void ModuleSceneIntro::FromStaticToDynamic(GameObject* to_change)
 {
+	if (IsInStatic(to_change->GetID()) != -1)
+	{
+		int pos = IsInStatic(to_change->GetID());
 
+		static_GO_list.erase(static_GO_list.begin() + pos);
+		GO_list.push_back(to_change);
+
+		if (IsInStatic(to_change->GetID()) == -1 && IsInDynamic(to_change->GetID()) != -1)
+			LOG("%s moved to dynamic list", to_change->GetName());
+	}
 }
 
-int ModuleSceneIntro::IsInDynamic(GameObject * to_check)
+int ModuleSceneIntro::IsInDynamic(const int& searched_id)
 {
 	for (int i = 0; i < GO_list.size(); i++)
 	{
-		if (to_check->GetID() == GO_list[i]->GetID())
+		if (searched_id == GO_list[i]->GetID())
 			return i; 
 	}
 
 	return -1; 
 }
 
-int ModuleSceneIntro::IsInStatic(GameObject * to_check)
+int ModuleSceneIntro::IsInStatic(const int& searched_id)
 {
 	for (int i = 0; i < static_GO_list.size(); i++)
 	{
-		if (to_check->GetID() == static_GO_list[i]->GetID())
+		if (searched_id == static_GO_list[i]->GetID())
 			return i;
 	}
 
 	return -1;
+}
+
+int ModuleSceneIntro::GetGameObjectsNum()
+{
+	return GO_list.size() + static_GO_list.size(); 
 }
 
 
@@ -225,17 +254,18 @@ void ModuleSceneIntro::SetCurrentGO(uint id)
 
 GameObject* ModuleSceneIntro::GetCurrentGO()
 {
-	if (IsInDynamic(GetCurrentGO()))
-		return GO_list.at(IsInDynamic(GetCurrentGO()));
 
-	else if(IsInStatic(GetCurrentGO()))
-		return static_GO_list.at(IsInStatic(GetCurrentGO()));;
+	if (IsInDynamic(current_gameobject_id) != -1)
+		return GO_list.at(IsInDynamic(current_gameobject_id));
+
+	else if(IsInStatic(current_gameobject_id) != -1)
+		return static_GO_list.at(IsInStatic(current_gameobject_id));;
 }
 
 
-void ModuleSceneIntro::ClearGOList()
+void ModuleSceneIntro::ClearSceneGOList()
 {
-	GO_list.clear();
+	scene_GO_list.clear();
 }
 
 
