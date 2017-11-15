@@ -147,13 +147,6 @@ bool ComponentMeshRenderer::Update()
 		if (!App->renderer3D->curr_cam->IsInside(this->bounding_box)) return false;
 	}
 
-	if (ctransform->IsModified())
-	{
-		GetComponentParent()->AdaptBoundingBox(ctransform->GetGlobalTransform());
-		ctransform->SetModified(false); 
-	}
-	
-
 	glPushMatrix(); 
 	glMultMatrixf(ctransform->GetGlobalTransform().Transposed().ptr());
 	

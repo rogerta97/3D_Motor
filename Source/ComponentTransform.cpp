@@ -133,6 +133,11 @@ void ComponentTransform::UpdateTransform(GameObject* curr_go)
 bool ComponentTransform::Update()
 {
 
+	if (IsModified())
+	{
+		GetComponentParent()->RecursiveAdaptBoundingBox(GetGlobalTransform(), GetComponentParent());
+		SetModified(false);
+	}
 
 	return true;
 }

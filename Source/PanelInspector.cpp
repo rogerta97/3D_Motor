@@ -304,7 +304,7 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 		rot[0] = RadToDeg(radians_angle.x); rot[1] = RadToDeg(radians_angle.y); rot[2] = RadToDeg(radians_angle.z);
 		s[0] = curr_cmp->GetLocalScale().x; s[1] = curr_cmp->GetLocalScale().y; s[2] = curr_cmp->GetLocalScale().z;
 
-		if (ImGui::DragFloat3("Position##transform", pos, 2))
+		if (ImGui::DragFloat3("Position##transform", pos, 0.2f))
 		{
 			curr_cmp->SetLocalPosition(float3(pos[0], pos[1], pos[2]));
 		}
@@ -314,8 +314,18 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 			curr_cmp->SetLocalRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
 		}
 			
-		if (ImGui::DragFloat3("Scale##transform", s, 2))
+		if (ImGui::DragFloat3("Scale##transform", s, 0.2f))
+		{
+			if (s[0] < 0.2f)
+				s[0] = 0.2f;
+			if (s[1] < 0.2f)
+				s[1] = 0.2f;
+			if (s[2] < 0.2f)
+				s[2] = 0.2f;
+
 			curr_cmp->SetLocalScale(float3(s[0], s[1], s[2]));
+		}
+			
 
 
 		//	break;

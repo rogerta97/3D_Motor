@@ -21,6 +21,8 @@ public:
 
 	void Draw(); 
 
+	// Status & info
+
 	bool IsActive()const;
 	void SetActive(bool _active);
 
@@ -32,15 +34,31 @@ public:
 	void SetID(uint id);
 	uint GetID()const; 
 
+	// Component
+
 	Component* GetComponent(component_type new_component, int skip_num = 0);
 	Component* GetComponent(int index); 
+	void PushComponent(Component* comp);
+	Component* AddEmptyComponent(component_type type);
+	void PushRootComponent(Component* comp);
+	uint GetNumComponents()const;
+
+	// Bounding Box 
 
 	AABB GetBoundingBox(); 
+	void RecursiveAdaptBoundingBox(float4x4 transform, GameObject* to_addapt);
+	void AdaptBoundingBox(GameObject* to_addapt);
+
+	// Parent & childs 
 
 	GameObject* GetChild(uint id)const; 
 	bool IsChild(const GameObject* go) const;
+	uint GetNumChilds()const;
+	void PushChild(GameObject* child);
+	GameObject* GetParent()const;
+	GameObject* GetSupreme(); 
 
-	void AdaptBoundingBox(float4x4 transform); 
+	// Utility
 
 	bool IsCompEmpty(); 
 	bool IsChildEmpty(); 
@@ -48,14 +66,6 @@ public:
 	bool IsRoot() const; 
 	void SetRoot(const bool& _root); 
 
-	uint GetNumChilds()const; 
-	uint GetNumComponents()const;
-	GameObject* GetParent()const; 
-
-	void PushComponent(Component* comp); 
-	Component* AddEmptyComponent(component_type type);
-	void PushRootComponent(Component* comp); // In case of a root object selected the texture will need to be aded to all it's childs
-	void PushChild(GameObject* child); 
 
 public:
 	vector<Component*> component_list;

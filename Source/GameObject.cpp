@@ -112,32 +112,42 @@ bool GameObject::IsChild(const GameObject* go) const
 	return false;
 }
 
-void GameObject::AdaptBoundingBox(float4x4 transform)
+void GameObject::RecursiveAdaptBoundingBox(float4x4 transform, GameObject* go_to_adapt)
 {
 	LOG("adapted");
 
-	ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponent(COMPONENT_MESH_RENDERER);
+	AdaptBoundingBox(go_to_adapt);
+
+	if (!go_to_adapt->child_list.empty())
+	{
+		for (int i = 0; i < go_to_adapt->child_list.size(); i++)
+		{
+			ComponentMeshRenderer* child_mr = (ComponentMeshRenderer*)go_to_adapt->child_list[i]->GetComponent(COMPONENT_MESH_RENDERER);
+			ComponentTransform* child_trans = (ComponentTransform*)go_to_adapt->child_list[i]->GetComponent(COMPONENT_TRANSFORM);
+
+			if (child_mr != nullptr)
+			{
+				RecursiveAdaptBoundingBox(child_trans->GetGlobalTransform(), child_list[i]);
+				child_trans->SetModified(false); 
+			}
+				
+		}
+	}
+}
+
+void GameObject::AdaptBoundingBox(GameObject* go_to_adapt)
+{
+	ComponentMeshRenderer* mr = (ComponentMeshRenderer*)go_to_adapt->GetComponent(COMPONENT_MESH_RENDERER);
+	ComponentTransform* trans = (ComponentTransform*)go_to_adapt->GetComponent(COMPONENT_TRANSFORM);
 
 	if (mr != nullptr)
 	{
 		mr->bounding_box.SetNegativeInfinity();
 		mr->bounding_box.Enclose(mr->vertices, mr->num_vertices);
-		mr->bounding_box.TransformAsAABB(transform);
-	}
-
-
-	if (!child_list.empty())
-	{
-		for (int i = 0; i < child_list.size(); i++)
-		{
-			ComponentMeshRenderer* child_mr = (ComponentMeshRenderer*)child_list[i]->GetComponent(COMPONENT_MESH_RENDERER);
-			ComponentTransform* child_trans = (ComponentTransform*)child_list[i]->GetComponent(COMPONENT_TRANSFORM);
-
-			if (child_mr != nullptr)
-				AdaptBoundingBox(child_trans->GetGlobalTransform());
-		}
+		mr->bounding_box.TransformAsAABB(trans->GetGlobalTransform());
 	}
 }
+
 Component * GameObject::GetComponent(component_type new_component_type, int skip_num)
 {
 
@@ -213,6 +223,11 @@ uint GameObject::GetNumComponents()const
 GameObject * GameObject::GetParent()const
 {
 	return parent;
+}
+
+GameObject * GameObject::GetSupreme()
+{
+	return nullptr;
 }
 
 void GameObject::PushComponent(Component* comp)

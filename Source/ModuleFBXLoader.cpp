@@ -143,6 +143,8 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 		trans->SetLocalPosition(n_pos);
 		trans->SetLocalRotation(n_rot.ToEulerXYZ());
 		trans->SetLocalScale(n_scale);
+
+		trans->SetModified(false); 
 		
 		App->scene_intro->AddGameObject(new_go);
 	}
@@ -281,7 +283,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 					TR_cmp->type = COMPONENT_TRANSFORM;
 					TR_cmp->Enable();
 
-					child_go->AdaptBoundingBox(TR_cmp->GetLocalTransform()); 
+					child_go->AdaptBoundingBox(child_go); 
 				}				
 				App->scene_intro->AddGameObject(child_go);
 			}
