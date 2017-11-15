@@ -21,6 +21,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled)
 {
+
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -64,6 +65,9 @@ GameObject* ModuleSceneIntro::GetGameObject(uint id)
 	GameObject* ret = nullptr;
 
 	uint i = 0;
+
+	// Check in Dynamic List
+
 	for (std::vector<GameObject*>::iterator it = GO_list.begin(); it != GO_list.end(); it++)
 	{
 		if (i == id)
@@ -73,8 +77,23 @@ GameObject* ModuleSceneIntro::GetGameObject(uint id)
 		}
 		++i;
 	}	
+
+	// Check in Static list 
+
+	for (std::vector<GameObject*>::iterator it2 = static_GO_list.begin(); it2 != static_GO_list.end(); it2++)
+	{
+		if (i == id)
+		{
+			ret = (*it2);
+			break;
+		}
+		++i;
+	}
+
 	return ret;
 }
+
+
 
 GameObject * ModuleSceneIntro::CreateGameObject(const char * name)
 {
@@ -128,6 +147,11 @@ void ModuleSceneIntro::PrintInspectorData()
 
 }
 
+bool ModuleSceneIntro::IsSceneEmpty()
+{
+	return (GO_list.empty() && static_GO_list.empty()); 
+}
+
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 
@@ -152,10 +176,47 @@ vector<ComponentCamera*> ModuleSceneIntro::GetCameraList()
 	return cameras_list;
 }
 
-bool ModuleSceneIntro::IsListEmpty()
+void ModuleSceneIntro::FromDynamicToStatic(GameObject* to_change)
 {
-	return GO_list.empty();
+	if (IsInDynamic(to_change) != -1)
+	{
+		int pos = IsInDynamic(to_change); 
+
+		GO_list.erase(GO_list.begin() + pos);
+		static_GO_list.push_back(to_change); 
+
+		if (IsInDynamic(to_change) == -1 && IsInStatic(to_change) != -1)
+			LOG("%s moved to static list"); 
+	}	
 }
+
+void ModuleSceneIntro::FromStaticToDynamic(GameObject* to_change)
+{
+
+}
+
+int ModuleSceneIntro::IsInDynamic(GameObject * to_check)
+{
+	for (int i = 0; i < GO_list.size(); i++)
+	{
+		if (to_check->GetID() == GO_list[i]->GetID())
+			return i; 
+	}
+
+	return -1; 
+}
+
+int ModuleSceneIntro::IsInStatic(GameObject * to_check)
+{
+	for (int i = 0; i < static_GO_list.size(); i++)
+	{
+		if (to_check->GetID() == static_GO_list[i]->GetID())
+			return i;
+	}
+
+	return -1;
+}
+
 
 void ModuleSceneIntro::SetCurrentGO(uint id)
 {
@@ -164,16 +225,13 @@ void ModuleSceneIntro::SetCurrentGO(uint id)
 
 GameObject* ModuleSceneIntro::GetCurrentGO()
 {
-	if (!GO_list.empty())
-		return GO_list.at(current_gameobject_id);
-	else
-		return nullptr; 
+	if (IsInDynamic(GetCurrentGO()))
+		return GO_list.at(IsInDynamic(GetCurrentGO()));
+
+	else if(IsInStatic(GetCurrentGO()))
+		return static_GO_list.at(IsInStatic(GetCurrentGO()));;
 }
 
-Octree * ModuleSceneIntro::GetOctree()
-{
-	return octree;
-}
 
 void ModuleSceneIntro::ClearGOList()
 {

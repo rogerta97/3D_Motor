@@ -30,9 +30,14 @@ bool GameObject::IsStatic() const
 	return is_static;
 }
 
-void GameObject::SetStatic(bool _active)
+void GameObject::SetStatic(bool _static)
 {
-	is_static = _active; 
+	is_static = _static;
+
+	if (_static)
+		App->scene_intro->FromDynamicToStatic(this); 
+	else
+		App->scene_intro->FromStaticToDynamic(this);
 }
 
 void GameObject::SetName(const char * _name)
@@ -114,8 +119,6 @@ bool GameObject::IsChild(const GameObject* go) const
 
 void GameObject::RecursiveAdaptBoundingBox(float4x4 transform, GameObject* go_to_adapt)
 {
-	LOG("adapted");
-
 	AdaptBoundingBox(go_to_adapt);
 
 	if (!go_to_adapt->child_list.empty())

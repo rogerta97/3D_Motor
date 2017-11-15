@@ -19,7 +19,7 @@ bool PanelInspector::Draw()
 	if (!show_inspector)
 		return false;
 
-	if (ImGui::Begin("Inspector"), &show_inspector && App->scene_intro->GetGameObject(0) != nullptr)
+	if (ImGui::Begin("Inspector"), &show_inspector && !App->scene_intro->IsSceneEmpty())
 	{
 		GameObject* go_to_display = App->scene_intro->GetCurrentGO();
 
@@ -35,7 +35,14 @@ bool PanelInspector::Draw()
 
 		ImGui::Checkbox("Active", &active_bool); ImGui::SameLine(); 
 
+		bool keeper = static_bool; 
 		ImGui::Checkbox("Static", &static_bool); ImGui::SameLine();
+
+		if (keeper != static_bool)
+		{
+			if (static_bool) go_to_display->SetStatic(true);
+			else go_to_display->SetStatic(false);
+		}
 
 		if (ImGui::Button("Assign parent"))
 		{
@@ -45,7 +52,7 @@ bool PanelInspector::Draw()
 		ImGui::Separator();
 
 		go_to_display->SetActive(active_bool);
-		go_to_display->SetStatic(static_bool);
+		//go_to_display->is_static = static_bool;
 
 		for (int i = 0; i < go_to_display->GetNumComponents(); i++)
 		{

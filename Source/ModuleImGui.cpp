@@ -340,7 +340,7 @@ update_status ModuleImGui::PrintTopBar()
 		panel_octree.DrawPanel();
 	}
 
-	if (App->scene_intro->IsListEmpty() == false)
+	if (App->scene_intro->IsSceneEmpty() == false)
 		show_inspector = true;
 	else
 		show_inspector = false;

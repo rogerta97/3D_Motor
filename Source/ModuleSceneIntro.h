@@ -23,34 +23,47 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt); 
 	bool CleanUp();
+
+	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
+
+	// GO Management
+	void AddGameObject(GameObject* GO);
 	GameObject* GetGameObject(uint id);
 	GameObject* CreateGameObject(const char* name);
 
-	void PrintConfigData();
-	void PrintInspectorData();
-	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
-	void AddGameObject(GameObject* GO); 
+	void SetCurrentGO(uint id);
+	GameObject* GetCurrentGO();
+
+	// Lists management
+	void ClearGOList();
 	vector<GameObject*> GetList();
 	vector<ComponentCamera*>GetCameraList();
-	bool IsListEmpty(); 
 
-	//p2DynArray<p2Point<int>> GetCollisions(); 
-	void SetCurrentGO(uint id);
-	GameObject* GetCurrentGO(); 
+	void FromDynamicToStatic(GameObject* to_change);
+	void FromStaticToDynamic(GameObject* to_change);
 
+	int IsInDynamic(GameObject* to_check);
+	int IsInStatic(GameObject* to_check);
 
-	Octree* GetOctree(); 
+	// UI Data
+	void PrintConfigData();
+	void PrintInspectorData();
 
-	void ClearGOList(); 
+	// Scene Management
+	bool IsSceneEmpty(); 
 
 public:
+
 	vector<ComponentCamera*> cameras_list;
 	Octree* octree = nullptr;
 
 private:
 
 	PPlane main_plane; 
+
 	vector<GameObject*> GO_list;
+	vector<GameObject*> static_GO_list;
+
 	uint current_gameobject_id = 0;
 	
 };

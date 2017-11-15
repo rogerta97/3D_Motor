@@ -76,20 +76,25 @@ update_status ModuleCamera3D::Update(float dt)
 
 	ComponentTransform* tmp_trans= nullptr; 
 
-	if (App->scene_intro->GetGameObject(0) != nullptr)
+	if (!App->scene_intro->IsSceneEmpty())
 		 aux = App->scene_intro->GetGameObject(0);
 	else
 		 aux = nullptr;
 	App->performance.InitTimer(name); 
+
 	//------Move
 	Move();
+
 	//------Orbit with Focus
+	// Deactivate RayCast Hit in case the user is rotating the camera -----------
 
-	//if((App->input->GetKey(SDL_SCANCODE_LALT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RALT) == KEY_DOWN))
-	//	is_rotating = true;
+	if((App->input->GetKey(SDL_SCANCODE_LALT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RALT) == KEY_DOWN))
+		is_rotating = true;
 
-	//else if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_UP|| App->input->GetKey(SDL_SCANCODE_RALT) == KEY_UP)
-	//	is_rotating = false;
+	else if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_UP|| App->input->GetKey(SDL_SCANCODE_RALT) == KEY_UP)
+		is_rotating = false;
+
+	// -------------
 	
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_RALT) == KEY_REPEAT))
 	{

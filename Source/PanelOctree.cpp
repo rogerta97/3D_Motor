@@ -6,14 +6,14 @@ void PanelOctree::Start()
 {
 	oct_active = false; 
 
-	if (App->scene_intro->GetOctree() == nullptr)
+	if (App->scene_intro->octree == nullptr)
 	{
 		min_point[0] = min_point[1] = min_point[2] = 0.0f;
 		max_point[0] = max_point[1] = max_point[2] = 0.0f;
 	}
 	else
 	{
-		OctreeNode* root_node = App->scene_intro->GetOctree()->GetRootNode(); 
+		OctreeNode* root_node = App->scene_intro->octree->GetRootNode();
 
 		min_point[0] = root_node->box.minPoint.x;
 		min_point[1] = root_node->box.minPoint.y;

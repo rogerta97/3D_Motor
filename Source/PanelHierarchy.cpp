@@ -9,7 +9,7 @@ bool PanelHierarchy::Draw()
 
 	if (ImGui::Begin("Hierarchy"))
 	{
-		if (App->scene_intro->IsListEmpty() == false)
+		if (!App->scene_intro->IsSceneEmpty())
 		{
 			for (int i = 0; i < App->scene_intro->GetList().size(); i++)
 			{				
