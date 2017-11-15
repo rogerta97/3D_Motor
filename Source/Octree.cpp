@@ -10,10 +10,11 @@ Octree::~Octree()
 {
 }
 
-void Octree::Create(AABB limits)
+void Octree::Create(AABB limits, int _max_objects)
 {
 	root_node = new OctreeNode(limits); 
 	num_objects_added = 0; 
+	max_objects = _max_objects; 
 }
 
 void Octree::Clear()
@@ -30,7 +31,7 @@ void Octree::Insert(GameObject * new_go)
 	if (root_node != nullptr)
 		curr_node = root_node;
 
-	if (curr_node->InsertToNode(new_go))
+	if (curr_node->InsertToNode(new_go, max_objects))
 	{
 		num_objects_added++;
 		LOG("GameObject '%s' added to Octree succesfully", new_go->GetName()); 
@@ -102,13 +103,13 @@ bool OctreeNode::IsLeaf()
 bool OctreeNode::IsFull()
 {
 
-	if (objects_in_node.size() == 2)
+	if (objects_in_node.size() == 3)
 		return true;
 	else
 		return false; 
 }
 
-bool OctreeNode::InsertToNode(GameObject* new_go)
+bool OctreeNode::InsertToNode(GameObject* new_go, uint max_objects)
 {
 	bool ret = false; 
 
@@ -119,9 +120,9 @@ bool OctreeNode::InsertToNode(GameObject* new_go)
 				ret = true; 
 				objects_in_node.push_back(new_go);
 
-				if (objects_in_node.size() == 2)
+				if (objects_in_node.size() == max_objects)
 				{
-					SplitNode(); 
+					SplitNode(max_objects); 
 				}
 			}
 			else
@@ -130,7 +131,7 @@ bool OctreeNode::InsertToNode(GameObject* new_go)
 				{
 					if (child_nodes[i]->box.Contains(new_go->GetBoundingBox()))
 					{
-						child_nodes[i]->InsertToNode(new_go);
+						child_nodes[i]->InsertToNode(new_go, max_objects);
 						ret = true; 
 					}
 						
@@ -164,11 +165,11 @@ void Octree::Split()
 {
 
 	if (root_node->IsLeaf())
-		root_node->SplitNode(); 
+		root_node->SplitNode(max_objects); 
 	else
 		for (int i = 0; i < 8; i++)
 		{
-			root_node->child_nodes[i]->SplitNode(); 
+			root_node->child_nodes[i]->SplitNode(max_objects);
 		}
 
 }
@@ -197,7 +198,7 @@ void OctreeNode::DrawNode()
 
 }
 
-void OctreeNode::SplitNode()
+void OctreeNode::SplitNode(int max_object)
 {
 
 	if (!IsLeaf())
@@ -206,7 +207,7 @@ void OctreeNode::SplitNode()
 
 		for (int i = 0; i < 8; i++)
 		{
-			child_nodes[i]->SplitNode();
+			child_nodes[i]->SplitNode(max_object);
 		}
 	}
 	else
@@ -241,23 +242,25 @@ void OctreeNode::SplitNode()
 
 		//And we change empty the list of object that had the parent, now childs must have it 
 
-
 			for (int j = 0; j < 8; j++)
 			{
 				for (int i = 0; i < objects_in_node.size(); i++)
 				{
-					if (child_nodes[j]->box.Contains(objects_in_node[i]->GetBoundingBox()))
+					if (child_nodes[j]->box.Contains(objects_in_node[i]->GetBoundingBox()) || child_nodes[j]->box.Intersects(objects_in_node[i]->GetBoundingBox()))
 					{
 						child_nodes[j]->objects_in_node.push_back(objects_in_node[i]);
-						objects_in_node.erase(objects_in_node.begin() + i);
-						i--; 
 					}
 
 					// This is in case that, after spliting, the node still need to be split
-
 					if (child_nodes[j]->IsFull())
-						child_nodes[j]->SplitNode(); 
+						child_nodes[j]->SplitNode(max_object); 
 				}
+			}
+
+			//Here we delete the parent go 
+			for (int i = 0; i < objects_in_node.size(); i++)
+			{
+				objects_in_node.erase(objects_in_node.begin() + i);
 			}
 		
 
@@ -276,22 +279,4 @@ OctreeNode::OctreeNode(AABB limits)
 	objects_in_node.clear();
 	leaf = true;
 }
-//
-//void OctreeNode::CollectIntersections(list<GameObject*>& objects, LineSegment* tester)
-//{
-//	if (box.Contains(*tester))
-//	{
-//		for (int i = 0; i < objects_in_node.size(); i++)
-//		{
-//			objects.push_back(objects_in_node[i]); 
-//		}
-//	}
-//
-//	for (int i = 0; i < 8; i++)
-//	{
-//		if (child_nodes[i] != nullptr)
-//		{
-//			child_nodes[i]->CollectIntersections(objects, tester); 
-//		}
-//	}
-//}
+

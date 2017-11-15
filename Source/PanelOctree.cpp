@@ -42,11 +42,13 @@ void PanelOctree::DrawPanel()
 			ImGui::InputFloat3("Min Point", &min_point[0], 2);
 			ImGui::InputFloat3("Max Point", &max_point[0], 2);
 
+			ImGui::InputInt("Objects per node", &max_objects);
+
 			if (ImGui::Button("Create"))
 			{				
 				App->scene_intro->octree = new Octree(); 
 				AABB limits(min_point, max_point);
-				App->scene_intro->octree->Create(limits);
+				App->scene_intro->octree->Create(limits, max_objects);
 			}
 
 			ImGui::Separator(); 
@@ -58,11 +60,13 @@ void PanelOctree::DrawPanel()
 				max_point = { 100, 100, 100 }; 
 				App->scene_intro->octree = new Octree();
 				AABB limits(min_point, max_point);
-				App->scene_intro->octree->Create(limits);
+				App->scene_intro->octree->Create(limits, 2);
 			}		
 
 			ImGui::TreePop(); 
 		}
+
+		ImGui::Separator(); 
 
 		if (App->scene_intro->octree != nullptr)
 		{
@@ -71,13 +75,17 @@ void PanelOctree::DrawPanel()
 
 			ImGui::Text("Max Point: "); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "(%.2f, %.2f, %.2f)", App->scene_intro->octree->GetRootNode()->box.maxPoint.x, App->scene_intro->octree->GetRootNode()->box.maxPoint.y, App->scene_intro->octree->GetRootNode()->box.maxPoint.z);
-		}
+		
+			App->scene_intro->octree->SetActive(oct_active);
 
-		if(App->scene_intro->octree!= nullptr)
-			App->scene_intro->octree->SetActive(oct_active); 
- 
-		ImGui::Text("Objects Inside Octree: "); ImGui::SameLine(); 
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", obj_amount);
+			ImGui::Text("Objects Inside Octree: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", obj_amount);
+
+			ImGui::Text("Max Objects per Node: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", max_objects);
+		}
+		else
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "No instance of Octree existing");
 
 		ImGui::Separator();	
 

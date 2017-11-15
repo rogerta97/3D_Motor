@@ -68,7 +68,7 @@ GameObject* ModuleSceneIntro::GetGameObject(uint id)
 
 	// Check in Dynamic List
 
-	for (std::vector<GameObject*>::iterator it = GO_list.begin(); it != GO_list.end(); it++)
+	for (std::vector<GameObject*>::iterator it = scene_GO_list.begin(); it != scene_GO_list.end(); it++)
 	{
 		if (i == id)
 		{
@@ -80,15 +80,15 @@ GameObject* ModuleSceneIntro::GetGameObject(uint id)
 
 	// Check in Static list 
 
-	for (std::vector<GameObject*>::iterator it2 = static_GO_list.begin(); it2 != static_GO_list.end(); it2++)
-	{
-		if (i == id)
-		{
-			ret = (*it2);
-			break;
-		}
-		++i;
-	}
+	//for (std::vector<GameObject*>::iterator it2 = static_GO_list.begin(); it2 != static_GO_list.end(); it2++)
+	//{
+	//	if (i == id)
+	//	{
+	//		ret = (*it2);
+	//		break;
+	//	}
+	//	++i;
+	//}
 
 	return ret;
 }

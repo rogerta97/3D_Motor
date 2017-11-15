@@ -15,5 +15,6 @@ private:
 	float3 min_point;
 	float3 max_point;
 
+	int max_objects = 2; 
 	int obj_amount = 0; 
 }; 

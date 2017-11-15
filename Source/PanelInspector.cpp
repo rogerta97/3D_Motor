@@ -36,6 +36,7 @@ bool PanelInspector::Draw()
 		ImGui::Checkbox("Active", &active_bool); ImGui::SameLine(); 
 
 		bool keeper = static_bool; 
+
 		ImGui::Checkbox("Static", &static_bool); ImGui::SameLine();
 
 		if (keeper != static_bool)

@@ -17,10 +17,10 @@ public:
 	bool IsFull(); 
 	bool IsLeaf(); 
 
-	bool InsertToNode(GameObject* new_go);
+	bool InsertToNode(GameObject* new_go, uint max_objects);
 	void DeleteNode(); 	
 	void DrawNode(); 
-	void SplitNode();
+	void SplitNode(int max);
 
 	template <typename TYPE>
 	void CollectIntersections(list<GameObject*>& objects, const TYPE& tester);
@@ -44,7 +44,7 @@ public:
 	Octree(); 
 	~Octree(); 
 
-	void Create(AABB limits);
+	void Create(AABB limits, int max_objects);
 	void Clear();
 	void Insert(GameObject* new_go);
 	void Remove(GameObject* to_delete);
@@ -70,6 +70,7 @@ private:
 	OctreeNode* root_node; 
 	bool active = false; 
 	uint num_objects_added; 
+	uint max_objects; 
 
 };
 
