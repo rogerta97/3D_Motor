@@ -2,6 +2,7 @@
 #define _COMPONENT_H_
 
 class GameObject; 
+class json_file;
 
 enum component_type
 {
@@ -32,7 +33,8 @@ public:
 	virtual bool Enable();
 	virtual bool Update();
 	virtual bool Disable();
-
+	virtual void OnSave(json_file& config)const;
+	virtual void OnLoad(json_file* config);
 	bool IsActive()const;
 	bool SetActive(bool _active);
 

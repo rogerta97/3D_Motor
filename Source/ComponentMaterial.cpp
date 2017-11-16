@@ -47,6 +47,14 @@ bool ComponentMaterial::Disable()
 	return true;
 }
 
+void ComponentMaterial::OnLoad(json_file * config)
+{
+}
+
+void ComponentMaterial::OnSave(json_file & config) const
+{
+}
+
 void ComponentMaterial::OpenTexture()
 {
 	glEnable(GL_TEXTURE_2D);

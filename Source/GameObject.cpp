@@ -337,6 +337,13 @@ bool Component::Disable()
 {
 	return true;
 }
+void Component::OnSave(json_file & config) const
+{
+}
+void Component::OnLoad(json_file* config)
+{
+
+}
 
 
 bool Component::IsActive() const

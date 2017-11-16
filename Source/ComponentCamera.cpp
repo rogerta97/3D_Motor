@@ -4,6 +4,7 @@
 #include "ComponentTransform.h"
 #include "ModuleSceneIntro.h"
 #include "Application.h"
+#include "JSON.h"
 
 ComponentCamera::ComponentCamera(GameObject* _parent, float far_plane, float near_plane, float fov, float aspect_ratio)
 {
@@ -38,6 +39,39 @@ bool ComponentCamera::Update()
 
 	return true;
 }
+
+void ComponentCamera::OnLoad(json_file * config)
+{
+	//Load Frustum Values
+	frustum.pos.x = config->GetFloat("Frustum", 0.f, 0);
+	frustum.pos.y = config->GetFloat("Frustum", 0.f, 1);
+	frustum.pos.z = config->GetFloat("Frustum", 0.f, 2);
+
+	frustum.front.x = config->GetFloat("Frustum", 0.f, 3);
+	frustum.front.y = config->GetFloat("Frustum", 0.f, 4);
+	frustum.front.z = config->GetFloat("Frustum", 1.f, 5);
+
+	frustum.up.x = config->GetFloat("Frustum", 0.f, 6);
+	frustum.up.y = config->GetFloat("Frustum", 1.f, 7);
+	frustum.up.z = config->GetFloat("Frustum", 0.f, 8);
+
+	frustum.nearPlaneDistance = config->GetFloat("Frustum", 0.1f, 9);
+	frustum.farPlaneDistance = config->GetFloat("Frustum", 1000.f, 10);
+
+	frustum.horizontalFov = config->GetFloat("Frustum", 1.f, 11);
+	frustum.verticalFov = config->GetFloat("Frustum", 1.f, 12);
+	
+	//remember that we have to recalculate when modifying the projection
+	//so:
+	screen_resized = true;
+}
+
+void ComponentCamera::OnSave(json_file & config) const
+{
+	config.SetArrayFloat("Frustum", (float*)&frustum.pos.x, 13);
+}
+
+
 
 void ComponentCamera::DrawFrustum(Frustum & frustum, Color color)
 {

@@ -8,6 +8,7 @@
 #include "DebugDraw.h"
 
 class Color;
+class json_file;
 
 class ComponentCamera : public Component
 {
@@ -18,7 +19,8 @@ public:
 	~ComponentCamera(); 
 
 	bool Update(); 
-
+	void OnLoad(json_file* config);
+	void OnSave(json_file& config)const;
 	void DrawFrustum(Frustum & frustum, Color color);
 
 	//--frustrum get&set functions
