@@ -12,7 +12,7 @@ Octree::~Octree()
 {
 }
 
-void Octree::Create(AABB limits, int _max_objects)
+void Octree::Create(AABB limits, int _max_objects, bool _adaptative)
 {
 	if (root_node != nullptr)
 		ClearOctree(); 
@@ -20,32 +20,9 @@ void Octree::Create(AABB limits, int _max_objects)
 	root_node = new OctreeNode(limits); 
 	num_objects_added = 0; 
 	max_objects = _max_objects; 
+	adaptative = _adaptative;
 
 	LOG("New Octree has been created"); 
-}
-
-void Octree::Create(int _max_objects)
-{
-	if (root_node != nullptr)
-		ClearOctree();
-
-	vector<GameObject*> static_obj = App->scene_intro->GetStaticGOList(); 
-	
-	GameObject* far_object = App->scene_intro->GetFarestObjectFrom({0,0,0});
-	float half_size = far_object->DistanceTo({ 0,0,0 }); 
-
-	AABB limits({ -half_size, -half_size , -half_size }, { half_size , half_size , half_size }); 
-
-	root_node = new OctreeNode(limits);
-	num_objects_added = 0;
-	max_objects = _max_objects;
-
-	for (int i = 0; i < static_obj.size(); i++)
-	{
-		Insert(static_obj[i]);
-	}
-
-	LOG("New Adaptative Octree has been created");
 }
 
 void Octree::ClearOctree()
@@ -53,15 +30,13 @@ void Octree::ClearOctree()
 	if (root_node == nullptr)
 	{
 		LOG("Octree deleted");
-	}
-
+	}		
 	else
 	{
-		root_node->ClearOctreeNode(); 
-
-
+		root_node->ClearOctreeNode();
+		root_node = nullptr; 
 	}
-
+	
 }
 
 bool Octree::Insert(GameObject * new_go)
@@ -75,17 +50,19 @@ bool Octree::Insert(GameObject * new_go)
 	if (root_node != nullptr)
 		curr_node = root_node;
 
-	if (curr_node->InsertToNode(new_go, max_objects))
+	if (curr_node->box.Contains(new_go->GetBoundingBox()))
 	{
-		num_objects_added++;
-		LOG("GameObject '%s' added to Octree succesfully", new_go->GetName()); 
-		ret = true; 
+		if (curr_node->InsertToNode(new_go, max_objects))
+		{
+			num_objects_added++;
+			LOG("GameObject '%s' added to Octree succesfully", new_go->GetName());
+			ret = true;
+		}
 	}
-	else
+	else if (adaptative)
 	{
 		AdaptQuadtree(); 
 	}
-
 
 	return ret; 
 }
@@ -123,9 +100,33 @@ void Octree::SetActive(bool _active)
 
 AABB Octree::AdaptQuadtree()
 {
-	AABB ret(float3(0.0f, 0.0f, 0.0f), float3(0.0f, 0.0f, 0.0f));
+	AABB ret({ 0.0f,0.0f ,0.0f }, { 0.0f ,0.0f ,0.0f }); 
 
-	Create(max_objects); 
+	// Destroy old octree
+
+	ClearOctree(); 
+	App->scene_intro->octree = nullptr; 
+	delete(App->scene_intro->octree); 
+
+	// Create the updated one
+
+	Octree* new_octree; 
+
+	GameObject* far_go = App->scene_intro->GetFarestObjectFrom({ 0,0,0 }); 
+	float half_edge = far_go->DistanceTo({ 0,0,0 }); 
+	int increment = 20; 
+
+	AABB limits({-half_edge - increment,-half_edge - increment,-half_edge - increment,}, { half_edge + increment, half_edge + increment, half_edge + increment });
+
+	new_octree = new Octree();
+	new_octree->Create(limits, max_objects, true);
+
+	for (int i = 0; i < App->scene_intro->GetStaticGOList().size();i++)
+	{
+		new_octree->Insert(App->scene_intro->GetStaticGO(i));
+	}
+
+	App->scene_intro->octree = new_octree; 
 
 	return ret;
 }
@@ -177,10 +178,15 @@ void OctreeNode::ClearOctreeNode()
 	{
 		objects_in_node.clear();
 
-		if(parent_node != nullptr)
+		if (parent_node != nullptr)
+		{
 			delete(parent_node);
+			parent_node = nullptr; 
+		}
+			
 
-		delete(this); 
+		delete(this);
+
 	}
 	else
 	{
@@ -204,31 +210,34 @@ bool OctreeNode::InsertToNode(GameObject* new_go, uint max_objects)
 {
 	bool ret = false; 
 
-		if (box.Contains(new_go->GetBoundingBox()))
+	if (box.Contains(new_go->GetBoundingBox()))
+	{
+		if (IsLeaf())
 		{
-			if (IsLeaf())
-			{
-				ret = true; 
-				objects_in_node.push_back(new_go);
+			ret = true;
+			objects_in_node.push_back(new_go);
 
-				if (objects_in_node.size() == max_objects)
-				{
-					SplitNode(max_objects); 
-				}
-			}
-			else
+			if (objects_in_node.size() == max_objects)
 			{
-				for (int i = 0; i < 8; i++)
-				{
-					if (child_nodes[i]->box.Contains(new_go->GetBoundingBox()))
-					{
-						child_nodes[i]->InsertToNode(new_go, max_objects);
-						ret = true; 
-					}
-						
-				}
+				SplitNode(max_objects);
 			}
 		}
+		else
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				if (child_nodes[i]->box.Contains(new_go->GetBoundingBox()))
+				{
+					child_nodes[i]->InsertToNode(new_go, max_objects);
+					ret = true;
+				}
+
+			}
+		}
+	}
+	
+			
+		
 
 	return ret; 
 }

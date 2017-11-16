@@ -39,9 +39,9 @@ public:
 
 	vector<GameObject*> GetSceneList();
 	vector<GameObject*> GetDynamicGOList();
-	vector<GameObject*> GetStaticGOList();
 
-	GameObject* GetFarestObjectFrom(float3 origin);
+	vector<GameObject*> GetStaticGOList();
+	GameObject* GetStaticGO(int index);
 
 	vector<ComponentCamera*>GetCameraList();
 
@@ -57,8 +57,10 @@ public:
 	void PrintConfigData();
 	void PrintInspectorData();
 
+
 	// Scene Management
 	bool IsSceneEmpty(); 
+	GameObject* GetFarestObjectFrom(float3 origin);
 
 public:
 
