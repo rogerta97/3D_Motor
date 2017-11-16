@@ -12,7 +12,8 @@ public:
 	~ComponentTransform();
 
 	bool Update();
-
+	void OnLoad(json_file* config);
+	void OnSave(json_file& config)const;
 	// Local Pos Setters & Getters
 
 	void SetLocalPosition(const float3& position);

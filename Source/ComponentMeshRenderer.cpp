@@ -204,6 +204,16 @@ void ComponentMeshRenderer::CleanUp()
 {
 }
 
+void ComponentMeshRenderer::OnLoad(json_file * config)
+{
+
+}
+
+void ComponentMeshRenderer::OnSave(json_file & config) const
+{
+
+}
+
 ComponentMeshRenderer::ComponentMeshRenderer(GameObject* _parent)
 {
 	active = true;

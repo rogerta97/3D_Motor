@@ -6,6 +6,7 @@
 #include "MathGeoLib\Algorithm\Random\LCG.h"
 #include <cmath>
 #include "ComponentDefs.h"
+#include "JSON.h"
 
 bool GameObject::IsActive() const
 {
@@ -76,6 +77,66 @@ GameObject::GameObject()
 	trans->SetIdentityTransform();
 	trans->type = COMPONENT_TRANSFORM;
 
+}
+
+bool GameObject::Save(json_file & parent_config) const
+{
+	json_file my_config;
+
+	// This is only useful when we are duplicating already existing gameobjects
+	uint uid_to_save = id;
+	uint parent_uid = (parent) ? parent->GetID() : 0;
+
+	//Save IDs
+	my_config.SetUInt("UUID", uid_to_save);
+	my_config.SetUInt("ParentUUID", parent_uid);
+	
+	//Save Name
+	my_config.SetString("Name", name.c_str());
+
+	// Save Components
+	my_config.SetArray("Components");
+	for (vector<Component*>::const_iterator it = component_list.begin(); it != component_list.end(); ++it)
+	{
+		json_file component;
+		component.SetInt("Type", (*it)->type);
+		(*it)->OnSave(component);
+		my_config.SetNodeEntry(component);
+	}
+	parent_config.SetNodeEntry(my_config);
+	// Recursively Children Call
+	for (vector<GameObject*>::const_iterator it = child_list.begin(); it != child_list.end(); ++it)
+	{
+		(*it)->Save(parent_config);
+	}
+
+	return true;
+}
+
+void GameObject::Load(json_file * config)
+{
+	// UID
+	id = config->GetUInt("UID", id);
+	uint parent = config->GetUInt("ParentUID", 0);
+
+	// Name
+	name = config->GetString("Name", "Unnamed");
+
+	// Now Load all my components
+	int count = config->GetArraySize("Components");
+
+	for (int i = 0; i < count; ++i)
+	{
+		json_file component_conf(config->GetArray("Components", i));
+		component_type type = (component_type)component_conf.GetInt("Type", component_type::COMPONENT_NULL);
+		if (type != component_type::COMPONENT_NULL)
+		{
+			Component* component = AddEmptyComponent(type);
+			component->OnLoad(&component_conf);
+		}
+		else
+			LOG("Cannot load component type UNKNOWN for gameobject %s", name.c_str());
+	}
 }
 
 void GameObject::Draw()

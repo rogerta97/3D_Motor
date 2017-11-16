@@ -11,14 +11,18 @@
 class Component; 
 enum component_type; 
 enum mesh_shape; 
+class json_file;
 
 class GameObject
 {
+	friend class Component;
 public:
 
 	GameObject();
-	~GameObject() {}
+	virtual ~GameObject() {}
 
+	bool Save(json_file& config) const;
+	void Load(json_file* config);
 	void Draw(); 
 
 	// Status & info

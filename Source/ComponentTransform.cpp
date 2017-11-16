@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "MathGeoLib\MathGeoLib.h"
 #include "ImGuizmo.h"
+#include "JSON.h"
 
 float3 ComponentTransform::GetLocalPosition()const
 {
@@ -125,6 +126,23 @@ bool ComponentTransform::Update()
 	}
 
 	return true;
+}
+
+void ComponentTransform::OnLoad(json_file * config)
+{
+	position = config->GetFloat3("Position", float3::zero);
+	rotation = config->GetQuat("Position", Quat::identity);
+	scale = config->GetFloat3("Scale", float3::zero);
+
+	transform_modified = true;
+}
+
+void ComponentTransform::OnSave(json_file & config) const
+{
+	config.SetFloat3("Position", position);
+	config.SetQuaternion("Rotation", rotation);
+	config.SetFloat3("Scale", scale);
+
 }
 
 

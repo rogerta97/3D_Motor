@@ -22,6 +22,8 @@ public:
 	bool Update(); 
 	bool Disable(); 
 	void CleanUp();
+	void OnLoad(json_file* config);
+	void OnSave(json_file& config)const;
 
 	void SetCubeVertices(float3 origin, uint edge_size);
 	void SetSphereVertices(float radius, uint rings, uint sectors, float3 origin);

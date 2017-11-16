@@ -3,7 +3,8 @@
 
 JSON::JSON(bool enabled) : Module(enabled)
  {
-	}
+
+}
 
 JSON::~JSON()
 {
@@ -102,8 +103,22 @@ json_file::json_file(JSON_Value * value, JSON_Object * object, const char * path
 	this->object = object;
 	this->path = path;
 }
+json_file::json_file(JSON_Object * Entry):object(Entry)
+{
+
+}
+json_file::json_file()
+{
+}
 json_file::~json_file()
 {
+}
+int json_file::GetFileSize() const
+{
+	if (object != nullptr)
+		return json_object_get_count(object);
+	return 0;
+	
 }
 void json_file::SetString(const char * set, const char * data)
 {
@@ -216,7 +231,35 @@ void json_file::SetFloat3(const char * set, const float3 & data)
 {
 	return SetArrayFloat(set, &data.x, 3);
 }
+//useful for quaternions
+void json_file::SetQuaternion(const char * set, const Quat & data)
+{
+	return SetArrayFloat(set, &data.x, 4);
+}
 
+void json_file::SetNodeEntry(const json_file & config)
+{
+	if (array != nullptr)
+		json_array_append_value(array, json_value_deep_copy(config.value));
+
+	
+}
+json_file json_file::GetEntry(const char * set) const
+{
+	return json_file(json_object_get_object(object, set));
+}
+json_file json_file::SetEntry(const char * set)
+{
+	json_object_set_value(object, set, json_value_init_object());
+	return GetEntry(set);
+}
+json_file json_file::GetArray(const char * field, int index) const
+{
+	JSON_Array* array = json_object_get_array(object, field);
+	if (array != nullptr)
+		return json_file(json_array_get_object(array, index));
+	return json_file((JSON_Object*) nullptr);
+}
 const char * json_file::GetString(const char * str, const char* defaul,int id)const
 {
 	const char* ret = defaul;
@@ -285,7 +328,14 @@ UID json_file::GetUID(const char * set, UID defaul, int id) const
 
 	return ret;
 }
-
+int json_file::GetArraySize(const char * field) const
+{
+	int ret = -1;
+	JSON_Array* array = json_object_get_array(object, field);
+	if (array != nullptr)
+		ret = json_array_get_count(array);
+	return ret;
+}
 float3 json_file::GetFloat3(const char * field, const float3 & default)
 {
 	return float3(
@@ -293,6 +343,16 @@ float3 json_file::GetFloat3(const char * field, const float3 & default)
 		GetFloat(field, default.y, 1),
 		GetFloat(field, default.z, 2));
 }
+
+Quat json_file::GetQuat(const char * field, const Quat & default)
+{
+	return Quat(
+		GetFloat(field, default.x, 0),
+		GetFloat(field, default.y, 1),
+		GetFloat(field, default.z, 2),
+		GetFloat(field,default.w,3));
+}
+
 
 void json_file::Save()
 {
