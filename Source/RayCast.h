@@ -2,6 +2,7 @@
 #define _RAYCAST_H_
 
 #include <vector>
+#include <map>
 #include "MathGeoLib\MathGeoLib.h"
 #include "imgui.h"
 
@@ -30,7 +31,7 @@ private:
 private:
 
 	LineSegment ray;
-	vector<GameObject*> candidate_list;
+	map<float, GameObject*> candidate_list;
 
 };
 

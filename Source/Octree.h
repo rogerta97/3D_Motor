@@ -95,8 +95,14 @@ inline void OctreeNode::CollectIntersections(std::map<float, GameObject*>& objec
 				objects[close_distance] = (*it);
 		}
 
-		for (int i = 0; i < 4; ++i)
-			if (child_nodes[i] != nullptr) child_nodes[i]->CollectIntersections(objects, tester);
+		if (child_nodes[0] != nullptr)
+		{
+			for (int i = 0; i < 8; ++i)
+			{
+				if (child_nodes[i] != nullptr)
+					child_nodes[i]->CollectIntersections(objects, tester);
+			}
+		}		 
 	}
 }
 

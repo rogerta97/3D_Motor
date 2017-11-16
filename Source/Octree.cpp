@@ -114,7 +114,8 @@ AABB Octree::AdaptQuadtree()
 
 	GameObject* far_go = App->scene_intro->GetFarestObjectFrom({ 0,0,0 }); 
 	float half_edge = far_go->DistanceTo({ 0,0,0 }); 
-	int increment = 20; 
+
+	int increment = far_go->GetBoundingBox().HalfSize().Length();
 
 	AABB limits({-half_edge - increment,-half_edge - increment,-half_edge - increment,}, { half_edge + increment, half_edge + increment, half_edge + increment });
 
@@ -361,6 +362,7 @@ void OctreeNode::SplitNode(int max_object)
 			for (int i = 0; i < objects_in_node.size(); i++)
 			{
 				objects_in_node.erase(objects_in_node.begin() + i);
+				i--;
 			}
 		
 
