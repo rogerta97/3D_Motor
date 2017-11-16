@@ -254,6 +254,25 @@ uint ComponentMeshRenderer::GetNumTriangles() const
 	return num_triangles;
 }
 
+void ComponentMeshRenderer::SetNewMesh(ComponentMeshRenderer * new_mesh)
+{
+	if (new_mesh != nullptr)
+	{
+		vertices = new_mesh->vertices;
+		num_vertices = new_mesh->num_vertices;
+		vertices_id = new_mesh->vertices_id;
+
+		indices = new_mesh->indices;
+		num_indices = new_mesh->num_indices;
+		indices_id = new_mesh->indices_id;
+
+		uvs = new_mesh->uvs;
+		num_uvs = new_mesh->num_uvs;
+		uvs_id = new_mesh->uvs_id;
+
+	}
+}
+
 void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 {
 	//translation = origin;

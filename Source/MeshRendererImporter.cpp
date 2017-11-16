@@ -127,15 +127,16 @@ bool MeshRendererImporter::ImportFile(const char * path)
 bool MeshRendererImporter::RecursiveImportingChilds(const aiScene * scene, aiNode * node, GameObject * parent, const std::vector<ComponentMaterial*>& mats)
 {
 	bool ret = true;
+	bool invalid_node = (node->mNumMeshes == 0);
+	bool invalid_mesh = false;
 
+	aiMesh* aimesh = nullptr;
+	ComponentMeshRenderer* c_mesh = nullptr;
+	ComponentTransform* c_transform = nullptr;
+
+	GameObject* go = nullptr;
 	//Get node transformation
-	aiVector3D translation;
-	aiVector3D scaling;
-	aiQuaternion rotation;
-	node->mTransformation.Decompose(scaling, rotation, translation);
-	float3 pos(translation.x, translation.y, translation.z);
-	float3 scale(scaling.x, scaling.y, scaling.z);
-	Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
+	
 
 	//Get node name
 	aiString name = node->mName;
@@ -146,32 +147,112 @@ bool MeshRendererImporter::RecursiveImportingChilds(const aiScene * scene, aiNod
 	for (uint i = 0; i < num_meshes; ++i)
 	{
 		GameObject* go = nullptr;
+		//CHECK HERE IF MESH IS ALREADY LOADED!!!
 
-		if (parent == nullptr)
+		int index = node->mMeshes[i];
+		aimesh = scene->mMeshes[index];
+		//Check if mesh is Valid
+		if (!invalid_mesh && !invalid_node)
 		{
-			go = App->scene_intro->CreateGameObject(name.C_Str());
+			c_mesh = (ComponentMeshRenderer*)parent->AddEmptyComponent(COMPONENT_MESH_RENDERER);
+
+			if (!aimesh->HasFaces())
+			{
+				invalid_mesh = true;
+			}
 		}
-		else
+		//Set Transform
+		float3 pos = float3::zero;
+		Quat rot = Quat::identity;
+		float3 scale = float3::zero;
+
+		if (!invalid_node && !invalid_mesh)
 		{
+			aiVector3D translation;
+			aiVector3D scaling;
+			aiQuaternion rotation;
+			node->mTransformation.Decompose(scaling, rotation, translation);
+			pos = float3(translation.x, translation.y, translation.z);
+			scale = float3(scaling.x, scaling.y, scaling.z);
+			rot = Quat(rotation.x, rotation.y, rotation.z, rotation.w);
+		}
+		//Set vertices and indices
+
+		if (!invalid_mesh && !invalid_node)
+		{
+			vec* vertices = new vec[aimesh->mNumVertices * 3];
+			memcpy(vertices, aimesh->mVertices, sizeof(vec) * aimesh->mNumVertices * 3);
+
+			uint* indices = new uint[aimesh->mNumFaces * 3];
+
+			for (uint i = 0; i < aimesh->mNumFaces && !invalid_mesh; ++i)
+			{
+				if (aimesh->mFaces[i].mNumIndices == 3)
+				{
+					memcpy(&indices[i * 3], aimesh->mFaces[i].mIndices, 3 * sizeof(uint));
+				}
+				else
+					invalid_mesh = true;
+			}
+			c_mesh->SetIndices(indices);
+			c_mesh->SetVertices(vertices);
+
+			RELEASE_ARRAY(vertices);
+			RELEASE_ARRAY(indices);
+		}
+		// UVS
+		if (!invalid_mesh && !invalid_node && aimesh->HasTextureCoords(0))
+		{
+			float* uvs = new float[aimesh->mNumVertices * 3];
+			memcpy(uvs, (float*)aimesh->mTextureCoords[0], sizeof(float) * aimesh->mNumVertices * 3);
+
+			c_mesh->SetUVS(uvs);
+
+			RELEASE_ARRAY(uvs);
+		}
+		//CreateGameObject
+		if (!invalid_mesh && !invalid_node && parent != nullptr)
+		{
+			go = App->scene_intro->CreateGameObject("wtf");
+
+			string name = node->mName.C_Str();
+			if (name == "")
+				name = "no_name";
+
+			go->SetName(name.c_str());
+
 			parent->PushChild(go);
+			go->AddEmptyComponent(COMPONENT_TRANSFORM);
+			ComponentTransform* c_trans = (ComponentTransform*)go->GetComponent(COMPONENT_TRANSFORM);
+			c_trans->SetLocalPosition(c_transform->GetLocalPosition());
+			//c_trans->SetLocalRotation(c_transform->GetLocalRotation());
+			c_trans->SetLocalScale(c_transform->GetLocalScale());
+			
+
+			go->AddEmptyComponent(COMPONENT_MESH_RENDERER);
+			ComponentMeshRenderer* cmesh = (ComponentMeshRenderer*)go->GetComponent(COMPONENT_MESH_RENDERER);
+			cmesh->SetNewMesh(c_mesh);
+
+			/*if (texture != nullptr)
+			{
+				go->AddEmptyComponent(COMPONENT_MATERIAL);
+				ComponentMaterial* cmaterial = (ComponentMaterial*)go->GetComponent(COMPONENT_MATERIAL);
+				cmaterial->SetTexture(texture);
+			}*/
 		}
-
-		if (i == 0)
-			first_go = go;
-
-		//set the transform to the go
-		ComponentTransform* trans = (ComponentTransform*)go->GetComponent(component_type::COMPONENT_TRANSFORM);
-		trans->SetLocalPosition(pos); 
-		trans->SetLocalRotation(rot.ToEulerXYZ()*RADTODEG);
-		trans->SetLocalScale(scale);
-	
+	// Select parent
+	GameObject* curr_parent = nullptr;
+	if (!invalid_node && go != nullptr)
+		curr_parent = go;
+	else
+		curr_parent = parent;
 
 		//import mesh
 		ret = ImportMesh(scene->mMeshes[node->mMeshes[i]], go, mats);
 	}
 
 	//Import child nodes
-	for (uint i = 0; i < node->mNumChildren; ++i)
+	for (uint i = 0; i < node->mNumChildren; i++)
 	{
 		RecursiveImportingChilds(scene, node->mChildren[i], first_go, mats);
 	}
@@ -203,10 +284,7 @@ bool MeshRendererImporter::ImportMesh(aiMesh * mesh, GameObject * owner, const s
 			for (uint i = 0; i < mesh->mNumFaces; ++i)
 			{
 				if (mesh->mFaces[i].mNumIndices != 3)
-				{
-					LOG("WARNING, geometry face with != 3 indices!");
 					ret = false;
-				}
 				else
 					memcpy(&indices[i * 3], mesh->mFaces[i].mIndices, 3 * sizeof(uint));
 			}

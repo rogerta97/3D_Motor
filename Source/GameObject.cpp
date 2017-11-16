@@ -387,8 +387,12 @@ void GameObject::PushRootComponent(Component * comp)
 
 void GameObject::PushChild(GameObject * child)
 {
-	child->parent = this;
-	child_list.push_back(child); 
+	if (child != nullptr)
+	{
+		child->parent = this;
+		child_list.push_back(child);
+	}
+
 }
 
 bool Component::Enable()

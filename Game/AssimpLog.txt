@@ -1,10 +1,10 @@
-Info,  T10012: Load C:\Users\paubv1\Documents\GitHub\3D_Motor\Game\Assets\BakerHouse.fbx
-Info,  T10012: Found a matching importer for this file format: Autodesk FBX Importer.
-Info,  T10012: Import root directory is 'C:\Users\paubv1\Documents\GitHub\3D_Motor\Game\Assets\'
-Warn,  T10012: FBX-DOM (TOK_KEY, offset 0xd7b7) shading mode not recognized: Phong
-Info,  T10012: Entering post processing pipeline
-Info,  T10012: Points: 0, Lines: 0, Triangles: 2, Polygons: 0 (Meshes, X = removed)
-Info,  T10012: CalcTangentsProcess finished. Tangents have been calculated
-Info,  T10012: JoinVerticesProcess finished | Verts in: 3075 out: 1801 | ~41.4%
-Info,  T10012: Cache relevant are 2 meshes (1025 faces). Average output ACMR is 1.757073
-Info,  T10012: Leaving post processing pipeline
+Info,  T7160: Load C:\Users\paubv1\Documents\GitHub\3D_Motor\Game\Assets\BakerHouse.fbx
+Info,  T7160: Found a matching importer for this file format: Autodesk FBX Importer.
+Info,  T7160: Import root directory is 'C:\Users\paubv1\Documents\GitHub\3D_Motor\Game\Assets\'
+Warn,  T7160: FBX-DOM (TOK_KEY, offset 0xd7b7) shading mode not recognized: Phong
+Info,  T7160: Entering post processing pipeline
+Info,  T7160: Points: 0, Lines: 0, Triangles: 2, Polygons: 0 (Meshes, X = removed)
+Info,  T7160: CalcTangentsProcess finished. Tangents have been calculated
+Info,  T7160: JoinVerticesProcess finished | Verts in: 3075 out: 1801 | ~41.4%
+Info,  T7160: Cache relevant are 2 meshes (1025 faces). Average output ACMR is 1.757073
+Info,  T7160: Leaving post processing pipeline
