@@ -39,14 +39,22 @@ void PanelOctree::DrawPanel()
 
 		if (ImGui::TreeNode("Create New Octree"))
 		{
+			ImGui::Separator(); 
+			ImGui::InputInt("Objects", &max_objects);
+			ImGui::Separator(); 
+
+			ImGui::TextWrapped("This method will create an octree NO adaptative\n(Will delete the curent octree if existing)");
+
 			ImGui::InputFloat3("Min Point", &min_point[0], 2);
 			ImGui::InputFloat3("Max Point", &max_point[0], 2);
 
-			ImGui::InputInt("Objects per node", &max_objects);
+			
 
 			if (ImGui::Button("Create"))
 			{				
+
 				App->scene_intro->octree = new Octree(); 
+				App->scene_intro->octree->SetAdaptative(false);
 				AABB limits(min_point, max_point);
 				App->scene_intro->octree->Create(limits, max_objects);
 			}
@@ -54,11 +62,12 @@ void PanelOctree::DrawPanel()
 			ImGui::Separator(); 
 			ImGui::TextWrapped("Creates an octree with size of 200 and center point {0,0,0}");
 
-			if (ImGui::Button("Create default"))
-			{
-				min_point = { -100, -100, -100 }; 
-				max_point = { 100, 100, 100 }; 
+			if (ImGui::Button("Create adaptative"))
+			{			
+				min_point = { -50, -50, -50 };
+				max_point = { 50, 50, 50 };
 				App->scene_intro->octree = new Octree();
+				App->scene_intro->octree->SetAdaptative(true); 
 				AABB limits(min_point, max_point);
 				App->scene_intro->octree->Create(limits, 2);
 			}		
@@ -104,7 +113,11 @@ void PanelOctree::DrawPanel()
 		{
 			if (App->scene_intro->GetCurrentGO() != nullptr && App->scene_intro->GetCurrentGO()->IsStatic() == true)
 			{
-				App->scene_intro->octree->Insert(App->scene_intro->GetCurrentGO());
+				bool element_inserted = false; 
+				element_inserted = App->scene_intro->octree->Insert(App->scene_intro->GetCurrentGO()); 
+
+				
+
 				obj_amount = App->scene_intro->octree->GetNumObjects();
 			}
 			else

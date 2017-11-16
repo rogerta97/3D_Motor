@@ -264,6 +264,13 @@ bool GameObject::IsChildEmpty()
 	return child_list.empty();
 }
 
+float GameObject::DistanceTo(float3 point)
+{
+	ComponentTransform* trans = (ComponentTransform*)GetComponent(COMPONENT_TRANSFORM);
+	float3 dir = trans->GetGlobalPosition() - point;
+	return dir.Length();
+}
+
 bool GameObject::IsRoot() const
 {
 	return is_root;;

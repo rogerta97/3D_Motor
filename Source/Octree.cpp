@@ -1,6 +1,8 @@
 #include "Octree.h"
 #include "DebugDraw.h"
 #include "ComponentMeshRenderer.h"
+#include "ModuleSceneIntro.h"
+#include "Application.h"
 
 Octree::Octree()
 {
@@ -22,6 +24,30 @@ void Octree::Create(AABB limits, int _max_objects)
 	LOG("New Octree has been created"); 
 }
 
+void Octree::Create(int _max_objects)
+{
+	if (root_node != nullptr)
+		ClearOctree();
+
+	vector<GameObject*> static_obj = App->scene_intro->GetStaticGOList(); 
+	
+	GameObject* far_object = App->scene_intro->GetFarestObjectFrom({0,0,0});
+	float half_size = far_object->DistanceTo({ 0,0,0 }); 
+
+	AABB limits({ -half_size, -half_size , -half_size }, { half_size , half_size , half_size }); 
+
+	root_node = new OctreeNode(limits);
+	num_objects_added = 0;
+	max_objects = _max_objects;
+
+	for (int i = 0; i < static_obj.size(); i++)
+	{
+		Insert(static_obj[i]);
+	}
+
+	LOG("New Adaptative Octree has been created");
+}
+
 void Octree::ClearOctree()
 {
 	if (root_node == nullptr)
@@ -38,8 +64,10 @@ void Octree::ClearOctree()
 
 }
 
-void Octree::Insert(GameObject * new_go)
+bool Octree::Insert(GameObject * new_go)
 {
+	bool ret = false; 
+
 	ComponentMeshRenderer* mr = (ComponentMeshRenderer*)new_go->GetComponent(COMPONENT_MESH_RENDERER); 
 
 	OctreeNode* curr_node;
@@ -51,12 +79,29 @@ void Octree::Insert(GameObject * new_go)
 	{
 		num_objects_added++;
 		LOG("GameObject '%s' added to Octree succesfully", new_go->GetName()); 
+		ret = true; 
 	}
-		
+	else
+	{
+		AdaptQuadtree(); 
+	}
+
+
+	return ret; 
 }
 
 void Octree::Remove(GameObject * to_delete)
 {
+}
+
+bool Octree::IsAdaptative()
+{
+	return adaptative;
+}
+
+void Octree::SetAdaptative(bool new_adaptative)
+{
+	adaptative = new_adaptative; 
 }
 
 
@@ -74,6 +119,15 @@ void Octree::DrawOctree()
 void Octree::SetActive(bool _active)
 {
 	active = _active; 
+}
+
+AABB Octree::AdaptQuadtree()
+{
+	AABB ret(float3(0.0f, 0.0f, 0.0f), float3(0.0f, 0.0f, 0.0f));
+
+	Create(max_objects); 
+
+	return ret;
 }
 
 OctreeNode* Octree::GetLastLeafNode()
