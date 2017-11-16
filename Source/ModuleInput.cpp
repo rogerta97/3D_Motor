@@ -137,7 +137,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					if (format == FF_FBX)
 					{
 						LOG("FBX file dragged to window");
-						//App->CopyFileTo(file.c_str(),"Assets\\Meshes");
+						App->CopyFileTo(file.c_str(),"Assets\\Meshes");
 						//App->mesh_importer->ImportFile(file.c_str());
 						//old code
 						App->fbx_loader->LoadFileScene(file.c_str());
