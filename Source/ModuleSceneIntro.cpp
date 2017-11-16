@@ -185,6 +185,75 @@ vector<GameObject*> ModuleSceneIntro::GetSceneList()
 	return scene_GO_list;
 }
 
+vector<GameObject*> ModuleSceneIntro::GetDynamicGOList()
+{
+	return GO_list;
+}
+
+vector<GameObject*> ModuleSceneIntro::GetStaticGOList()
+{
+	return static_GO_list;
+}
+
+GameObject * ModuleSceneIntro::GetFarestObjectFrom(float3 origin)
+{
+
+	GameObject* to_ret = nullptr; 
+
+	if (GetGameObjectsNum() != 0)
+	{
+		float distance = GetGameObject(0)->GetBoundingBox().Distance(origin);
+
+		for (int i = 0; i < GetGameObjectsNum(); i++)
+		{
+			if (distance > GetGameObject(i)->GetBoundingBox().Distance(origin))
+			{
+				distance = GetGameObject(i)->GetBoundingBox().Distance(origin);
+				to_ret = GetGameObject(i); 
+			}
+				
+		}
+	}
+
+	return to_ret;
+}
+
+//float3 ModuleSceneIntro::GetBBPointFromStaticList(int point_type) //0 will search for the min point and 1 for the max point of any object in static list
+//{
+//
+//	float3 ret; 
+//
+//	switch (point_type)
+//	{
+//	case 0: 
+//		ret = static_GO_list[0]->GetBoundingBox().minPoint; 
+//
+//		for (int i = 0; i < static_GO_list.size(); i++)
+//		{		
+//			if (ret.Length() > static_GO_list[i]->GetBoundingBox().minPoint.Length())
+//			{
+//				ret = static_GO_list[i]->GetBoundingBox().minPoint; 
+//			}
+//		}
+//
+//		break; 
+//
+//	case 1:
+//		ret = static_GO_list[0]->GetBoundingBox().maxPoint;
+//
+//		for (int i = 0; i < static_GO_list.size(); i++)
+//		{
+//			if (ret.Length() < static_GO_list[i]->GetBoundingBox().maxPoint.Length())
+//			{
+//				ret = static_GO_list[i]->GetBoundingBox().maxPoint;
+//			}
+//		}
+//		break; 
+//	}
+//
+//	return ret;
+//}
+
 vector<ComponentCamera*> ModuleSceneIntro::GetCameraList()
 {
 	return cameras_list;

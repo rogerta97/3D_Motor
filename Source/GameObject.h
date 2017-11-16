@@ -66,7 +66,7 @@ public:
 
 	bool IsCompEmpty(); 
 	bool IsChildEmpty(); 
-
+	float DistanceTo(float3 point); 
 	bool IsRoot() const; 
 	void SetRoot(const bool& _root); 
 

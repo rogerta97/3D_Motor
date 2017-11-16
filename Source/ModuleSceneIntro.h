@@ -36,7 +36,13 @@ public:
 
 	// Lists management
 	void ClearSceneGOList();
+
 	vector<GameObject*> GetSceneList();
+	vector<GameObject*> GetDynamicGOList();
+	vector<GameObject*> GetStaticGOList();
+
+	GameObject* GetFarestObjectFrom(float3 origin);
+
 	vector<ComponentCamera*>GetCameraList();
 
 	void FromDynamicToStatic(GameObject* to_change);

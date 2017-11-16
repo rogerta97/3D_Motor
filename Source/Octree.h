@@ -47,15 +47,21 @@ public:
 	~Octree(); 
 
 	void Create(AABB limits, int max_objects);
+	void Create(int max_objects);
+
 	void ClearOctree();
-	void Insert(GameObject* new_go);
+	bool Insert(GameObject* new_go);
 	void Remove(GameObject* to_delete);
+
+	bool IsAdaptative(); 
+	void SetAdaptative(bool new_adaptative);
 
 	void Split(); 
 
 	void DrawOctree();
 
 	void SetActive(bool _active); 
+	AABB AdaptQuadtree(); 
 
 	template <typename TYPE>
 	void CollectIntersections(std::map<float, GameObject*>& objects, const TYPE& tester);
@@ -65,12 +71,14 @@ public:
 	OctreeNode* GetLastLeafNode(); 
 	OctreeNode* GetCurrentChildNode(GameObject* go); 
 	OctreeNode* GetRootNode(); 
+
 	uint GetNumObjects(); 
 
 private: 
 
 	OctreeNode* root_node = nullptr; 
 	bool active = false; 
+	bool adaptative = false; 
 	uint num_objects_added; 
 	uint max_objects; 
 
@@ -81,7 +89,6 @@ inline void OctreeNode::CollectIntersections(std::map<float, GameObject*>& objec
 {
 	if (tester.Intersects(box))
 	{
-
 		float close_distance, far_distance; 
 		for (std::vector<GameObject*>::iterator it = objects_in_node.begin(); it != objects_in_node.end(); ++it)
 		{
