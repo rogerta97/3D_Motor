@@ -46,8 +46,7 @@ public:
 	Octree(); 
 	~Octree(); 
 
-	void Create(AABB limits, int max_objects);
-	void Create(int max_objects);
+	void Create(AABB limits, int max_objects, bool adaptative = false);
 
 	void ClearOctree();
 	bool Insert(GameObject* new_go);

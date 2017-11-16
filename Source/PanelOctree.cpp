@@ -64,12 +64,15 @@ void PanelOctree::DrawPanel()
 
 			if (ImGui::Button("Create adaptative"))
 			{			
+
+				App->scene_intro->octree = new Octree();
+
 				min_point = { -50, -50, -50 };
 				max_point = { 50, 50, 50 };
-				App->scene_intro->octree = new Octree();
-				App->scene_intro->octree->SetAdaptative(true); 
+			
 				AABB limits(min_point, max_point);
-				App->scene_intro->octree->Create(limits, 2);
+
+				App->scene_intro->octree->Create(limits, max_objects, true);
 			}		
 
 			if (App->scene_intro->octree != nullptr)
@@ -77,8 +80,9 @@ void PanelOctree::DrawPanel()
 				if (ImGui::Button("Delete Octree"))
 				{
 					App->scene_intro->octree->ClearOctree(); 
-					App->scene_intro->octree = nullptr;
 					delete (App->scene_intro->octree); 
+					App->scene_intro->octree = nullptr;
+
 					LOG("Octree Deleted Succesfully")
 				}
 			}
@@ -116,8 +120,7 @@ void PanelOctree::DrawPanel()
 				bool element_inserted = false; 
 				element_inserted = App->scene_intro->octree->Insert(App->scene_intro->GetCurrentGO()); 
 
-				
-
+		
 				obj_amount = App->scene_intro->octree->GetNumObjects();
 			}
 			else

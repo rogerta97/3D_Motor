@@ -195,6 +195,11 @@ vector<GameObject*> ModuleSceneIntro::GetStaticGOList()
 	return static_GO_list;
 }
 
+GameObject * ModuleSceneIntro::GetStaticGO(int index)
+{
+	return static_GO_list[index]; 
+}
+
 GameObject * ModuleSceneIntro::GetFarestObjectFrom(float3 origin)
 {
 
@@ -203,10 +208,11 @@ GameObject * ModuleSceneIntro::GetFarestObjectFrom(float3 origin)
 	if (GetGameObjectsNum() != 0)
 	{
 		float distance = GetGameObject(0)->GetBoundingBox().Distance(origin);
+		to_ret = GetGameObject(0); 
 
 		for (int i = 0; i < GetGameObjectsNum(); i++)
 		{
-			if (distance > GetGameObject(i)->GetBoundingBox().Distance(origin))
+			if (distance < GetGameObject(i)->GetBoundingBox().Distance(origin))
 			{
 				distance = GetGameObject(i)->GetBoundingBox().Distance(origin);
 				to_ret = GetGameObject(i); 
