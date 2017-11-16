@@ -45,10 +45,28 @@ update_status ModuleImGui::PreUpdate(float dt)
 update_status ModuleImGui::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
-
-	App->performance.InitTimer(name); 
-	// Manage ImGui Keyboard input
-	//Change guizmo current operation
+	//float3 snap(2, 2, 2);
+	//App->performance.InitTimer(name); 
+	//// Manage ImGui Keyboard input
+	//switch (mCurrentGizmoOperation)
+	//{
+	//case ImGuizmo::TRANSLATE:
+	//	snap = config.mSnapTranslation;
+	//	ImGui::InputFloat3("Snap", &snap.x);
+	//	break;
+	//case ImGuizmo::ROTATE:
+	//	snap = config.mSnapRotation;
+	//	ImGui::InputFloat("Angle Snap", &snap.x);
+	//	break;
+	//case ImGuizmo::SCALE:
+	//	snap = config.mSnapScale;
+	//	ImGui::InputFloat("Scale Snap", &snap.x);
+	//	break;
+	//}
+	//ImGuiIO& io = ImGui::GetIO();
+	//ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+	////ImGuizmo::Manipulate(camera.mView.m16, camera.mProjection.m16, mCurrentGizmoOperation, mCurrentGizmoMode, matrix.m16, NULL, useSnap ? &snap.x : NULL);
+	////Change guizmo current operation
 	if (App->scene_intro->GetCurrentGO() != nullptr)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)

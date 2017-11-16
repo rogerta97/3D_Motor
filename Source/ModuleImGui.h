@@ -69,12 +69,14 @@ private:
 
 	//drawing positions //SDL_Rect doesn't work at allneed to change it 
 	//panel
+
 	uint properties_panel_x = 10;
 	uint properties_panel_y = 10;
 	uint properties_panel_w = 100;
 	uint properties_panel_h = 200;
 
 	ImVec4 clear_color = ImColor(114, 144, 154);
+	//ImGuizmo operation and mode
 	ImGuizmo::OPERATION curr_operation;
 	ImGuizmo::MODE curr_mode;
 

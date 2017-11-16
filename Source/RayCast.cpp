@@ -44,7 +44,7 @@ GameObject * RayCast::GetHit()
 	// First we get the list of AABB's the ray is coliding with ordered by distance
 	std::map<float, GameObject*> lets_test; 
 
-	App->scene_intro->octree->CollectIntersections(lets_test, ray);
+	//App->scene_intro->octree->CollectIntersections(lets_test, ray);
 
 	GetObjectsByDistance(candidate_list); 
 
