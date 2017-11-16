@@ -13,6 +13,7 @@ class json_file
 		 json_file(JSON_Object* Entry);
 		 json_file();
 		 ~json_file();
+
 		 int GetFileSize()const;
 		 void SetString(const char* set, const char* data);
 		 void SetBool(const char* set, bool data);
@@ -44,8 +45,9 @@ class json_file
 		 UID GetUID(const char* set, UID defaul, int id = -1)const;
 		 float3 GetFloat3(const char* field, const float3& default = float3::zero);
 		 Quat GetQuat(const char* field, const Quat& default = Quat::identity);
-
+		
 		 const char* GetPath();
+
 		 void Save();
 		 void CleanUp();
 

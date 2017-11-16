@@ -27,6 +27,7 @@ public:
 
 	void SetTextureID(uint tex);
 	uint GetTexSize()const;
+	//Color* GetColor();
 
 	uint textures_id = 0;
 

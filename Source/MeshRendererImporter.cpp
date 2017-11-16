@@ -22,7 +22,9 @@
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
-MeshRendererImporter::MeshRendererImporter()
+
+
+MeshRendererImporter::MeshRendererImporter(bool enabled): Module(enabled)
 {
 }
 
@@ -30,7 +32,7 @@ MeshRendererImporter::~MeshRendererImporter()
 {
 }
 
-bool MeshRendererImporter::Awake(json_file * config)
+bool MeshRendererImporter::Init(json_file * config)
 {
 	bool ret = true;
 
@@ -98,8 +100,7 @@ bool MeshRendererImporter::ImportFile(const char * path)
 				std::string rel_path = "Models\\";
 				rel_path += path.substr(name_pos + 1, path.size() - name_pos + 1);
 				LOG("File material %d path is: %s. Start importing it...", m, rel_path.c_str());
-				//PAU
-				//material = App->materials->ImportImage(rel_path.c_str());
+				material = App->materials_importer->ImportImage(rel_path.c_str());
 				mats.push_back(material);
 			}
 		}
@@ -112,7 +113,7 @@ bool MeshRendererImporter::ImportFile(const char * path)
 		GameObject* root_go = App->scene_intro->CreateGameObject(root_go_name.c_str());
 
 		//Import scene from root node
-		ret = ImportNode(scene, scene->mRootNode, root_go, mats);
+		ret = RecursiveImportingChilds(scene, scene->mRootNode, root_go, mats);
 	}
 	else
 	{
@@ -123,7 +124,7 @@ bool MeshRendererImporter::ImportFile(const char * path)
 	return ret;
 }
 
-bool MeshRendererImporter::ImportNode(const aiScene * scene, aiNode * node, GameObject * parent, const std::vector<ComponentMaterial*>& mats)
+bool MeshRendererImporter::RecursiveImportingChilds(const aiScene * scene, aiNode * node, GameObject * parent, const std::vector<ComponentMaterial*>& mats)
 {
 	bool ret = true;
 
@@ -172,7 +173,7 @@ bool MeshRendererImporter::ImportNode(const aiScene * scene, aiNode * node, Game
 	//Import child nodes
 	for (uint i = 0; i < node->mNumChildren; ++i)
 	{
-		ImportNode(scene, node->mChildren[i], first_go, mats);
+		RecursiveImportingChilds(scene, node->mChildren[i], first_go, mats);
 	}
 
 	return ret;

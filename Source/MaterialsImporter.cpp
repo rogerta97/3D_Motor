@@ -16,9 +16,10 @@
 #pragma comment (lib, "ILU.lib")
 #pragma comment (lib, "ILUT.lib")
 
-MaterialsImporter::MaterialsImporter()
+
+
+MaterialsImporter::MaterialsImporter(bool enabled):Module(enabled)
 {
-	
 }
 
 MaterialsImporter::~MaterialsImporter()

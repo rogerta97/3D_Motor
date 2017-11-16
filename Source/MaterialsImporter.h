@@ -10,7 +10,7 @@ class ComponentMaterial;
 class MaterialsImporter : public Module
 {
 public:
-	MaterialsImporter();
+	MaterialsImporter(bool enabled = true);
 	~MaterialsImporter();
 
 	bool Init(json_file* config);

@@ -137,9 +137,10 @@ update_status ModuleInput::PreUpdate(float dt)
 					if (format == FF_FBX)
 					{
 						LOG("FBX file dragged to window");
-
+						//App->CopyFileTo(file.c_str(),"Assets\\Meshes");
+						//App->mesh_importer->ImportFile(file.c_str());
+						//old code
 						App->fbx_loader->LoadFileScene(file.c_str());
-
 					}
 
 					if (format == FF_PNG || format == FF_TGA)
@@ -147,19 +148,14 @@ update_status ModuleInput::PreUpdate(float dt)
 						//For now we set the texture in the last obect created (the unique in the scene) 
 						LOG("PNG file dragged to window");
 
-						if (App->scene_intro->GetCurrentGO() != nullptr)
-						{
-							ComponentMaterial* new_material = nullptr;
-							new_material = App->fbx_loader->ImportImage(file.c_str());
-							new_material->SetComponentParent(App->scene_intro->GetCurrentGO());
+						App->CopyFileTo(file.c_str(), "Assets\\Materials");
 
-							App->scene_intro->GetCurrentGO()->PushComponent(new_material);
-
-						}
+						App->materials_importer->ImportImage(file.c_str());
+					}
 						else
 							LOG("No gameobject selected where PNG can be dragged");
 
-					}
+					
 
 					break;
 				}

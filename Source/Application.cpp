@@ -17,6 +17,8 @@ Application::Application()
 	fps_counter = 0;
 
 	//file_system = new ModuleFileSystem(true);
+	materials_importer = new MaterialsImporter(true);
+	mesh_importer = new MeshRendererImporter(true);
 	json = new JSON(true);
 	window = new ModuleWindow(true);
 	input = new ModuleInput(true);
@@ -35,6 +37,8 @@ Application::Application()
 
 	// Main Modules
 	//AddModule(file_system);
+	AddModule(materials_importer);
+	AddModule(mesh_importer);
 	AddModule(json);
 	AddModule(window);
 	AddModule(camera);
@@ -103,6 +107,35 @@ void Application::PrepareUpdate()
 	dt = (float)ms_timer.Read() / 1000.0f;
 	ms_timer.Start();
 
+	switch (state)
+	{
+	case to_play:
+	{
+		state = play;
+		//send event to each module
+		SendMessageToModules(state);
+	} break;
+	case to_stop:
+	{
+		state = stop;
+		//send event to each module
+		SendMessageToModules(state);
+		break;
+	}
+	case to_pause:
+	{
+		state = pause;
+		//send event to each module
+
+		SendMessageToModules(state);
+	} break;
+	case to_unpause:
+	{
+		state = play;
+		SendMessageToModules(unpause);
+	} break;
+	}
+
 }
 
 // ---------------------------------------------
@@ -116,6 +149,7 @@ void Application::FinishUpdate()
 		fps_counter = 0;
 		fps_timer.Start();
 	}
+	
 	//update last ms
 	last_frame_ms = ms_timer.Read();
 	//Delay for cap fps
@@ -386,6 +420,12 @@ Module* Application::GetModule(int index)
 	return nullptr;
 	
 }
+
+void Application::SendMessageToModules(State curr_state)
+{
+
+}
+
 json_file *  Application::LoadConfig()
 {
 	return json->LoadJSONFile("config.json");

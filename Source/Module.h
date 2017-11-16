@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Globals.h"
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
@@ -8,6 +7,8 @@
 class Application;
 struct PhysBody3D;
 class json_file;
+struct State;
+
 class Module
 {
 private :
@@ -61,4 +62,6 @@ public:
 	{}
 	virtual void OnLoadConfig(json_file* config) {};
 	virtual void OnSaveConfig(json_file* config) {};
+
+	virtual void ReceiveGameStatus(State& curr_event) {};
 };

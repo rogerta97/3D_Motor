@@ -15,10 +15,10 @@ class aiMesh;
 class MeshRendererImporter : public Module
 {
 public:
-	MeshRendererImporter();
+	MeshRendererImporter(bool enabled = true);
 	~MeshRendererImporter();
 
-	bool Awake(json_file* config);
+	bool Init(json_file* config);
 	bool Start();
 	bool CleanUp();
 
@@ -30,10 +30,9 @@ public:
 	void RemoveMesh(ComponentMeshRenderer* m);
 
 private:
-	bool ImportNode(const aiScene* scene, aiNode* node, GameObject* parent, const std::vector<ComponentMaterial*>& mats);
+	bool RecursiveImportingChilds(const aiScene* scene, aiNode* node, GameObject* parent, const std::vector<ComponentMaterial*>& mats);
 	bool ImportMesh(aiMesh* mesh, GameObject* owner, const std::vector<ComponentMaterial*>& mats);
 
-	void CubeMesh();
 
 private:
 	std::list<ComponentMeshRenderer*> meshes;

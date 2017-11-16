@@ -15,8 +15,9 @@
 #include "ModuleFBXLoader.h"
 #include "MathGeoLib\MathGeoLib.h"
 #include "DeviceId\DeviceId.h"
+#include "MaterialsImporter.h"
+#include "MeshRendererImporter.h"
 #include "JSON.h"
-//#include "ModuleFileSystem.h"
 #include "Hardware.h"
 #include <queue>
 #include <string>
@@ -24,21 +25,25 @@
 
 #define FPS_LOG_SIZE 100
 #define MEM_LOG_SIZE 100
-enum State {
 
-	play,
-	stop,
-	pause,
-	waiting_play,
-	waiting_stop,
-	waiting_pause,
-	waiting_unpause
-
-};
 class Application
 {
 public:
+	enum State {
+
+		play,
+		stop,
+		pause,
+		unpause,
+		to_play,
+		to_stop,
+		to_pause,
+		to_unpause
+	};
+public:
 	//ModuleFileSystem* file_system;
+	MeshRendererImporter* mesh_importer;
+	MaterialsImporter* materials_importer;
 	JSON*		json;
 	ModuleWindow* window;
 	ModuleInput* input;
@@ -111,6 +116,7 @@ public:
 	Module* GetModule(int index) ;
 
 	//For performance
+	void SendMessageToModules(State curr_state);
 
 	PerformanceWindow performance;
 	//Files Functions

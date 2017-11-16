@@ -1,0 +1,14 @@
+{"App":
+{"Name":"Edu Engine","Organization":"UPC CITM","MaxFramerate":0},
+"Hardware":{},"File System":{},
+"Window":{"Icon":"*default*","Brightness":1,"Width":1280,"Height":1024,"Fullscreen":false,"Resizable":false,"Borderless":false,"Fullscreen Desktop":false},
+"Resource Manager":{},"Textures":{},"Meshes":{},"Animation":{},"Physics":{"Gravity":[0,-10,0],
+"Debug Draw":false,"Paused":true,"Debug Mode":0},
+"Camera":{"Mov Speed":19.400002,"Rot Speed":3,"Zoom Speed":1000,"Looking At":0,"Background":[0,0,0,1],"Frustum":[68.733070,22.133177,-17.769482,-0.462484,-0.471512,0.750856,-0.247282,0.881858,0.401470,0.100000,1000,1.198284,1]},
+"Renderer":{"Vertical Sync":true,"Debug Plane":true,"Debug Draw":true},
+"Editor":{},
+"Input":{},
+"Audio":{"Volume":1,"Music Volume":1,"FX Volume":1},
+"Scene":{},
+"AI":{},
+"LevelManager":{}} 

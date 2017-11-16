@@ -49,10 +49,12 @@ bool ComponentMaterial::Disable()
 
 void ComponentMaterial::OnLoad(json_file * config)
 {
+	//what should we Save/Load???
 }
 
 void ComponentMaterial::OnSave(json_file & config) const
 {
+	//what should we Save/Load???
 }
 
 void ComponentMaterial::OpenTexture()
@@ -84,7 +86,7 @@ uint ComponentMaterial::GetTexSize() const
 {
 	return 0;
 }
-
+//
 //Color* ComponentMaterial::GetColor()
 //{
 //	return color;

@@ -241,18 +241,19 @@ void json_file::SetNodeEntry(const json_file & config)
 {
 	if (array != nullptr)
 		json_array_append_value(array, json_value_deep_copy(config.value));
-
-	
 }
+
 json_file json_file::GetEntry(const char * set) const
 {
 	return json_file(json_object_get_object(object, set));
 }
+
 json_file json_file::SetEntry(const char * set)
 {
 	json_object_set_value(object, set, json_value_init_object());
 	return GetEntry(set);
 }
+
 json_file json_file::GetArray(const char * field, int index) const
 {
 	JSON_Array* array = json_object_get_array(object, field);
@@ -260,6 +261,7 @@ json_file json_file::GetArray(const char * field, int index) const
 		return json_file(json_array_get_object(array, index));
 	return json_file((JSON_Object*) nullptr);
 }
+
 const char * json_file::GetString(const char * str, const char* defaul,int id)const
 {
 	const char* ret = defaul;

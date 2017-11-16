@@ -106,9 +106,9 @@ bool ComponentTransform::IsModified() const
 	return transform_modified;
 }
 
-void ComponentTransform::SetModified(bool n_value)
+void ComponentTransform::SetModified(bool modified)
 {
-	transform_modified = n_value; 
+	transform_modified = modified;
 }
 
 void ComponentTransform::UpdateTransform(GameObject* curr_go)
@@ -142,7 +142,6 @@ void ComponentTransform::OnSave(json_file & config) const
 	config.SetFloat3("Position", position);
 	config.SetQuaternion("Rotation", rotation);
 	config.SetFloat3("Scale", scale);
-
 }
 
 
