@@ -9,36 +9,36 @@
 
 float3 ComponentTransform::GetLocalPosition()const
 {
-	return position;
+	return transform.position;
 }
 
 Quat ComponentTransform::GetLocalRotation()const
 {
-	return rotation;
+	return transform.rotation;
 }
 
 float3 ComponentTransform::GetLocalScale()const
 {
 
-	return scale;
+	return transform.scale;
 }
 
 float3 ComponentTransform::GetGlobalPosition()
 {
 
-	return global_position;
+	return global_transform.position;
 }
 
 Quat ComponentTransform::GetGlobalRotation()
 {
 
-	return global_rotation;
+	return global_transform.rotation;
 }
 
 float3 ComponentTransform::GetGlobalScale()
 {
 
-	return global_scale;
+	return global_transform.scale;
 }
 
 ComponentTransform::ComponentTransform(GameObject* _parent)
@@ -53,14 +53,14 @@ ComponentTransform::~ComponentTransform()
 {
 }
 
-void ComponentTransform::SetLocalTransform(float4x4 new_transform)
+void ComponentTransform::SetLocalTransformMat(float4x4 new_transform)
 {
-	local_transform = new_transform;
+	local_transform_mat = new_transform;
 }
 
 float4x4 ComponentTransform::GetLocalTransform()
 {
-	return local_transform;
+	return local_transform_mat;
 }
 
 void ComponentTransform::SetIdentityTransform()
@@ -73,14 +73,14 @@ void ComponentTransform::SetIdentityTransform()
 
 void ComponentTransform::SetGlobalTransform(float4x4 new_transform)
 {
-	local_transform = new_transform; 
+	global_transform_mat = new_transform; 
 }
 
 float4x4 ComponentTransform::GetGlobalTransform()
 {
 
 	if (GetComponentParent()->GetParent() == nullptr)
-		global_transform = local_transform; 
+		global_transform_mat = local_transform_mat;
 
 	else
 	{
@@ -90,15 +90,15 @@ float4x4 ComponentTransform::GetGlobalTransform()
 		{
 			ComponentTransform* parent_trans = (ComponentTransform*)parent_go->GetComponent(COMPONENT_TRANSFORM);
 			
-			global_transform = local_transform.Mul(parent_trans->local_transform);
+			global_transform_mat = parent_trans->local_transform_mat.Mul(local_transform_mat);
 
 			parent_go = parent_go->parent;
 		}
 	}
 
-	global_transform.Decompose(global_position, global_rotation, global_scale);
+	global_transform_mat.Decompose(global_transform.position, global_transform.rotation, global_transform.scale);
 
-	return global_transform;
+	return global_transform_mat;
 }
 
 bool ComponentTransform::IsModified() const
@@ -113,7 +113,7 @@ void ComponentTransform::SetModified(bool modified)
 
 void ComponentTransform::UpdateTransform(GameObject* curr_go)
 {
-		local_transform.Set(float4x4::FromTRS(position, rotation, scale));
+		local_transform_mat.Set(float4x4::FromTRS(transform.position, transform.rotation, transform.scale));
 }
 
 bool ComponentTransform::Update()
@@ -130,27 +130,26 @@ bool ComponentTransform::Update()
 
 void ComponentTransform::OnLoad(json_file * config)
 {
-	position = config->GetFloat3("Position", float3::zero);
-	rotation = config->GetQuat("Position", Quat::identity);
-	scale = config->GetFloat3("Scale", float3::zero);
+	transform.position = config->GetFloat3("Position", float3::zero);
+	transform.rotation = config->GetQuat("Position", Quat::identity);
+	transform.scale = config->GetFloat3("Scale", float3::zero);
 
 	transform_modified = true;
 }
 
 void ComponentTransform::OnSave(json_file & config) const
 {
-	config.SetFloat3("Position", position);
-	config.SetQuaternion("Rotation", rotation);
-	config.SetFloat3("Scale", scale);
+	config.SetFloat3("Position", transform.position);
+	config.SetQuaternion("Rotation", transform.rotation);
+	config.SetFloat3("Scale", transform.scale);
 }
-
 
 
 void ComponentTransform::SetLocalPosition(const float3 & _position)
 {
 	if (GetComponentParent()->IsStatic() == false)
 	{
-		position = _position;	
+		transform.position = _position;
 		UpdateTransform(GetComponentParent()); 
 		transform_modified = true; 
 	}	
@@ -161,7 +160,7 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 	if (GetComponentParent()->IsStatic() == false)
 	{
 		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
-		rotation = mod;
+		transform.rotation = mod;
 		
 		UpdateTransform(GetComponentParent());
 		transform_modified = true;
@@ -173,7 +172,7 @@ void ComponentTransform::SetLocalScale(const float3 & _scale)
 {
 	if (GetComponentParent()->IsStatic() == false)
 	{
-		scale = _scale;
+		transform.scale = _scale;
 
 		UpdateTransform(GetComponentParent());
 		transform_modified = true;

@@ -313,11 +313,16 @@ void GameObject::SetParent(GameObject* new_parent)
 	trans->SetLocalPosition(new_local); 
 
 	new_parent->PushChild(this);
-	parent = new_parent;
+	parent = new_parent;	
+}
 
+void GameObject::DeleteParent()
+{
+	ComponentTransform* trans = (ComponentTransform*)GetComponent(COMPONENT_TRANSFORM); 
+	trans->SetLocalTransformMat(trans->GetGlobalTransform()); 
 
-	
-	
+	parent->child_list.clear(); 
+	parent = nullptr; 
 	
 }
 

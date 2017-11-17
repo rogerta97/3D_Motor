@@ -62,6 +62,7 @@ public:
 
 	GameObject* GetParent() const;
 	void SetParent(GameObject* parent);
+	void DeleteParent();
 	GameObject* GetSupreme(); 
 
 	// Utility

@@ -45,10 +45,22 @@ bool PanelInspector::Draw()
 			else go_to_display->SetStatic(false);
 		}
 
-		if (ImGui::Button("Assign parent"))
+		if (go_to_display->parent == nullptr)
 		{
-			App->scene_intro->GetCurrentGO()->SetLooking4Parent(true); 
+			if (ImGui::Button("Assign parent"))
+			{
+				App->scene_intro->GetCurrentGO()->SetLooking4Parent(true);
+			}
 		}
+		else
+		{
+			if (ImGui::Button("Delete parent"))
+			{
+				go_to_display->DeleteParent(); 
+			}
+		}
+	
+		
 
 		ImGui::Separator();
 

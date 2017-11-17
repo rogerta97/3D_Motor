@@ -4,6 +4,13 @@
 #include "MathGeoLib\MathGeoLib.h"
 #include "Component.h"
 
+struct Transform
+{
+	float3 position = float3::zero;
+	Quat rotation = Quat::identity;
+	float3 scale = float3::one;
+};
+
 class ComponentTransform : public Component
 {
 public:
@@ -30,7 +37,7 @@ public:
 
 	// Local Transform Setters & Getters
 
-	void SetLocalTransform(float4x4 new_transform);
+	void SetLocalTransformMat(float4x4 new_transform);
 	float4x4 GetLocalTransform();
 
 	void SetIdentityTransform(); 
@@ -48,16 +55,11 @@ public:
 
 private:
 
-	float3 position = float3::zero;
-	Quat rotation = Quat::identity;
-	float3 scale = float3::one;
+	Transform transform; 
+	Transform global_transform; 
 
-	float3 global_position = float3::zero;
-	Quat global_rotation = Quat::identity;
-	float3 global_scale = float3::one;
-
-	float4x4 local_transform; 
-	float4x4 global_transform;
+	float4x4 local_transform_mat; 
+	float4x4 global_transform_mat;
 
 	bool transform_modified = false; 
 };
