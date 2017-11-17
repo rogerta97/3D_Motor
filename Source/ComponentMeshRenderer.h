@@ -24,6 +24,7 @@ public:
 	void CleanUp();
 	void OnLoad(json_file* config);
 	void OnSave(json_file& config)const;
+	void DeleteComponent(); 
 
 	void SetNewMesh(ComponentMeshRenderer* new_mesh);
 	void SetCubeVertices(float3 origin, uint edge_size);

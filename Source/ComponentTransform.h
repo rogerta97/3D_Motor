@@ -21,6 +21,7 @@ public:
 	bool Update();
 	void OnLoad(json_file* config);
 	void OnSave(json_file& config)const;
+	void DeleteComponent();
 	// Local Pos Setters & Getters
 
 	void SetLocalPosition(const float3& position);

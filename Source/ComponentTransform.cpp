@@ -144,6 +144,10 @@ void ComponentTransform::OnSave(json_file & config) const
 	config.SetFloat3("Scale", transform.scale);
 }
 
+void ComponentTransform::DeleteComponent()
+{
+}
+
 
 void ComponentTransform::SetLocalPosition(const float3 & _position)
 {

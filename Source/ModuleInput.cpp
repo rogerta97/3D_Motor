@@ -167,6 +167,9 @@ update_status ModuleInput::PreUpdate(float dt)
 	if(quit == true || (keyboard[SDL_SCANCODE_ESCAPE] == KEY_DOWN && keyboard[SDL_SCANCODE_LSHIFT] == KEY_REPEAT))
 		return UPDATE_STOP;
 
+	if (keyboard[SDL_SCANCODE_DELETE] == KEY_DOWN && !App->scene_intro->IsSceneEmpty())
+		App->scene_intro->DeleteGameObject(App->scene_intro->GetCurrentGO()); 
+
 	App->performance.SaveRunTimeData(name); 
 
 	return UPDATE_CONTINUE;

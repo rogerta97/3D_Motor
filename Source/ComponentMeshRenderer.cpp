@@ -8,10 +8,6 @@
 
 class ComponentTransform; 
 
-
-
-
-
 void ComponentMeshRenderer::SetBBox(AABB _box)
 {
 	bounding_box = _box;
@@ -211,6 +207,21 @@ void ComponentMeshRenderer::OnLoad(json_file * config)
 
 void ComponentMeshRenderer::OnSave(json_file & config) const
 {
+
+}
+
+void ComponentMeshRenderer::DeleteComponent()
+{
+	vertices = nullptr;
+	delete(vertices);
+	
+	indices = nullptr;
+	delete(indices); 
+
+	uvs = nullptr;
+	delete (uvs); 
+
+	delete(this); 
 
 }
 

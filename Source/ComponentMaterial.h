@@ -18,6 +18,8 @@ public:
 	bool Enable();
 	bool Update();
 	bool Disable();
+	void DeleteComponent();
+
 	void OnLoad(json_file* config);
 	void OnSave(json_file& config)const;
 	void OpenTexture(); 

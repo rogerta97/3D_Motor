@@ -28,6 +28,8 @@ public:
 
 	// GO Management
 	void AddGameObject(GameObject* GO);
+	void DeleteGameObject(GameObject* GO); 
+
 	GameObject* GetGameObject(uint id);
 	GameObject* CreateGameObject(const char* name);
 
@@ -50,6 +52,7 @@ public:
 
 	int IsInDynamic(const int& to_search);
 	int IsInStatic(const int& to_search);
+	int IsInScene(const int& to_search);
 
 	int GetGameObjectsNum(); 
 
@@ -66,6 +69,7 @@ public:
 
 	vector<ComponentCamera*> cameras_list;
 	Octree* octree = nullptr;
+	uint max_id = 0;
 
 private:
 
@@ -77,5 +81,6 @@ private:
 	vector<GameObject*> scene_GO_list;
 
 	uint current_gameobject_id = 0;
+
 	
 };

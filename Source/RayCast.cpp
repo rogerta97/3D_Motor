@@ -26,23 +26,26 @@ void RayCast::Update()
 
 		ray = App->camera->GetEditorCam()->frustum.UnProjectLineSegment(normalized_x, normalized_y);
 
-		GameObject* hited_GO = GetHit();
-
-		if (hited_GO != nullptr)
+		if (App->scene_intro->GetGameObjectsNum() > 0)
 		{
-			GameObject* curr_obj = App->scene_intro->GetCurrentGO();
+			GameObject* hited_GO = GetHit();
 
-			if (curr_obj != nullptr && curr_obj ->IsLooking4Parent() == true)
+			if (hited_GO != nullptr)
 			{
-				curr_obj->SetParent(hited_GO);
-				curr_obj->SetLooking4Parent(false); 
-				LOG("%s is child of %s", curr_obj->GetName(), hited_GO->GetName()); 
-			}
-			else
-				App->scene_intro->SetCurrentGO(hited_GO->GetID());
+				GameObject* curr_obj = App->scene_intro->GetCurrentGO();
 
-			DebugDraw(hited_GO->GetBoundingBox(), Red);
-			LOG("Object %s was hitted and returned succesfully", hited_GO->GetName());
+				if (curr_obj != nullptr && curr_obj->IsLooking4Parent() == true)
+				{
+					curr_obj->SetParent(hited_GO);
+					curr_obj->SetLooking4Parent(false);
+					LOG("%s is child of %s", curr_obj->GetName(), hited_GO->GetName());
+				}
+				else
+					App->scene_intro->SetCurrentGO(hited_GO->GetID());
+
+				DebugDraw(hited_GO->GetBoundingBox(), Red);
+				LOG("Object %s was hitted and returned succesfully", hited_GO->GetName());
+			}
 		}
 	}	
 

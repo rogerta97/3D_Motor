@@ -294,7 +294,7 @@ update_status ModuleImGui::PrintTopBar()
 		{
 
 			if (ImGui::MenuItem("Empty", NULL))			
-				App->scene_intro->CreateGameObject("GameObject"); 
+				App->scene_intro->CreateGameObject("Empty"); 
 			
 			if (ImGui::MenuItem("Cube"))
 			{

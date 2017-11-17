@@ -24,6 +24,8 @@ public:
 	void Load(json_file* config);
 	void Draw(); 
 
+	void Delete(); 
+
 	// Status & info
 
 	bool IsActive()const;
@@ -46,6 +48,7 @@ public:
 	Component* AddEmptyComponent(component_type type);
 	void PushRootComponent(Component* comp);
 	uint GetNumComponents()const;
+	void DeleteComponents(); 
 
 	// Bounding Box 
 

@@ -167,6 +167,25 @@ void GameObject::Draw()
 
 	App->performance.SaveRunTimeData("gameobject"); 
 }
+void GameObject::Delete()
+{
+
+
+	DeleteComponents(); 
+
+	if (!child_list.empty())
+	{
+		for (int i = 0; i < child_list.size(); i++)
+		{
+			child_list[i]->Delete(); 
+		}
+	}
+
+		if (parent != nullptr)
+		DeleteParent();
+
+}
+
 bool GameObject::IsChild(const GameObject* go) const
 {
 	for (vector<GameObject*>::const_iterator it = go->child_list.begin(); it != go->child_list.end(); ++it)
@@ -301,6 +320,16 @@ uint GameObject::GetNumComponents()const
 	return component_list.size();
 }
 
+void GameObject::DeleteComponents()
+{
+	for (int i = 0; i < component_list.size(); i++)
+	{
+		component_list[i]->DeleteComponent(); 
+	}
+
+	component_list.clear(); 
+}
+
 GameObject * GameObject::GetParent()const
 {
 	return parent;
@@ -319,11 +348,19 @@ void GameObject::SetParent(GameObject* new_parent)
 void GameObject::DeleteParent()
 {
 	ComponentTransform* trans = (ComponentTransform*)GetComponent(COMPONENT_TRANSFORM); 
-	trans->SetLocalTransformMat(trans->GetGlobalTransform()); 
-
-	parent->child_list.clear(); 
-	parent = nullptr; 
 	
+	if(trans != nullptr)
+		trans->SetLocalTransformMat(trans->GetGlobalTransform()); 
+
+	for (int i = 0; i < parent->child_list.size(); i++)
+	{
+		if (parent->child_list[i]->GetID() == this->GetID())
+		{
+			parent->child_list.erase(parent->child_list.begin() + i);
+			parent = nullptr; 
+			break; 
+		}			
+	}	
 }
 
 GameObject * GameObject::GetSupreme()
@@ -460,5 +497,9 @@ bool Component::SetActive(bool _active)
 void Component::SetComponentParent(GameObject* _parent)
 {
 	parent = _parent; 
+}
+
+void Component::DeleteComponent()
+{
 }
 

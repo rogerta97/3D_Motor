@@ -71,7 +71,9 @@ void ComponentCamera::OnSave(json_file & config) const
 	config.SetArrayFloat("Frustum", (float*)&frustum.pos.x, 13);
 }
 
-
+void ComponentCamera::DeleteComponent()
+{
+}
 
 void ComponentCamera::DrawFrustum(Frustum & frustum, Color color)
 {

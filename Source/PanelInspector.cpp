@@ -19,7 +19,7 @@ bool PanelInspector::Draw()
 	if (!show_inspector)
 		return false;
 
-	if (ImGui::Begin("Inspector"), &show_inspector && !App->scene_intro->IsSceneEmpty())
+	if (ImGui::Begin("Inspector"), &show_inspector && !App->scene_intro->IsSceneEmpty() && App->scene_intro->GetCurrentGO() != nullptr)
 	{
 		GameObject* go_to_display = App->scene_intro->GetCurrentGO();
 

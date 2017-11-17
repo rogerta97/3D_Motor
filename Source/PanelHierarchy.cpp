@@ -11,12 +11,16 @@ bool PanelHierarchy::Draw()
 	{
 		if (!App->scene_intro->IsSceneEmpty())
 		{
-			for (int i = 0; i < App->scene_intro->GetGameObjectsNum(); i++)
+			for (int i = 0; i < App->scene_intro->max_id; i++)
 			{				
-				GameObject* go_to_draw = App->scene_intro->GetGameObject(i); 
+				GameObject* go_to_draw = App->scene_intro->GetGameObject(App->scene_intro->IsInScene(i)); 
 
-				if (go_to_draw->GetParent() == nullptr)
-					DrawNode(go_to_draw); 
+				if (go_to_draw != nullptr)
+				{
+					if (go_to_draw->GetParent() == nullptr)
+						DrawNode(go_to_draw);
+				}
+			
 			}
 		}
 		ImGui::End();

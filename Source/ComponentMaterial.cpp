@@ -47,6 +47,10 @@ bool ComponentMaterial::Disable()
 	return true;
 }
 
+void ComponentMaterial::DeleteComponent()
+{
+}
+
 void ComponentMaterial::OnLoad(json_file * config)
 {
 	//what should we Save/Load???

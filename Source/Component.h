@@ -41,6 +41,8 @@ public:
 	GameObject* GetComponentParent() { return parent; }
 	void SetComponentParent(GameObject* parent); 
 
+	virtual void DeleteComponent(); 
+
 	~Component() {}
 
 protected: 
