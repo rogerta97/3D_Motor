@@ -3,6 +3,7 @@
 #include "ModuleCamera3D.h"
 #include "ComponentMeshRenderer.h"
 #include "ComponentTransform.h"
+#include "Functions.h"
 #include "Octree.h"
 #include "moduleImGui.h"
 
@@ -40,18 +41,22 @@ void RayCast::Update()
 
 GameObject * RayCast::GetHit()
 {
-	GameObject* ret; 
-	vector<GameObject*> final_candidate_list; 
-	// First we get the list of AABB's the ray is coliding with ordered by distance
-	if(App->scene_intro->octree != nullptr)
-		App->scene_intro->octree->CollectIntersections(candidate_list, ray);
-	/*else
-		GetObjectsByDistance(normal_hit_list);
+	GameObject* ret;
 
-	std::transform(candidate_list.begin(), candidate_list.end(), std::back_inserter(final_candidate_list), boost::bind(&MapT::value_type::second, _1));*/
+	map<float, GameObject*> map_candidates; 
+	vector<GameObject*> candidate_list; 
+	// First we get the list of AABB's the ray is coliding with ordered by distance
+
+	if (App->scene_intro->octree != nullptr && App->scene_intro->octree->GetNumObjects() > 0)
+	{
+		App->scene_intro->octree->CollectIntersections(map_candidates, ray);
+		candidate_list = MapToVector(map_candidates);		
+	}	
+	else
+		GetObjectsByDistance(candidate_list);
 
 	// We check collisions for every triangle of the mesh of selected objects
-	ret = RayTest(); 
+	ret = RayTest(candidate_list); 
 	
 	candidate_list.clear(); 
 
@@ -102,7 +107,7 @@ void RayCast::GetObjectsByDistance(vector<GameObject*>& objects)
 
 }
 
-GameObject * RayCast::RayTest()
+GameObject * RayCast::RayTest(vector<GameObject*> candidate_list)
 {
 	float best_distance = -1;
 	GameObject* ret = nullptr; 

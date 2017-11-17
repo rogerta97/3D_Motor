@@ -20,7 +20,7 @@ public:
 	GameObject* GetHit(); 
 
 	void GetObjectsByDistance(vector<GameObject*>& objects);
-	GameObject* RayTest();
+	GameObject* RayTest(vector<GameObject*> candidate_list);
 
 	~RayCast(); 
 
@@ -31,7 +31,6 @@ private:
 private:
 
 	LineSegment ray;
-	map<float, GameObject*> candidate_list;
 
 };
 
