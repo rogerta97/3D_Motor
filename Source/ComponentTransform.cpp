@@ -89,8 +89,8 @@ float4x4 ComponentTransform::GetGlobalTransform()
 		while (parent_go != nullptr)
 		{
 			ComponentTransform* parent_trans = (ComponentTransform*)parent_go->GetComponent(COMPONENT_TRANSFORM);
-
-			global_transform = parent_trans->local_transform.Mul(local_transform);
+			
+			global_transform = local_transform.Mul(parent_trans->local_transform);
 
 			parent_go = parent_go->parent;
 		}

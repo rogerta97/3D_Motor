@@ -34,6 +34,7 @@ public:
 
 	void SetName(const char* name);
 	const char* GetName()const; 
+
 	void SetID(uint id);
 	uint GetID()const; 
 
@@ -56,9 +57,11 @@ public:
 
 	GameObject* GetChild(uint id)const; 
 	bool IsChild(const GameObject* go) const;
-	uint GetNumChilds()const;
+	uint GetNumChilds() const;
 	void PushChild(GameObject* child);
-	GameObject* GetParent()const;
+
+	GameObject* GetParent() const;
+	void SetParent(GameObject* parent);
 	GameObject* GetSupreme(); 
 
 	// Utility
@@ -66,8 +69,13 @@ public:
 	bool IsCompEmpty(); 
 	bool IsChildEmpty(); 
 	float DistanceTo(float3 point); 
+
 	bool IsRoot() const; 
 	void SetRoot(const bool& _root); 
+
+	bool IsLooking4Parent();
+	void SetLooking4Parent(bool is_searching);
+
 
 
 public:
@@ -81,6 +89,7 @@ public:
 	bool active = false;
 	bool is_static = false; 
 	bool is_root = false; 
+	bool looking_for_parent = false; 
 
 	UID UUID;
 

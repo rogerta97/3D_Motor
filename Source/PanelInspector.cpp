@@ -47,7 +47,7 @@ bool PanelInspector::Draw()
 
 		if (ImGui::Button("Assign parent"))
 		{
-			
+			App->scene_intro->GetCurrentGO()->SetLooking4Parent(true); 
 		}
 
 		ImGui::Separator();

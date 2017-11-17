@@ -115,6 +115,12 @@ void PanelOctree::DrawPanel()
 
 		if (ImGui::Button("Add Current Object"))
 		{
+			if (App->scene_intro->GetCurrentGO()->is_root)
+			{
+				LOG("Root Game Objects can not be added to Octree");
+				return; 
+			}
+				
 			if (App->scene_intro->GetCurrentGO() != nullptr && App->scene_intro->GetCurrentGO()->IsStatic() == true)
 			{
 				bool element_inserted = false; 

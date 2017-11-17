@@ -26,13 +26,23 @@ void RayCast::Update()
 
 		ray = App->camera->GetEditorCam()->frustum.UnProjectLineSegment(normalized_x, normalized_y);
 
-		GameObject* c = GetHit();
+		GameObject* hited_GO = GetHit();
 
-		if (c != nullptr)
+		if (hited_GO != nullptr)
 		{
-			App->scene_intro->SetCurrentGO(c->GetID()); 
-			DebugDraw(c->GetBoundingBox(), Red); 
-			LOG("Object %s was hitted and returned succesfully", c->GetName()); 
+			GameObject* curr_obj = App->scene_intro->GetCurrentGO();
+
+			if (curr_obj != nullptr && curr_obj ->IsLooking4Parent() == true)
+			{
+				curr_obj->SetParent(hited_GO);
+				curr_obj->SetLooking4Parent(false); 
+				LOG("%s is child of %s", curr_obj->GetName(), hited_GO->GetName()); 
+			}
+			else
+				App->scene_intro->SetCurrentGO(hited_GO->GetID());
+
+			DebugDraw(hited_GO->GetBoundingBox(), Red);
+			LOG("Object %s was hitted and returned succesfully", hited_GO->GetName());
 		}
 	}	
 
@@ -51,9 +61,18 @@ GameObject * RayCast::GetHit()
 	{
 		App->scene_intro->octree->CollectIntersections(map_candidates, ray);
 		candidate_list = MapToVector(map_candidates);		
-	}	
-	else
+	}
+
+	if(candidate_list.empty())
 		GetObjectsByDistance(candidate_list);
+
+	//// If this is true it means that there can be objects that the ray can be coliding with and they are not tested
+	//// So, collisions with octree just optimize the collisions for the objects that are inside the octree:) 
+
+	//if (App->scene_intro->GetGameObjectsNum() > App->scene_intro->octree->GetNumObjects())
+	//{
+	//	G
+	//}
 
 	// We check collisions for every triangle of the mesh of selected objects
 	ret = RayTest(candidate_list); 

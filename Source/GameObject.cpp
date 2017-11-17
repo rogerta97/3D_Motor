@@ -281,6 +281,16 @@ void GameObject::SetRoot(const bool & _root)
 	is_root = _root; 
 }
 
+bool GameObject::IsLooking4Parent()
+{
+	return looking_for_parent;
+}
+
+void GameObject::SetLooking4Parent(bool is_searching)
+{
+	looking_for_parent = is_searching;
+}
+
 uint GameObject::GetNumChilds()const
 {
 	return child_list.size();
@@ -294,6 +304,21 @@ uint GameObject::GetNumComponents()const
 GameObject * GameObject::GetParent()const
 {
 	return parent;
+}
+
+void GameObject::SetParent(GameObject* new_parent)
+{
+	float3 new_local = GetBoundingBox().CenterPoint() - new_parent->GetBoundingBox().CenterPoint();
+	ComponentTransform* trans = (ComponentTransform*)GetComponent(COMPONENT_TRANSFORM); 
+	trans->SetLocalPosition(new_local); 
+
+	new_parent->PushChild(this);
+	parent = new_parent;
+
+
+	
+	
+	
 }
 
 GameObject * GameObject::GetSupreme()
