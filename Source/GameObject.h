@@ -80,6 +80,8 @@ public:
 	bool IsLooking4Parent();
 	void SetLooking4Parent(bool is_searching);
 
+	void ShowBB(bool show_it);
+
 
 
 public:

@@ -129,13 +129,13 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	//TODO when we have more cameras assign the current one
 	//now we will assign the basic editor cam
-	ComponentCamera* cam = App->camera->GetEditorCam();
+	ComponentCamera* rendering_cams = App->camera->GetEditorCam();
 
 	// Adjust projection if needed
-	if (cam->screen_resized == true)
+	if (rendering_cam->screen_resized == true)
 	{
 		ChangeRenderView();
-		cam->screen_resized = false;
+		rendering_cam->screen_resized = false;
 	}
 	App->performance.InitTimer(name); 
 
@@ -145,7 +145,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(cam->GetOpenGLViewMatrix());
+	glLoadMatrixf(rendering_cam->GetOpenGLViewMatrix());
 
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);	
@@ -353,6 +353,11 @@ void ModuleRenderer3D::PrintConfigData()
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", this->GetDriver());
 
 	}
+}
+
+void ModuleRenderer3D::SetRenderingCam(ComponentCamera * new_cam)
+{
+	rendering_cam = new_cam; 
 }
 
 char * ModuleRenderer3D::GetGraphicsModel(const char* _module) const

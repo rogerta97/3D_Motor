@@ -137,18 +137,9 @@ bool ComponentMeshRenderer::Update()
 
 	ComponentTransform* ctransform = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
 	ComponentMaterial* cmaterial = (ComponentMaterial*)GetComponentParent()->GetComponent(COMPONENT_MATERIAL);
-	
-	if (App->renderer3D->curr_cam->selected_GO != nullptr)
-	{
-		if (!App->renderer3D->curr_cam->IsInside(this->bounding_box)) return false;
-	}
 
 	glPushMatrix(); 
-	glMultMatrixf(ctransform->GetGlobalTransform().Transposed().ptr());
-
-	if (GetComponentParent()->GetID() == App->scene_intro->GetCurrentGO()->GetID())
-		show_bb = true; 
-	
+	glMultMatrixf(ctransform->GetGlobalTransform().Transposed().ptr());	
 
 	//VERTICES
 	glEnableClientState(GL_VERTEX_ARRAY);

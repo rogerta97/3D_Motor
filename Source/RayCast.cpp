@@ -40,10 +40,13 @@ void RayCast::Update()
 					curr_obj->SetLooking4Parent(false);
 					LOG("%s is child of %s", curr_obj->GetName(), hited_GO->GetName());
 				}
-				else
+				else 
+				{
 					App->scene_intro->SetCurrentGO(hited_GO->GetID());
+					hited_GO->ShowBB(true);
+				}
+					
 
-				DebugDraw(hited_GO->GetBoundingBox(), Red);
 				LOG("Object %s was hitted and returned succesfully", hited_GO->GetName());
 			}
 		}

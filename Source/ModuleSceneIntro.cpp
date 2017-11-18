@@ -382,6 +382,17 @@ int ModuleSceneIntro::GetGameObjectsNum()
 
 void ModuleSceneIntro::SetCurrentGO(uint id)
 {
+
+	if (App->camera->IsLooking4Camera())
+	{
+		ComponentCamera* cam = (ComponentCamera*)Find(id)->GetComponent(COMPONENT_CAMERA);
+
+		if (cam != nullptr)
+		{
+			App->camera->AssignNewMainCamera(cam);
+		}
+	}
+
 	current_gameobject_id = id;
 }
 

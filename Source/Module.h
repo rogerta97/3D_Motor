@@ -7,7 +7,6 @@
 class Application;
 struct PhysBody3D;
 class json_file;
-struct State;
 
 class Module
 {
@@ -53,6 +52,11 @@ public:
 		return true; 
 	}
 
+	virtual void AdaptToState(app_state curr_state)
+	{
+
+	}
+
 	virtual void PrintConfigData()
 	{
 		
@@ -63,5 +67,5 @@ public:
 	virtual void OnLoadConfig(json_file* config) {};
 	virtual void OnSaveConfig(json_file* config) {};
 
-	virtual void ReceiveGameStatus(State& curr_event) {};
+	virtual void ReceiveGameStatus(app_state curr_event) {};
 };

@@ -107,35 +107,6 @@ void Application::PrepareUpdate()
 	dt = (float)ms_timer.Read() / 1000.0f;
 	ms_timer.Start();
 
-	switch (state)
-	{
-	case to_play:
-	{
-		state = play;
-		//send event to each module
-		SendMessageToModules(state);
-	} break;
-	case to_stop:
-	{
-		state = stop;
-		//send event to each module
-		SendMessageToModules(state);
-		break;
-	}
-	case to_pause:
-	{
-		state = pause;
-		//send event to each module
-
-		SendMessageToModules(state);
-	} break;
-	case to_unpause:
-	{
-		state = play;
-		SendMessageToModules(unpause);
-	} break;
-	}
-
 }
 
 // ---------------------------------------------
@@ -421,9 +392,22 @@ Module* Application::GetModule(int index)
 	
 }
 
-void Application::SendMessageToModules(State curr_state)
+void Application::SetState(app_state new_state)
 {
+	state = new_state; 
+}
 
+app_state Application::GetState()
+{
+	return state;
+}
+
+void Application::SendMessageToModules()
+{
+	for (list<Module*>::iterator it = list_modules.begin(); it != list_modules.end(); it++)
+	{
+		(*it)->AdaptToState(state); 
+	}
 }
 
 json_file *  Application::LoadConfig()

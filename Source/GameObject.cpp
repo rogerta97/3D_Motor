@@ -302,6 +302,15 @@ void GameObject::SetLooking4Parent(bool is_searching)
 	looking_for_parent = is_searching;
 }
 
+void GameObject::ShowBB(bool show_it)
+{
+	ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponent(COMPONENT_MESH_RENDERER); 
+
+	if (mr)
+		mr->show_bb = show_it; 
+		
+}
+
 uint GameObject::GetNumChilds()const
 {
 	return child_list.size();

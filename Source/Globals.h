@@ -57,6 +57,15 @@ enum update_status
 	UPDATE_STOP,
 	UPDATE_ERROR
 };
+
+enum app_state {
+
+	APP_STATE_PLAY,
+	APP_STATE_STOP,
+	APP_STATE_PAUSE,
+
+};
+
 //Folders
 #define ASSETS_FOLDER "/Assets/"
 #define LIBRARY_FOLDER "/Library/"

@@ -19,8 +19,7 @@ bool PanelHierarchy::Draw()
 				{
 					if (curr_node->GetParent() == nullptr)
 						DrawNode(curr_node);
-				}
-			
+				}			
 			}
 		}
 		ImGui::End();

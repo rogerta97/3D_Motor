@@ -22,7 +22,7 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled)
 	zm_speed = 0.1f;
 	mouse_wheel_speed = 2.0f;
 	near_plane = 0.1f;
-	far_plane = 100.0f;
+	far_plane = 500.0f;
 	h_field_of_view = 60.85f;
 	v_field_of_view = 60.0f;
 	aspect_ratio = 1.3;
@@ -31,6 +31,7 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled)
 	Reference = vec3(0.0f, 0.0f, 0.0f);
 
 	editor_camera = new ComponentCamera(nullptr, far_plane, near_plane, h_field_of_view, h_field_of_view / v_field_of_view);
+	main_camera = nullptr; 
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -42,7 +43,7 @@ bool ModuleCamera3D::Init(json_file* config)
 {
 	name = "Camera";
 	App->performance.InitTimer(name);
-	App->renderer3D->curr_cam = editor_camera;
+	App->renderer3D->SetRenderingCam(editor_camera);
 	App->performance.SaveInitData(name);
 
 	return true; 
@@ -61,7 +62,7 @@ bool ModuleCamera3D::Start()
 bool ModuleCamera3D::CleanUp()
 {
 	LOG("Cleaning camera");
-	App->renderer3D->curr_cam = nullptr;
+	App->renderer3D->SetRenderingCam(nullptr);
 
 	return true;
 }
@@ -183,26 +184,28 @@ void ModuleCamera3D::Move()
 {
 	vec3 move_aux(0.0f, 0.0f, 0.0f);
 
+	ComponentCamera* curr = (App->GetState() == APP_STATE_PLAY) ? main_camera : editor_camera; 
+
 	float temporal_speed = mov_speed;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		temporal_speed = temporal_speed * 0.3f;
 
 	if (App->input->IsMouseInWindow() == 0)
 	{
-		if (App->input->GetMouseWheel() == 1) editor_camera->MoveForward(temporal_speed);
-		if (App->input->GetMouseWheel() == -1) editor_camera->MoveBackwards(temporal_speed);
+		if (App->input->GetMouseWheel() == 1) curr->MoveForward(temporal_speed);
+		if (App->input->GetMouseWheel() == -1) curr->MoveBackwards(temporal_speed);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) editor_camera->MoveForward(temporal_speed);
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) editor_camera->MoveBackwards(temporal_speed);
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) curr->MoveForward(temporal_speed);
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) curr->MoveBackwards(temporal_speed);
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) editor_camera->MoveLeft(temporal_speed);
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) editor_camera->MoveRight(temporal_speed);
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) curr->MoveLeft(temporal_speed);
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) curr->MoveRight(temporal_speed);
 
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) editor_camera->MoveDown(temporal_speed);
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) editor_camera->MoveUp(temporal_speed);
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) curr->MoveDown(temporal_speed);
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) curr->MoveUp(temporal_speed);
 
 	float3 frustum_move(move_aux.x, move_aux.y, move_aux.z);
-	editor_camera->frustum.SetPos(editor_camera->frustum.pos + frustum_move);
+	curr->frustum.SetPos(curr->frustum.pos + frustum_move);
 
 	//CalculateViewMatrix();
 }
@@ -329,7 +332,22 @@ void ModuleCamera3D::PrintConfigData()
 		if(ImGui::DragFloat("Aspect Ratio", &aux_AR, 0.1f, 0.1f, 10000.0f))
 			editor_camera->SetAspectRatio(aux_AR);
 
+		if (ImGui::Button("Assign main camera") && looking_for_camera == false)
+		{
+			looking_for_camera = true; 
+		}
 
+		ImGui::Text("Main Camera: "); 
+		ImGui::SameLine();
+
+		string camera; 
+
+		if (main_camera != nullptr && main_camera->GetComponentParent() != nullptr)
+			camera = main_camera->GetComponentParent()->GetName();
+		else
+			camera = "NONE"; 
+
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", camera.c_str());		
 	}
 }
 
@@ -343,7 +361,43 @@ ComponentCamera * ModuleCamera3D::GetEditorCam() const
 	return editor_camera;
 }
 
+bool ModuleCamera3D::IsLooking4Camera()
+{
+	return looking_for_camera;
+}
+
+void ModuleCamera3D::SetLooking4Camera(bool new_state_cam)
+{
+	looking_for_camera = new_state_cam; 
+}
+
+void ModuleCamera3D::AssignNewMainCamera(ComponentCamera* cam)
+{
+	main_camera = cam; 
+}
+
 bool ModuleCamera3D::IsCulling()
 {
 	return frustum_culling;
+}
+
+void ModuleCamera3D::AdaptToState(app_state curr_state)
+{
+	switch (curr_state)
+	{
+		case APP_STATE_PLAY:
+			{		
+				if (main_camera != nullptr)
+					App->renderer3D->SetRenderingCam(main_camera);
+				else
+					LOG("A Current Camera needs to be assigned before starting"); 
+			}
+			break; 
+
+	case APP_STATE_STOP: 
+			{				
+				App->renderer3D->SetRenderingCam(editor_camera);
+			}
+			break; 		
+	}
 }

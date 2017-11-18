@@ -4,6 +4,7 @@
 #include "PanelConsole.h"
 #include "PanelInspector.h"
 #include "PanelHierarchy.h"
+#include "PanelPlayAndPause.h"
 #include "PanelOctree.h"
 #include "ImGuizmo.h"
 #include "RayCast.h"
@@ -41,7 +42,10 @@ private:
 	PanelConsole console;
 	PanelHierarchy hierarchy; 
 	PanelOctree panel_octree; 
+	PanelPlayAndPause panel_play; 
+
 	RayCast raycast; 
+
 
 	bool show_test_window = true;
 	bool show_another_window = false;

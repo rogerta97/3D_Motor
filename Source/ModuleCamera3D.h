@@ -9,29 +9,44 @@ public:
 	ModuleCamera3D(bool start_enabled = true);
 	~ModuleCamera3D();
 
+	// Parent funcs
+
 	bool Init(json_file* config);
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
 
+	// Camera Control
+
 	void Look(const float3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const float3 &objective);
 	void Move();
 	void Move(const vec3& pos);
-
-	float* GetViewMatrix();
+	void SetCamPosition(math::float3 position);
 	void FreeOrbit();
 	void Orbit(const vec3& orbit_center, const float& motion_x, const float& motion_y);
 	void Focus(const vec3& focus, const float& distance);
-	void PrintConfigData();
-	void SetCamPosition(math::float3 position);
 
+	// Matrix Management
+
+	float* GetViewMatrix();
+	float* GetFrustumViewMatrix();
+	float* GetFrustumProjectionMatrix();
+
+	// Utility
+
+	bool IsCulling();
+	void AdaptToState(app_state curr_state);
 	ComponentCamera* GetEditorCam()const;
 
-	float* GetFrustumViewMatrix();
-	float* GetFrustumProjectionMatrix(); 
+	bool IsLooking4Camera(); 
+	void SetLooking4Camera(bool state_Cam); 
 
-	bool IsCulling(); 
+	void AssignNewMainCamera(ComponentCamera* go_container); 
+
+	// Config window
+
+	void PrintConfigData();
 
 private:
 	void CalculateViewMatrix();
@@ -53,6 +68,7 @@ public:
 
 	bool frustum_culling = false; 
 	bool is_rotating = false; 
+	bool looking_for_camera = false; 
 
 private:
 	mat4x4 ViewMatrix, ViewMatrixInverse;

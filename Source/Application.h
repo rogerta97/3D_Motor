@@ -29,18 +29,6 @@
 class Application
 {
 public:
-	enum State {
-
-		play,
-		stop,
-		pause,
-		unpause,
-		to_play,
-		to_stop,
-		to_pause,
-		to_unpause
-	};
-public:
 	//ModuleFileSystem* file_system;
 	MeshRendererImporter* mesh_importer;
 	MaterialsImporter* materials_importer;
@@ -116,7 +104,10 @@ public:
 	Module* GetModule(int index) ;
 
 	//For performance
-	void SendMessageToModules(State curr_state);
+	void SendMessageToModules();
+
+	void SetState(app_state new_state); 
+	app_state GetState(); 
 
 	PerformanceWindow performance;
 	//Files Functions
@@ -135,7 +126,7 @@ private:
 	std::string		   organization = "-";
 	float				max_fps = 0.0f;
 
-	State state = State::stop;
+	app_state state =	APP_STATE_STOP; 
 	json_file*			config = nullptr;
 };
 

@@ -12,8 +12,8 @@ ComponentCamera::ComponentCamera(GameObject* _parent, float far_plane, float nea
 
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.SetFrame({0, 2, -5}, float3::unitZ, float3::unitY);
-	frustum.SetPerspective(DEGTORAD * 90.0f, DEGTORAD * 59.0f);
-	frustum.SetViewPlaneDistances(0.1f, 300.0f);
+	frustum.SetPerspective(DEGTORAD * 90.0f, DEGTORAD * fov);
+	frustum.SetViewPlaneDistances(near_plane, far_plane);
 
 	type = COMPONENT_CAMERA; 
 	

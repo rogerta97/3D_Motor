@@ -104,6 +104,7 @@ update_status ModuleImGui::PostUpdate(float dt)
 	inspector.Draw();
 	hierarchy.Draw(); 
 	console.PrintConsole(); 
+	panel_play.Draw(); 
 	raycast.Update();
 
 	ImGui::Render();

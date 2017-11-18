@@ -153,7 +153,7 @@ bool PanelInspector::Draw()
 						
 					case 2: 
 					{
-						ComponentCamera* new_cam = new ComponentCamera(curr_go, 0.1f, 100.0f, 45.0f, 1.3f);
+						ComponentCamera* new_cam = new ComponentCamera(curr_go, 30.0f, 0.1f, 60.0f, 1.5f);
 						curr_go->PushComponent(new_cam);
 						break;
 					}		
@@ -213,11 +213,11 @@ void PanelInspector::PrintMeshComponent(GameObject* GO_to_draw)
 
 		ImGui::Checkbox("AABB active", &curr_cmp->show_bb);
 
-		if (curr_cmp->IsBBoxShowing())
-		{
-			DebugDraw(curr_cmp->GetBBox(), Red);
-		}
+	}
 
+	if (curr_cmp->IsBBoxShowing())
+	{
+		DebugDraw(curr_cmp->GetBBox(), Red);
 	}
 }
 
@@ -383,11 +383,22 @@ void PanelInspector::PrintCameraComponent(GameObject* GO_to_draw)
 
 	if (ImGui::CollapsingHeader("Component Camera"))
 	{
-		ImGui::DragFloat("Near Plane Distance##transform", &curr_cmp->frustum.nearPlaneDistance, 0.1f, 0.0f);
-		//curr_cmp->SetNearPlaneDist(nearPlane_aux);
+		if(ImGui::DragFloat("Near Plane Distance##transform", &curr_cmp->frustum.nearPlaneDistance, 0.1f, 0.0f))
+			curr_cmp->frustum.SetViewPlaneDistances(curr_cmp->frustum.nearPlaneDistance, curr_cmp->frustum.farPlaneDistance);
 
-		ImGui::DragFloat("Far Plane Distance##transform", &curr_cmp->frustum.farPlaneDistance, 0.1f, 0.0f);
-		//curr_cmp->SetNearPlaneDist(nearPlane_aux);
+		if(ImGui::DragFloat("Far Plane Distance##transform", &curr_cmp->frustum.farPlaneDistance, 0.1f, 0.0f))
+			curr_cmp->frustum.SetViewPlaneDistances(curr_cmp->frustum.nearPlaneDistance, curr_cmp->frustum.farPlaneDistance);
+		
+		float aux_FOV = curr_cmp->GetFOV(); 
+		if (ImGui::SliderFloat("Field Of View##transform", &aux_FOV, 0.1f, 179.0f))
+		{
+			if (aux_FOV < 0)
+				aux_FOV = 0; 
+
+			curr_cmp->SetFOV(aux_FOV);
+		}
+		
+
 	}
 }
 		

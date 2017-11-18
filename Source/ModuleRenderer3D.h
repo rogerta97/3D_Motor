@@ -14,21 +14,25 @@ public:
 	ModuleRenderer3D(bool start_enabled = true);
 	~ModuleRenderer3D();
 
+	// Parent 
 	bool Init(json_file* config);
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void ChangeRenderView();
-	void OnResize(int width, int height);
-	void PrintConfigData();
-
+	//Utility
 	char* GetGraphicsModel(const char* _module) const; 
 	const char* GetDriver() const;
 	void UI_attributes();
 	void CustomAttributes();
+	void ChangeRenderView();
+	void OnResize(int width, int height);
+	void PrintConfigData();
+	void SetRenderingCam(ComponentCamera* new_cam); 
 
 	//void SetObjectsWireframe(bool state); 
+
+	
 
 
 private: 
@@ -57,7 +61,7 @@ private:
 	float material_ambient = 1.0f;
 
 public:
-	ComponentCamera* curr_cam = nullptr;
+	ComponentCamera* rendering_cam = nullptr;
 	Light lights[MAX_LIGHTS]; 
 	bool vsync_on = false;
 

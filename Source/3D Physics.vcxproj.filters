@@ -1239,6 +1239,9 @@
     <ClInclude Include="ImGuizmo.h">
       <Filter>Helpers\ImGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="PanelPlayAndPause.h">
+      <Filter>Helpers\ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1489,6 +1492,9 @@
     </ClCompile>
     <ClCompile Include="ImGuizmo.cpp">
       <Filter>Helpers\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelPlayAndPause.cpp">
+      <Filter>Helpers\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

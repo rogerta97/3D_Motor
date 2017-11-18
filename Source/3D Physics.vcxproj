@@ -386,6 +386,7 @@
     <ClInclude Include="PanelHierarchy.h" />
     <ClInclude Include="PanelInspector.h" />
     <ClInclude Include="PanelOctree.h" />
+    <ClInclude Include="PanelPlayAndPause.h" />
     <ClInclude Include="RayCast.h" />
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="ModuleWindow.h" />
@@ -475,6 +476,7 @@
     <ClCompile Include="PanelHierarchy.cpp" />
     <ClCompile Include="PanelInspector.cpp" />
     <ClCompile Include="PanelOctree.cpp" />
+    <ClCompile Include="PanelPlayAndPause.cpp" />
     <ClCompile Include="RayCast.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
