@@ -1239,6 +1239,9 @@
     <ClInclude Include="PanelPlayAndPause.h">
       <Filter>Helpers\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="UID.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1489,6 +1492,9 @@
     </ClCompile>
     <ClCompile Include="PanelPlayAndPause.cpp">
       <Filter>Helpers\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="UID.cpp">
+      <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

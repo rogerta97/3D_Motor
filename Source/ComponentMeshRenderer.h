@@ -64,6 +64,7 @@ public:
 	bool IsBBoxShowing()const;
 	bool show_bb;
 
+	void Serialize(json_file* file);
 public: 
 
 	vec* vertices;
@@ -81,6 +82,7 @@ public:
 	uint num_triangles = 0; 
 
 	AABB bounding_box;
+	uint unique_id = 0;
 
 private:
 

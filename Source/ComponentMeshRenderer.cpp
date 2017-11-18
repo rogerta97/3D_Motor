@@ -5,12 +5,15 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "UID.h"
+#include "JSON.h"
 
 class ComponentTransform; 
 
 void ComponentMeshRenderer::SetBBox(AABB _box)
 {
 	bounding_box = _box;
+
 }
 
 AABB ComponentMeshRenderer::GetBBox() const
@@ -116,6 +119,17 @@ void ComponentMeshRenderer::SetUVS(float * uvs)
 bool ComponentMeshRenderer::IsBBoxShowing() const
 {
 	return show_bb;
+}
+
+void ComponentMeshRenderer::Serialize(json_file * file)
+{
+	file->SetEntry("Components");
+	file->MoveToSectionFromArray("Components", file->GetArraySize("Components") - 1);
+
+	file->SetInt("type", GetComponentType());
+	file->SetInt("owner", GetComponentParent()->unique_id);
+	file->SetInt("mesh", unique_id);
+
 }
 
 ComponentMeshRenderer::~ComponentMeshRenderer()
@@ -229,6 +243,16 @@ ComponentMeshRenderer::ComponentMeshRenderer(GameObject* _parent)
 	parent = _parent; 
 	show_bb = false; 
 	type = COMPONENT_MESH_RENDERER; 
+
+	//take the actual memory adress to not repeat the same
+	void* a = this;
+	void** a_ptr = &a;
+	uint size = sizeof(this);
+	char* data = new char[size];
+	memcpy(data, a_ptr, size);
+
+	uint* uid = md5(data, size);
+	unique_id = *uid;
 }
 
 ComponentMeshRenderer::ComponentMeshRenderer(uint num_ver, float * ver, uint num_ind, uint * ind, uint num_uv, float * uv, uint num_norm, float * norm)
@@ -256,6 +280,16 @@ ComponentMeshRenderer::ComponentMeshRenderer(uint num_ver, float * ver, uint num
 
 	bounding_box.SetNegativeInfinity();
 	bounding_box.Enclose((float3*)ver, num_ver);
+
+	//take the actual memory adress to not repeat the same
+	void* a = this;
+	void** a_ptr = &a;
+	uint size = sizeof(this);
+	char* data = new char[size];
+	memcpy(data, a_ptr, size);
+
+	uint* uid = md5(data, size);
+	unique_id = *uid;
 }
 
 uint ComponentMeshRenderer::GetNumTriangles() const

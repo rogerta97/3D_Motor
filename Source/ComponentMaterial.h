@@ -29,8 +29,11 @@ public:
 
 	void SetTextureID(uint tex);
 	uint GetTexSize()const;
+	void Serialize(json_file* file);
 	//Color* GetColor();
-	
+public:
+	uint unique_id = 0;
+
 	uint textures_id = 0;
 
 	uint width = 0;

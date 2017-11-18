@@ -47,6 +47,7 @@ class json_file
 		 Quat GetQuat(const char* field, const Quat& default = Quat::identity);
 		
 		 const char* GetPath();
+		 bool json_file::MoveToSectionFromArray(const char * field, int index)
 
 		 void Save();
 		 void CleanUp();

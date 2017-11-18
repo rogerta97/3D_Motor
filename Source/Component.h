@@ -40,7 +40,7 @@ public:
 
 	GameObject* GetComponentParent() { return parent; }
 	void SetComponentParent(GameObject* parent); 
-
+	component_type GetComponentType() { return type };
 	virtual void DeleteComponent(); 
 
 	~Component() {}
