@@ -91,7 +91,7 @@ void RayCast::GetObjectsByDistance(vector<GameObject*>& objects)
 
 	vector<float> hit_distance_list; 
 
-	for (int i = 0; i < App->scene_intro->GetSceneList().size(); i++)
+	for (int i = 0; i < App->scene_intro->GetGameObjectsNum(); i++)
 	{
 		GameObject* curr_candidate = App->scene_intro->GetGameObject(i);
 

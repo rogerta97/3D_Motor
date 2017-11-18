@@ -60,19 +60,20 @@ bool ModuleSceneIntro::CleanUp()
 	return true;
 }
 
-GameObject* ModuleSceneIntro::GetGameObject(uint id)
+GameObject* ModuleSceneIntro::GetGameObject(uint pos)
 {
 	GameObject* ret = nullptr;
 
 	uint i = 0;
 
-	for (std::vector<GameObject*>::iterator it = scene_GO_list.begin(); it != scene_GO_list.end(); it++)
+	for (std::vector<GameObject*>::iterator it = GO_list.begin(); it != GO_list.end(); it++)
 	{
-		if ((*it)->GetID() == id)
+		if (i == pos)
 		{
 			ret = (*it);
 			break;
 		}
+
 		++i;
 	}	
 
@@ -149,38 +150,55 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 void ModuleSceneIntro::AddGameObject(GameObject * GO)
 {
-
 	GO_list.push_back(GO); 
-	scene_GO_list.push_back(GO); 
-
-	GO->SetID(GetGameObjectsNum() - 1);
 	current_gameobject_id = GO->GetID();
-	max_id++; 
 }
 
 void ModuleSceneIntro::DeleteGameObject(GameObject * GO)
 {
 	if (GO->IsStatic())
 	{
-		int pos = IsInStatic(GO->GetID());
-		static_GO_list.erase(static_GO_list.begin() + pos); 
+		DeleteFromStatic(GO); 
 	}
-	else
+
+	DeleteFromList(GO); 
+
+	if (!GO->child_list.empty())
 	{
-		int pos = IsInDynamic(GO->GetID());
-		GO_list.erase(GO_list.begin() + pos);
+		for (vector<GameObject*>::iterator it = GO->child_list.begin(); it != GO->child_list.end(); it++)
+		{
+			DeleteFromList((*it));
+			to_delete.push_back((*it)); 
+		}
 	}
 
-	GO->Delete(); 
-	delete(GO); 
-	GO = nullptr; 	
+	to_delete.push_back(GO); 
 
-	SetCurrentGO(-1); 
+	DeleteGameObjectsNow(); 
 }
 
-vector<GameObject*> ModuleSceneIntro::GetSceneList()
+void ModuleSceneIntro::DeleteGameObjectsNow()
 {
-	return scene_GO_list;
+	for (vector<GameObject*>::iterator it = to_delete.begin(); it != to_delete.end(); it++)
+	{
+		(*it)->Delete(); 
+		delete((*it));
+		(*it) = nullptr;
+	}
+
+	to_delete.clear(); 
+	SetCurrentGO(-1);
+}
+
+GameObject* ModuleSceneIntro::Find(const int& unique_id) const
+{
+	for (int i = 0; i < unique_id; i++)
+	{
+		if (GO_list[i]->GetID() == unique_id)
+			return GO_list[i]; 
+	}
+
+	return nullptr; 
 }
 
 vector<GameObject*> ModuleSceneIntro::GetDynamicGOList()
@@ -193,9 +211,14 @@ vector<GameObject*> ModuleSceneIntro::GetStaticGOList()
 	return static_GO_list;
 }
 
-GameObject * ModuleSceneIntro::GetStaticGO(int index)
+GameObject * ModuleSceneIntro::GetStaticGO(int unique_id)
 {
-	return static_GO_list[index]; 
+	GameObject* ret = Find(unique_id); 
+
+	if (ret->IsStatic()) 
+		return ret; 
+	else 
+		return nullptr; 
 }
 
 GameObject * ModuleSceneIntro::GetFarestObjectFrom(float3 origin)
@@ -263,32 +286,68 @@ vector<ComponentCamera*> ModuleSceneIntro::GetCameraList()
 	return cameras_list;
 }
 
-void ModuleSceneIntro::FromDynamicToStatic(GameObject* to_change)
+void ModuleSceneIntro::AddToList(GameObject * GO)
 {
-
-	if (IsInDynamic(to_change->GetID()) != -1)
-	{
-		int pos = IsInDynamic(to_change->GetID());
-
-		GO_list.erase(GO_list.begin() + pos);
-		static_GO_list.push_back(to_change); 
-
-		if (IsInDynamic(to_change->GetID()) == -1 && IsInStatic(to_change->GetID()) != -1)
-			LOG("%s moved to static list", to_change->GetName()); 
-	}	
+	GO_list.push_back(GO);
 }
 
-void ModuleSceneIntro::FromStaticToDynamic(GameObject* to_change)
+void ModuleSceneIntro::DeleteFromList(GameObject * GO)
 {
-	if (IsInStatic(to_change->GetID()) != -1)
+	for (std::vector<GameObject*>::iterator it = GO_list.begin(); it != GO_list.end(); it++)
 	{
-		int pos = IsInStatic(to_change->GetID());
+		if ((*it)->GetID() == GO->GetID())
+		{
+			it = GO_list.erase(it); 
+			return;
+		}
+	}
+}
 
-		static_GO_list.erase(static_GO_list.begin() + pos);
-		GO_list.push_back(to_change);
+void ModuleSceneIntro::AddToStaticRecursive(GameObject* to_change)
+{
+	AddToStatic(to_change);
 
-		if (IsInStatic(to_change->GetID()) == -1 && IsInDynamic(to_change->GetID()) != -1)
-			LOG("%s moved to dynamic list", to_change->GetName());
+	if(!to_change->child_list.empty())
+
+		for (int i = 0; i < to_change->child_list.size(); i++)
+		{
+			AddToStaticRecursive(to_change->child_list[i]);
+		}
+		
+}
+
+void ModuleSceneIntro::AddToStatic(GameObject* to_change)
+{
+	static_GO_list.push_back(to_change);
+	LOG("%s added to static list", to_change->GetName()); 
+}
+
+void ModuleSceneIntro::DeleteFromStaticRecursive(GameObject* to_del)
+{
+	DeleteFromStatic(to_del);
+
+	if (!to_del->child_list.empty())
+
+		for (int i = 0; i < to_del->child_list.size(); i++)
+		{
+			DeleteFromStaticRecursive(to_del->child_list[i]);	
+		}
+}
+
+void ModuleSceneIntro::DeleteFromStatic(GameObject* to_change)
+{
+	for (vector<GameObject*>::iterator it = static_GO_list.begin(); it != static_GO_list.end(); it++)
+	{
+		if ((*it)->GetID() == to_change->GetID())
+		{
+			LOG("%s deleted from static list", to_change->GetName());
+			LOG("%d", to_change->GetID());
+			static_GO_list.erase(it); 
+
+			if (static_GO_list.empty())
+				break; 		
+		}
+
 	}
 }
 
@@ -314,20 +373,10 @@ int ModuleSceneIntro::IsInStatic(const int& searched_id)
 	return -1;
 }
 
-int ModuleSceneIntro::IsInScene(const int & to_search)
-{
-	for (int i = 0; i < scene_GO_list.size(); i++)
-	{
-		if (to_search == scene_GO_list[i]->GetID())
-			return i;
-	}
-
-	return -1;
-}
 
 int ModuleSceneIntro::GetGameObjectsNum()
 {
-	return GO_list.size() + static_GO_list.size(); 
+	return GO_list.size(); 
 }
 
 
@@ -338,23 +387,15 @@ void ModuleSceneIntro::SetCurrentGO(uint id)
 
 GameObject* ModuleSceneIntro::GetCurrentGO()
 {
+	GameObject* ret = nullptr; 
+
 	if (current_gameobject_id != -1)
-	{
-		if (IsInDynamic(current_gameobject_id) != -1)
-			return GO_list.at(IsInDynamic(current_gameobject_id));
-
-		else if (IsInStatic(current_gameobject_id) != -1)
-			return static_GO_list.at(IsInStatic(current_gameobject_id));;
-	}
-
-	return nullptr; 
+		ret = Find(current_gameobject_id); 
+	
+	return ret; 
 }
 
 
-void ModuleSceneIntro::ClearSceneGOList()
-{
-	scene_GO_list.clear();
-}
 
 
 

@@ -35,10 +35,10 @@ void GameObject::SetStatic(bool _static)
 {
 	is_static = _static;
 
-	if (_static)
-		App->scene_intro->FromDynamicToStatic(this); 
+	if (is_static)
+		App->scene_intro->AddToStaticRecursive(this);
 	else
-		App->scene_intro->FromStaticToDynamic(this);
+		App->scene_intro->DeleteFromStaticRecursive(this); 
 }
 
 void GameObject::SetName(const char * _name)
@@ -53,18 +53,18 @@ const char * GameObject::GetName()const
 
 void GameObject::SetID(uint _id)
 {
-	id = _id;
+	unique_id = _id;
 }
 
 uint GameObject::GetID()const
 {
-	return id;
+	return unique_id;
 }
 
 GameObject::GameObject()
 {
 	math::LCG random;
-	UUID = random.Int();
+	unique_id = random.Int();
 
 	parent = nullptr;
 	active = true; 
@@ -77,6 +77,7 @@ GameObject::GameObject()
 	trans->SetIdentityTransform();
 	trans->type = COMPONENT_TRANSFORM;
 
+	LOG("GameObject created with ID: %d", unique_id); 
 }
 
 bool GameObject::Save(json_file & parent_config) const
@@ -84,7 +85,7 @@ bool GameObject::Save(json_file & parent_config) const
 	json_file my_config;
 
 	// This is only useful when we are duplicating already existing gameobjects
-	uint uid_to_save = id;
+	uint uid_to_save = unique_id;
 	uint parent_uid = (parent) ? parent->GetID() : 0;
 
 	//Save IDs
@@ -116,7 +117,7 @@ bool GameObject::Save(json_file & parent_config) const
 void GameObject::Load(json_file * config)
 {
 	// UID
-	id = config->GetUInt("UID", id);
+	unique_id = config->GetUInt("UID", unique_id);
 	uint parent = config->GetUInt("ParentUID", 0);
 
 	// Name
@@ -170,19 +171,10 @@ void GameObject::Draw()
 void GameObject::Delete()
 {
 
-
-	DeleteComponents(); 
-
-	if (!child_list.empty())
-	{
-		for (int i = 0; i < child_list.size(); i++)
-		{
-			child_list[i]->Delete(); 
-		}
-	}
-
-		if (parent != nullptr)
+	if (parent != nullptr)
 		DeleteParent();
+
+	DeleteComponents();
 
 }
 
@@ -322,12 +314,12 @@ uint GameObject::GetNumComponents()const
 
 void GameObject::DeleteComponents()
 {
-	for (int i = 0; i < component_list.size(); i++)
+	for (vector<Component*>::iterator it = component_list.begin(); it != component_list.end(); it++)
 	{
-		component_list[i]->DeleteComponent(); 
+		(*it)->DeleteComponent();
 	}
 
-	component_list.clear(); 
+	component_list.clear();
 }
 
 GameObject * GameObject::GetParent()const
@@ -347,10 +339,15 @@ void GameObject::SetParent(GameObject* new_parent)
 
 void GameObject::DeleteParent()
 {
+
+	//Conserving pos if object deasigned but not deleted
+
 	ComponentTransform* trans = (ComponentTransform*)GetComponent(COMPONENT_TRANSFORM); 
 	
 	if(trans != nullptr)
 		trans->SetLocalTransformMat(trans->GetGlobalTransform()); 
+
+	//Deasigning child from parent and parent ptr
 
 	for (int i = 0; i < parent->child_list.size(); i++)
 	{

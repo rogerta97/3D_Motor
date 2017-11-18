@@ -29,30 +29,35 @@ public:
 	// GO Management
 	void AddGameObject(GameObject* GO);
 	void DeleteGameObject(GameObject* GO); 
+	void DeleteGameObjectsNow(); 
 
-	GameObject* GetGameObject(uint id);
+	GameObject* Find(const int& unique_id) const; 
+
+	GameObject* GetGameObject(uint position);
 	GameObject* CreateGameObject(const char* name);
 
 	void SetCurrentGO(uint id);
 	GameObject* GetCurrentGO();
 
 	// Lists management
-	void ClearSceneGOList();
-
-	vector<GameObject*> GetSceneList();
 	vector<GameObject*> GetDynamicGOList();
-
 	vector<GameObject*> GetStaticGOList();
-	GameObject* GetStaticGO(int index);
+
+	GameObject* GetStaticGO(int unique_id);
 
 	vector<ComponentCamera*>GetCameraList();
 
-	void FromDynamicToStatic(GameObject* to_change);
-	void FromStaticToDynamic(GameObject* to_change);
+	void AddToList(GameObject* GO); 
+	void DeleteFromList(GameObject* GO);
+
+	void AddToStaticRecursive(GameObject* to_change);
+	void AddToStatic(GameObject* to_change);
+
+	void DeleteFromStaticRecursive(GameObject* to_change);
+	void DeleteFromStatic(GameObject* to_change);
 
 	int IsInDynamic(const int& to_search);
 	int IsInStatic(const int& to_search);
-	int IsInScene(const int& to_search);
 
 	int GetGameObjectsNum(); 
 
@@ -69,7 +74,6 @@ public:
 
 	vector<ComponentCamera*> cameras_list;
 	Octree* octree = nullptr;
-	uint max_id = 0;
 
 private:
 
@@ -78,7 +82,7 @@ private:
 	vector<GameObject*> GO_list;
 	vector<GameObject*> static_GO_list;
 
-	vector<GameObject*> scene_GO_list;
+	vector<GameObject*> to_delete; 
 
 	uint current_gameobject_id = 0;
 

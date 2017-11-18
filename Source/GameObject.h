@@ -87,7 +87,6 @@ public:
 	vector<GameObject*> child_list;
 
 	GameObject* parent; 
-	uint id = 0;	
 	string name = "GameObject"; 
 
 	bool active = false;
@@ -95,7 +94,7 @@ public:
 	bool is_root = false; 
 	bool looking_for_parent = false; 
 
-	UID UUID;
+	UID unique_id;
 
 };
 

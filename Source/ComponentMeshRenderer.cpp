@@ -145,6 +145,9 @@ bool ComponentMeshRenderer::Update()
 
 	glPushMatrix(); 
 	glMultMatrixf(ctransform->GetGlobalTransform().Transposed().ptr());
+
+	if (GetComponentParent()->GetID() == App->scene_intro->GetCurrentGO()->GetID())
+		show_bb = true; 
 	
 
 	//VERTICES
@@ -212,13 +215,17 @@ void ComponentMeshRenderer::OnSave(json_file & config) const
 
 void ComponentMeshRenderer::DeleteComponent()
 {
+
 	vertices = nullptr;
+	glDeleteBuffers(1, &vertices_id); 
 	delete(vertices);
 	
 	indices = nullptr;
+	glDeleteBuffers(1, &indices_id);
 	delete(indices); 
 
 	uvs = nullptr;
+	glDeleteBuffers(1, &uvs_id);
 	delete (uvs); 
 
 	delete(this); 
