@@ -6,7 +6,7 @@
 #define HISTOGRAM_FR_LENGHT 25
 #define HISTOGRAM_MS_LENGHT 100
 #define MAX_MEMORY_LOGGED	50
-#define NUM_MODULES 9
+#define NUM_MODULES 11
 
 Application::Application()
 {
@@ -405,6 +405,14 @@ void Application::SendMessageToModules()
 	for (list<Module*>::iterator it = list_modules.begin(); it != list_modules.end(); it++)
 	{
 		(*it)->AdaptToState(state); 
+	}
+}
+
+void Application::BroadCastEvent(SDL_Event& e)
+{
+	for (list<Module*>::iterator it = list_modules.begin(); it != list_modules.end(); it++)
+	{
+		(*it)->BroadCastEvent(e);
 	}
 }
 

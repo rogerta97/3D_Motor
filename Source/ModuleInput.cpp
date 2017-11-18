@@ -99,6 +99,7 @@ update_status ModuleInput::PreUpdate(float dt)
 	while(SDL_PollEvent(&e))
 	{		
 		App->imgui->ImGuiInput(&e); 
+		
 		switch(e.type)
 		{
 			case SDL_MOUSEWHEEL:
@@ -117,11 +118,11 @@ update_status ModuleInput::PreUpdate(float dt)
 			quit = true;
 			break;
 
-			case SDL_WINDOWEVENT:
+			case SDL_WINDOWEVENT:	
 			{
-				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
-					App->renderer3D->OnResize(e.window.data1, e.window.data2);
-			}
+				App->BroadCastEvent(e); 
+	
+			}		
 			break; 
 
 			case SDL_DROPFILE:	

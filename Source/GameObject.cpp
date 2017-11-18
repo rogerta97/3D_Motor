@@ -460,6 +460,7 @@ void GameObject::DeleteComponent(component_type new_component)
 				ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponent(COMPONENT_MESH_RENDERER);
 				mr->Delete();
 				it = component_list.erase(it);
+				mr = nullptr; 
 				return;
 			}
 			 
@@ -469,6 +470,7 @@ void GameObject::DeleteComponent(component_type new_component)
 				ComponentMaterial* mat = (ComponentMaterial*)GetComponent(COMPONENT_MATERIAL);
 				mat->Delete();
 				it = component_list.erase(it);
+				mat = nullptr; 
 				return;
 			}
 			
@@ -478,6 +480,7 @@ void GameObject::DeleteComponent(component_type new_component)
 				ComponentCamera* cam = (ComponentCamera*)GetComponent(COMPONENT_CAMERA);
 				cam->Delete();
 				it = component_list.erase(it);
+				cam = nullptr;
 				return; 
 			}
 			
