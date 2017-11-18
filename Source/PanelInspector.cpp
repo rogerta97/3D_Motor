@@ -204,6 +204,12 @@ void PanelInspector::PrintMeshComponent(GameObject* GO_to_draw)
 
 	if (ImGui::CollapsingHeader("Component Mesh Renderer"))
 	{
+
+		if (ImGui::Button("Delete Component"))
+		{
+			GO_to_draw->DeleteComponent(COMPONENT_MESH_RENDERER);
+		}
+
 		ImGui::Text("Vertices: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumVertices());
 		ImGui::Text("Indices: "); ImGui::SameLine();
@@ -230,6 +236,12 @@ void PanelInspector::PrintMaterialComponent(GameObject* GO_to_draw)
 
 	if (ImGui::CollapsingHeader("Component Material"))
 	{
+
+		if (ImGui::Button("Delete Component"))
+		{
+			GO_to_draw->DeleteComponent(COMPONENT_MATERIAL);
+		}
+
 		ImGui::Text("Material ID: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->textures_id);
 
@@ -241,6 +253,8 @@ void PanelInspector::PrintMaterialComponent(GameObject* GO_to_draw)
 
 		ImGui::Text("Height: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->height);
+
+		ImGui::Button("S");
 
 		ImGui::Text("Name: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", curr_cmp->path.c_str()); ImGui::SameLine();
@@ -383,6 +397,11 @@ void PanelInspector::PrintCameraComponent(GameObject* GO_to_draw)
 
 	if (ImGui::CollapsingHeader("Component Camera"))
 	{
+
+		if (ImGui::Button("Delete Component"))
+		{
+			GO_to_draw->DeleteComponent(COMPONENT_CAMERA);
+		}
 
 		ImGui::Checkbox("Frustum Culling", &curr_cmp->frustum_culling);
 

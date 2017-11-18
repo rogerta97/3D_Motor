@@ -204,7 +204,7 @@ void ComponentMeshRenderer::OnSave(json_file & config) const
 
 }
 
-void ComponentMeshRenderer::DeleteComponent()
+void ComponentMeshRenderer::Delete()
 {
 
 	vertices = nullptr;

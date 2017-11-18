@@ -49,7 +49,7 @@ bool ComponentMaterial::Disable()
 	return true;
 }
 
-void ComponentMaterial::DeleteComponent()
+void ComponentMaterial::Delete()
 {
 }
 

@@ -447,6 +447,46 @@ Component * GameObject::AddEmptyComponent(component_type type)
 	return new_comp;
 }
 
+void GameObject::DeleteComponent(component_type new_component)
+{
+	for (vector<Component*>::iterator it = component_list.begin(); it != component_list.end(); it++)
+	{
+		if ((*it)->type == new_component)
+		{
+			switch ((*it)->type)
+			{
+			case COMPONENT_MESH_RENDERER:
+			{
+				ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponent(COMPONENT_MESH_RENDERER);
+				mr->Delete();
+				it = component_list.erase(it);
+				return;
+			}
+			 
+
+			case COMPONENT_MATERIAL:
+			{
+				ComponentMaterial* mat = (ComponentMaterial*)GetComponent(COMPONENT_MATERIAL);
+				mat->Delete();
+				it = component_list.erase(it);
+				return;
+			}
+			
+
+			case COMPONENT_CAMERA:
+			{
+				ComponentCamera* cam = (ComponentCamera*)GetComponent(COMPONENT_CAMERA);
+				cam->Delete();
+				it = component_list.erase(it);
+				return; 
+			}
+			
+			}
+		}
+
+	}
+}
+
 void GameObject::PushRootComponent(Component * comp)
 {
 	for (int i = 0; i < child_list.size(); i++)

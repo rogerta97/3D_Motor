@@ -22,7 +22,7 @@ public:
 	bool Update(); 
 	void OnLoad(json_file* config);
 	void OnSave(json_file& config)const;
-	void DeleteComponent();
+	void Delete();
 
 	void DrawFrustum(Frustum & frustum, Color color);
 

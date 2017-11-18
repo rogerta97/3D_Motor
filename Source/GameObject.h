@@ -46,6 +46,8 @@ public:
 	Component* GetComponent(int index); 
 	void PushComponent(Component* comp);
 	Component* AddEmptyComponent(component_type type);
+	void DeleteComponent(component_type new_component);
+
 	void PushRootComponent(Component* comp);
 	uint GetNumComponents()const;
 	void DeleteComponents(); 
