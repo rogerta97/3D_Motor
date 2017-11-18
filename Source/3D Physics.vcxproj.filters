@@ -1143,9 +1143,6 @@
     <ClInclude Include="Assimp\include\version.h">
       <Filter>3rd Party\Assimp</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleFBXLoader.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="DevIL_Windows_SDK\include\IL\devil_cpp_wrapper.hpp">
       <Filter>3rd Party\DevIL</Filter>
     </ClInclude>
@@ -1221,9 +1218,6 @@
     <ClInclude Include="JSON.h">
       <Filter>Tools\OwnFileFormat</Filter>
     </ClInclude>
-    <ClInclude Include="MeshRendererImporter.h">
-      <Filter>Modules\Importers\Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="AssimpLogger.h">
       <Filter>Modules\Importers\Mesh</Filter>
     </ClInclude>
@@ -1233,11 +1227,14 @@
     <ClInclude Include="RayCast.h">
       <Filter>Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="ImGuizmo.h">
+      <Filter>Helpers\ImGuizmo</Filter>
+    </ClInclude>
     <ClInclude Include="MaterialsImporter.h">
       <Filter>Modules\Importers\Materials</Filter>
     </ClInclude>
-    <ClInclude Include="ImGuizmo.h">
-      <Filter>Helpers\ImGuizmo</Filter>
+    <ClInclude Include="ModuleFBXLoader.h">
+      <Filter>Modules\Importers\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="PanelPlayAndPause.h">
       <Filter>Helpers\ImGui</Filter>
@@ -1430,9 +1427,6 @@
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>3rd Party\mmgr</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleFBXLoader.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="TextureLoader.cpp">
       <Filter>Tools\Loaders</Filter>
     </ClCompile>
@@ -1478,20 +1472,20 @@
     <ClCompile Include="JSON.cpp">
       <Filter>Tools\OwnFileFormat</Filter>
     </ClCompile>
-    <ClCompile Include="MeshRendererImporter.cpp">
-      <Filter>Modules\Importers\Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="Functions.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="RayCast.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="ImGuizmo.cpp">
+      <Filter>Helpers\ImGuizmo</Filter>
+    </ClCompile>
     <ClCompile Include="MaterialsImporter.cpp">
       <Filter>Modules\Importers\Materials</Filter>
     </ClCompile>
-    <ClCompile Include="ImGuizmo.cpp">
-      <Filter>Helpers\ImGuizmo</Filter>
+    <ClCompile Include="ModuleFBXLoader.cpp">
+      <Filter>Modules\Importers\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="PanelPlayAndPause.cpp">
       <Filter>Helpers\ImGui</Filter>

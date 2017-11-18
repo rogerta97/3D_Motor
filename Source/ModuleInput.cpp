@@ -138,6 +138,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					{
 						LOG("FBX file dragged to window");
 						App->CopyFileTo(file.c_str(),"Assets\\Meshes");
+						//new import
 						//App->mesh_importer->ImportFile(file.c_str());
 						//old code
 						App->fbx_loader->LoadFileScene(file.c_str());
@@ -149,13 +150,11 @@ update_status ModuleInput::PreUpdate(float dt)
 						LOG("PNG file dragged to window");
 
 						App->CopyFileTo(file.c_str(), "Assets\\Materials");
-
+						//new importfytfydtrdrdut
 						App->materials_importer->ImportImage(file.c_str());
 					}
 						else
-							LOG("No gameobject selected where PNG can be dragged");
-
-					
+							LOG("No gameobject selected where PNG can be dragged");		
 
 					break;
 				}

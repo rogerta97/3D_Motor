@@ -30,7 +30,6 @@ class Application
 {
 public:
 	//ModuleFileSystem* file_system;
-	MeshRendererImporter* mesh_importer;
 	MaterialsImporter* materials_importer;
 	JSON*		json;
 	ModuleWindow* window;

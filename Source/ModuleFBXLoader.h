@@ -15,6 +15,7 @@
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
 class ComponentMaterial; 
+class ComponentMeshRenderer;
 
 class ModuleFBXLoader : public Module
 {
@@ -31,7 +32,12 @@ public:
 	void LoadFileScene(const char* path); 
 	void GetInnerTransform(aiNode& node, aiVector3D& pos, aiQuaternion& quat, aiVector3D& scale);
 
+	void SaveToLibrary(ComponentMeshRenderer* mesh);
 	void DrawElement(); 
+
+public:
+	//variable to incresease when saving files
+	uint lib_id = 0;
 
 	//sizes for the Bounding Box of a new gizmo
 	float max_size = 0;
