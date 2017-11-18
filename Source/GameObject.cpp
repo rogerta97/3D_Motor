@@ -467,6 +467,14 @@ void GameObject::PushChild(GameObject * child)
 	}
 
 }
+GameObject* GameObject::AddChild()
+{
+
+	GameObject* new_go = new GameObject();
+	child_list.push_back(new_go);
+	return new_go;
+
+}
 
 bool Component::Enable()
 { 

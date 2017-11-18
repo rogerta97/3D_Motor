@@ -74,11 +74,14 @@ void ComponentMaterial::CloseTexture()
 
 void ComponentMaterial::Set(ComponentMaterial * new_cmp)
 {
-	textures_id = new_cmp->textures_id;
-	width = new_cmp->width;
-	height = new_cmp->height;
-	path = new_cmp->path;
-	type = new_cmp->type;
+	if (new_cmp != nullptr)
+	{
+		textures_id = new_cmp->textures_id;
+		width = new_cmp->width;
+		height = new_cmp->height;
+		path = new_cmp->path;
+		type = new_cmp->type;
+	}
 }
 
 void ComponentMaterial::SetTextureID(uint tex)

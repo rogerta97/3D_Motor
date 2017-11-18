@@ -302,7 +302,6 @@
     <ClInclude Include="imgui_impl_sdl.h" />
     <ClInclude Include="imgui_internal.h" />
     <ClInclude Include="MaterialsImporter.h" />
-    <ClInclude Include="MeshRendererImporter.h" />
     <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="ModuleMaterials.h" />
     <ClInclude Include="JSON.h" />
@@ -459,7 +458,6 @@
     <ClCompile Include="MathGeoLib\Math\SSEMath.cpp" />
     <ClCompile Include="MathGeoLib\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\Time\Clock.cpp" />
-    <ClCompile Include="MeshRendererImporter.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />

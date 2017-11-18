@@ -62,6 +62,8 @@ public:
 	bool IsChild(const GameObject* go) const;
 	uint GetNumChilds() const;
 	void PushChild(GameObject* child);
+	GameObject* AddChild();
+
 
 	GameObject* GetParent() const;
 	void SetParent(GameObject* parent);

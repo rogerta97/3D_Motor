@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleFBXLoader.h"
+#include "MeshRendererImporter.h"
 #include "ModuleSceneIntro.h"
 #include "ComponentDefs.h"
 #include "Functions.h"
@@ -30,6 +31,9 @@ bool ModuleFBXLoader::Start()
 	iluInit();
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
+
+	App->CreateFolder("Assets\\Meshes");
+	App->CreateFolder("Library\\Meshes");
 	return true;
 }
 
@@ -100,7 +104,7 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 	bool ret = true; 
 
 	GameObject* new_go = nullptr; 
-
+	
 	if (node->mNumMeshes < 1)
 	{		
 		std::string node_name(node->mName.C_Str());
@@ -284,11 +288,14 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 					TR_cmp->Enable();
 
 					child_go->AdaptBoundingBox(child_go); 
+					SaveToLibrary(tmp_mr);
+
 				}				
 				App->scene_intro->AddGameObject(child_go);
 			}
 
 			new_go = parent;
+			
 		}
 		else
 		{
@@ -306,6 +313,47 @@ void ModuleFBXLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene
 }
 
 
+
+void ModuleFBXLoader::SaveToLibrary(ComponentMeshRenderer * mesh)
+{
+	uint elements_num[3] = { mesh->GetNumIndices(), mesh->GetNumVertices() * 3, mesh->GetNumUVS() };
+	uint total_size = sizeof(elements_num) + sizeof(uint)*mesh->GetNumIndices() + sizeof(float)*(mesh->GetNumVertices() * 3 + mesh->GetNumUVS() * 3);
+
+	char* data = new char[total_size];
+	char* cursor = data;
+
+	//store the number of elements of each type
+	uint size = sizeof(elements_num);
+	memcpy(cursor, elements_num, size);
+	cursor += size;
+
+	//store indices
+	size = sizeof(uint)*elements_num[0];
+	memcpy(cursor, mesh->GetIndices(), size);
+	cursor += size;
+
+	//store vertices
+	size = sizeof(float)*elements_num[1];
+	memcpy(cursor, mesh->GetVertices(), size);
+	cursor += size;
+
+	//store texture_coords
+	size = sizeof(float)*elements_num[2];
+	memcpy(cursor, mesh->GetUVS(), size);
+	cursor += size;
+
+	//Serialize data to file
+	char file[69];
+	sprintf_s(file, "Library\\Meshes\\mesh_%d.ownmesh", lib_id++);
+
+	FILE* f = fopen(file, "wb");
+	fwrite(data, sizeof(char), total_size, f);
+	fclose(f);
+
+	RELEASE_ARRAY(data);
+
+	LOG("Created %s.", file);
+}
 
 void ModuleFBXLoader::DrawElement()
 {
@@ -385,6 +433,7 @@ ComponentMaterial* ModuleFBXLoader::ImportImage(const char * path)
 
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
+		App->materials_importer->SaveAsDDS();
 
 	}
 	else

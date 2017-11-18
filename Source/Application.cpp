@@ -18,7 +18,6 @@ Application::Application()
 
 	//file_system = new ModuleFileSystem(true);
 	materials_importer = new MaterialsImporter(true);
-	mesh_importer = new MeshRendererImporter(true);
 	json = new JSON(true);
 	window = new ModuleWindow(true);
 	input = new ModuleInput(true);
@@ -38,11 +37,10 @@ Application::Application()
 	// Main Modules
 	//AddModule(file_system);
 	AddModule(materials_importer);
-	AddModule(mesh_importer);
+	AddModule(fbx_loader);
 	AddModule(json);
 	AddModule(window);
 	AddModule(camera);
-	AddModule(fbx_loader); 
 	AddModule(input);
 	AddModule(audio);
 	AddModule(physics);
