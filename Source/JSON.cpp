@@ -261,7 +261,22 @@ json_file json_file::GetArray(const char * field, int index) const
 		return json_file(json_array_get_object(array, index));
 	return json_file((JSON_Object*) nullptr);
 }
+bool json_file::MoveToSectionFromArray(const char * field, int index)
+{
+	bool ret = false;
 
+	JSON_Array* array = json_object_get_array(object, field);
+
+	if (array != nullptr)
+	{
+		JSON_Object* obj = json_array_get_object(array, index);
+
+		object = obj;
+		ret = true;
+	}
+
+	return ret;
+}
 const char * json_file::GetString(const char * str, const char* defaul,int id)const
 {
 	const char* ret = defaul;

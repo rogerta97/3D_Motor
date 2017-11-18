@@ -1,11 +1,24 @@
 #include "OpenGL.h"
 #include "ComponentMaterial.h"
-
+#include "GameObject.h"
+#include "UID.h"
+#include "JSON.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* _parent)
 {
 	parent = _parent; 
-	type = COMPONENT_MATERIAL; 
+	type = COMPONENT_MATERIAL;
+
+
+	void* a = this;
+	void** a_ptr = &a;
+	uint size = sizeof(this);
+	char* data = new char[size];
+	memcpy(data, a_ptr, size);
+
+	uint* uid = md5(data, size);
+	unique_id = *uid;
+
 }
 
 ComponentMaterial::ComponentMaterial()
@@ -94,6 +107,15 @@ void ComponentMaterial::SetTextureID(uint tex)
 uint ComponentMaterial::GetTexSize() const
 {
 	return 0;
+}
+void ComponentMaterial::Serialize(json_file * file)
+{
+	file->SetEntry("Components");
+	file->MoveToSectionFromArray("Components", file->GetArraySize("Components") - 1);
+
+	file->SetInt("type", GetComponentType());
+	file->SetInt("owner", GetComponentParent()->unique_id);
+	file->SetInt("material", unique_id);
 }
 //
 //Color* ComponentMaterial::GetColor()
