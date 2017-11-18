@@ -184,7 +184,7 @@ void ModuleCamera3D::Move()
 {
 	vec3 move_aux(0.0f, 0.0f, 0.0f);
 
-	ComponentCamera* curr = (App->GetState() == APP_STATE_PLAY) ? main_camera : editor_camera; 
+	ComponentCamera* curr = (App->GetState() == APP_STATE_PLAY && main_camera != nullptr) ? main_camera : editor_camera; 
 
 	float temporal_speed = mov_speed;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -205,6 +205,7 @@ void ModuleCamera3D::Move()
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) curr->MoveUp(temporal_speed);
 
 	float3 frustum_move(move_aux.x, move_aux.y, move_aux.z);
+
 	curr->frustum.SetPos(curr->frustum.pos + frustum_move);
 
 	//CalculateViewMatrix();
@@ -302,8 +303,8 @@ void ModuleCamera3D::PrintConfigData()
 		ImGui::Separator(); 
 		ImGui::Separator();
 
-		if (ImGui::Checkbox("Frustum Culling", &frustum_culling)); 
-		//editor_camera->frustum.SetFrame({ 0, 2, -5 }, float3::unitZ, float3::unitY);
+		//if (ImGui::Checkbox("Frustum Culling", &frustum_culling)); 
+		////editor_camera->frustum.SetFrame({ 0, 2, -5 }, float3::unitZ, float3::unitY);
 
 		float aux_n_p = editor_camera->GetNearPlaneDist();
 		if (ImGui::DragFloat("Near Plane", &aux_n_p, 0.1f, 0.1f, 1000.0f))
@@ -337,6 +338,8 @@ void ModuleCamera3D::PrintConfigData()
 			looking_for_camera = true; 
 		}
 
+		ImGui::Separator();
+
 		ImGui::Text("Main Camera: "); 
 		ImGui::SameLine();
 
@@ -361,6 +364,11 @@ ComponentCamera * ModuleCamera3D::GetEditorCam() const
 	return editor_camera;
 }
 
+ComponentCamera * ModuleCamera3D::GetMainCam() const
+{
+	return main_camera;
+}
+
 bool ModuleCamera3D::IsLooking4Camera()
 {
 	return looking_for_camera;
@@ -369,6 +377,14 @@ bool ModuleCamera3D::IsLooking4Camera()
 void ModuleCamera3D::SetLooking4Camera(bool new_state_cam)
 {
 	looking_for_camera = new_state_cam; 
+}
+
+bool ModuleCamera3D::HasMainCamera()
+{
+	if (main_camera != nullptr)
+		return true;
+	else
+		return false; 
 }
 
 void ModuleCamera3D::AssignNewMainCamera(ComponentCamera* cam)
@@ -387,10 +403,18 @@ void ModuleCamera3D::AdaptToState(app_state curr_state)
 	{
 		case APP_STATE_PLAY:
 			{		
-				if (main_camera != nullptr)
-					App->renderer3D->SetRenderingCam(main_camera);
-				else
-					LOG("A Current Camera needs to be assigned before starting"); 
+				//If there is no camera we'll crate one 
+
+			if (main_camera == nullptr)
+			{
+				GameObject* new_cam = App->scene_intro->CreateGameObject("Camera");
+				ComponentCamera* cam = new ComponentCamera(new_cam);
+				new_cam->PushComponent(cam);
+				main_camera = cam; 
+			}
+			
+			App->renderer3D->SetRenderingCam(main_camera);
+
 			}
 			break; 
 

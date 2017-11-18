@@ -96,6 +96,7 @@ float ComponentCamera::GetFarPlaneDist() const
 float ComponentCamera::GetFOV() const
 {
 	return frustum.verticalFov * RADTODEG;
+	
 }
 
 float ComponentCamera::GetAspectRatio() const
@@ -137,6 +138,24 @@ bool ComponentCamera::IsInside(AABB & GO_bb)
 
 
 	return ret;
+}
+
+void ComponentCamera::GetObjectsOnFrustum(vector<GameObject*>& objects)
+{
+	for (int i = 0; i < App->scene_intro->GetGameObjectsNum(); i++)
+	{
+
+		GameObject* curr_tested = App->scene_intro->GetGameObject(i); 
+
+		if (GetComponentParent()->GetID() == curr_tested->GetID() || curr_tested->is_root)
+			continue;
+
+		if (frustum.Intersects(curr_tested->GetBoundingBox()))
+		{
+			objects.push_back(curr_tested);
+		}
+
+	}
 }
 
 void ComponentCamera::SetNearPlaneDist(float dist)

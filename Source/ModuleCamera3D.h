@@ -37,10 +37,13 @@ public:
 
 	bool IsCulling();
 	void AdaptToState(app_state curr_state);
+
 	ComponentCamera* GetEditorCam()const;
+	ComponentCamera* GetMainCam()const;
 
 	bool IsLooking4Camera(); 
 	void SetLooking4Camera(bool state_Cam); 
+	bool HasMainCamera(); 
 
 	void AssignNewMainCamera(ComponentCamera* go_container); 
 

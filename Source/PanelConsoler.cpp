@@ -2,7 +2,7 @@
 
 void PanelConsole::AddToConsole(std::string new_line)
 {
-	console_buffer.push_back(new_line);
+	console_buffer.push_back(new_line);	
 }
 
 void PanelConsole::ClearConsole()
@@ -26,6 +26,8 @@ void PanelConsole::PrintConsole()
 	{
 		ImGui::Text(console_buffer[i].c_str());
 	}
+
+	ImGui::SetScrollY(ImGui::GetScrollMaxY());
 	ImGui::End();
 	
 }

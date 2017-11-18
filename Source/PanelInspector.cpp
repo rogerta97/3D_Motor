@@ -383,6 +383,9 @@ void PanelInspector::PrintCameraComponent(GameObject* GO_to_draw)
 
 	if (ImGui::CollapsingHeader("Component Camera"))
 	{
+
+		ImGui::Checkbox("Frustum Culling", &curr_cmp->frustum_culling);
+
 		if(ImGui::DragFloat("Near Plane Distance##transform", &curr_cmp->frustum.nearPlaneDistance, 0.1f, 0.0f))
 			curr_cmp->frustum.SetViewPlaneDistances(curr_cmp->frustum.nearPlaneDistance, curr_cmp->frustum.farPlaneDistance);
 

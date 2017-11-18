@@ -11,6 +11,7 @@
 #include "ModuleFBXLoader.h"
 #include "ModuleCamera3D.h"
 #include "ModuleRenderer3D.h"
+#include "Functions.h"
 
 #include "PhysBody3D.h"
 
@@ -98,6 +99,13 @@ GameObject * ModuleSceneIntro::CreateGameObject(const char * name)
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
+	vector<GameObject*> to_draw; 
+
+	bool culling = false; 
+
+	if(App->camera->HasMainCamera())
+		culling = App->camera->GetMainCam()->frustum_culling;
+
 	if(octree != nullptr)
 		octree->DrawOctree();
 
@@ -105,19 +113,39 @@ update_status ModuleSceneIntro::Update(float dt)
 	
 	main_plane.Render();
 
-	for (std::vector<GameObject*>::iterator it = GO_list.begin(); it != GO_list.end(); it++)
+	if (App->camera->HasMainCamera() && culling)
 	{
-		if((*it)->GetParent() == nullptr)
-			(*it)->Draw(); 
-
+		if (octree == nullptr)
+		{
+			App->camera->GetMainCam()->GetObjectsOnFrustum(to_draw);
+			to_draw.push_back(App->camera->GetMainCam()->GetComponentParent());
+		}
+		else
+		{
+			map<float, GameObject*> oct_candidates;
+			//octree->CollectIntersections(oct_candidates, App->camera->GetMainCam()->frustum); 
+			//to_draw = MapToVector(oct_candidates); 
+		}			
 	}
+	else
+		to_draw = GO_list; 
 
-	for (std::vector<GameObject*>::iterator it2 = static_GO_list.begin(); it2 != static_GO_list.end(); it2++)
+
+	//Draw just supreme parents
+	if (culling == false)
 	{
-		
-		if ((*it2)->GetParent() == nullptr)
-			(*it2)->Draw();
-
+		for (std::vector<GameObject*>::iterator it = to_draw.begin(); it != to_draw.end(); it++)
+		{
+			if ((*it)->GetParent() == nullptr)
+				(*it)->Draw();
+		}
+	}
+	else
+	{
+		for (std::vector<GameObject*>::iterator it = to_draw.begin(); it != to_draw.end(); it++)
+		{
+				(*it)->Draw();
+		}
 	}
 	
 	return UPDATE_CONTINUE;

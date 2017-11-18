@@ -18,6 +18,7 @@ public:
 
 	~ComponentCamera(); 
 
+	//Parent
 	bool Update(); 
 	void OnLoad(json_file* config);
 	void OnSave(json_file& config)const;
@@ -35,7 +36,8 @@ public:
 	void SetFarPlaneDist(float dist);
 	void SetFOV(float fov);
 	void SetAspectRatio(float aspect_ratio);
-	//---
+
+	// Move 
 	void MoveForward(const float& speed);
 	void MoveBackwards(const float& speed);
 	void MoveRight(const float& speed);
@@ -43,6 +45,7 @@ public:
 	void MoveUp(const float& speed);
 	void MoveDown(const float& speed);
 
+	// transform rotation and scale
 	void SetPosition(const float3& pos);
 	void Orbit(const float3& point, const float& motion_x, const float& motion_y);
 	void Rotate(const float& motion_x, const float& motion_y);
@@ -51,6 +54,8 @@ public:
 	void Look(const float3& pos);
 	bool IsInside(AABB& bbox);	
 
+	void GetObjectsOnFrustum(vector<GameObject*>& objects);
+
 	float* GetOpenGLViewMatrix()const;
 	float* GetOpenGLProjectionMatrix()const;
 
@@ -58,7 +63,6 @@ public:
 
 	Frustum frustum;
 
-	GameObject* selected_GO = nullptr;
 	bool frustum_culling = false; 
 	bool screen_resized = false;
 };

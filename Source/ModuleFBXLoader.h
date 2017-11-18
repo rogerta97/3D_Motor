@@ -32,6 +32,7 @@ public:
 	void GetInnerTransform(aiNode& node, aiVector3D& pos, aiQuaternion& quat, aiVector3D& scale);
 
 	void DrawElement(); 
+
 	//sizes for the Bounding Box of a new gizmo
 	float max_size = 0;
 	float size = 0;

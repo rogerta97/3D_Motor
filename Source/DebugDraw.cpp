@@ -135,6 +135,7 @@ void DebugDrawBox(const float3* corners, Color color,bool debug)
 	
 	glEnd();
 	glLineWidth(1.0f);
+	glColor3f(255,255,255);
 	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 

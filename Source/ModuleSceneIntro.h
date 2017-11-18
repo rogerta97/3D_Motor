@@ -70,6 +70,7 @@ public:
 	bool IsSceneEmpty(); 
 	GameObject* GetFarestObjectFrom(float3 origin);
 
+
 public:
 
 	vector<ComponentCamera*> cameras_list;
@@ -88,3 +89,4 @@ private:
 
 	
 };
+
