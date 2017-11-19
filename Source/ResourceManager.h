@@ -22,15 +22,23 @@ enum resource_t
 class Resource
 {
 public: 
-	Resource(std::string name, resource_t type, Component* resource_cmp);
+	Resource(const char* name, resource_t type, Component* resource_cmp);
 	~Resource(); 
 
 	virtual void Init(); 
 	std::string GetName() const; 
 
+	resource_t GetType() const; 
+	Component* GetData() const; 
+
+	int GetResourceID() const;
+	void SetResourceID(int id); 
+
+	int id;
+
 private: 
 	std::string name; 
-	resource_t type; 
+	resource_t type;
 
 	Component* resource_data; 
 };
@@ -45,13 +53,14 @@ public:
 	 bool CleanUp();
 
 	 //Resource management
-	 void AddResource(uint uid_key, Resource* resource);
-	 Resource* GetResource(std::string name); 
+	 void AddResource(Resource* resource);
+	 Resource* GetResource(const char* name); 
 	 bool Exist(std::string file_name);
 
 	 void Load(const char* path);
 	
 public:
+	uint curr_id; 
 
 	list<Resource*> resources;
 

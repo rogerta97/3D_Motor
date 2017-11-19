@@ -18,12 +18,14 @@ public:
 
 	ComponentMaterial* ImportImage(const char* path);
 
+	ComponentMaterial* GetComponentFromID(uint id);
+
 	void SaveAsDDS();
 
 	void RemoveMaterial(ComponentMaterial* mat);
 
-private:
-	std::list<ComponentMaterial*> materials;
+public:
+	std::map<uint, ComponentMaterial*> materials_loaded;
 
 	uint save_id = 0;
 };

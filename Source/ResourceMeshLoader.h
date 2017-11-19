@@ -36,7 +36,7 @@ public:
 	void DrawElement(); 
 
 	Resource* SetResource(std::string name, resource_t type, Component* resource_cmp);
-
+	ComponentMeshRenderer* GetComponentFromID(uint id);
 
 
 public:
@@ -47,7 +47,7 @@ public:
 	float max_size = 0;
 	float size = 0;
 
-	vector<ComponentMeshRenderer*> meshes_loaded; 	
+	std::map<uint, ComponentMeshRenderer*> meshes_loaded; 	
 };
 
 

@@ -26,13 +26,7 @@ bool ResourceManager::Start()
 	meshes_loader->Start(); 
 	material_loader->Start(); 
 
-	//resources.push_back(meshes_loader); 
-	//resources.push_back(material_loader);
-
-	//for (list<Resource*>::iterator it = resources.begin(); it != resources.end(); it++)
-	//{
-	//	(*it)->Init(); 
-	//}
+	curr_id = 0; 
 
 	return true;
 }
@@ -54,19 +48,77 @@ bool ResourceManager::CleanUp()
 	return ret;
 }
 
-void ResourceManager::AddResource(uint uid_key, Resource * resource)
+void ResourceManager::AddResource(Resource * resource)
 {
+	switch (resource->GetType())
+	{
+	case RESOURCE_TYPE_MESH: 
+		meshes_loader->meshes_loaded.insert(std::pair<uint, ComponentMeshRenderer*>(resource->id, (ComponentMeshRenderer*)resource->GetData()));
+		LOG("Resource MESH %s added to folder", resource->GetData()->GetComponentParent()->GetName());
+		break; 
+
+	case RESOURCE_TYPE_MATERIAL:
+		material_loader->materials_loaded.insert(std::pair<uint, ComponentMaterial*>(resource->id, (ComponentMaterial*)resource->GetData()));
+		LOG("Resource MATERIAL %s added to folder", resource->GetData()->GetComponentParent()->GetName());
+		break;
+	}
+
+	resources.push_back(resource);
+	curr_id++; 	
 }
 
-Resource * ResourceManager::GetResource(std::string name)
+
+Resource* ResourceManager::GetResource(const char* name)
 {
+	//We corresponding resource from its name
+	Resource* curr_resource = nullptr; 
+
 	for (list<Resource*>::iterator it = resources.begin(); it != resources.end(); it++)
 	{
 		if ((*it)->GetName() == name)
-			return (*it);
+		{
+			curr_resource = (*it);
+			break;
+		}			
 	}
 
-	return nullptr;
+	////We get the ID associated with it 
+	//if (curr_resource != nullptr)
+	//{
+	//	int id = curr_resource->GetResourceID(); 
+
+	//	//We look for its corresponding component in the lists
+
+	//	switch (curr_resource->GetType())
+	//	{
+	//	case RESOURCE_TYPE_MESH:
+	//	{
+	//		ComponentMeshRenderer* to_ret = meshes_loader->GetComponentFromID(curr_resource->id);
+	//		return (Component*)to_ret;
+	//	}
+	//		
+	//	case RESOURCE_TYPE_MATERIAL:
+	//	{
+	//		ComponentMaterial* to_ret = material_loader->GetComponentFromID(curr_resource->id);
+	//		return (Component*)to_ret;
+	//	}
+	//	
+	//	}
+	//}
+
+
+	
+
+	//int id = curr_resource->GetResourceID(); 
+
+	//switch (curr_resource->GetType())
+	//{
+	//case RESOURCE_TYPE_MESH:
+	//	m
+	//	break; 
+	//}
+
+	return curr_resource; 
 }
 
 bool ResourceManager::Exist(std::string file_name)
@@ -94,14 +146,9 @@ void ResourceManager::Load(const char * path)
 			LOG("FBX file dragged to window");
 			App->CopyFileTo(path, "Assets\\Meshes");
 
-			if (Exist(file_name.c_str()))
-			{
-				
-			}
-			else
-			{
-				meshes_loader->LoadFileScene(path);
-			}
+			
+			meshes_loader->LoadFileScene(path);
+			
 			//new import
 			//App->mesh_importer->ImportFile(file.c_str());
 			//old code
@@ -131,11 +178,12 @@ void ResourceManager::Load(const char * path)
 //	active = true;//default active when created
 //}
 
-Resource::Resource(std::string name, resource_t type, Component* resource_cmp)
+Resource::Resource(const char* name, resource_t type, Component* resource_cmp)
 {
 	this->name = name; 
 	this->type = type; 
 	this->resource_data = resource_cmp; 
+	this->id = App->resource_manager->curr_id; 
 }
 
 Resource::~Resource()
@@ -148,6 +196,26 @@ void Resource::Init()
 std::string Resource::GetName() const
 {
 	return name;
+}
+
+int Resource::GetResourceID() const
+{
+	return id;
+}
+
+void Resource::SetResourceID(int id)
+{
+	this->id = id; 
+}
+
+resource_t Resource::GetType() const
+{
+	return type;
+}
+
+Component * Resource::GetData() const
+{
+	return resource_data;
 }
 
 //void Resource::Init()

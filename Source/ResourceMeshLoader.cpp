@@ -160,82 +160,94 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 			
 			for (int i = 0; i < node->mNumMeshes; i++)
 			{
-				//Vertices
+
+				//We check if the resource already exist
+
+				string file_name = GetLastPathCommand(full_path, false); 
+
 				std::string node_name(node->mName.C_Str());
 
 				GameObject* child_go = new GameObject();
-				child_go->SetName(node_name.c_str()); 
-
-				LOG("Loading new mesh...")
-
+				child_go->SetName(node_name.c_str());
 				aiMesh* m = scene->mMeshes[node->mMeshes[i]];
+	
 
-				ComponentMeshRenderer* tmp_mr = new ComponentMeshRenderer(child_go);
+					LOG("Loading new mesh...")
 
-				tmp_mr->num_vertices = m->mNumVertices;
-				tmp_mr->vertices = new vec[tmp_mr->num_vertices]; 
-				memcpy(tmp_mr->vertices, m->mVertices, sizeof(vec) * tmp_mr->num_vertices);
+					ComponentMeshRenderer* tmp_mr = new ComponentMeshRenderer(child_go);
 
-				glGenBuffers(1, (GLuint*)&tmp_mr->vertices_id);
-				glBindBuffer(GL_ARRAY_BUFFER, tmp_mr->vertices_id);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(vec) * tmp_mr->num_vertices, tmp_mr->vertices, GL_STATIC_DRAW);
+					tmp_mr->num_vertices = m->mNumVertices;
+					tmp_mr->vertices = new vec[tmp_mr->num_vertices];
+					memcpy(tmp_mr->vertices, m->mVertices, sizeof(vec) * tmp_mr->num_vertices);
 
-				LOG("%d vertices", tmp_mr->GetNumVertices());
+					//Vertices
+					glGenBuffers(1, (GLuint*)&tmp_mr->vertices_id);
+					glBindBuffer(GL_ARRAY_BUFFER, tmp_mr->vertices_id);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(vec) * tmp_mr->num_vertices, tmp_mr->vertices, GL_STATIC_DRAW);
 
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				//Indices
-				
-				if (m->HasFaces()) {
-					tmp_mr->num_indices = m->mNumFaces * 3;
-					tmp_mr->indices = new uint[tmp_mr->num_indices];
-					for (uint i = 0; i < m->mNumFaces; ++i)
-					{
-						if (m->mFaces[i].mNumIndices != 3) {
-							LOG("WARNING, geometry face with != 3 indices!");
+					LOG("%d vertices", tmp_mr->GetNumVertices());
+
+					glBindBuffer(GL_ARRAY_BUFFER, 0);
+					//Indices
+
+					if (m->HasFaces()) {
+						tmp_mr->num_indices = m->mNumFaces * 3;
+						tmp_mr->indices = new uint[tmp_mr->num_indices];
+						for (uint i = 0; i < m->mNumFaces; ++i)
+						{
+							if (m->mFaces[i].mNumIndices != 3) {
+								LOG("WARNING, geometry face with != 3 indices!");
+							}
+							else
+								memcpy(&tmp_mr->indices[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
 						}
-						else
-							memcpy(&tmp_mr->indices[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
+
 					}
 
-				}
+					glGenBuffers(1, (GLuint*)&tmp_mr->indices_id);
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tmp_mr->indices_id);
+					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_indices, tmp_mr->indices, GL_STATIC_DRAW);
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-				glGenBuffers(1, (GLuint*)&tmp_mr->indices_id);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tmp_mr->indices_id);
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_indices, tmp_mr->indices, GL_STATIC_DRAW);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+					LOG("%d indices", tmp_mr->GetNumIndices());
 
-				LOG("%d indices", tmp_mr->GetNumIndices());
+					if (m->HasTextureCoords(0)) // assume mesh has one texture coords
+					{
+						tmp_mr->num_uvs = m->mNumVertices;
+						tmp_mr->uvs = new float[tmp_mr->num_uvs * 3];
+						memcpy(tmp_mr->uvs, m->mTextureCoords[0], sizeof(float)*tmp_mr->num_uvs * 3);
 
-				if (m->HasTextureCoords(0)) // assume mesh has one texture coords
-				{
-					tmp_mr->num_uvs = m->mNumVertices;
-					tmp_mr->uvs = new float[tmp_mr->num_uvs * 3];
-					memcpy(tmp_mr->uvs, m->mTextureCoords[0], sizeof(float)*tmp_mr->num_uvs * 3);
+						glGenBuffers(1, (GLuint*)&tmp_mr->uvs_id);
+						glBindBuffer(GL_ARRAY_BUFFER, (GLuint)tmp_mr->uvs_id);
+						glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_uvs * 3, tmp_mr->uvs, GL_STATIC_DRAW);
+						glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-					glGenBuffers(1, (GLuint*)&tmp_mr->uvs_id);
-					glBindBuffer(GL_ARRAY_BUFFER, (GLuint)tmp_mr->uvs_id);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * tmp_mr->num_uvs * 3, tmp_mr->uvs, GL_STATIC_DRAW);
-					glBindBuffer(GL_ARRAY_BUFFER, 0);
+						LOG("%d texture cordinates", tmp_mr->num_uvs);
+					}
+					else
+					{
+						LOG("No Texture Coords found");
+					}
 
-					LOG("%d texture cordinates", tmp_mr->num_uvs);
-				}
-				else
-				{
-					LOG("No Texture Coords found");
-				}
-				AABB bbox;
-				bbox.SetNegativeInfinity();
-				bbox.Enclose((float3*)m->mVertices, m->mNumVertices);
+					AABB bbox;
+					bbox.SetNegativeInfinity();
+					bbox.Enclose((float3*)m->mVertices, m->mNumVertices);
 
-				tmp_mr->SetBBox(bbox);
-				tmp_mr->num_triangles = tmp_mr->num_indices / 3; 
+					tmp_mr->SetBBox(bbox);
+					tmp_mr->num_triangles = tmp_mr->num_indices / 3;
 
-				tmp_mr->type = COMPONENT_MESH_RENDERER;
-				tmp_mr->Enable();
+					tmp_mr->type = COMPONENT_MESH_RENDERER;
+					tmp_mr->Enable();
 
-				tmp_mr->SetComponentParent(child_go);
+					tmp_mr->SetComponentParent(child_go);
 
-				child_go->PushComponent((Component*)tmp_mr);
+					child_go->PushComponent((Component*)tmp_mr);
+
+					Resource* new_r = new Resource(node_name.c_str(), RESOURCE_TYPE_MESH, tmp_mr);
+					App->resource_manager->AddResource(new_r);
+
+					SaveToLibrary(tmp_mr);
+				
 
 				if (scene != nullptr && scene->HasMaterials())
 				{
@@ -248,18 +260,23 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 					string final_str = TillLastBar(full_path);
 					string text_name = GetLastPathCommand(path.C_Str(), true);
 
-					int term = GetPathTermination(full_path); 
+			
+						int term = GetPathTermination(full_path);
 
-					final_str += text_name;
+						final_str += text_name;
 
-					MA_tmp = App->resource_manager->material_loader->ImportImage(final_str.c_str());
+						MA_tmp = App->resource_manager->material_loader->ImportImage(final_str.c_str());
 
-					MA_tmp->type = COMPONENT_MATERIAL;
-					MA_tmp->Enable();
+						MA_tmp->type = COMPONENT_MATERIAL;
+						MA_tmp->Enable();
 
-					MA_tmp->SetComponentParent(child_go);
+						MA_tmp->SetComponentParent(child_go);
 
-					child_go->PushComponent(MA_tmp);
+						child_go->PushComponent(MA_tmp);
+
+						Resource* new_r = new Resource(path.C_Str(), RESOURCE_TYPE_MATERIAL, MA_tmp);
+						App->resource_manager->AddResource(new_r);
+							
 				}
 
 				parent->PushChild(child_go);  // Child is pushed here bc we need the parent for constructing the clobal matrix
@@ -288,10 +305,12 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 					TR_cmp->Enable();
 
 					child_go->AdaptBoundingBox(child_go); 
-					SaveToLibrary(tmp_mr);
+
 
 				}				
+
 				App->scene_intro->AddGameObject(child_go);
+				 
 			}
 
 			new_go = parent;
@@ -376,10 +395,21 @@ Resource* ResourceMeshLoader::SetResource(std::string name, resource_t type, Com
 {
 	Resource* new_ret; 
 
-	new_ret = new Resource(name, type, resource_cmp);
+	new_ret = new Resource(name.c_str(), type, resource_cmp);
 
 	return new_ret; 
 	
+}
+
+ComponentMeshRenderer * ResourceMeshLoader::GetComponentFromID(uint id)
+{
+	for (map<uint, ComponentMeshRenderer*>::iterator it = meshes_loaded.begin(); it != meshes_loaded.end(); it++)
+	{
+		if ((*it).first == id)
+			return (*it).second;
+	}
+
+	return nullptr; 
 }
 
 

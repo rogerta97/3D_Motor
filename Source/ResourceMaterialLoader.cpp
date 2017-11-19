@@ -46,10 +46,10 @@ bool ResourceMaterialLoader::CleanUp()
 {
 	bool ret = true;
 	//delete the non erased materials
-	for (std::list<ComponentMaterial*>::iterator m = materials.begin(); m != materials.end(); )
+	for (std::map<uint, ComponentMaterial*>::iterator m = materials_loaded.begin(); m != materials_loaded.end(); )
 	{
-		RELEASE(*m);
-		m = materials.erase(m);
+		RELEASE(m->second);
+		m = materials_loaded.erase(m);
 	}
 
 	return ret;
@@ -173,6 +173,17 @@ ComponentMaterial* ResourceMaterialLoader::ImportImage(const char* path)
 	//return m;
 }
 
+ComponentMaterial * ResourceMaterialLoader::GetComponentFromID(uint id)
+{
+	for (map<uint, ComponentMaterial*>::iterator it = materials_loaded.begin(); it != materials_loaded.end(); it++)
+	{
+		if ((*it).first == id)
+			return (*it).second;
+	}
+
+	return nullptr;
+}
+
 void ResourceMaterialLoader::SaveAsDDS()
 {
 	ILuint		size;
@@ -199,13 +210,13 @@ void ResourceMaterialLoader::SaveAsDDS()
 
 void ResourceMaterialLoader::RemoveMaterial(ComponentMaterial * mat)
 {
-	for (std::list<ComponentMaterial*>::iterator m = materials.begin(); m != materials.end(); ++m)
+	for (std::map<uint, ComponentMaterial*>::iterator m = materials_loaded.begin(); m != materials_loaded.end(); ++m)
 	{
-		if (*m == mat)
+		if (m->second == mat)
 		{
-			RELEASE(*m);
+			RELEASE(m->second);
 
-			materials.erase(m);
+			materials_loaded.erase(m);
 			break;
 		}
 	}
