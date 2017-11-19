@@ -61,6 +61,18 @@ InGame:
 	-Import .FBX files: 
 	
 		- Drag and drop into the scene.
+		
+Extra Features: 
+	
+	- Parents can be assigned and deasigned in runtime. 
+	
+	- Objects can be deleted, it's child will delete too. 
+	
+	- Components can be deleted.
+	
+	- A main camera can be picked in runtime.
+	
+	- Resource manager
 
 
 License:
