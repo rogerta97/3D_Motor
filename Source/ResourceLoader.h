@@ -7,6 +7,9 @@ class ComponentMaterial;
 class ComponentMeshRenderer;
 class GameObject;
 
+class ModuleFBXLoader; 
+class MaterialsImporter; 
+
 enum resource_t
 {
 	mesh_t,
@@ -29,6 +32,7 @@ public:
 	GameObject* owner = nullptr;
 	bool active = false;
 };
+
 class ResourceLoader : public Module {
 public:
 	ResourceLoader(bool start_enable = true);
@@ -44,6 +48,9 @@ public:
 	 bool Exists(std::string& file, int file_id = -1);
 public:
 	std::map<uint, Resource*> resources;
+
+	ModuleFBXLoader*	meshes_loader; 
+	MaterialsImporter*  material_loader; 
 
 };
 #endif !_RESOURCE_LOADER_H_

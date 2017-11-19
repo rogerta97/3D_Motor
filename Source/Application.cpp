@@ -17,7 +17,6 @@ Application::Application()
 	fps_counter = 0;
 
 	//file_system = new ModuleFileSystem(true);
-	materials_importer = new MaterialsImporter(true);
 	json = new JSON(true);
 	window = new ModuleWindow(true);
 	input = new ModuleInput(true);
@@ -27,7 +26,7 @@ Application::Application()
 	camera = new ModuleCamera3D(true);
 	physics = new ModulePhysics3D(true);
 	imgui = new ModuleImGui(true);
-	fbx_loader = new ModuleFBXLoader(true);
+	resource_manager = new ResourceLoader(true);
 
 
 	// The order of calls is very important!
@@ -36,8 +35,7 @@ Application::Application()
 
 	// Main Modules
 	//AddModule(file_system);
-	AddModule(materials_importer);
-	AddModule(fbx_loader);
+	AddModule(resource_manager);
 	AddModule(json);
 	AddModule(window);
 	AddModule(camera);

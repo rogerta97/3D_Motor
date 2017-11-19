@@ -4,6 +4,7 @@
 #include "ComponentTransform.h"
 #include "ModuleSceneIntro.h"
 #include "Application.h"
+#include "GameObject.h"
 #include "JSON.h"
 
 ComponentCamera::ComponentCamera(GameObject* _parent, float far_plane, float near_plane, float fov, float aspect_ratio)

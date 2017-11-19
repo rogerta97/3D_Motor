@@ -12,11 +12,9 @@
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
 #include "ModuleImGui.h"
-#include "ModuleFBXLoader.h"
+#include "ResourceLoader.h"
 #include "MathGeoLib\MathGeoLib.h"
 #include "DeviceId\DeviceId.h"
-#include "MaterialsImporter.h"
-#include "MeshRendererImporter.h"
 #include "JSON.h"
 #include "Hardware.h"
 #include <queue>
@@ -30,7 +28,7 @@ class Application
 {
 public:
 	//ModuleFileSystem* file_system;
-	MaterialsImporter* materials_importer;
+	//MaterialsImporter* materials_importer;
 	JSON*		json;
 	ModuleWindow* window;
 	ModuleInput* input;
@@ -40,7 +38,7 @@ public:
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
 	ModuleImGui* imgui; 
-	ModuleFBXLoader* fbx_loader; 
+	ResourceLoader* resource_manager; 
 
 private:
 

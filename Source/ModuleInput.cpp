@@ -128,39 +128,7 @@ update_status ModuleInput::PreUpdate(float dt)
 			case SDL_DROPFILE:	
 
 				std::string file = e.drop.file;
-
-				file_format format = FF_NULL; 
-
-				format = (file_format)GetPathTermination(e.drop.file);
-
-				if (format != FF_NULL)
-				{
-					if (format == FF_FBX)
-					{
-						LOG("FBX file dragged to window");
-						App->CopyFileTo(file.c_str(),"Assets\\Meshes");
-						//new import
-						//App->mesh_importer->ImportFile(file.c_str());
-						//old code
-						App->fbx_loader->LoadFileScene(file.c_str());
-					}
-
-					if (format == FF_PNG || format == FF_TGA)
-					{
-						//For now we set the texture in the last obect created (the unique in the scene) 
-						LOG("PNG file dragged to window");
-
-						App->CopyFileTo(file.c_str(), "Assets\\Materials");
-						//new importfytfydtrdrdut
-						App->materials_importer->ImportImage(file.c_str());
-					}
-						else
-							LOG("No gameobject selected where PNG can be dragged");		
-
-					break;
-				}
-				else
-					LOG("Error getting the path");
+				App->resource_manager->Load(file.c_str()); 
 		}
 	}
 

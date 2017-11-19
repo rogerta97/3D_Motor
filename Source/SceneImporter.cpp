@@ -3,6 +3,7 @@
 #include "JSON.h"
 #include "ModuleSceneIntro.h"
 #include "Application.h"
+#include "GameObject.h"
 
 SceneImporter::SceneImporter(bool start_enabled) : Module(start_enabled)
 {

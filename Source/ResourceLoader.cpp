@@ -3,6 +3,11 @@
 #include "Application.h"
 #include "JSON.h"
 #include "GameObject.h"
+#include "Globals.h"
+#include "Functions.h"
+
+#include "MaterialsImporter.h"
+#include "ModuleFBXLoader.h"
 
 ResourceLoader::ResourceLoader(bool start_enable) : Module(start_enable)
 {
@@ -34,6 +39,40 @@ bool ResourceLoader::CleanUp()
 	}
 
 	return ret;
+}
+
+void ResourceLoader::Load(const char * path)
+{
+	file_format format = FF_NULL;
+
+	format = (file_format)GetPathTermination(path);
+
+	if (format != FF_NULL)
+	{
+		if (format == FF_FBX)
+		{
+			LOG("FBX file dragged to window");
+			App->CopyFileTo(path, "Assets\\Meshes");
+			//new import
+			//App->mesh_importer->ImportFile(file.c_str());
+			//old code
+			meshes_loader->LoadFileScene(path);
+		}
+
+		if (format == FF_PNG || format == FF_TGA)
+		{
+			//For now we set the texture in the last obect created (the unique in the scene) 
+			LOG("PNG file dragged to window");
+
+			App->CopyFileTo(path, "Assets\\Materials");
+			//new importfytfydtrdrdut
+			material_loader->ImportImage(path);
+		}
+		else
+			LOG("No gameobject selected where PNG can be dragged");
+	}
+	else
+		LOG("Error getting the path");
 }
 
 bool ResourceLoader::Exists(std::string & file, int file_id)

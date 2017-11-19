@@ -43,7 +43,9 @@ public:
 	float max_size = 0;
 	float size = 0;
 
-	ComponentMaterial* ImportImage(const char* path); 
+	//ComponentMaterial* ImportImage(const char* path); 
+
+	vector<ComponentMeshRenderer*> meshes_loaded; 
 	
 };
 
