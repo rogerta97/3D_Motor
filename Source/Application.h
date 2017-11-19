@@ -17,6 +17,7 @@
 #include "DeviceId\DeviceId.h"
 #include "MaterialsImporter.h"
 #include "MeshRendererImporter.h"
+#include "SceneImporter.h"
 #include "JSON.h"
 #include "Hardware.h"
 #include <queue>
@@ -31,6 +32,7 @@ class Application
 public:
 	//ModuleFileSystem* file_system;
 	MaterialsImporter* materials_importer;
+	SceneImporter* scene_importer;
 	JSON*		json;
 	ModuleWindow* window;
 	ModuleInput* input;

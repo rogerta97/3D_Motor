@@ -51,7 +51,7 @@ class json_file
 
 		 void Save();
 		 void CleanUp();
-
+		 void Delete();
 	 private:
 		 bool FindValue(const char* str, json_value_type type,int index)const;
 		 JSON_Value * GetValue(const char * field, int index) const;
@@ -71,6 +71,7 @@ public:
 	~JSON();
 	bool Awake();
 	json_file* LoadJSONFile(const char* path);
+	json_file* CreateNewJSON(const char* path);
 	json_file* GetFile(const char* name);
 	bool CleanUp();
 private:

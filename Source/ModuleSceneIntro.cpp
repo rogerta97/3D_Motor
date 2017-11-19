@@ -11,6 +11,7 @@
 #include "ModuleFBXLoader.h"
 #include "ModuleCamera3D.h"
 #include "ModuleRenderer3D.h"
+#include "SceneImporter.h"
 #include "Functions.h"
 
 #include "PhysBody3D.h"
@@ -169,6 +170,9 @@ update_status ModuleSceneIntro::Update(float dt)
 				(*it)->Draw();
 		}
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+		App->scene_importer->SaveScene("test.json");
 	
 	return UPDATE_CONTINUE;
 }

@@ -17,6 +17,7 @@ Application::Application()
 	fps_counter = 0;
 
 	//file_system = new ModuleFileSystem(true);
+	scene_importer = new SceneImporter(true);
 	materials_importer = new MaterialsImporter(true);
 	json = new JSON(true);
 	window = new ModuleWindow(true);
@@ -36,6 +37,7 @@ Application::Application()
 
 	// Main Modules
 	//AddModule(file_system);
+	AddModule(scene_importer);
 	AddModule(materials_importer);
 	AddModule(fbx_loader);
 	AddModule(json);

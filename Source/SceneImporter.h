@@ -10,6 +10,8 @@ public:
 
 	//call this one when click play
 	void SaveScene(json_file*file);
+	void SaveScene(const char * path);
+
 	//To modify when we have more than one Scene TODO
 	//call this one when clicking stop
 	void LoadSceneFromBuffer();

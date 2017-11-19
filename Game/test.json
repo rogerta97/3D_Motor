@@ -1,0 +1,29 @@
+{
+    "GameObjects": {},
+    "Components": {},
+    "UID": 1294206586,
+    "name": "Spot001.Target",
+    "is_active": true,
+    "is_static": false,
+    "parent": 1049697634,
+    "type": 2,
+    "owner": 1294206586,
+    "position": [
+        28.890945434570313,
+        -60.963882446289063,
+        -2.6648158382158726e-06
+    ],
+    "scale": [
+        0,
+        0,
+        0
+    ],
+    "rotation": [
+        5.9604641222676946e-08,
+        0,
+        0,
+        1
+    ],
+    "mesh": -1204491632,
+    "material": -53435641
+}
