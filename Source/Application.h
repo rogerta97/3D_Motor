@@ -104,6 +104,7 @@ public:
 
 	//For performance
 	void SendMessageToModules();
+	void BroadCastEvent(SDL_Event& e); 
 
 	void SetState(app_state new_state); 
 	app_state GetState(); 

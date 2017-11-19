@@ -23,6 +23,8 @@ public:
 	void OnLoadConfig(json_file * config);
 	void OnSaveConfig(json_file * config);
 
+	void BroadCastEvent(SDL_Event& e);
+
 
 public:
 	//The window we'll be rendering to

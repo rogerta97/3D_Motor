@@ -165,3 +165,23 @@ void ModuleWindow::OnSaveConfig(json_file * config)
 	config->SetInt("window.height", height);
 	config->SetBool("window.fullscreen", fullscreen);
 }
+
+void ModuleWindow::BroadCastEvent(SDL_Event & e)
+{
+	switch (e.window.event)
+	{
+	case SDL_WINDOWEVENT_RESIZED:
+	case SDL_WINDOWEVENT_SIZE_CHANGED:
+	{
+		if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+		{
+			width = e.window.data1; 
+			height = e.window.data2; 
+
+			App->renderer3D->OnResize(width, height);
+		}
+			
+	}
+	break;
+	}
+}

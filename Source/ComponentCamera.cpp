@@ -179,16 +179,19 @@ void ComponentCamera::SetFarPlaneDist(float dist)
 
 void ComponentCamera::SetFOV(float fov)
 {
-	float aspect_ratio = frustum.AspectRatio();
+	
 	frustum.verticalFov = DEGTORAD * fov;
-	SetAspectRatio(aspect_ratio);
+	frustum.horizontalFov = frustum.AspectRatio() * frustum.verticalFov;
+	frustum.SetVerticalFovAndAspectRatio(frustum.verticalFov, frustum.AspectRatio());
+	SetAspectRatio(frustum.AspectRatio());
 }
 
 void ComponentCamera::SetAspectRatio(float aspect_ratio)
 {
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspect_ratio);
 	
-	frustum.SetPerspective(frustum.horizontalFov, frustum.verticalFov);
+	//frustum.SetPerspective(frustum.horizontalFov, frustum.verticalFov);
+	frustum.SetVerticalFovAndAspectRatio(frustum.verticalFov, frustum.AspectRatio());
 	screen_resized = true;
 
 }

@@ -62,6 +62,11 @@ public:
 		
 	}
 
+	virtual void BroadCastEvent(SDL_Event& e)
+	{
+
+	}
+
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{}
 	virtual void OnLoadConfig(json_file* config) {};
