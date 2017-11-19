@@ -324,15 +324,16 @@ void ModuleCamera3D::PrintConfigData()
 
 		static float aux_VFOV = editor_camera->GetFOV();
 
-		if (ImGui::SliderFloat("Field Of View", &aux_VFOV, 1.0f, 179.0f, "%.2f"))
+		if (ImGui::SliderFloat("Field Of View", &aux_VFOV, 30.0f, 120.0f, "%.2f"))
 		{
 			editor_camera->SetFOV(aux_VFOV);
+			editor_camera->frustum.SetViewPlaneDistances(editor_camera->frustum.NearPlaneDistance(), editor_camera->frustum.FarPlaneDistance());
 		}
 			
 
-		float aux_AR = editor_camera->GetAspectRatio();
-		if(ImGui::DragFloat("Aspect Ratio", &aux_AR, 0.1f, 0.1f, 10000.0f))
-			editor_camera->SetAspectRatio(aux_AR);
+		//float aux_AR = editor_camera->GetAspectRatio();
+		//if(ImGui::DragFloat("Aspect Ratio", &aux_AR, 0.1f, 0.1f, 10000.0f))
+			//editor_camera->SetAspectRatio(aux_AR);
 
 		if (ImGui::Button("Assign main camera") && looking_for_camera == false)
 		{

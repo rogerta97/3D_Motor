@@ -101,13 +101,13 @@ float ComponentCamera::GetFarPlaneDist() const
 
 float ComponentCamera::GetFOV() const
 {
-	return frustum.verticalFov * RADTODEG;
+	return fov;
 	
 }
 
 float ComponentCamera::GetAspectRatio() const
 {
-	return frustum.AspectRatio();
+	return aspect_ratio;
 }
 
 void ComponentCamera::Look(const float3& position)
