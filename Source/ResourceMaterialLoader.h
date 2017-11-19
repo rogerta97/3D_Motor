@@ -2,18 +2,17 @@
 #define _MATERIALS_IMPORTER_H_
 
 #include "Globals.h"
-#include "Module.h"
+#include "ResourceManager.h"
 #include <list>
 
 class ComponentMaterial;
 
-class ResourceMaterialLoader : public Module
+class ResourceMaterialLoader
 {
 public:
-	ResourceMaterialLoader(bool enabled = true);
+	ResourceMaterialLoader();
 	~ResourceMaterialLoader();
 
-	bool Init(json_file* config);
 	bool Start();
 	bool CleanUp();
 

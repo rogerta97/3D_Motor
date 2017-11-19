@@ -9,7 +9,7 @@
 #include "GameObject.h"
 #include <vector>
 
-ResourceMeshLoader::ResourceMeshLoader(bool enable_state)
+ResourceMeshLoader::ResourceMeshLoader()
 {
 
 }
@@ -372,6 +372,17 @@ void ResourceMeshLoader::DrawElement()
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+Resource* ResourceMeshLoader::SetResource(std::string name, resource_t type, Component * resource_cmp)
+{
+	Resource* new_ret; 
+
+	new_ret = new Resource(name, type, resource_cmp);
+
+	return new_ret; 
+	
+}
+
+
 //void ModuleFBXLoader::GetMaterialInfo(int w,int h)
 //{
 //

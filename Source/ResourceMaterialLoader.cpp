@@ -5,7 +5,7 @@
 #include "ModuleSceneIntro.h"
 #include "GameObject.h"
 #include "ComponentMaterial.h"
-
+#include "Functions.h"
 #include "DevIL_Windows_SDK\include\IL\il.h"
 #include "DevIL_Windows_SDK\include\IL\ilu.h"
 #include "DevIL_Windows_SDK\include\IL\ilut.h"
@@ -18,7 +18,7 @@
 
 
 
-ResourceMaterialLoader::ResourceMaterialLoader(bool enabled):Module(enabled)
+ResourceMaterialLoader::ResourceMaterialLoader()
 {
 }
 
@@ -27,7 +27,7 @@ ResourceMaterialLoader::~ResourceMaterialLoader()
 	ilShutDown();
 }
 
-bool ResourceMaterialLoader::Init(json_file * config)
+bool ResourceMaterialLoader::Start()
 {
 	bool ret = true;
 
@@ -38,13 +38,6 @@ bool ResourceMaterialLoader::Init(json_file * config)
 
 	App->CreateFolder("Assets\\Materials");
 	App->CreateFolder("Library\\Materials");
-
-	return ret;
-}
-
-bool ResourceMaterialLoader::Start()
-{
-	bool ret = true;
 
 	return ret;
 }
@@ -72,7 +65,7 @@ ComponentMaterial* ResourceMaterialLoader::ImportImage(const char* path)
 	ilBindImage(imageID);
 
 	ComponentMaterial* new_component = new ComponentMaterial(nullptr);
-
+	
 	success = ilLoadImage(path);
 
 	if (success)
