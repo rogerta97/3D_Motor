@@ -20,6 +20,21 @@ void SceneImporter::SaveScene(json_file* file)
 
 	App->scene_intro->Serialize(file);
 }
+void SceneImporter::SaveScene(const char * path)
+{
+	json_file* doc = App->json->LoadJSONFile(path);
+
+	if (doc == nullptr)
+		doc = App->json->CreateNewJSON(path);
+	else
+		doc->Delete();
+
+	doc->SetArray("GameObjects");
+	doc->SetArray("Components");
+
+	App->scene_intro->Serialize(doc);
+	doc->Save();
+}
 void SceneImporter::LoadSceneFromBuffer()
 {
 	if (scene_file != nullptr)

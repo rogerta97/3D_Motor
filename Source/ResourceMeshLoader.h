@@ -17,12 +17,12 @@
 class ComponentMaterial; 
 class ComponentMeshRenderer;
 
-class ModuleFBXLoader : public Module
+class ResourceMeshLoader : public Module
 {
 public: 
 
-	ModuleFBXLoader(bool enable_state = true); 
-	~ModuleFBXLoader(); 
+	ResourceMeshLoader(bool enable_state = true);
+	~ResourceMeshLoader();
 		
 	bool Start();
 	update_status Update(float dt); 

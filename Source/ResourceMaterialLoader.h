@@ -7,11 +7,11 @@
 
 class ComponentMaterial;
 
-class MaterialsImporter : public Module
+class ResourceMaterialLoader : public Module
 {
 public:
-	MaterialsImporter(bool enabled = true);
-	~MaterialsImporter();
+	ResourceMaterialLoader(bool enabled = true);
+	~ResourceMaterialLoader();
 
 	bool Init(json_file* config);
 	bool Start();

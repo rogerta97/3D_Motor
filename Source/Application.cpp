@@ -17,6 +17,8 @@ Application::Application()
 	fps_counter = 0;
 
 	//file_system = new ModuleFileSystem(true);
+
+	scene_importer = new SceneImporter(true);
 	json = new JSON(true);
 	window = new ModuleWindow(true);
 	input = new ModuleInput(true);
@@ -26,7 +28,7 @@ Application::Application()
 	camera = new ModuleCamera3D(true);
 	physics = new ModulePhysics3D(true);
 	imgui = new ModuleImGui(true);
-	resource_manager = new ResourceLoader(true);
+	resource_manager = new ResourceManager(true);
 
 
 	// The order of calls is very important!
@@ -36,6 +38,7 @@ Application::Application()
 	// Main Modules
 	//AddModule(file_system);
 	AddModule(resource_manager);
+	AddModule(scene_importer);
 	AddModule(json);
 	AddModule(window);
 	AddModule(camera);

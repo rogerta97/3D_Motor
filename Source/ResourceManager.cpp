@@ -1,33 +1,33 @@
 #include "Module.h"
-#include "ResourceLoader.h"
+#include "ResourceManager.h"
 #include "Application.h"
 #include "JSON.h"
 #include "GameObject.h"
 #include "Globals.h"
 #include "Functions.h"
 
-#include "MaterialsImporter.h"
-#include "ModuleFBXLoader.h"
+#include "ResourceMaterialLoader.h"
+#include "ResourceMeshLoader.h"
 
-ResourceLoader::ResourceLoader(bool start_enable) : Module(start_enable)
+ResourceManager::ResourceManager(bool start_enable) : Module(start_enable)
 {
 }
 
-ResourceLoader::~ResourceLoader()
+ResourceManager::~ResourceManager()
 {
 }
 
-bool ResourceLoader::Start()
+bool ResourceManager::Start()
 {
 	return true;
 }
 
-update_status ResourceLoader::Update(float dt)
+update_status ResourceManager::Update(float dt)
 {
 	return UPDATE_CONTINUE;
 }
 
-bool ResourceLoader::CleanUp()
+bool ResourceManager::CleanUp()
 {
 	bool ret = true;
 
@@ -41,7 +41,7 @@ bool ResourceLoader::CleanUp()
 	return ret;
 }
 
-void ResourceLoader::Load(const char * path)
+void ResourceManager::Load(const char * path)
 {
 	file_format format = FF_NULL;
 
@@ -75,7 +75,7 @@ void ResourceLoader::Load(const char * path)
 		LOG("Error getting the path");
 }
 
-bool ResourceLoader::Exists(std::string & file, int file_id)
+bool ResourceManager::Exists(std::string & file, int file_id)
 {
 	bool ret = false;
 

@@ -1,4 +1,4 @@
-#include "MaterialsImporter.h"
+#include "ResourceMaterialLoader.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ComponentMaterial.h"
@@ -18,16 +18,16 @@
 
 
 
-MaterialsImporter::MaterialsImporter(bool enabled):Module(enabled)
+ResourceMaterialLoader::ResourceMaterialLoader(bool enabled):Module(enabled)
 {
 }
 
-MaterialsImporter::~MaterialsImporter()
+ResourceMaterialLoader::~ResourceMaterialLoader()
 {
 	ilShutDown();
 }
 
-bool MaterialsImporter::Init(json_file * config)
+bool ResourceMaterialLoader::Init(json_file * config)
 {
 	bool ret = true;
 
@@ -42,14 +42,14 @@ bool MaterialsImporter::Init(json_file * config)
 	return ret;
 }
 
-bool MaterialsImporter::Start()
+bool ResourceMaterialLoader::Start()
 {
 	bool ret = true;
 
 	return ret;
 }
 
-bool MaterialsImporter::CleanUp()
+bool ResourceMaterialLoader::CleanUp()
 {
 	bool ret = true;
 	//delete the non erased materials
@@ -62,7 +62,7 @@ bool MaterialsImporter::CleanUp()
 	return ret;
 }
 
-ComponentMaterial* MaterialsImporter::ImportImage(const char* path)
+ComponentMaterial* ResourceMaterialLoader::ImportImage(const char* path)
 {
 	ILuint imageID;
 	GLuint textureID;
@@ -180,7 +180,7 @@ ComponentMaterial* MaterialsImporter::ImportImage(const char* path)
 	//return m;
 }
 
-void MaterialsImporter::SaveAsDDS()
+void ResourceMaterialLoader::SaveAsDDS()
 {
 	ILuint		size;
 	ILubyte*	data;
@@ -204,7 +204,7 @@ void MaterialsImporter::SaveAsDDS()
 
 }
 
-void MaterialsImporter::RemoveMaterial(ComponentMaterial * mat)
+void ResourceMaterialLoader::RemoveMaterial(ComponentMaterial * mat)
 {
 	for (std::list<ComponentMaterial*>::iterator m = materials.begin(); m != materials.end(); ++m)
 	{

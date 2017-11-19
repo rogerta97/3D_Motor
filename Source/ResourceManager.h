@@ -7,8 +7,8 @@ class ComponentMaterial;
 class ComponentMeshRenderer;
 class GameObject;
 
-class ModuleFBXLoader; 
-class MaterialsImporter; 
+class ResourceMeshLoader;
+class ResourceMaterialLoader;
 
 enum resource_t
 {
@@ -33,10 +33,10 @@ public:
 	bool active = false;
 };
 
-class ResourceLoader : public Module {
+class ResourceManager : public Module {
 public:
-	ResourceLoader(bool start_enable = true);
-	 ~ResourceLoader() ;
+	ResourceManager(bool start_enable = true);
+	 ~ResourceManager() ;
 
 	 bool Start();
 	 update_status Update(float dt);
@@ -49,8 +49,8 @@ public:
 public:
 	std::map<uint, Resource*> resources;
 
-	ModuleFBXLoader*	meshes_loader; 
-	MaterialsImporter*  material_loader; 
+	ResourceMeshLoader*	meshes_loader;
+	ResourceMaterialLoader*  material_loader;
 
 };
 #endif !_RESOURCE_LOADER_H_

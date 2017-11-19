@@ -1236,12 +1236,6 @@
     <ClInclude Include="ImGuizmo.h">
       <Filter>Helpers\ImGuizmo</Filter>
     </ClInclude>
-    <ClInclude Include="MaterialsImporter.h">
-      <Filter>Modules\Importers\Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleFBXLoader.h">
-      <Filter>Modules\Importers\Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="PanelPlayAndPause.h">
       <Filter>Helpers\ImGui</Filter>
     </ClInclude>
@@ -1251,8 +1245,14 @@
     <ClInclude Include="SceneImporter.h">
       <Filter>Modules\Importers\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceLoader.h">
+    <ClInclude Include="ResourceManager.h">
       <Filter>Modules\Importers\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceMaterialLoader.h">
+      <Filter>Modules\Importers\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceMeshLoader.h">
+      <Filter>Modules\Importers\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1496,12 +1496,6 @@
     <ClCompile Include="ImGuizmo.cpp">
       <Filter>Helpers\ImGuizmo</Filter>
     </ClCompile>
-    <ClCompile Include="MaterialsImporter.cpp">
-      <Filter>Modules\Importers\Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleFBXLoader.cpp">
-      <Filter>Modules\Importers\Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="PanelPlayAndPause.cpp">
       <Filter>Helpers\ImGui</Filter>
     </ClCompile>
@@ -1511,8 +1505,14 @@
     <ClCompile Include="SceneImporter.cpp">
       <Filter>Modules\Importers\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceLoader.cpp">
+    <ClCompile Include="ResourceManager.cpp">
       <Filter>Modules\Importers\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceMaterialLoader.cpp">
+      <Filter>Modules\Importers\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceMeshLoader.cpp">
+      <Filter>Modules\Importers\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

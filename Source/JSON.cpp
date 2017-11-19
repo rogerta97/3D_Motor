@@ -25,14 +25,13 @@ json_file* JSON::LoadJSONFile(const char * path)
 	bool exists = false;
 	for (std::list<json_file*>::iterator it = j_files.begin(); it != j_files.end(); it++)
 	{
-		if (strcmp(path, (*it)->GetPath()))
+		if (strcmp(path, (*it)->GetPath())==0)
 		{
 			ret = (*it);
 			exists = true;
 			break;
 		}
 	}
-
 	if (!exists)
 	{
 		JSON_Value *user_data = json_parse_file(path);
@@ -52,9 +51,39 @@ json_file* JSON::LoadJSONFile(const char * path)
 			ret = new_doc;
 		}
 	}
-
 	return ret;
+}
+
+json_file * JSON::CreateNewJSON(const char * path)
+{
+	json_file* doc = nullptr;
+
+	//Check if the file already exists
+	bool exist = false;
+	for (std::list<json_file*>::iterator json_doc = j_files.begin(); json_doc != j_files.end(); ++json_doc)
+	{
+		if (path == (*json_doc)->GetPath())
+		{
+			exist = true;
+			break;
+		}
 	}
+
+	if (exist)
+	{
+		LOG("File %s already exists.", path);
+	}
+	else
+	{
+		JSON_Value* doc_data = json_value_init_object();
+		JSON_Object* object_data = json_value_get_object(doc_data);
+
+		doc = new json_file(doc_data, object_data, path);
+		j_files.push_back(doc);
+	}
+
+	return doc;
+}
 
 json_file* JSON::GetFile(const char * name)
 {
@@ -97,11 +126,11 @@ const char * json_file::GetPath()
 	return path.c_str();
 }
 
-json_file::json_file(JSON_Value * value, JSON_Object * object, const char * path)
+json_file::json_file(JSON_Value * value_, JSON_Object * object_, const char * path_)
 {
-	this->value = value;
-	this->object = object;
-	this->path = path;
+	value = value_;
+	object = object_;
+	path = path_;
 }
 json_file::json_file(JSON_Object * Entry):object(Entry)
 {
@@ -158,7 +187,7 @@ void json_file::SetUID(const char * set, UID data)
 void json_file::SetArray(const char * array_name)
 {
 	JSON_Value* val = json_value_init_array();
-	array = json_value_get_array(val);
+	JSON_Array* arra = json_value_get_array(val);
 	json_object_set_value(object, array_name, val);
 }
 
@@ -373,12 +402,19 @@ Quat json_file::GetQuat(const char * field, const Quat & default)
 
 void json_file::Save()
 {
-	json_serialize_to_file_pretty(value, path.c_str());
+	if (json_serialize_to_file_pretty(value, path.c_str()) == JSONSuccess)
+		LOG("New JSON saving!!");
 }
 
 void json_file::CleanUp()
 {
 	json_value_free(value);
+}
+void json_file::Delete()
+{
+		json_value_free(value);
+		value = json_value_init_object();
+		object = json_value_get_object(value);
 }
 bool json_file::FindValue(const char * str, json_value_type type,int index)const
 {

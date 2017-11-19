@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
-#include "ModuleFBXLoader.h"
+#include "ResourceMeshLoader.h"
 #include "ComponentDefs.h"
 #include "ModuleSceneIntro.h"
 #include "ModuleRenderer3D.h"
