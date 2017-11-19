@@ -16,28 +16,50 @@ Engine Information:
 
 Menu:
 ->Files
+
 	-Exit(L_shift + ESC): exits the applitacion
+	
 ->Tools
+
 	-Console:shows and hides the console panel, the console LOGS the start LOGS and when you import geometry it shows the details of it.
+	
 	-RandomNum:shows and hides a random generator tool panel.
+	
 	-Configuration:shows the configuration panel where we can find a Menu Items with functionalities that apply to the scene or the engine workflow, it also shows the system information.
+	
 	-Performance:shows the Start-up performance of the modules and the run time graphs of the modules with update.
+	
 ->Help
+
 	-DEMO GUI: shows the original demo panel from ImGui.
+	
 	-Documentation:opens the github repository page.  
+	
 	-Download latest: brings you to the latest release/draft.
+	
 	-Report a bug:brings you to github issues.
+	
 	-License:brings you to the MIT license about the github repository
+	
 	-About:Prints a short explanation about the engine(authors,libraries used,info of the engine)
+	
 InGame:
 	-Camera Movement:
+	
 		- WASD: movement (forward,left,backwards,right)
+		
 		- F: camera focuses the last mesh
+		
 		- C & X: move up and down the camera.
+		
 		- Alt + left mouse click: camera orbits with mouse movement.
+		
 		- Mouse wheel: zoom in and out.
+		
 		- Right Click:camera moves with the mouse movement.
+		
 	-Import .FBX files: 
+	
 		- Drag and drop into the scene.
 
 
