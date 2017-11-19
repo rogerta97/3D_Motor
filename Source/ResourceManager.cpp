@@ -19,6 +19,21 @@ ResourceManager::~ResourceManager()
 
 bool ResourceManager::Start()
 {
+
+	meshes_loader = new ResourceMeshLoader(); 
+	material_loader = new ResourceMaterialLoader();
+
+	meshes_loader->Start(); 
+	material_loader->Start(); 
+
+	//resources.push_back(meshes_loader); 
+	//resources.push_back(material_loader);
+
+	//for (list<Resource*>::iterator it = resources.begin(); it != resources.end(); it++)
+	//{
+	//	(*it)->Init(); 
+	//}
+
 	return true;
 }
 
@@ -31,14 +46,38 @@ bool ResourceManager::CleanUp()
 {
 	bool ret = true;
 
-	for (std::map<uint, Resource*>::iterator it = resources.begin(); it != resources.end();)
+	for (list<Resource*>::iterator it = resources.begin(); it != resources.end();)
 	{
-		RELEASE(it->second);
-
 		it = resources.erase(it);
 	}
 
 	return ret;
+}
+
+void ResourceManager::AddResource(uint uid_key, Resource * resource)
+{
+}
+
+Resource * ResourceManager::GetResource(std::string name)
+{
+	for (list<Resource*>::iterator it = resources.begin(); it != resources.end(); it++)
+	{
+		if ((*it)->GetName() == name)
+			return (*it);
+	}
+
+	return nullptr;
+}
+
+bool ResourceManager::Exist(std::string file_name)
+{
+	for (list<Resource*>::iterator it = resources.begin(); it != resources.end(); it++)
+	{
+		if ((*it)->GetName() == file_name)
+			return true; 
+	}
+
+	return false; 
 }
 
 void ResourceManager::Load(const char * path)
@@ -46,6 +85,7 @@ void ResourceManager::Load(const char * path)
 	file_format format = FF_NULL;
 
 	format = (file_format)GetPathTermination(path);
+	std::string file_name = GetLastPathCommand(path, false); 
 
 	if (format != FF_NULL)
 	{
@@ -53,10 +93,19 @@ void ResourceManager::Load(const char * path)
 		{
 			LOG("FBX file dragged to window");
 			App->CopyFileTo(path, "Assets\\Meshes");
+
+			if (Exist(file_name.c_str()))
+			{
+				
+			}
+			else
+			{
+				meshes_loader->LoadFileScene(path);
+			}
 			//new import
 			//App->mesh_importer->ImportFile(file.c_str());
 			//old code
-			meshes_loader->LoadFileScene(path);
+			
 		}
 
 		if (format == FF_PNG || format == FF_TGA)
@@ -75,58 +124,68 @@ void ResourceManager::Load(const char * path)
 		LOG("Error getting the path");
 }
 
-bool ResourceManager::Exists(std::string & file, int file_id)
+
+//Resource::Resource(GameObject * owner_)
+//{
+//	owner = owner_;
+//	active = true;//default active when created
+//}
+
+Resource::Resource(std::string name, resource_t type, Component* resource_cmp)
 {
-	bool ret = false;
-
-	uint cut = file.find_last_of(".");
-	std::string file_name = file.substr(0, cut);
-
-	for (std::map<uint, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
-	{
-		//check if the resouce already exists
-		//take care of considering that FBX has more than one resource
-	}
-
-	return ret;
-}
-
-Resource::Resource(GameObject * owner_)
-{
-	owner = owner_;
-	active = true;//default active when created
+	this->name = name; 
+	this->type = type; 
+	this->resource_data = resource_cmp; 
 }
 
 Resource::~Resource()
 {
 }
 
-bool Resource::Active(bool active)
+void Resource::Init()
 {
-	this->active = active;
-	return this->active;
+}
+std::string Resource::GetName() const
+{
+	return name;
 }
 
-bool Resource::IsActive() const
-{
-	return active;
-}
-
-GameObject * Resource::GetOwner() const
-{
-	if (owner != nullptr)
-		return owner;
-	return nullptr;
-}
-
-void Resource::SetType(resource_t t)
-{
-	type = t;
-}
-
-resource_t Resource::GetType() const
-{
-	return type;
-}
+//void Resource::Init()
+//{
+//
+//}
+//
+//bool Resource::Exist(std::string path)
+//{
+//	return true;
+//}
+//
+//bool Resource::Active(bool active)
+//{
+//	this->active = active;
+//	return this->active;
+//}
+//
+//bool Resource::IsActive() const
+//{
+//	return active;
+//}
+//
+//GameObject * Resource::GetOwner() const
+//{
+//	if (owner != nullptr)
+//		return owner;
+//	return nullptr;
+//}
+//
+//void Resource::SetType(resource_t t)
+//{
+//	type = t;
+//}
+//
+//resource_t Resource::GetType() const
+//{
+//	return type;
+//}
 
 

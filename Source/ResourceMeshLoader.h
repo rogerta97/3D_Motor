@@ -17,11 +17,11 @@
 class ComponentMaterial; 
 class ComponentMeshRenderer;
 
-class ResourceMeshLoader : public Module
+class ResourceMeshLoader
 {
 public: 
 
-	ResourceMeshLoader(bool enable_state = true);
+	ResourceMeshLoader();
 	~ResourceMeshLoader();
 		
 	bool Start();
@@ -35,6 +35,10 @@ public:
 	void SaveToLibrary(ComponentMeshRenderer* mesh);
 	void DrawElement(); 
 
+	Resource* SetResource(std::string name, resource_t type, Component* resource_cmp);
+
+
+
 public:
 	//variable to incresease when saving files
 	uint lib_id = 0;
@@ -43,10 +47,7 @@ public:
 	float max_size = 0;
 	float size = 0;
 
-	//ComponentMaterial* ImportImage(const char* path); 
-
-	vector<ComponentMeshRenderer*> meshes_loaded; 
-	
+	vector<ComponentMeshRenderer*> meshes_loaded; 	
 };
 
 
