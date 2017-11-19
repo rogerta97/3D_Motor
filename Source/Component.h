@@ -40,9 +40,9 @@ public:
 
 	GameObject* GetComponentParent() { return parent; }
 	void SetComponentParent(GameObject* parent); 
-	component_type GetComponentType() { return type };
+	component_type GetComponentType() { return type; };
 	virtual void DeleteComponent(); 
-
+	virtual void Serialize(json_file* file);
 	~Component() {}
 
 protected: 

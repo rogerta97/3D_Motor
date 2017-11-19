@@ -6,7 +6,6 @@
 #include "Component.h"
 #include "Color.h"
 
-class json_file;
 class ComponentMaterial : public Component
 {
 public: 
@@ -19,7 +18,7 @@ public:
 	bool Update();
 	bool Disable();
 	void Delete();
-
+	
 	void OnLoad(json_file* config);
 	void OnSave(json_file& config)const;
 	void OpenTexture(); 

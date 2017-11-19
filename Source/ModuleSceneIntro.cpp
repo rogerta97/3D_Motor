@@ -96,6 +96,28 @@ GameObject * ModuleSceneIntro::CreateGameObject(const char * name)
 
 }
 
+GameObject * ModuleSceneIntro::GetGameObjectWithUID(uint unique_id)
+{
+	GameObject* ret = nullptr;
+
+	for (int i = 0; i < GO_list.size(); ++i)
+	{
+		if (GO_list[i]->GetID() == unique_id)
+		{
+			ret = GO_list[i];
+			break;
+		}
+		else
+		{
+			GO_list[i]->GetChildWithUID(unique_id, ret);
+			if (ret != nullptr)
+				break;
+		}
+	}
+
+	return ret;
+}
+
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
@@ -271,6 +293,14 @@ GameObject * ModuleSceneIntro::GetFarestObjectFrom(float3 origin)
 	}
 
 	return to_ret;
+}
+
+void ModuleSceneIntro::Serialize(json_file * file)
+{
+	for (std::vector<GameObject*>::iterator go = GO_list.begin(); go != GO_list.end(); ++go)
+	{
+		(*go)->Serialize(file);
+	}
 }
 
 //float3 ModuleSceneIntro::GetBBPointFromStaticList(int point_type) //0 will search for the min point and 1 for the max point of any object in static list

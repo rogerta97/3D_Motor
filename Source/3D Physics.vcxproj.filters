@@ -76,6 +76,12 @@
     <Filter Include="Helpers\ImGuizmo">
       <UniqueIdentifier>{93e35db9-141a-428c-8bb2-36dd55e0941c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules\Importers\Scene">
+      <UniqueIdentifier>{88725a43-e1da-4310-8795-a236acdf7c3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Importers\Resource">
+      <UniqueIdentifier>{ae820c79-c7d1-40cb-839f-7387664e4e41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -1242,6 +1248,12 @@
     <ClInclude Include="UID.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="SceneImporter.h">
+      <Filter>Modules\Importers\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceLoader.h">
+      <Filter>Modules\Importers\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1495,6 +1507,12 @@
     </ClCompile>
     <ClCompile Include="UID.cpp">
       <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneImporter.cpp">
+      <Filter>Modules\Importers\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceLoader.cpp">
+      <Filter>Modules\Importers\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

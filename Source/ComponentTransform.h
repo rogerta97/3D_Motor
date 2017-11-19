@@ -54,6 +54,7 @@ public:
 	void SetModified(bool value);
 	void UpdateTransform(GameObject* curr_go); 
 
+	void Serialize(json_file* file);
 private:
 
 	Transform transform; 

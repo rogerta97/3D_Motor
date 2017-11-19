@@ -35,7 +35,7 @@ public:
 
 	GameObject* GetGameObject(uint position);
 	GameObject* CreateGameObject(const char* name);
-
+	GameObject* GetGameObjectWithUID(uint unique_id);
 	void SetCurrentGO(uint id);
 	GameObject* GetCurrentGO();
 
@@ -70,7 +70,11 @@ public:
 	bool IsSceneEmpty(); 
 	GameObject* GetFarestObjectFrom(float3 origin);
 
+	//Serialization
+	//void LoadScene(aiScene* scene);
+	//void SaveScene(aiScene& scene)const;
 
+	void Serialize(json_file* file);
 public:
 
 	vector<ComponentCamera*> cameras_list;

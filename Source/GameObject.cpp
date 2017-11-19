@@ -311,6 +311,37 @@ void GameObject::ShowBB(bool show_it)
 		
 }
 
+void GameObject::Serialize(json_file * file)
+{
+	
+	file->SetEntry("GameObjects");
+	file->MoveToSectionFromArray("GameObjects", file->GetArraySize("GameObjects") - 1);
+
+	file->SetInt("UID", unique_id);
+	file->SetString("name", name.c_str());
+	file->SetBool("is_active", active);
+	file->SetBool("is_static", is_static);
+	if (parent != nullptr)
+		file->SetInt("parent", parent->GetID());
+	else
+		file->SetInt("parent", 0);
+
+	//file->MoveToRoot();
+	//Save components 
+	for (std::vector<Component*>::iterator c = component_list.begin(); c != component_list.end(); ++c)
+	{
+		(*c)->Serialize(file);
+	}
+	//file->MoveToRoot();
+	//Save childs
+	for (std::vector<GameObject*>::iterator go = child_list.begin(); go != child_list.end(); ++go)
+	{
+		(*go)->Serialize(file);
+	}
+//	file->MoveToRoot();
+
+}
+
 uint GameObject::GetNumChilds()const
 {
 	return child_list.size();
@@ -374,6 +405,23 @@ GameObject * GameObject::GetSupreme()
 	return nullptr;
 }
 
+void GameObject::GetChildWithUID(uint UID, GameObject * go) const
+{
+	for (int i = 0; i < child_list.size(); ++i)
+	{
+		if (child_list[i]->GetID() == UID)
+		{
+			go = child_list[i];
+			break;
+		}
+		else
+		{
+			child_list[i]->GetChildWithUID(UID, go);
+			if (go != nullptr)
+				break;
+		}
+	}
+}
 void GameObject::PushComponent(Component* comp)
 {
 	if (IsRoot())
@@ -554,6 +602,10 @@ void Component::SetComponentParent(GameObject* _parent)
 }
 
 void Component::DeleteComponent()
+{
+}
+
+void Component::Serialize(json_file * file)
 {
 }
 

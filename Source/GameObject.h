@@ -86,7 +86,8 @@ public:
 
 	void ShowBB(bool show_it);
 
-
+	void Serialize(json_file* file);
+	void GetChildWithUID(uint UID, GameObject * go) const;
 
 public:
 	vector<Component*> component_list;
