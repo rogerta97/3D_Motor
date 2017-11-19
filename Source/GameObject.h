@@ -89,6 +89,8 @@ public:
 	void Serialize(json_file* file);
 	void GetChildWithUID(uint UID, GameObject * go) const;
 
+	uint GetNewChildID()const;
+	void SetNewChildID(uint new_id);
 public:
 	vector<Component*> component_list;
 	vector<GameObject*> child_list;
@@ -100,7 +102,7 @@ public:
 	bool is_static = false; 
 	bool is_root = false; 
 	bool looking_for_parent = false; 
-
+	uint new_child_id = 0;
 	UID unique_id;
 
 };

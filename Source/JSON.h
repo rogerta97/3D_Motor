@@ -34,6 +34,7 @@ class json_file
 
 		 json_file GetEntry(const char* set) const;
 		 json_file SetEntry(const char* set);
+		 void AddSectionToArray(const std::string & array_keyword);
 		 int GetArraySize(const char * field) const;
 		 json_file GetArray(const char * field, int index) const;
 		 const char* GetString(const char* str, const char* defaul = "", int id = -1)const;
@@ -48,7 +49,7 @@ class json_file
 		
 		 const char* GetPath();
 		 bool MoveToSectionFromArray(const char * field, int index);
-
+		 void MoveToRoot();
 		 void Save();
 		 void CleanUp();
 		 void Delete();
@@ -59,6 +60,7 @@ class json_file
 	 private:
 		JSON_Value* value = nullptr;
 		JSON_Object* object = nullptr;
+		JSON_Object* root = nullptr;
 		JSON_Array* array = nullptr;
 		std::string path;
 };
