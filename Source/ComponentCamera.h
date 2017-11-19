@@ -63,6 +63,8 @@ public:
 
 	Frustum frustum;
 
+	float fov;
+	float aspect_ratio;
 	bool frustum_culling = false; 
 	bool screen_resized = false;
 };

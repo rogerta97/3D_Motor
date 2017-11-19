@@ -62,6 +62,8 @@ void ComponentCamera::OnLoad(json_file * config)
 	frustum.horizontalFov = config->GetFloat("Frustum", 1.f, 11);
 	frustum.verticalFov = config->GetFloat("Frustum", 1.f, 12);
 	
+	fov = config->GetFloat("FOV",0);
+	aspect_ratio = config->GetFloat("Aspect Ratio", 0);
 	//remember that we have to recalculate when modifying the projection
 	//so:
 	screen_resized = true;
@@ -70,6 +72,8 @@ void ComponentCamera::OnLoad(json_file * config)
 void ComponentCamera::OnSave(json_file & config) const
 {
 	config.SetArrayFloat("Frustum", (float*)&frustum.pos.x, 13);
+	config.SetFloat("FOV", fov);
+	config.SetFloat("Aspect Ratio", aspect_ratio);
 }
 
 void ComponentCamera::Delete()
@@ -178,23 +182,34 @@ void ComponentCamera::SetFarPlaneDist(float dist)
 	}
 }
 
-void ComponentCamera::SetFOV(float fov)
+void ComponentCamera::SetFOV(float fov_)
 {
-	
-	frustum.verticalFov = DEGTORAD * fov;
-	frustum.horizontalFov = frustum.AspectRatio() * frustum.verticalFov;
-	frustum.SetVerticalFovAndAspectRatio(frustum.verticalFov, frustum.AspectRatio());
-	SetAspectRatio(frustum.AspectRatio());
+	fov = fov_;
+
+	if (fov_ > 0) {
+		frustum.verticalFov = DEGTORAD * fov_;
+		frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov / 2.0f) * aspect_ratio);
+	}
+
+	if (aspect_ratio > 0)
+		frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspect_ratio);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glLoadMatrixf((GLfloat*)frustum.ProjectionMatrix().Transposed().v);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
 
-void ComponentCamera::SetAspectRatio(float aspect_ratio)
+void ComponentCamera::SetAspectRatio(float aspect_ratio_)
 {
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspect_ratio);
-	
-	//frustum.SetPerspective(frustum.horizontalFov, frustum.verticalFov);
-	frustum.SetVerticalFovAndAspectRatio(frustum.verticalFov, frustum.AspectRatio());
-	screen_resized = true;
+	aspect_ratio = aspect_ratio_;
 
+	if (frustum.verticalFov > 0)
+		frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspect_ratio);
+
+	SetFOV(fov);
 }
 
 void ComponentCamera::MoveForward(const float & speed)
