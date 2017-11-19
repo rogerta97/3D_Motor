@@ -241,11 +241,13 @@ update_status ModuleImGui::PrintTopBar()
 		if (ImGui::MenuItem("Load...", "CNTRL + L"))
 		{
 			//Code to load from config & scene File
-			//App->SaveConfig()
+			//App->scene_importer->LoadSceneFromBuffer();//importing problems
+
 		}	
 		if (ImGui::MenuItem("Save...", "CNTRL + S"))
 		{
 			//Code to Save from config & scene File
+			App->scene_importer->SaveSceneToBuffer();
 		}
 
 		ImGui::EndMenu();

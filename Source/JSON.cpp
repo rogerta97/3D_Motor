@@ -130,6 +130,7 @@ json_file::json_file(JSON_Value * value_, JSON_Object * object_, const char * pa
 {
 	value = value_;
 	object = object_;
+	root = object_;
 	path = path_;
 }
 json_file::json_file(JSON_Object * Entry):object(Entry)
@@ -282,7 +283,15 @@ json_file json_file::SetEntry(const char * set)
 	json_object_set_value(object, set, json_value_init_object());
 	return GetEntry(set);
 }
+void json_file::AddSectionToArray(const std::string & array_keyword)
+{
+	JSON_Array* array = json_object_get_array(object, array_keyword.c_str());
 
+	if (array != nullptr)
+	{
+		json_array_append_value(array, json_value_init_object());
+	}
+}
 json_file json_file::GetArray(const char * field, int index) const
 {
 	JSON_Array* array = json_object_get_array(object, field);
@@ -305,6 +314,10 @@ bool json_file::MoveToSectionFromArray(const char * field, int index)
 	}
 
 	return ret;
+}
+void json_file::MoveToRoot()
+{
+	object = root;
 }
 const char * json_file::GetString(const char * str, const char* defaul,int id)const
 {
@@ -415,6 +428,8 @@ void json_file::Delete()
 		json_value_free(value);
 		value = json_value_init_object();
 		object = json_value_get_object(value);
+		root = object;
+
 }
 bool json_file::FindValue(const char * str, json_value_type type,int index)const
 {

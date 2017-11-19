@@ -19,6 +19,8 @@ void SceneImporter::SaveScene(json_file* file)
 	file->SetArray("Components");
 
 	App->scene_intro->Serialize(file);
+	file->Save();
+
 }
 void SceneImporter::SaveScene(const char * path)
 {
@@ -35,24 +37,34 @@ void SceneImporter::SaveScene(const char * path)
 	App->scene_intro->Serialize(doc);
 	doc->Save();
 }
+void SceneImporter::SaveSceneToBuffer()
+{
+	if (scene_file == nullptr)
+		scene_file = App->json->CreateNewJSON("scene.json");
+	else
+		scene_file->Delete();
+
+	SaveScene(scene_file);
+}
 void SceneImporter::LoadSceneFromBuffer()
 {
+	scene_file = App->json->LoadJSONFile("scene.json");
+
 	if (scene_file != nullptr)
 	{
-		//reset scene
-			//scene->CleanUp();
-			//scene->Start();
+		//App->scene_intro->CleanUp();
+		//App->scene_intro->Start();
 
 		for (int i = 0; i < scene_file->GetArraySize("GameObjects"); ++i)
 		{
 			scene_file->MoveToSectionFromArray("GameObjects", i);
 			bool active = scene_file->GetBool("active");
 			bool is_static = scene_file->GetBool("is_static");
-			uint new_child_id = scene_file->GetInt("new_child_id",0);
 			uint parent = scene_file->GetInt("parent",0);
 			std::string name = scene_file->GetString("name");
 			uint uid = scene_file->GetInt("UID",0);
-		
+			uint new_child_id = scene_file->GetInt("new_child_id", 0);
+
 			if (parent == 0)
 			{
 				GameObject* go = new GameObject();
@@ -61,7 +73,7 @@ void SceneImporter::LoadSceneFromBuffer()
 				go->SetID(uid);
 				go->SetName(name.c_str());
 				go->SetActive(active);
-
+				go->SetNewChildID(new_child_id);
 			}
 			else
 			{
@@ -73,10 +85,10 @@ void SceneImporter::LoadSceneFromBuffer()
 				go->SetName(name.c_str());
 				go->SetActive(active);
 				go->SetStatic(is_static);
+				go->SetNewChildID(new_child_id);
 			}
+			scene_file->MoveToRoot();
 		}
-
-		//LOAD COMPONENTS TODO: needs resource manager
 	}
 }
 

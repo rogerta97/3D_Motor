@@ -313,8 +313,7 @@ void GameObject::ShowBB(bool show_it)
 
 void GameObject::Serialize(json_file * file)
 {
-	
-	file->SetEntry("GameObjects");
+	file->AddSectionToArray("GameObjects");
 	file->MoveToSectionFromArray("GameObjects", file->GetArraySize("GameObjects") - 1);
 
 	file->SetInt("UID", unique_id);
@@ -325,20 +324,22 @@ void GameObject::Serialize(json_file * file)
 		file->SetInt("parent", parent->GetID());
 	else
 		file->SetInt("parent", 0);
+	file->SetInt("new_child_id", new_child_id);
 
-	//file->MoveToRoot();
+
+	file->MoveToRoot();
 	//Save components 
 	for (std::vector<Component*>::iterator c = component_list.begin(); c != component_list.end(); ++c)
 	{
 		(*c)->Serialize(file);
 	}
-	//file->MoveToRoot();
+	file->MoveToRoot();
 	//Save childs
 	for (std::vector<GameObject*>::iterator go = child_list.begin(); go != child_list.end(); ++go)
 	{
 		(*go)->Serialize(file);
 	}
-//	file->MoveToRoot();
+	file->MoveToRoot();
 
 }
 
@@ -421,6 +422,14 @@ void GameObject::GetChildWithUID(uint UID, GameObject * go) const
 				break;
 		}
 	}
+}
+uint GameObject::GetNewChildID() const
+{
+	return new_child_id;
+}
+void GameObject::SetNewChildID(uint new_id) 
+{
+	new_child_id = new_id;
 }
 void GameObject::PushComponent(Component* comp)
 {
@@ -560,8 +569,12 @@ void GameObject::PushChild(GameObject * child)
 }
 GameObject* GameObject::AddChild()
 {
+	char name[20];
+	sprintf_s(name, "GameObject %d", new_child_id++);
 
 	GameObject* new_go = new GameObject();
+	new_go->SetName(name);
+	new_go->SetParent(this);
 	child_list.push_back(new_go);
 	return new_go;
 

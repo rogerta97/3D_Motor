@@ -123,7 +123,7 @@ bool ComponentMeshRenderer::IsBBoxShowing() const
 
 void ComponentMeshRenderer::Serialize(json_file * file)
 {
-	file->SetEntry("Components");
+	file->AddSectionToArray("Components");
 	file->MoveToSectionFromArray("Components", file->GetArraySize("Components") - 1);
 
 	file->SetInt("type", GetComponentType());

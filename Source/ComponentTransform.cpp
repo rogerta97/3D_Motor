@@ -118,7 +118,7 @@ void ComponentTransform::UpdateTransform(GameObject* curr_go)
 
 void ComponentTransform::Serialize(json_file * file)
 {
-	file->SetEntry("Components");
+	file->AddSectionToArray("Components");
 	file->MoveToSectionFromArray("Components", file->GetArraySize("Components") - 1);
 	
 	file->SetInt("type", GetComponentType());

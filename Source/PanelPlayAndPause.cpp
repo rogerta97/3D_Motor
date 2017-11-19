@@ -14,11 +14,11 @@ void PanelPlayAndPause::Draw()
 	if (ImGui::Button("PLAY") && App->GetState() != APP_STATE_PLAY)
 	{
 		play_presed = !play_presed; 
+		App->scene_importer->SaveSceneToBuffer();
 		state_modified = true; 
 		App->SetState(APP_STATE_PLAY);
 		LOG("App State: PLAY");
 	}
-
 	ImGui::SameLine(); 
 
 	if (ImGui::Button("PAUSE") && App->GetState() != APP_STATE_PAUSE)

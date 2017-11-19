@@ -171,9 +171,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
-		App->scene_importer->SaveScene("test.json");
-	
+
 	return UPDATE_CONTINUE;
 }
 
@@ -246,8 +244,9 @@ void ModuleSceneIntro::DeleteGameObjectsNow()
 
 GameObject* ModuleSceneIntro::Find(const int& unique_id) const
 {
-	for (int i = 0; i < unique_id; i++)
+	for (int i = 0; i < GO_list.size(); i++)
 	{
+		int aux = GO_list[i]->GetID();
 		if (GO_list[i]->GetID() == unique_id)
 			return GO_list[i]; 
 	}
