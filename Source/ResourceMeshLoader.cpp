@@ -211,7 +211,7 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 
 					LOG("%d indices", tmp_mr->GetNumIndices());
 
-					if (m->HasTextureCoords(0)) // assume mesh has one texture coords
+					if (m->HasTextureCoords(0))
 					{
 						tmp_mr->num_uvs = m->mNumVertices;
 						tmp_mr->uvs = new float[tmp_mr->num_uvs * 3];

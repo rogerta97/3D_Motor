@@ -6,7 +6,7 @@
 #define HISTOGRAM_FR_LENGHT 25
 #define HISTOGRAM_MS_LENGHT 100
 #define MAX_MEMORY_LOGGED	50
-#define NUM_MODULES 11
+#define NUM_MODULES 12
 
 Application::Application()
 {
@@ -29,6 +29,7 @@ Application::Application()
 	physics = new ModulePhysics3D(true);
 	imgui = new ModuleImGui(true);
 	resource_manager = new ResourceManager(true);
+	file_system = new ModuleFileSystem(true); 
 
 
 	// The order of calls is very important!
@@ -50,6 +51,7 @@ Application::Application()
 	AddModule(scene_intro);
 
 	AddModule(imgui);
+	AddModule(file_system); 
 
 	// Renderer last!
 	AddModule(renderer3D);

@@ -162,7 +162,10 @@ void ResourceManager::Load(const char * path)
 
 			App->CopyFileTo(path, "Assets\\Materials");
 			//new importfytfydtrdrdut
-			material_loader->ImportImage(path);
+			ComponentMaterial* mat = material_loader->ImportImage(path);
+
+			if (mat != nullptr)
+				App->scene_intro->GetCurrentGO()->PushComponent((Component*)mat); 
 		}
 		else
 			LOG("No gameobject selected where PNG can be dragged");

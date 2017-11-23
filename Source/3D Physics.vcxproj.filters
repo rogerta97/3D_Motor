@@ -1218,9 +1218,6 @@
     <ClInclude Include="PanelOctree.h">
       <Filter>Helpers\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleFileSystem.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="JSON.h">
       <Filter>Tools\OwnFileFormat</Filter>
     </ClInclude>
@@ -1253,6 +1250,12 @@
     </ClInclude>
     <ClInclude Include="ResourceMeshLoader.h">
       <Filter>Modules\Importers\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelExplorer.h">
+      <Filter>Helpers\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFileSystem.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1481,9 +1484,6 @@
     <ClCompile Include="PanelOctree.cpp">
       <Filter>Helpers\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleFileSystem.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="JSON.cpp">
       <Filter>Tools\OwnFileFormat</Filter>
     </ClCompile>
@@ -1513,6 +1513,12 @@
     </ClCompile>
     <ClCompile Include="ResourceMeshLoader.cpp">
       <Filter>Modules\Importers\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelExplorer.cpp">
+      <Filter>Helpers\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFileSystem.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

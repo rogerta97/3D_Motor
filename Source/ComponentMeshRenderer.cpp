@@ -407,20 +407,19 @@ void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size)
 	{
 		vertices[0].x = origin.x - edge_size / 2;
 		vertices[0].y = 0;
-		vertices[0].z = origin.z - edge_size / 2;
+		vertices[0].z = origin.z + edge_size / 2;
 
 		vertices[1].x = origin.x + edge_size / 2;
 		vertices[1].y = 0;
-		vertices[1].z = origin.z - edge_size / 2;
+		vertices[1].z = origin.z + edge_size / 2;
 
 		vertices[2].x = origin.x + edge_size / 2;
 		vertices[2].y = 0;
-		vertices[2].z = origin.z + edge_size / 2;
+		vertices[2].z = origin.z - edge_size / 2;
 
 		vertices[3].x = origin.x - edge_size / 2;
 		vertices[3].y = 0;
-		vertices[3].z = origin.z + edge_size / 2;
-
+		vertices[3].z = origin.z - edge_size / 2;
 	};
 
 	//memcpy(vertices, &vertices_arr[0], sizeof(float) * 8 * 3);
@@ -442,21 +441,41 @@ void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size)
 	num_triangles = num_indices / 3;
 	indices = new uint[num_indices];
 
-	indices[0] = 2;	
+	indices[0] = 0;	
 	indices[1] = 1;	
-	indices[2] = 0;	
-	indices[3] = 0;	
+	indices[2] = 2;	
+	indices[3] = 2;	
 	indices[4] = 3;	
-	indices[5] = 2,
+	indices[5] = 0,
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * num_indices, indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	LOG("Cube created with buffer num %d", vertices_id);
-	LOG("Vertices: 8");
-	LOG("Triangles: 16");
+	num_uvs = 4;
+	uvs = new float[num_uvs*2];
 
+	uvs[0] = 0;
+	uvs[1] = 1;
 
+	uvs[2] = 1;
+	uvs[3] = 1;
+
+	uvs[4] = 1;
+	uvs[5] = 0;
+	
+	uvs[6] = 0;
+	uvs[7] = 0;
+
+	glGenBuffers(1, (GLuint*)&uvs_id);
+	glBindBuffer(GL_ARRAY_BUFFER, (GLuint)uvs_id);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_uvs * 2, uvs, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	LOG("%d texture cordinates", num_uvs);
+
+	LOG("Plane created with buffer num %d", vertices_id);
+	LOG("Vertices: 4");
+	LOG("Triangles: 2");
 }
 
 void ComponentMeshRenderer::SetSphereVertices(float radius, uint rings, uint sectors, float3 origin)

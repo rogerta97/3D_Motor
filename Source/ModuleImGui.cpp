@@ -26,6 +26,7 @@ bool ModuleImGui::Init(json_file* config)
 	SetInitColors();
 
 	panel_octree.Start(); 
+	panel_explorer.Start("C:\\Users\\FULLMAC\\Documents\\GitHub\\3D_Motor\\Game");
 	
 	console.SetBoolean(true); 
 
@@ -106,6 +107,7 @@ update_status ModuleImGui::PostUpdate(float dt)
 	console.PrintConsole(); 
 	panel_play.Draw(); 
 	raycast.Update();
+	panel_explorer.Update(); 
 
 	ImGui::Render();
 	App->renderer3D->CustomAttributes();

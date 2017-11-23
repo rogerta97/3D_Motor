@@ -75,7 +75,7 @@ public:
 	uint* indices;
 	int num_indices = 0;
 	uint indices_id = 0;
-
+	
 	float* uvs;
 	int num_uvs = 0;
 	uint uvs_id = 0;

@@ -12,7 +12,10 @@ ModuleFileSystem::ModuleFileSystem(bool start_enabled): Module(start_enabled)
 	mesh_path = CreateFolder(lib_path.c_str(), "Meshes");
 	tex_path = CreateFolder(lib_path.c_str(), "Textures");
 
-	RELEASE(root);
+	// HARDCODE TIME :) (just for testing)
+
+
+	//RELEASE(root);
 }
 
 ModuleFileSystem::~ModuleFileSystem()
@@ -188,7 +191,33 @@ string ModuleFileSystem::GetAssetsPath() const
 	return assets_path;
 }
 
+
 string ModuleFileSystem::GetLibraryPath() const
 {
 	return lib_path;
+}
+
+list<string> ModuleFileSystem::GetFilesInDirectory(const char* directory)
+{
+	list<string> to_ret; 
+
+	string path(directory);
+
+	WIN32_FIND_DATA directory_data;
+	HANDLE handle;
+
+	handle = FindFirstFile(path.c_str(), &directory_data); 
+
+	if (handle != INVALID_HANDLE_VALUE)	
+	{
+		do 
+		{
+			to_ret.push_back(directory_data.cFileName);
+
+		} while (FindNextFile(handle, &directory_data) != FALSE);
+
+		FindClose(handle);
+	}
+
+	return to_ret;
 }

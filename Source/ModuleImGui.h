@@ -6,6 +6,7 @@
 #include "PanelHierarchy.h"
 #include "PanelPlayAndPause.h"
 #include "PanelOctree.h"
+#include "PanelExplorer.h"
 #include "ImGuizmo.h"
 #include "RayCast.h"
 
@@ -43,6 +44,7 @@ private:
 	PanelHierarchy hierarchy; 
 	PanelOctree panel_octree; 
 	PanelPlayAndPause panel_play; 
+	PanelExplorer panel_explorer; 
 
 	RayCast raycast; 
 

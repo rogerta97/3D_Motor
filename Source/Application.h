@@ -10,6 +10,7 @@
 #include "ModuleSceneIntro.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
+#include "ModuleFileSystem.h"
 #include "ModulePhysics3D.h"
 #include "ModuleImGui.h"
 #include "ResourceManager.h"
@@ -42,6 +43,7 @@ public:
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
 	ModuleImGui* imgui; 
+	ModuleFileSystem* file_system; 
 	ResourceManager* resource_manager; 
 
 private:

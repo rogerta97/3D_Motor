@@ -4,7 +4,6 @@
 #include "Module.h"
 #include "Globals.h"
 
-
 class ModuleFileSystem : public Module
 {
 public:
@@ -20,9 +19,7 @@ public:
 	// Called before quitting
 	bool CleanUp() ;
 
-	// Utility functions
-	
-	
+	// Utility functions	
 	const char* GetFileName(const char* full_path)const;
 	void NormalizePath(char* full_path) const;
 	//Folder Functions
@@ -35,12 +32,15 @@ public:
 	string GetAssetsPath()const;
 	string GetLibraryPath()const;
 
+	list<string> GetFilesInDirectory(const char* directory); 
+
 
 public: 
 		string assets_path;
 		string lib_path;
 		string mesh_path;
 		string tex_path;
+
 };
 
 #endif // __MODULEFILESYSTEM_H__
