@@ -411,14 +411,8 @@ void PanelInspector::PrintCameraComponent(GameObject* GO_to_draw)
 		if(ImGui::DragFloat("Far Plane Distance##transform", &curr_cmp->frustum.farPlaneDistance, 0.1f, 0.0f))
 			curr_cmp->frustum.SetViewPlaneDistances(curr_cmp->frustum.nearPlaneDistance, curr_cmp->frustum.farPlaneDistance);
 		
-		float aux_FOV = curr_cmp->GetFOV(); 
-		if (ImGui::SliderFloat("Field Of View##transform", &aux_FOV, 0.1f, 179.0f))
-		{
-			if (aux_FOV < 0)
-				aux_FOV = 0; 
-
-			curr_cmp->SetFOV(aux_FOV);
-		}
+		if (ImGui::SliderFloat("Field Of View##transform", &curr_cmp->frustum.verticalFov, 0.1f, 179.0f,"%.2f"))
+			curr_cmp->frustum.SetVerticalFovAndAspectRatio(curr_cmp->frustum.verticalFov, curr_cmp->frustum.AspectRatio());
 		
 
 	}

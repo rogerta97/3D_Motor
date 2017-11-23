@@ -101,7 +101,7 @@ float ComponentCamera::GetFarPlaneDist() const
 
 float ComponentCamera::GetFOV() const
 {
-	return fov;
+	return frustum.verticalFov;
 	
 }
 

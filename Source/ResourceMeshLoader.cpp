@@ -252,20 +252,21 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 				if (scene != nullptr && scene->HasMaterials())
 				{
 					aiMaterial* mat = scene->mMaterials[m->mMaterialIndex];
-					aiString path;
+					aiString ass_path;
 
 					ComponentMaterial* MA_tmp;
-					mat->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+					mat->GetTexture(aiTextureType_DIFFUSE, 0, &ass_path);
+					std::string path = ass_path.C_Str();
+					uint name_pos = path.find_last_of("\\");
 
-					string final_str = TillLastBar(full_path);
-					string text_name = GetLastPathCommand(path.C_Str(), true);
+					std::string rel_path = "Assets\\Materials\\";
+					rel_path += path.substr(name_pos + 1);
 
 			
 						int term = GetPathTermination(full_path);
 
-						final_str += text_name;
 
-						MA_tmp = App->resource_manager->material_loader->ImportImage(final_str.c_str());
+						MA_tmp = App->resource_manager->material_loader->ImportImage(rel_path.c_str());
 
 						MA_tmp->type = COMPONENT_MATERIAL;
 						MA_tmp->Enable();
@@ -274,7 +275,7 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 
 						child_go->PushComponent(MA_tmp);
 
-						Resource* new_r = new Resource(path.C_Str(), RESOURCE_TYPE_MATERIAL, MA_tmp);
+						Resource* new_r = new Resource(ass_path.C_Str(), RESOURCE_TYPE_MATERIAL, MA_tmp);
 						App->resource_manager->AddResource(new_r);
 							
 				}

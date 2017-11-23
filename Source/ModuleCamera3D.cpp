@@ -323,7 +323,6 @@ void ModuleCamera3D::PrintConfigData()
 		
 
 		static float aux_VFOV = editor_camera->GetFOV();
-
 		if (ImGui::SliderFloat("Field Of View", &aux_VFOV, 30.0f, 120.0f, "%.2f"))
 		{
 			editor_camera->SetFOV(aux_VFOV);

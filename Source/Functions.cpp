@@ -31,6 +31,17 @@ string TillLastBar(const char* full_path)
 
 	return final_str;
 }
+string FindMeshes(const char* full_path)
+{
+	string full_path_str(full_path);
+	uint cut = full_path_str.find_last_of("Meshes");
+
+	std::string final_str = full_path_str.substr(0, cut + 1);
+
+	return final_str;
+}
+
+
 
 int GetPathTermination(const char* path)
 {

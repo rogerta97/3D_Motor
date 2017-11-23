@@ -52,8 +52,6 @@ void SceneImporter::LoadSceneFromBuffer()
 
 	if (scene_file != nullptr)
 	{
-		//App->scene_intro->CleanUp();
-		//App->scene_intro->Start();
 
 		for (int i = 0; i < scene_file->GetArraySize("GameObjects"); ++i)
 		{
