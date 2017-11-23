@@ -393,6 +393,72 @@ void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 	LOG("Triangles: 16");
 }
 
+void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size)
+{
+	//translation = origin;
+	glGenBuffers(1, (GLuint*)&vertices_id);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
+
+	//Set the vertices 
+
+	num_vertices = 4;
+	vertices = new vec[num_vertices];
+
+	{
+		vertices[0].x = origin.x - edge_size / 2;
+		vertices[0].y = 0;
+		vertices[0].z = origin.z - edge_size / 2;
+
+		vertices[1].x = origin.x + edge_size / 2;
+		vertices[1].y = 0;
+		vertices[1].z = origin.z - edge_size / 2;
+
+		vertices[2].x = origin.x + edge_size / 2;
+		vertices[2].y = 0;
+		vertices[2].z = origin.z + edge_size / 2;
+
+		vertices[3].x = origin.x - edge_size / 2;
+		vertices[3].y = 0;
+		vertices[3].z = origin.z + edge_size / 2;
+
+	};
+
+	//memcpy(vertices, &vertices_arr[0], sizeof(float) * 8 * 3);
+
+	float3 a = { origin.x - edge_size / 2 ,origin.y - edge_size / 2, origin.z - edge_size / 2 };
+	float3 b = { origin.x + edge_size / 2 ,origin.y + edge_size / 2, origin.z + edge_size / 2 };
+
+	bounding_box = AABB(a, b);
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * 3, vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glGenBuffers(1, (GLuint*)&indices_id);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
+
+	// Set the indices
+
+	num_indices = 6;
+	num_triangles = num_indices / 3;
+	indices = new uint[num_indices];
+
+	indices[0] = 2;	
+	indices[1] = 1;	
+	indices[2] = 0;	
+	indices[3] = 0;	
+	indices[4] = 3;	
+	indices[5] = 2,
+
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * num_indices, indices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	LOG("Cube created with buffer num %d", vertices_id);
+	LOG("Vertices: 8");
+	LOG("Triangles: 16");
+
+
+}
+
 void ComponentMeshRenderer::SetSphereVertices(float radius, uint rings, uint sectors, float3 origin)
 {
 	float const R = 1. / (float)(rings - 1);

@@ -317,6 +317,20 @@ update_status ModuleImGui::PrintTopBar()
 				trans->SetLocalPosition({ 0,0,0 });
 											
 			}
+
+			if (ImGui::MenuItem("Plane"))
+			{
+				GameObject* plane = App->scene_intro->CreateGameObject("Plane");
+
+				string new_name("Plane ");
+				new_name += to_string(App->scene_intro->GetGameObjectsNum());
+				plane->SetName(new_name.c_str());
+
+				ComponentMeshRenderer* mr = new ComponentMeshRenderer(plane);
+				mr->SetPlaneVertices({ 0,0,0 }, 2);
+				plane->PushComponent(mr); 
+
+			}
 				
 			ImGui::EndMenu(); 
 		}
