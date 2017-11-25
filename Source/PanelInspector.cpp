@@ -405,7 +405,6 @@ void PanelInspector::ShowMaterialResources()
 		}
 	}
 		
-
 	ImGui::End();
 }
 		

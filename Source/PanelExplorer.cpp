@@ -65,6 +65,16 @@ void PanelExplorer::CreateTreeRecursive(const char* curr_path, ExplorerNode* nod
 	}
 }
 
+string PanelExplorer::GetPending()
+{
+	return to_load;
+}
+
+void PanelExplorer::SetPending(string pending)
+{
+	to_load = pending;
+}
+
 
 // EXPLORER NODE
 
@@ -95,9 +105,10 @@ void ExplorerNode::DrawNode()
 		if (ImGui::MenuItem(name.c_str()))
 		{		
 			App->imgui->StartModalWindow("Load element ?", "YES", "NO", "LOAD WINDOW");
+			App->imgui->panel_explorer.SetPending(name); 
 		}
 
-		if (App->imgui->GetModalState() == MODAL_YES)
+		if (App->imgui->GetModalState() == MODAL_YES && name == App->imgui->panel_explorer.GetPending())
 		{
 			DeleteEndBars(path);
 			App->resource_manager->Load(path.c_str());

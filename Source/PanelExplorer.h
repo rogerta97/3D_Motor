@@ -46,8 +46,13 @@ public:
 
 	// This will load all the hierarchy of folders and files inside root directory (Game)
 	void CreateTreeRecursive(const char* curr_path, ExplorerNode* node); 
+	
+	string GetPending();
+	void SetPending(string pending);
 
 private:
 	const char* root_path = ""; 
-	ExplorerNode* root_node; 
+
+	ExplorerNode* root_node;
+	string to_load; 
 };

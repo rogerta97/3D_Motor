@@ -33,6 +33,8 @@ public:
 	modal_state GetModalState(); 
 	void SetModalState(modal_state new_st); 
 
+	PanelExplorer panel_explorer;
+
 private:
 
 	void PrintProperties();
@@ -50,7 +52,6 @@ private:
 	PanelHierarchy hierarchy; 
 	PanelOctree panel_octree; 
 	PanelPlayAndPause panel_play; 
-	PanelExplorer panel_explorer; 
 	PanelModalWindow panel_modal_window; 
 
 	RayCast raycast; 
