@@ -83,9 +83,6 @@ update_status ModuleImGui::Update(float dt)
 		return UPDATE_STOP; 
 
 	// Update panels -----------------------------
-
-
-
 	App->performance.SaveRunTimeData(name); 
 	
 	return UPDATE_CONTINUE;
@@ -107,6 +104,14 @@ update_status ModuleImGui::PostUpdate(float dt)
 	raycast.Update();
 	panel_explorer.Update(); 
 
+	if (show_modal_window)
+	{
+		panel_modal_window.Update(); 
+
+		if (panel_modal_window.GetState() == MODAL_NO || panel_modal_window.GetState() == MODAL_YES)
+			show_modal_window = false; 		
+	}
+				
 	ImGui::Render();
 	App->renderer3D->CustomAttributes();
 
@@ -452,10 +457,24 @@ void ModuleImGui::SetInitColors()
 	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.96f, 0.93f, 0.07f, 0.35f);
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
 
-
-
 	style.ItemSpacing.y = 6;
 	style.GrabRounding = 3;
+}
+
+void ModuleImGui::StartModalWindow(const char * text, const char * OK_button, const char * NO_button, const char* window_title)
+{
+	panel_modal_window.SetData(text, OK_button, NO_button, window_title);
+	show_modal_window = true; 
+}
+
+modal_state ModuleImGui::GetModalState()
+{
+	return panel_modal_window.GetState();
+}
+
+void ModuleImGui::SetModalState(modal_state new_st)
+{
+	panel_modal_window.SetState(new_st); 
 }
 	
 

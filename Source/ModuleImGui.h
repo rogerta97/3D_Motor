@@ -5,6 +5,7 @@
 #include "PanelInspector.h"
 #include "PanelHierarchy.h"
 #include "PanelPlayAndPause.h"
+#include "PanelModalWindow.h"
 #include "PanelOctree.h"
 #include "PanelExplorer.h"
 #include "ImGuizmo.h"
@@ -27,6 +28,11 @@ public:
 	void AddInConsole(const std::string);
 	void ImGuiInput(SDL_Event* e)const; 
 	void SetInitColors();
+	void StartModalWindow(const char * text, const char* OK_button, const char* NO_button, const char* window_title);
+	
+	modal_state GetModalState(); 
+	void SetModalState(modal_state new_st); 
+
 private:
 
 	void PrintProperties();
@@ -45,9 +51,9 @@ private:
 	PanelOctree panel_octree; 
 	PanelPlayAndPause panel_play; 
 	PanelExplorer panel_explorer; 
+	PanelModalWindow panel_modal_window; 
 
 	RayCast raycast; 
-
 
 	bool show_test_window = true;
 	bool show_another_window = false;
@@ -62,6 +68,7 @@ private:
 	bool show_hierarchy = true; 
 	bool show_octree_window = false;
 	bool show_style_editor = false; 
+	bool show_modal_window = false; 
 
 	// Console management -----------
 

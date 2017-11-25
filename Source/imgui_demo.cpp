@@ -1433,6 +1433,7 @@ void ImGui::ShowTestWindow(bool* p_open)
 
             if (ImGui::Button("Delete.."))
                 ImGui::OpenPopup("Delete?");
+
             if (ImGui::BeginPopupModal("Delete?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
             {
                 ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");

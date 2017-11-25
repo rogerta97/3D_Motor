@@ -11,6 +11,7 @@ void DeleteLastPathCommand(string& full_path);
 
 string TillLastBar(const char* full_path);
 string FindMeshes(const char* full_path);
+void DeleteEndBars(string& full_path);
 
 int GetPathTermination(const char* path);
 

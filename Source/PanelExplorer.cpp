@@ -41,6 +41,7 @@ void PanelExplorer::Update()
 	ImGui::End(); 
 }
 
+
 void PanelExplorer::CreateTreeRecursive(const char* curr_path, ExplorerNode* node)
 {
 	vector<string> filenames_list = App->file_system->GetFilesInDirectory(curr_path);
@@ -52,9 +53,7 @@ void PanelExplorer::CreateTreeRecursive(const char* curr_path, ExplorerNode* nod
 		string node_path(curr_path + filenames_list[i] + '\\'); 
 
 		new_node->SetPath(node_path.c_str());
-
 		new_node->SetName(GetLastPathCommand(node_path.c_str(), true).c_str());
-
 		new_node->SetIsFolder(App->file_system->IsFolder(node_path.c_str()));
 
 		if (new_node->IsFolder())
@@ -74,6 +73,38 @@ ExplorerNode::ExplorerNode()
 	childs.clear();
 	name = ""; 
 	is_folder = false; 
+}
+
+
+void ExplorerNode::DrawNode()
+{
+	if (is_folder)
+	{
+		if (ImGui::TreeNode(name.c_str()))
+		{
+			for (int i = 0; i < childs.size(); i++)
+			{
+				childs[i]->DrawNode();
+			}
+
+			ImGui::TreePop();
+		}
+	}
+	else
+	{
+		if (ImGui::MenuItem(name.c_str()))
+		{		
+			App->imgui->StartModalWindow("Load element ?", "YES", "NO", "LOAD WINDOW");
+		}
+
+		if (App->imgui->GetModalState() == MODAL_YES)
+		{
+			DeleteEndBars(path);
+			App->resource_manager->Load(path.c_str());
+			App->imgui->SetModalState(MODAL_NULL); 
+		}
+		
+	}
 }
 
 ExplorerNode::~ExplorerNode()
@@ -120,22 +151,3 @@ void ExplorerNode::AddChild(ExplorerNode * new_child)
 	childs.push_back(new_child); 
 }
 
-void ExplorerNode::DrawNode()
-{
-	if (is_folder)
-	{
-		if (ImGui::TreeNode(name.c_str()))
-		{
-			for (int i = 0; i < childs.size(); i++)
-			{
-				childs[i]->DrawNode(); 
-			}
-
-			ImGui::TreePop(); 
-		}
-	}
-	else
-	{
-		ImGui::MenuItem(name.c_str());
-	}
-}

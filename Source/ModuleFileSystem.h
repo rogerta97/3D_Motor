@@ -35,6 +35,7 @@ public:
 
 	// UTILITY
 	vector<string> GetFilesInDirectory(const char* directory, const char* extension = "");
+	void GetAllFilesInDirectory(const char* directory, vector<string>& to_fill);
 	bool IsFolder(const char* directory);
 
 

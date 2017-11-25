@@ -15,8 +15,6 @@ public:
 
 	bool Draw(); 
 
-	bool ShowWarningModal(); 
-
 private:
 
 	void PrintMeshComponent(GameObject* GO_to_draw); 
@@ -24,11 +22,13 @@ private:
 	void PrintTransformComponent(GameObject* GO_to_draw);
 	void PrintCameraComponent(GameObject* GO_to_draw);
 
+	void ShowMaterialResources(); 
+
 private:
 
 	bool show_inspector = true; 
 	bool show_component_popup = false; 
-	bool modal_window = false; 
+	bool show_resources_popup = false; 
 
 };
 

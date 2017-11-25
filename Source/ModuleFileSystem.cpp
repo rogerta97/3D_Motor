@@ -23,8 +23,8 @@ ModuleFileSystem::ModuleFileSystem(bool start_enabled): Module(start_enabled)
 	base_path += "Game\\Assets\\"; 
 	game_assets_dir = base_path; 
 
-	mesh_path_game = base_path + "Materials\\"; 
-	tex_path_game = base_path + "Textures\\";
+	mesh_path_game = base_path + "Meshes\\"; 
+	tex_path_game = base_path + "Materials\\";
 
 }
 
@@ -229,8 +229,7 @@ vector<string> ModuleFileSystem::GetFilesInDirectory(const char* directory, cons
 	if (handle != INVALID_HANDLE_VALUE)	
 	{
 		do 
-		{
-		
+		{		
 			string name(directory_data.cFileName); 
 
 			if (name == "." || name == "..")
@@ -244,6 +243,29 @@ vector<string> ModuleFileSystem::GetFilesInDirectory(const char* directory, cons
 	}
 
 	return to_ret;
+}
+
+void ModuleFileSystem::GetAllFilesInDirectory(const char * directory, vector<string>& to_fill)
+{
+	
+	vector<string> files_to_check = GetFilesInDirectory(directory);
+
+	for (int i = 0; i < files_to_check.size(); i++)
+	{
+		string dir(directory + files_to_check[i] + '\\');
+
+		if (IsFolder(dir.c_str()))
+		{
+			GetAllFilesInDirectory(dir.c_str(), to_fill);
+		}
+		else
+		{
+			to_fill.push_back(files_to_check[i]);
+			files_to_check.erase(files_to_check.begin() + i);
+			i--; 
+		}
+	}
+	
 }
 
 bool ModuleFileSystem::IsFolder(const char * directory)

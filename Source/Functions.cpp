@@ -9,8 +9,7 @@ string GetLastPathCommand(const char* full_path, bool want_termination)
 	string full_path_str(full_path);
 	string final_str;
 
-	if (full_path_str.at(full_path_str.size() - 1) == '\\')
-		full_path_str.erase(full_path_str.size() - 1);
+	DeleteEndBars(full_path_str);
 
 	if (full_path_str.find('\\') != 0)
 	{
@@ -29,8 +28,7 @@ void DeleteLastPathCommand(string& full_path)
 {
 	string final_str;
 
-	if (full_path.at(full_path.size() - 1) == '\\')
-		full_path.erase(full_path.size() - 1); 
+	DeleteEndBars(full_path);
 
 	if (full_path.find('\\') != 0)
 	{
@@ -62,12 +60,18 @@ string FindMeshes(const char* full_path)
 	return final_str;
 }
 
-
+void DeleteEndBars(string & full_path)
+{
+	if (full_path.at(full_path.size() - 1) == '\\')
+		full_path.erase(full_path.size() - 1);
+}
 
 int GetPathTermination(const char* path)
 {
-
 	string full_path(path);
+	
+	DeleteEndBars(full_path); 
+
 	string term = full_path.substr(full_path.size() - 3, 3);
 
 	if (term == "fbx" || term == "FBX")

@@ -137,10 +137,6 @@ bool PanelInspector::Draw()
 				{
 					case 1: 
 					{				
-						if (curr_go->GetComponent(COMPONENT_MATERIAL) != nullptr)
-						{
-							modal_window = true;
-						}
 
 						if (replace || curr_go->GetComponent(COMPONENT_MATERIAL) == nullptr)
 						{
@@ -158,9 +154,6 @@ bool PanelInspector::Draw()
 						break;
 					}		
 				}
-
-			if (modal_window)
-				ShowWarningModal(); 
 		}
 	}
 	ImGui::End();
@@ -168,32 +161,6 @@ bool PanelInspector::Draw()
 	return true; 
 }
 
-bool PanelInspector::ShowWarningModal()
-{
-
-	bool ret = false; 
-	ImGui::OpenPopup("WARNING");
-	if (ImGui::BeginPopupModal("WARNING", &modal_window, ImGuiWindowFlags_AlwaysAutoResize))
-	{
-		ImGui::Text("The component you are trying to add already exist in this object.\nDo you want to override it?");
-
-		if (ImGui::Button("OMG DO IT"))
-		{
-			ret = true; 
-		}
-
-		if (ImGui::Button("FUCK IT"))
-		{
-			ret = false;
-		}
-
-
-		ImGui::EndPopup();
-	}
-	
-
-	return ret; 
-}
 
 void PanelInspector::PrintMeshComponent(GameObject* GO_to_draw)
 {
@@ -254,10 +221,15 @@ void PanelInspector::PrintMaterialComponent(GameObject* GO_to_draw)
 		ImGui::Text("Height: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->height);
 
-		ImGui::Button("S");
+		if (ImGui::Button("Select New Resource"))
+			show_resources_popup = true;
+	
 
 		ImGui::Text("Name: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", curr_cmp->path.c_str()); ImGui::SameLine();
+
+		if (show_resources_popup)
+			ShowMaterialResources(); 
 
 	/*	if (ImGui::Button("Assign Color"))
 		{
@@ -416,5 +388,24 @@ void PanelInspector::PrintCameraComponent(GameObject* GO_to_draw)
 		
 
 	}
+}
+
+void PanelInspector::ShowMaterialResources()
+{
+	ImGui::Begin("Resources");
+	
+	vector<string> files; 
+	App->file_system->GetAllFilesInDirectory(App->file_system->tex_path_game.c_str(), files);
+
+	for (int i = 0; i < files.size(); i++)
+	{
+		if (ImGui::MenuItem(files[i].c_str()))
+		{
+			show_resources_popup = false; 
+		}
+	}
+		
+
+	ImGui::End();
 }
 		
