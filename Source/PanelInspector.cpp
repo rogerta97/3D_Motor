@@ -83,10 +83,13 @@ bool PanelInspector::Draw()
 				PrintMaterialComponent(go_to_display);
 				break; 
 			
-
 			case COMPONENT_CAMERA:
 				PrintCameraComponent(go_to_display);
 				break; 
+
+			case COMPONENT_BILLBOARDING:
+				PrintBillBoardingComponent(go_to_display);
+				break;
 			
 
 			}
@@ -104,7 +107,7 @@ bool PanelInspector::Draw()
 		if (show_component_popup)
 		{
 			int selected_fish = -1;
-			const char* components[] = { "Mesh Renderer", "Material", "Camera"};
+			const char* components[] = { "Mesh Renderer", "Material", "Camera", "Billboarding"};
 
 			// Simple selection popup
 			// (If you want to show the current selection inside the Button itself, you may want to build a string using the "###" operator to preserve a constant ID with a variable label)		
@@ -126,18 +129,11 @@ bool PanelInspector::Draw()
 
 			GameObject* curr_go = App->scene_intro->GetCurrentGO();
 
-			switch (selected_fish)
-			{
-				
-			}
-
 			bool replace = false;
-
 			switch (selected_fish)
 				{
 					case 1: 
 					{				
-
 						if (replace || curr_go->GetComponent(COMPONENT_MATERIAL) == nullptr)
 						{
 							ComponentMaterial* new_mat = new ComponentMaterial(curr_go);
@@ -152,7 +148,14 @@ bool PanelInspector::Draw()
 						ComponentCamera* new_cam = new ComponentCamera(curr_go, 30.0f, 0.1f, 60.0f, 1.5f);
 						curr_go->PushComponent(new_cam);
 						break;
-					}		
+					}	
+
+					case 3:
+					{
+						ComponentBillboarding* new_bill = new ComponentBillboarding(curr_go);
+						curr_go->PushComponent(new_bill);
+						break;
+					}
 				}
 		}
 	}
@@ -281,24 +284,6 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 			return;
 		}
 
-		//static int e = 0;
-		//ImGui::RadioButton("Local", &e, 0); 
-
-		//if (curr_cmp->GetComponentParent()->GetParent() != nullptr)
-		//{
-		//	ImGui::SameLine();
-		//	ImGui::RadioButton("Global", &e, 1);
-		//}
-
-		//float3 radians_angle;
-		//static float pos[3];
-		//static float rot[3];
-		//static float s[3];
-
-		//switch (e)
-		//{
-		//case 0:
-
 		float3 radians_angle;
 		static float pos[3];
 		static float rot[3];
@@ -330,33 +315,7 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 				s[2] = 0.2f;
 
 			curr_cmp->SetLocalScale(float3(s[0], s[1], s[2]));
-		}
-			
-
-
-		//	break;
-
-		//case 1:
-
-		//	radians_angle = curr_cmp->GetGlobalRotation().ToEulerXYZ();
-
-		//	pos[0] = curr_cmp->GetGlobalPosition().x; pos[1] = curr_cmp->GetGlobalPosition().y; pos[2] = curr_cmp->GetGlobalPosition().z;
-		//	rot[0] = RadToDeg(radians_angle.x); rot[1] = RadToDeg(radians_angle.y); rot[2] = RadToDeg(radians_angle.z);
-		//	s[0] = curr_cmp->GetGlobalScale().x; s[1] = curr_cmp->GetGlobalScale().y; s[2] = curr_cmp->GetGlobalScale().z;
-		//	
-		//	ImGui::Text("----- Read Only -----"); 
-
-		//	ImGui::DragFloat3("Position##transform", pos, 2);
-		//	ImGui::DragFloat3("Rotation##transform", rot, 0.0f, 180.0f);
-		//	ImGui::DragFloat3("Scale##transform", s, 2);
-		//
-		//	break;
-		//}
-
-	
-
-
-	
+		}	
 	}
 }
 
@@ -386,8 +345,30 @@ void PanelInspector::PrintCameraComponent(GameObject* GO_to_draw)
 		if (ImGui::SliderFloat("Field Of View##transform", &curr_cmp->frustum.verticalFov, 0.1f, 179.0f,"%.2f"))
 			curr_cmp->frustum.SetVerticalFovAndAspectRatio(curr_cmp->frustum.verticalFov, curr_cmp->frustum.AspectRatio());
 		
-
 	}
+}
+
+void PanelInspector::PrintBillBoardingComponent(GameObject * Go_to_draw)
+{
+	ComponentBillboarding* new_bill = (ComponentBillboarding*)Go_to_draw->GetComponent(COMPONENT_BILLBOARDING); 
+
+	if (ImGui::CollapsingHeader("Component Billboarding"))
+	{
+		if (ImGui::Button("Set Reference"))
+		{
+			ImGui::Begin("Reference");
+
+			if(ImGui::Button("Set"))
+			{
+				
+			}
+
+			ImGui::End();
+		}
+
+		ImGui::Text("Attached to:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s");
+	}	
 }
 
 void PanelInspector::ShowMaterialResources()

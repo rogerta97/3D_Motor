@@ -268,7 +268,6 @@ void ModuleFileSystem::GetAllFilesInDirectory(const char * directory, vector<str
 			i--; 
 		}
 	}
-	
 }
 
 bool ModuleFileSystem::IsFolder(const char * directory)

@@ -5,6 +5,7 @@
 #include "ComponentMeshRenderer.h"
 #include "ComponentCamera.h"
 #include "ComponentTransform.h"
+#include "ComponentBillboarding.h"
 
 #endif // !_COMPONENTDEFS_H_
 

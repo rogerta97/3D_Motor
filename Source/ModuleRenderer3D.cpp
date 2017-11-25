@@ -129,7 +129,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	//TODO when we have more cameras assign the current one
 	//now we will assign the basic editor cam
-	ComponentCamera* rendering_cams = App->camera->GetEditorCam();
 
 	// Adjust projection if needed
 	if (rendering_cam->screen_resized == true)

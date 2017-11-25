@@ -184,7 +184,12 @@ void ModuleCamera3D::Move()
 {
 	vec3 move_aux(0.0f, 0.0f, 0.0f);
 
-	ComponentCamera* curr = (App->GetState() == APP_STATE_PLAY && main_camera != nullptr) ? main_camera : editor_camera; 
+	ComponentCamera* curr;
+
+	if (App->GetState() == APP_STATE_PLAY && main_camera != nullptr)
+		curr = main_camera;
+	else
+		curr = editor_camera;
 
 	float temporal_speed = mov_speed;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -201,7 +206,9 @@ void ModuleCamera3D::Move()
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) curr->MoveLeft(temporal_speed);
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) curr->MoveRight(temporal_speed);
 
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) curr->MoveDown(temporal_speed);
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) 
+		curr->MoveDown(temporal_speed);
+
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) curr->MoveUp(temporal_speed);
 
 	float3 frustum_move(move_aux.x, move_aux.y, move_aux.z);

@@ -20,7 +20,6 @@ ComponentCamera::ComponentCamera(GameObject* _parent, float far_plane, float nea
 	
 	parent = _parent; 
 	active = true; 
-	//App->scene_intro->cameras_list.push_back(this);
 }
 
 ComponentCamera::~ComponentCamera()

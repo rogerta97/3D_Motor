@@ -1260,6 +1260,9 @@
     <ClInclude Include="PanelModalWindow.h">
       <Filter>Helpers\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentBillboarding.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1525,6 +1528,9 @@
     </ClCompile>
     <ClCompile Include="PanelModalWindow.cpp">
       <Filter>Helpers\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentBillboarding.cpp">
+      <Filter>GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
