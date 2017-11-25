@@ -26,7 +26,7 @@ bool ModuleImGui::Init(json_file* config)
 	SetInitColors();
 
 	panel_octree.Start(); 
-	panel_explorer.Start("C:\\Users\\FULLMAC\\Documents\\GitHub\\3D_Motor\\Game");
+	panel_explorer.Start();
 	
 	console.SetBoolean(true); 
 
@@ -85,8 +85,6 @@ update_status ModuleImGui::Update(float dt)
 	// Update panels -----------------------------
 
 
-	//inspector.Draw(); 
-	//console.PrintConsole(); 
 
 	App->performance.SaveRunTimeData(name); 
 	

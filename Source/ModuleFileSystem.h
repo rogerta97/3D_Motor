@@ -28,18 +28,28 @@ public:
 	void FileCopyPaste(const char* filepath, const char* new_path);
 	void FileDelete(const char* filepath);
 	bool SaveFile(const char * path, const char * file_content, const char * name, const char * extension, int size);
+	
 	//Gets
 	string GetAssetsPath()const;
 	string GetLibraryPath()const;
 
-	list<string> GetFilesInDirectory(const char* directory); 
+	// UTILITY
+	vector<string> GetFilesInDirectory(const char* directory, const char* extension = "");
+	bool IsFolder(const char* directory);
 
 
 public: 
+
+		//Library
 		string assets_path;
 		string lib_path;
 		string mesh_path;
 		string tex_path;
+
+		//Assets in Game
+		string game_assets_dir; 
+		string mesh_path_game;
+		string tex_path_game;
 
 };
 

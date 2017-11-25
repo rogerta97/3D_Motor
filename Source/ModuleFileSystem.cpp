@@ -1,5 +1,6 @@
 #include "ModuleFileSystem.h"
 #include "Application.h"
+#include "Functions.h"
 #include <Windows.h>
 
 ModuleFileSystem::ModuleFileSystem(bool start_enabled): Module(start_enabled)
@@ -7,15 +8,24 @@ ModuleFileSystem::ModuleFileSystem(bool start_enabled): Module(start_enabled)
 	//init physfs
 	char* root = SDL_GetBasePath();
 
+	//Library
 	assets_path = CreateFolder(root, "Assets");
 	lib_path = CreateFolder(root, "Library");
 	mesh_path = CreateFolder(lib_path.c_str(), "Meshes");
 	tex_path = CreateFolder(lib_path.c_str(), "Textures");
 
-	// HARDCODE TIME :) (just for testing)
+	//Game
+	string base_path(SDL_GetBasePath()); 
 
+	DeleteLastPathCommand(base_path); 
+	DeleteLastPathCommand(base_path);
 
-	//RELEASE(root);
+	base_path += "Game\\Assets\\"; 
+	game_assets_dir = base_path; 
+
+	mesh_path_game = base_path + "Materials\\"; 
+	tex_path_game = base_path + "Textures\\";
+
 }
 
 ModuleFileSystem::~ModuleFileSystem()
@@ -197,14 +207,22 @@ string ModuleFileSystem::GetLibraryPath() const
 	return lib_path;
 }
 
-list<string> ModuleFileSystem::GetFilesInDirectory(const char* directory)
+vector<string> ModuleFileSystem::GetFilesInDirectory(const char* directory, const char* extension)
 {
-	list<string> to_ret; 
+	vector<string> to_ret;
 
 	string path(directory);
 
 	WIN32_FIND_DATA directory_data;
 	HANDLE handle;
+
+	if (extension != "")
+	{
+		path+= "*.";
+		path+= extension;
+	}
+	else
+		path+= "*.*";
 
 	handle = FindFirstFile(path.c_str(), &directory_data); 
 
@@ -212,6 +230,12 @@ list<string> ModuleFileSystem::GetFilesInDirectory(const char* directory)
 	{
 		do 
 		{
+		
+			string name(directory_data.cFileName); 
+
+			if (name == "." || name == "..")
+				continue; 
+
 			to_ret.push_back(directory_data.cFileName);
 
 		} while (FindNextFile(handle, &directory_data) != FALSE);
@@ -220,4 +244,14 @@ list<string> ModuleFileSystem::GetFilesInDirectory(const char* directory)
 	}
 
 	return to_ret;
+}
+
+bool ModuleFileSystem::IsFolder(const char * directory)
+{
+	vector<string> files_inside = GetFilesInDirectory(directory);
+
+	if (files_inside.size() > 0)
+		return true;
+
+	return false; 
 }

@@ -9,6 +9,9 @@ string GetLastPathCommand(const char* full_path, bool want_termination)
 	string full_path_str(full_path);
 	string final_str;
 
+	if (full_path_str.at(full_path_str.size() - 1) == '\\')
+		full_path_str.erase(full_path_str.size() - 1);
+
 	if (full_path_str.find('\\') != 0)
 	{
 		uint cut = full_path_str.find_last_of('\\');
@@ -20,6 +23,24 @@ string GetLastPathCommand(const char* full_path, bool want_termination)
 	}
 
 	return final_str;
+}
+
+void DeleteLastPathCommand(string& full_path)
+{
+	string final_str;
+
+	if (full_path.at(full_path.size() - 1) == '\\')
+		full_path.erase(full_path.size() - 1); 
+
+	if (full_path.find('\\') != 0)
+	{
+		uint cut = full_path.find_last_of('\\');
+
+		uint to_kill = full_path.size() - cut - 1; 
+		
+		full_path = full_path.substr(0, full_path.size() - to_kill);
+		
+	}
 }
 
 string TillLastBar(const char* full_path)

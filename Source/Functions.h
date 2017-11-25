@@ -7,6 +7,7 @@
 using namespace std;
 
 string GetLastPathCommand(const char* full_path, bool want_termination);
+void DeleteLastPathCommand(string& full_path);
 
 string TillLastBar(const char* full_path);
 string FindMeshes(const char* full_path);

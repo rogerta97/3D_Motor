@@ -50,8 +50,9 @@ Application::Application()
 	// Scenes
 	AddModule(scene_intro);
 
+	AddModule(file_system);
 	AddModule(imgui);
-	AddModule(file_system); 
+
 
 	// Renderer last!
 	AddModule(renderer3D);
