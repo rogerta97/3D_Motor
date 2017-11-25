@@ -245,8 +245,8 @@ vector<string> ModuleFileSystem::GetFilesInDirectory(const char* directory, cons
 	return to_ret;
 }
 
-void ModuleFileSystem::GetAllFilesInDirectory(const char * directory, vector<string>& to_fill)
-{
+void ModuleFileSystem::GetAllFilesInDirectory(const char * directory, vector<string>& to_fill, const char* prefix)
+{	
 	
 	vector<string> files_to_check = GetFilesInDirectory(directory);
 
@@ -256,11 +256,14 @@ void ModuleFileSystem::GetAllFilesInDirectory(const char * directory, vector<str
 
 		if (IsFolder(dir.c_str()))
 		{
-			GetAllFilesInDirectory(dir.c_str(), to_fill);
+			string prefix_str(files_to_check[i] + '\\');
+			GetAllFilesInDirectory(dir.c_str(), to_fill, prefix_str.c_str());
 		}
 		else
 		{
-			to_fill.push_back(files_to_check[i]);
+			string to_push(prefix + files_to_check[i]); 
+
+			to_fill.push_back(to_push);
 			files_to_check.erase(files_to_check.begin() + i);
 			i--; 
 		}

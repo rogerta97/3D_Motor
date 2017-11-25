@@ -401,6 +401,8 @@ void PanelInspector::ShowMaterialResources()
 	{
 		if (ImGui::MenuItem(files[i].c_str()))
 		{
+			string path(App->file_system->tex_path_game + files[i]);
+			App->resource_manager->Load(path.c_str());
 			show_resources_popup = false; 
 		}
 	}
