@@ -163,10 +163,13 @@ void ComponentTransform::DeleteComponent()
 
 void ComponentTransform::SetLocalPosition(const float3 & _position)
 {
+	ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponentParent()->GetComponent(COMPONENT_MESH_RENDERER); 
+
 	if (GetComponentParent()->IsStatic() == false)
 	{
 		transform.position = _position;
 		UpdateTransform(GetComponentParent()); 
+		if (mr != nullptr) mr->RecalculateCenterPoints();
 		transform_modified = true; 
 	}	
 }

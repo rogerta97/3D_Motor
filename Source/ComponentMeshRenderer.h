@@ -31,7 +31,9 @@ public:
 	void SetPlaneVertices(float3 origin, uint edge_size);
 	void SetSphereVertices(float radius, uint rings, uint sectors, float3 origin);
 	void SetCylinderVertices(float r, int sides, int height);
+
 	uint GetNumTriangles() const;
+	void RecalculateCenterPoints(); 
 
 	void SetBBox(AABB _box);
 	AABB GetBBox() const;

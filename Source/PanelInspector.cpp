@@ -193,7 +193,9 @@ void PanelInspector::PrintMeshComponent(GameObject* GO_to_draw)
 		else
 			ImGui::TextColored(ImVec4(1, 0, 0, 1), "NONE");
 
-		ImGui::Checkbox("Draw AABB", &curr_cmp->show_bb);
+		ImGui::Separator();
+
+		ImGui::Checkbox("Draw AABB", &curr_cmp->show_bb); ImGui::SameLine(); 
 
 		if(curr_cmp->normals_id != 0)
 			ImGui::Checkbox("Draw Normals", &curr_cmp->show_normals);

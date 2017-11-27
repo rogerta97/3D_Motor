@@ -348,6 +348,23 @@ uint ComponentMeshRenderer::GetNumTriangles() const
 	return num_triangles;
 }
 
+void ComponentMeshRenderer::RecalculateCenterPoints()
+{
+	ComponentTransform* trans = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM); 
+
+
+
+	for (int i = 0; i < GetNumTriangles(); i++)
+	{
+		LineSegment segment(center_points[i], center_points[i] + normals[i]);
+		segment.Transform(trans->GetGlobalTransform()); 
+
+		center_points[i] = segment.a; 
+		//normals[i] = segment.b; 
+		//center_points[i] = trans->GetGlobalTransform(); 
+	}
+}
+
 void ComponentMeshRenderer::SetNewMesh(ComponentMeshRenderer * new_mesh)
 {
 	if (new_mesh != nullptr)
@@ -455,7 +472,6 @@ void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size)
 
 
 	//Set the vertices 
-
 	num_vertices = 4;
 	vertices = new vec[num_vertices];
 
@@ -491,21 +507,43 @@ void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
 
 	// Set the indices
-
 	num_indices = 6;
 	num_triangles = num_indices / 3;
+
 	indices = new uint[num_indices];
+	center_points = new float3[num_triangles];
+
+	num_normals = 2;
+	normals = new float3[num_normals];
 
 	indices[0] = 0;	
 	indices[1] = 1;	
 	indices[2] = 2;	
 	indices[3] = 2;	
 	indices[4] = 3;	
-	indices[5] = 0,
+	indices[5] = 0;
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * num_indices, indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	//Normals 
+	for (int i = 0; i < num_normals; i++)
+	{
+		Triangle current;
+		current.a = vertices[indices[i * 3]];
+		current.b = vertices[indices[i * 3 + 1]];
+		current.c = vertices[indices[i * 3 + 2]];
+
+		center_points[i] = current.CenterPoint();
+		normals[i] = current.NormalCCW();
+	}
+
+	glGenBuffers(1, (GLuint*)&normals_id);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, normals_id);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float3) * num_normals, normals, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	//Set UVs
 	num_uvs = 4;
 	uvs = new float[num_uvs*2];
 
