@@ -194,6 +194,9 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 					if (m->HasFaces()) {
 						tmp_mr->num_indices = m->mNumFaces * 3;
 						tmp_mr->indices = new uint[tmp_mr->num_indices];
+						tmp_mr->center_points = new float3[m->mNumFaces];
+
+						int placer = 0; 
 						for (uint i = 0; i < m->mNumFaces; ++i)
 						{
 							if (m->mFaces[i].mNumIndices != 3) {
@@ -205,6 +208,7 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 
 								//We create a triangle for getting the center point and drawing the normals
 								Triangle tri(tmp_mr->vertices[i*3], tmp_mr->vertices[i*3 + 1], tmp_mr->vertices[i*3 + 2]);
+								tmp_mr->center_points[placer++] = tri.CenterPoint(); 
 
 							}
 								

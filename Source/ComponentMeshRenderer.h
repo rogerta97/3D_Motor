@@ -89,7 +89,8 @@ public:
 	uint indices_id = 0;
 	
 	float3* normals;
-	float3* center_point; 
+	float3* center_points; 
+
 	int num_normals = 0;
 	uint normals_id = 0;
 

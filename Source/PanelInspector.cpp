@@ -194,7 +194,9 @@ void PanelInspector::PrintMeshComponent(GameObject* GO_to_draw)
 			ImGui::TextColored(ImVec4(1, 0, 0, 1), "NONE");
 
 		ImGui::Checkbox("Draw AABB", &curr_cmp->show_bb);
-		ImGui::Checkbox("Draw Normals", &curr_cmp->show_normals);
+
+		if(curr_cmp->normals_id != 0)
+			ImGui::Checkbox("Draw Normals", &curr_cmp->show_normals);
 
 	}
 
@@ -203,7 +205,7 @@ void PanelInspector::PrintMeshComponent(GameObject* GO_to_draw)
 	
 	if (curr_cmp->AreNormalsShowing())
 	{
-
+		App->renderer3D->DrawNormals(curr_cmp->normals, curr_cmp->center_points, curr_cmp->num_normals);
 	}
 }
 

@@ -368,17 +368,13 @@ void ModuleRenderer3D::SetRenderingCam(ComponentCamera * new_cam)
 	rendering_cam = new_cam; 
 }
 
-void ModuleRenderer3D::DrawNormals(float3 * normals, uint num)
+void ModuleRenderer3D::DrawNormals(float3 * normals, float3* center_points, uint num)
 {
-	for (int i = 0; i < num; i++)
-	{
-		LineSegment segment; 
-		
-		
-		
-
-	
-	}
+	//for (int i = 0; i < num; i++)
+	//{
+		LineSegment segment(center_points[0], normals[0]); 
+		DebugDraw(segment, Blue); 
+	/*}*/
 }
 
 char * ModuleRenderer3D::GetGraphicsModel(const char* _module) const
