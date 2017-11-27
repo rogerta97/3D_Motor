@@ -187,6 +187,12 @@ void PanelInspector::PrintMeshComponent(GameObject* GO_to_draw)
 		ImGui::Text("Triangles: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumTriangles());
 
+		ImGui::Text("Normals: "); ImGui::SameLine();
+		if(curr_cmp->normals_id != 0)
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumNormals());
+		else
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), "NONE");
+
 		ImGui::Checkbox("AABB active", &curr_cmp->show_bb);
 
 	}

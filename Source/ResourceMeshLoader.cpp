@@ -188,6 +188,7 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 					LOG("%d vertices", tmp_mr->GetNumVertices());
 
 					glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 					//Indices
 
 					if (m->HasFaces()) {
@@ -210,6 +211,23 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 					LOG("%d indices", tmp_mr->GetNumIndices());
+
+					//Normals
+
+					if (m->HasNormals())
+					{
+						tmp_mr->num_normals = m->mNumVertices;
+						tmp_mr->normals = new float3[tmp_mr->num_normals];
+						memcpy(tmp_mr->normals, m->mNormals, sizeof(float3) * tmp_mr->num_vertices);
+
+						glGenBuffers(1, &tmp_mr->normals_id);
+						glBindBuffer(GL_ARRAY_BUFFER, tmp_mr->normals_id);
+						glBufferData(GL_ARRAY_BUFFER, sizeof(float)* tmp_mr->num_normals, tmp_mr->normals, GL_STATIC_DRAW);
+			
+						LOG("%d normals", tmp_mr->num_normals); 
+
+						glBindBuffer(GL_ARRAY_BUFFER, 0);
+					}
 
 					if (m->HasTextureCoords(0))
 					{

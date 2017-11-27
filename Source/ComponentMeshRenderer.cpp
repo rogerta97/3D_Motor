@@ -56,6 +56,21 @@ uint * ComponentMeshRenderer::GetIndices() const
 	return indices;
 }
 
+int ComponentMeshRenderer::GetNumNormals() const
+{
+	return num_normals;
+}
+
+uint ComponentMeshRenderer::GetNormalsID() const
+{
+	return normals_id;
+}
+
+float3 * ComponentMeshRenderer::GetNormals() const
+{
+	return normals;
+}
+
 int ComponentMeshRenderer::GetNumUVS() const
 {
 	return num_uvs;
@@ -99,6 +114,21 @@ void ComponentMeshRenderer::SetIndicesId(uint id)
 void ComponentMeshRenderer::SetIndices(uint * ind)
 {
 	indices = ind;
+}
+
+void ComponentMeshRenderer::SetNumNormals(int num)
+{
+	num_normals = num;
+}
+
+void ComponentMeshRenderer::SetNormalsId(uint id)
+{
+	normals_id = id; 
+}
+
+void ComponentMeshRenderer::SetNormals(float3 * ind)
+{
+	normals = ind;
 }
 
 void ComponentMeshRenderer::SetNumUVS(int num)
@@ -228,6 +258,10 @@ void ComponentMeshRenderer::Delete()
 	indices = nullptr;
 	glDeleteBuffers(1, &indices_id);
 	delete(indices); 
+
+	normals = nullptr;
+	glDeleteBuffers(1, &normals_id);
+	delete (normals);
 
 	uvs = nullptr;
 	glDeleteBuffers(1, &uvs_id);
