@@ -71,9 +71,13 @@ public:
 	void SetUVS(float* uvs);
 
 	bool IsBBoxShowing()const;
-	bool show_bb;
+	bool AreNormalsShowing()const;
+
+	void SetShowingAABB(bool show); 
+	void SetShowingNormals(bool show);
 
 	void Serialize(json_file* file);
+
 public: 
 
 	vec* vertices;
@@ -85,6 +89,7 @@ public:
 	uint indices_id = 0;
 	
 	float3* normals;
+	float3* center_point; 
 	int num_normals = 0;
 	uint normals_id = 0;
 
@@ -97,9 +102,14 @@ public:
 	AABB bounding_box;
 	uint unique_id = 0;
 
+	bool show_bb;
+	bool show_normals;
+
 private:
 
 	mesh_shape shape_mesh; 
+
+
 
 };
 

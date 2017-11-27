@@ -368,6 +368,19 @@ void ModuleRenderer3D::SetRenderingCam(ComponentCamera * new_cam)
 	rendering_cam = new_cam; 
 }
 
+void ModuleRenderer3D::DrawNormals(float3 * normals, uint num)
+{
+	for (int i = 0; i < num; i++)
+	{
+		LineSegment segment; 
+		
+		
+		
+
+	
+	}
+}
+
 char * ModuleRenderer3D::GetGraphicsModel(const char* _module) const
 {
 	const GLubyte* model; 

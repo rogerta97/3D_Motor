@@ -200,7 +200,14 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 								LOG("WARNING, geometry face with != 3 indices!");
 							}
 							else
+							{
 								memcpy(&tmp_mr->indices[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
+
+								//We create a triangle for getting the center point and drawing the normals
+								Triangle tri(tmp_mr->vertices[i*3], tmp_mr->vertices[i*3 + 1], tmp_mr->vertices[i*3 + 2]);
+
+							}
+								
 						}
 
 					}

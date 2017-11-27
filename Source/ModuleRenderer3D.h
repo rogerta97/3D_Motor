@@ -29,10 +29,7 @@ public:
 	void OnResize(int width, int height);
 	void PrintConfigData();
 	void SetRenderingCam(ComponentCamera* new_cam); 
-
-	//void SetObjectsWireframe(bool state); 
-
-	
+	void DrawNormals(float3* normals, uint num);
 
 
 private: 

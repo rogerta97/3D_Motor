@@ -149,6 +149,22 @@ void ComponentMeshRenderer::SetUVS(float * uvs)
 bool ComponentMeshRenderer::IsBBoxShowing() const
 {
 	return show_bb;
+	
+}
+
+bool ComponentMeshRenderer::AreNormalsShowing() const
+{
+	return show_normals;
+}
+
+void ComponentMeshRenderer::SetShowingAABB(bool show)
+{
+	show_bb = show; 
+}
+
+void ComponentMeshRenderer::SetShowingNormals(bool show)
+{
+	show_normals = show; 
 }
 
 void ComponentMeshRenderer::Serialize(json_file * file)
@@ -276,6 +292,7 @@ ComponentMeshRenderer::ComponentMeshRenderer(GameObject* _parent)
 	active = true;
 	parent = _parent; 
 	show_bb = false; 
+	show_normals = false; 
 	type = COMPONENT_MESH_RENDERER; 
 
 	//take the actual memory adress to not repeat the same
