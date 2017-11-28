@@ -544,20 +544,26 @@ void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	//Set UVs
-	num_uvs = 4;
-	uvs = new float[num_uvs*2];
+	num_uvs = num_indices; 
+	uvs = new float[num_vertices * 3];
 
 	uvs[0] = 0;
-	uvs[1] = 1;
+	uvs[1] = 0; 
 
 	uvs[2] = 1;
-	uvs[3] = 1;
+	uvs[3] = 0;
 
 	uvs[4] = 1;
-	uvs[5] = 0;
-	
-	uvs[6] = 0;
-	uvs[7] = 0;
+	uvs[5] = 1; 
+
+	uvs[6] = 1;
+	uvs[7] = 1;
+
+	uvs[8] = 0;
+	uvs[9] = 1;
+
+	uvs[10] = 0;
+	uvs[11] = 0; 
 
 	glGenBuffers(1, (GLuint*)&uvs_id);
 	glBindBuffer(GL_ARRAY_BUFFER, (GLuint)uvs_id);
