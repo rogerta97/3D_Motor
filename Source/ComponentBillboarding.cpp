@@ -7,6 +7,7 @@ ComponentBillboarding::ComponentBillboarding(GameObject * parent)
 	this->parent = parent; 
 	reference = nullptr; 
 	curr_relation = {0,0,0};
+	show_set_window = false; 
 	type = COMPONENT_BILLBOARDING;
 }
 
@@ -16,25 +17,22 @@ ComponentBillboarding::~ComponentBillboarding()
 
 void ComponentBillboarding::AttachObject(GameObject* new_reference)
 {
-	reference = new_reference; 
 
-	ComponentTransform* ref_trans = (ComponentTransform*)reference->GetComponent(COMPONENT_TRANSFORM);
-	ComponentTransform* this_trans = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
-
-	if (ref_trans != nullptr)
-	{
-		curr_relation = ref_trans->GetGlobalPosition() - this_trans->GetGlobalPosition(); 
-	}
 		
+}
+
+bool ComponentBillboarding::GetShowInputWindow() const
+{
+	return show_set_window; 
+}
+
+void ComponentBillboarding::SetShowInputWindow(bool new_set)
+{
+	show_set_window = new_set; 
 }
 
 bool ComponentBillboarding::Update()
 {
-
-	if (reference != nullptr)
-	{
-
-	}
 
 	return false;
 }

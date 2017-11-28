@@ -467,10 +467,6 @@ void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size)
 	glGenBuffers(1, (GLuint*)&vertices_id);
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 
-	Quat quaternion; 
-	quaternion.FromEulerXYZ(30, 0, 0); 
-
-
 	//Set the vertices 
 	num_vertices = 4;
 	vertices = new vec[num_vertices];

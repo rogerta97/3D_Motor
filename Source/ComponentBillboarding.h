@@ -23,10 +23,15 @@ public:
 
 	void AttachObject(GameObject* new_reference);
 
+	void SetShowInputWindow(bool new_set); 
+	bool GetShowInputWindow() const;
+
 private:
 
 	GameObject* reference; 
+
 	float3 curr_relation; 
+	bool show_set_window; 
 
 };
 

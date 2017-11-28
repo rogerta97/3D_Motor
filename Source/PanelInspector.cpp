@@ -374,10 +374,15 @@ void PanelInspector::PrintBillBoardingComponent(GameObject * Go_to_draw)
 
 			if(ImGui::Button("Set"))
 			{
-				
+				new_bill->SetShowInputWindow(true);
 			}
 
 			ImGui::End();
+		}
+
+		if (new_bill->GetShowInputWindow())
+		{
+			LOG("jksdfh"); 
 		}
 
 		ImGui::Text("Attached to:"); ImGui::SameLine();
