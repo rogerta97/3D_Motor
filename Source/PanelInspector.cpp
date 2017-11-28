@@ -369,24 +369,16 @@ void PanelInspector::PrintBillBoardingComponent(GameObject * Go_to_draw)
 	if (ImGui::CollapsingHeader("Component Billboarding"))
 	{
 		if (ImGui::Button("Set Reference"))
-		{
-			ImGui::Begin("Reference");
-
-			if(ImGui::Button("Set"))
-			{
-				new_bill->SetShowInputWindow(true);
-			}
-
-			ImGui::End();
-		}
-
-		if (new_bill->GetShowInputWindow())
-		{
-			LOG("jksdfh"); 
+		{	
+			new_bill->GetComponentParent()->SetLooking4Reference(true); 
 		}
 
 		ImGui::Text("Attached to:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s");
+
+		if (new_bill->GetReference() != nullptr)
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", new_bill->GetReference()->GetName());
+		else
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), "NONE"); 
 	}	
 }
 

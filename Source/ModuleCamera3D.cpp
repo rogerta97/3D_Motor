@@ -184,7 +184,6 @@ void ModuleCamera3D::Move()
 {
 	vec3 move_aux(0.0f, 0.0f, 0.0f);
 
-	ComponentCamera* curr;
 
 	if (App->GetState() == APP_STATE_PLAY && main_camera != nullptr)
 		curr = main_camera;
@@ -200,8 +199,11 @@ void ModuleCamera3D::Move()
 		if (App->input->GetMouseWheel() == 1) curr->MoveForward(temporal_speed);
 		if (App->input->GetMouseWheel() == -1) curr->MoveBackwards(temporal_speed);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) curr->MoveForward(temporal_speed);
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) curr->MoveBackwards(temporal_speed);
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		curr->MoveForward(temporal_speed);
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) 
+		curr->MoveBackwards(temporal_speed);
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) curr->MoveLeft(temporal_speed);
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) curr->MoveRight(temporal_speed);
@@ -211,6 +213,7 @@ void ModuleCamera3D::Move()
 
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) curr->MoveUp(temporal_speed);
 
+	
 	float3 frustum_move(move_aux.x, move_aux.y, move_aux.z);
 
 	curr->frustum.SetPos(curr->frustum.pos + frustum_move);

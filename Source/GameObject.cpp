@@ -302,6 +302,16 @@ void GameObject::SetLooking4Parent(bool is_searching)
 	looking_for_parent = is_searching;
 }
 
+bool GameObject::IsLooking4Reference()
+{
+	return looking_for_reference;
+}
+
+void GameObject::SetLooking4Reference(bool is_searching)
+{
+	looking_for_reference = is_searching; 
+}
+
 void GameObject::ShowBB(bool show_it)
 {
 	ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponent(COMPONENT_MESH_RENDERER); 

@@ -84,6 +84,9 @@ public:
 	bool IsLooking4Parent();
 	void SetLooking4Parent(bool is_searching);
 
+	bool IsLooking4Reference();
+	void SetLooking4Reference(bool is_searching);
+
 	void ShowBB(bool show_it);
 
 	void Serialize(json_file* file);
@@ -101,7 +104,10 @@ public:
 	bool active = false;
 	bool is_static = false; 
 	bool is_root = false; 
+
 	bool looking_for_parent = false; 
+	bool looking_for_reference = false; 
+
 	uint new_child_id = 0;
 	UID unique_id;
 

@@ -21,16 +21,18 @@ public:
 	void OnSave(json_file& config)const;
 	void Delete();
 
-	void AttachObject(GameObject* new_reference);
-
 	void SetShowInputWindow(bool new_set); 
 	bool GetShowInputWindow() const;
+
+	void SetReference(GameObject* reference); 
+	GameObject* GetReference();
 
 private:
 
 	GameObject* reference; 
 
 	float3 curr_relation; 
+
 	bool show_set_window; 
 
 };

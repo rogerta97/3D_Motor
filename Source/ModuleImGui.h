@@ -30,6 +30,8 @@ public:
 	void SetInitColors();
 	void StartModalWindow(const char * text, const char* OK_button, const char* NO_button, const char* window_title);
 	
+
+
 	modal_state GetModalState(); 
 	void SetModalState(modal_state new_st); 
 

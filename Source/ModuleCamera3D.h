@@ -79,4 +79,6 @@ private:
 	ComponentCamera* editor_camera = nullptr;
 	ComponentCamera* main_camera = nullptr; 
 
+	ComponentCamera* curr = nullptr;
+
 };

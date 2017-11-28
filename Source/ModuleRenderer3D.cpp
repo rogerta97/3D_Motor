@@ -136,6 +136,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		ChangeRenderView();
 		rendering_cam->screen_resized = false;
 	}
+
 	App->performance.InitTimer(name); 
 
 	glClearColor(0.f, 0.f, 0.f, 1.f);

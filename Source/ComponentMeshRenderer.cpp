@@ -473,20 +473,20 @@ void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size)
 
 	{
 		vertices[0].x = origin.x - edge_size / 2;
-		vertices[0].y = 0;
-		vertices[0].z = origin.z + edge_size / 2;
+		vertices[0].y = origin.y + edge_size / 2;
+		vertices[0].z = 0;
 
 		vertices[1].x = origin.x + edge_size / 2;
-		vertices[1].y = 0;
-		vertices[1].z = origin.z + edge_size / 2;
+		vertices[1].y = origin.y + edge_size / 2;
+		vertices[1].z = 0;
 
 		vertices[2].x = origin.x + edge_size / 2;
-		vertices[2].y = 0;
-		vertices[2].z = origin.z - edge_size / 2;
+		vertices[2].y = origin.y - edge_size / 2;
+		vertices[2].z = 0;
 
 		vertices[3].x = origin.x - edge_size / 2;
-		vertices[3].y = 0;
-		vertices[3].z = origin.z - edge_size / 2;
+		vertices[3].y = origin.y - edge_size / 2;
+		vertices[3].z = 0;
 	};
 
 	//memcpy(vertices, &vertices_arr[0], sizeof(float) * 8 * 3);
@@ -513,11 +513,11 @@ void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size)
 	normals = new float3[num_normals];
 
 	indices[0] = 0;	
-	indices[1] = 1;	
-	indices[2] = 2;	
+	indices[1] = 2;	
+	indices[2] = 1;	
 	indices[3] = 2;	
-	indices[4] = 3;	
-	indices[5] = 0;
+	indices[4] = 0;	
+	indices[5] = 3;
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * num_indices, indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

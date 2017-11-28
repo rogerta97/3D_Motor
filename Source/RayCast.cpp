@@ -3,6 +3,7 @@
 #include "ModuleCamera3D.h"
 #include "ComponentMeshRenderer.h"
 #include "ComponentTransform.h"
+#include "ComponentBillboarding.h"
 #include "Functions.h"
 #include "Octree.h"
 #include "moduleImGui.h"
@@ -39,6 +40,12 @@ void RayCast::Update()
 					curr_obj->SetParent(hited_GO);
 					curr_obj->SetLooking4Parent(false);
 					LOG("%s is child of %s", curr_obj->GetName(), hited_GO->GetName());
+				}
+				else if (curr_obj != nullptr && curr_obj->IsLooking4Reference() == true)
+				{
+					ComponentBillboarding* bill = (ComponentBillboarding*)curr_obj->GetComponent(COMPONENT_BILLBOARDING); 
+					bill->SetReference(hited_GO);
+					curr_obj->SetLooking4Reference(false);
 				}
 				else 
 				{

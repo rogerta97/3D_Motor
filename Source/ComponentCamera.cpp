@@ -215,42 +215,96 @@ void ComponentCamera::MoveForward(const float & speed)
 {
 	float3 vec = float3::zero;
 	vec += frustum.Front() * speed;
+
+	if (GetComponentParent() != nullptr)
+	{
+		ComponentTransform* trans = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
+
+		trans->SetLocalPosition(trans->GetLocalPosition() + vec);
+	}
+
 	frustum.Translate(vec);
+
 }
 
 void ComponentCamera::MoveBackwards(const float & speed)
 {
 	float3 vec = float3::zero;
 	vec -= frustum.Front() * speed;
+	if (GetComponentParent() != nullptr)
+	{
+		ComponentTransform* trans = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
+
+		trans->SetLocalPosition(trans->GetLocalPosition() + vec);
+	}
 	frustum.Translate(vec);
+
+
+
+	//if u are moving the main camera you also need to move the GO atacched because the frustum sets on the GO position evcery frame
 }
 
 void ComponentCamera::MoveRight(const float & speed)
 {
 	float3 vec = float3::zero;
 	vec += frustum.WorldRight() * speed;
+
+	if (GetComponentParent() != nullptr)
+	{
+		ComponentTransform* trans = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
+
+		trans->SetLocalPosition(trans->GetLocalPosition() + vec);
+	}
+
 	frustum.Translate(vec);
+
+
 }
 
 void ComponentCamera::MoveLeft(const float & speed)
 {
 	float3 vec = float3::zero;
 	vec -= frustum.WorldRight() * speed;
+	if (GetComponentParent() != nullptr)
+	{
+		ComponentTransform* trans = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
+
+		trans->SetLocalPosition(trans->GetLocalPosition() + vec);
+	}
 	frustum.Translate(vec);
+
+
 }
 
 void ComponentCamera::MoveUp(const float & speed)
 {
 	float3 vec = float3::zero;
 	vec += float3::unitY * speed;
+	if (GetComponentParent() != nullptr)
+	{
+		ComponentTransform* trans = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
+
+		trans->SetLocalPosition(trans->GetLocalPosition() + vec);
+	}
 	frustum.Translate(vec);
+
+
 }
 
 void ComponentCamera::MoveDown(const float & speed)
 {
 	float3 vec = float3::zero;
 	vec -= float3::unitY * speed;
+
+	if (GetComponentParent() != nullptr)
+	{
+		ComponentTransform* trans = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
+
+		trans->SetLocalPosition(trans->GetLocalPosition() + vec);
+	}
+
 	frustum.Translate(vec);
+
 }
 
 void ComponentCamera::SetPosition(const float3 & pos)
