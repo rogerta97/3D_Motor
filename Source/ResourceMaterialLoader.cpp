@@ -80,7 +80,7 @@ ComponentMaterial* ResourceMaterialLoader::ImportImage(const char* path)
 			iluFlipImage();
 		}
 
-		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+		success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 	
 		new_component->width = ilGetInteger(IL_IMAGE_WIDTH);
 		new_component->height = ilGetInteger(IL_IMAGE_HEIGHT);
@@ -101,6 +101,15 @@ ComponentMaterial* ResourceMaterialLoader::ImportImage(const char* path)
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 		glGenTextures(1, &textureID);
+
+		//Transparency
+
+		glEnable(GL_BLEND);
+		glEnable(GL_ALPHA_TEST);
+	
+		glAlphaFunc(GL_GREATER, new_component->alpha_test);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		glBindTexture(GL_TEXTURE_2D, textureID);
 
 		new_component->textures_id = textureID; 
@@ -110,7 +119,7 @@ ComponentMaterial* ResourceMaterialLoader::ImportImage(const char* path)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
 		SaveAsDDS();
 

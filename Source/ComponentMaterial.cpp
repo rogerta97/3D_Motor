@@ -18,6 +18,7 @@ ComponentMaterial::ComponentMaterial(GameObject* _parent)
 
 	uint* uid = md5(data, size);
 	unique_id = *uid;
+	alpha_test = 0.1f; 
 
 }
 
@@ -40,17 +41,17 @@ bool ComponentMaterial::Enable()
 bool ComponentMaterial::Update()
 {
 
-	if (active == false)
-		return true;
+	//if (active == false)
+	//	return true;
 
-	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_TEXTURE_2D);
 
-	glBindTexture(GL_TEXTURE_2D, textures_id);
+	//glBindTexture(GL_TEXTURE_2D, textures_id);
 
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	//glDisableClientState(GL_VERTEX_ARRAY);
+	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glBindTexture(GL_TEXTURE_2D, 0); 
+	//glBindTexture(GL_TEXTURE_2D, 0); 
 
 	return true;
 }

@@ -112,6 +112,7 @@ bool ModuleRenderer3D::Init(json_file* config)
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
 		glEnable(GL_TEXTURE_2D); 
+		
 	}
 
 	tex_loader.Start();

@@ -38,6 +38,8 @@ public:
 	uint width = 0;
 	uint height = 0;
 
+	float alpha_test; 
+
 	std::string path;
 };
 

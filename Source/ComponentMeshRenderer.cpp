@@ -206,11 +206,22 @@ bool ComponentMeshRenderer::Update()
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
+	bool transparent = false; 
 	if (cmaterial != nullptr)
 	{
 		if (cmaterial->textures_id > 0)
 		{
-			glBindTexture(GL_TEXTURE_2D, cmaterial->textures_id);
+			if (cmaterial->alpha_test > 0.1f)
+			{
+				glEnable(GL_BLEND);
+				glEnable(GL_ALPHA_TEST);
+
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			
+			}
+
+			glBindTexture(GL_TEXTURE_2D, cmaterial->textures_id);			
 		}
 		else
 		{
@@ -233,10 +244,11 @@ bool ComponentMeshRenderer::Update()
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0); 
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
+	
 	glPopMatrix();
 
 	//We modify the AABB if it is necessary 
