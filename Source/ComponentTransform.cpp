@@ -117,6 +117,37 @@ void ComponentTransform::UpdateTransform(GameObject* curr_go)
 		local_transform_mat.Set(float4x4::FromTRS(transform.position, transform.rotation, transform.scale));
 }
 
+void Transform::DrawAxis()
+{
+	LineSegment axis[3]; 
+
+	//X
+	axis[0].a = position;
+	axis[0].b = position + X_axis;
+
+	//Y
+	axis[1].a = position;
+	axis[1].b = position + Y_axis;
+
+	//Z
+	axis[2].a = position;
+	axis[2].b = position + Z_axis;
+
+	//Draw
+	
+	DebugDraw(axis[0], Red, true, float4x4::identity, 5.0f); 
+	DebugDraw(axis[1], Green, true, float4x4::identity, 5.0f);
+	DebugDraw(axis[2], Blue, true, float4x4::identity, 5.0f);
+	
+}
+
+void Transform::UpdateAxis()
+{
+	X_axis = rotation.Transform(X_axis);
+	Y_axis = rotation.Transform(Y_axis);
+	Z_axis = rotation.Transform(Z_axis);
+}
+
 void ComponentTransform::Serialize(json_file * file)
 {
 	file->AddSectionToArray("Components");
@@ -141,6 +172,8 @@ bool ComponentTransform::Update()
 		if(bill != nullptr)
 			SetModified(false);
 	}
+
+	transform.DrawAxis();
 
 	return true;
 }
@@ -184,6 +217,10 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 	{
 		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
 		transform.rotation = mod;
+
+		transform.UpdateAxis();
+
+		LOG("changing rotation"); 
 		
 		UpdateTransform(GetComponentParent());
 		transform_modified = true;

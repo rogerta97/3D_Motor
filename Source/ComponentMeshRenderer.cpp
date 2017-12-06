@@ -211,14 +211,11 @@ bool ComponentMeshRenderer::Update()
 	{
 		if (cmaterial->textures_id > 0)
 		{
-			if (cmaterial->alpha_test > 0.1f)
-			{
-				glEnable(GL_BLEND);
-				glEnable(GL_ALPHA_TEST);
+		
+			glEnable(GL_BLEND);
+			glEnable(GL_ALPHA_TEST);
 
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			}
-
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glBindTexture(GL_TEXTURE_2D, cmaterial->textures_id);			
 		}
 		else

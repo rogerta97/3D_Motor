@@ -253,10 +253,10 @@ void DebugDraw(const Frustum & frustum, Color color)
 	DebugDrawBox(vertices, color);
 }
 
-void DebugDraw(const LineSegment & segment, Color color, bool is_arrow, const float4x4& transform)
+void DebugDraw(const LineSegment & segment, Color color, bool is_arrow, const float4x4& transform, const float& line_width)
 {
 	glColor3f(color.r, color.g, color.b);
-	glLineWidth(2.0f);
+	glLineWidth(line_width);
 
 	glPushMatrix();
 	glMultMatrixf((GLfloat*) transform.Transposed().ptr());
@@ -270,6 +270,7 @@ void DebugDraw(const LineSegment & segment, Color color, bool is_arrow, const fl
 
 	glPopMatrix();
 	glLineWidth(1.0f);
+	glColor3f(255,255,255);
 }
 
 void DebugDraw(const Ray & ray, Color color, float max_dist)

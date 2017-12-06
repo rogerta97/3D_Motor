@@ -6,9 +6,17 @@
 
 struct Transform
 {
+
+	float3 X_axis = {1,0,0};
+	float3 Y_axis = {0,1,0};
+	float3 Z_axis = {0,0,1};
+
 	float3 position = float3::zero;
 	Quat rotation = Quat::identity;
 	float3 scale = float3::one;
+
+	void DrawAxis(); 
+	void UpdateAxis(); 
 };
 
 class ComponentTransform : public Component

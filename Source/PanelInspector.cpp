@@ -294,27 +294,33 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 		rot[0] = RadToDeg(radians_angle.x); rot[1] = RadToDeg(radians_angle.y); rot[2] = RadToDeg(radians_angle.z);
 		s[0] = curr_cmp->GetLocalScale().x; s[1] = curr_cmp->GetLocalScale().y; s[2] = curr_cmp->GetLocalScale().z;
 
-		if (ImGui::DragFloat3("Position##transform", pos, 0.2f))
-		{
-			curr_cmp->SetLocalPosition(float3(pos[0], pos[1], pos[2]));
-		}
+		float new_pos[3] = { pos[0], pos[1], pos[2] };
+		float new_rot[3] = { rot[0], rot[1], rot[2] };
+		float new_scale[3] = { s[0], s[1], s[2] };
 
-		if (ImGui::SliderFloat3("Rotation##transform", rot, 0.0f, 180.0f))
-		{
-			curr_cmp->SetLocalRotation(DegToRad(float3(rot[0], rot[1], rot[2])));
-		}
-			
-		if (ImGui::DragFloat3("Scale##transform", s, 0.2f))
-		{
-			if (s[0] < 0.2f)
-				s[0] = 0.2f;
-			if (s[1] < 0.2f)
-				s[1] = 0.2f;
-			if (s[2] < 0.2f)
-				s[2] = 0.2f;
+		ImGui::DragFloat3("Position##transform", new_pos, 0.2f);
+		ImGui::DragFloat3("Rotation##transform", new_rot, 0.2f);
 
-			curr_cmp->SetLocalScale(float3(s[0], s[1], s[2]));
+		if (ImGui::DragFloat3("Scale##transform", new_scale, 0.2f))
+		{
+			if (new_scale[0] < 0.2f)
+				new_scale[0] = 0.2f;
+			if (new_scale[1] < 0.2f)
+				new_scale[1] = 0.2f;
+			if (new_scale[2] < 0.2f)
+				new_scale[2] = 0.2f;			
 		}	
+
+		if(new_pos[0] != pos[0] || new_pos[1] != pos[1] || new_pos[2] != pos[2])
+			curr_cmp->SetLocalPosition(float3(new_pos[0], new_pos[1], new_pos[2]));
+
+		// HAVE TO ASK WHY ROTATION IS NOT EXACTLY 10 IS 9.9999
+
+		if (new_rot[0] != rot[0] || new_rot[1] != rot[1] || new_rot[2] != rot[2])
+			curr_cmp->SetLocalRotation(DegToRad(float3(new_rot[0], new_rot[1], new_rot[2])));
+
+		if (new_scale[0] != s[0] || new_scale[1] != s[1] || new_scale[2] != s[2])
+			curr_cmp->SetLocalScale(float3(new_scale[0], new_scale[1], new_scale[2]));
 	}
 }
 
