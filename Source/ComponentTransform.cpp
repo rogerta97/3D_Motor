@@ -135,7 +135,11 @@ bool ComponentTransform::Update()
 	if (IsModified())
 	{
 		GetComponentParent()->RecursiveAdaptBoundingBox(GetGlobalTransform(), GetComponentParent());		
-		SetModified(false);
+		
+		ComponentBillboarding* bill = (ComponentBillboarding*)GetComponentParent()->GetComponent(COMPONENT_BILLBOARDING); 
+		
+		if(bill != nullptr)
+			SetModified(false);
 	}
 
 	return true;

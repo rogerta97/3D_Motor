@@ -43,6 +43,10 @@ bool ComponentBillboarding::Update()
 	//if the gameobject reference has moved, we get the transform of the element with billboarding 
 	ComponentTransform* trans = nullptr;
 
+	float3 new_x_axis = { 0,0,0}; 
+	float3 new_y_axis = { 0,0,0};
+	float3 new_z_axis = { 0,0,0};
+
 	if (reference != nullptr)
 		trans = (ComponentTransform*)reference->GetComponent(COMPONENT_TRANSFORM);
 
@@ -51,13 +55,21 @@ bool ComponentBillboarding::Update()
 		//We set the Z axis at the direction of the reference
 		float3 global_reference_pos = trans->GetGlobalPosition(); 
 		float3 global_object_pos = GetComponentParent()->transform->GetGlobalPosition(); 
-	
+
+		float3 direction = global_reference_pos - global_object_pos; 
+
+		direction.Normalize(); 
+
+		new_z_axis = direction; 
+
+		trans->SetModified(false); 
+
+		//From that, we calculate the X new axis
+		new_x_axis = new_z_axis.Perpendicular(); 
+
+		//Then we get the Y new axis
+		new_y_axis = new_x_axis.Cross(new_z_axis); 
 	}
-	
-
-	//From that, we calculate the X new axis
-
-	//Then we get the Y new axis
 
 	return false;
 }
