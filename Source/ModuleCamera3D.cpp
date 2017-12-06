@@ -190,33 +190,38 @@ void ModuleCamera3D::Move()
 	else
 		curr = editor_camera;
 
-	float temporal_speed = mov_speed;
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		temporal_speed = temporal_speed * 0.3f;
-
-	if (App->input->IsMouseInWindow() == 0)
+	if (!camera_locked)
 	{
-		if (App->input->GetMouseWheel() == 1) curr->MoveForward(temporal_speed);
-		if (App->input->GetMouseWheel() == -1) curr->MoveBackwards(temporal_speed);
+		float temporal_speed = mov_speed;
+		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+			temporal_speed = temporal_speed * 0.3f;
+
+		if (App->input->IsMouseInWindow() == 0)
+		{
+			if (App->input->GetMouseWheel() == 1) curr->MoveForward(temporal_speed);
+			if (App->input->GetMouseWheel() == -1) curr->MoveBackwards(temporal_speed);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			curr->MoveForward(temporal_speed);
+
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			curr->MoveBackwards(temporal_speed);
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) curr->MoveLeft(temporal_speed);
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) curr->MoveRight(temporal_speed);
+
+		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
+			curr->MoveDown(temporal_speed);
+
+		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) curr->MoveUp(temporal_speed);
+
+
+		float3 frustum_move(move_aux.x, move_aux.y, move_aux.z);
+
+		curr->frustum.SetPos(curr->frustum.pos + frustum_move);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-		curr->MoveForward(temporal_speed);
 
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) 
-		curr->MoveBackwards(temporal_speed);
-
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) curr->MoveLeft(temporal_speed);
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) curr->MoveRight(temporal_speed);
-
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) 
-		curr->MoveDown(temporal_speed);
-
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) curr->MoveUp(temporal_speed);
-
-	
-	float3 frustum_move(move_aux.x, move_aux.y, move_aux.z);
-
-	curr->frustum.SetPos(curr->frustum.pos + frustum_move);
+	UnlockCamera(); 
 
 	//CalculateViewMatrix();
 }
@@ -401,6 +406,16 @@ bool ModuleCamera3D::HasMainCamera()
 void ModuleCamera3D::AssignNewMainCamera(ComponentCamera* cam)
 {
 	main_camera = cam; 
+}
+
+void ModuleCamera3D::LockCamera()
+{
+	camera_locked = true; 
+}
+
+void ModuleCamera3D::UnlockCamera()
+{
+	camera_locked = false; 
 }
 
 bool ModuleCamera3D::IsCulling()

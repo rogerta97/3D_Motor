@@ -134,12 +134,8 @@ bool ComponentTransform::Update()
 
 	if (IsModified())
 	{
-		GetComponentParent()->RecursiveAdaptBoundingBox(GetGlobalTransform(), GetComponentParent());
-
-		ComponentBillboarding* bill = (ComponentBillboarding*)GetComponentParent()->GetComponent(COMPONENT_BILLBOARDING); 
-
-		if(bill != nullptr)		// if the object has billboarding, we dont need to set modified to false, billboarding will do it for us 
-			SetModified(false);
+		GetComponentParent()->RecursiveAdaptBoundingBox(GetGlobalTransform(), GetComponentParent());		
+		SetModified(false);
 	}
 
 	return true;

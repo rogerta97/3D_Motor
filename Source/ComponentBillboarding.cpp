@@ -5,6 +5,7 @@
 ComponentBillboarding::ComponentBillboarding(GameObject * parent)
 {
 	this->parent = parent; 
+	active = true; 
 	reference = nullptr; 
 	curr_relation = {0,0,0};
 	show_set_window = false; 
@@ -40,17 +41,17 @@ void ComponentBillboarding::SetShowInputWindow(bool new_set)
 bool ComponentBillboarding::Update()
 {
 	//if the gameobject reference has moved, we get the transform of the element with billboarding 
-	ComponentTransform* trans = (ComponentTransform*)reference->GetComponent(COMPONENT_TRANSFORM); 
+	ComponentTransform* trans = nullptr;
+
+	if (reference != nullptr)
+		trans = (ComponentTransform*)reference->GetComponent(COMPONENT_TRANSFORM);
 
 	if (trans != nullptr && trans->IsModified() == true)
 	{
 		//We set the Z axis at the direction of the reference
 		float3 global_reference_pos = trans->GetGlobalPosition(); 
 		float3 global_object_pos = GetComponentParent()->transform->GetGlobalPosition(); 
-
-
-		
-
+	
 	}
 	
 

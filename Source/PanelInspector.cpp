@@ -356,11 +356,12 @@ void PanelInspector::PrintBillBoardingComponent(GameObject * Go_to_draw)
 		if (ImGui::Button("Set Reference"))
 		{	
 			new_bill->SetShowInputWindow(true);
-			//new_bill->GetComponentParent()->SetLooking4Reference(true); 
 		}
 
 		if (new_bill->GetShowInputWindow())
 		{
+			App->camera->LockCamera(); 
+
 			static char ref_object_name[30]; 
 
 			ImGui::Begin("Attach Reference"); 
@@ -375,8 +376,7 @@ void PanelInspector::PrintBillBoardingComponent(GameObject * Go_to_draw)
 					new_bill->SetReference(new_reference); 
 				}
 
-				new_bill->SetShowInputWindow(false); 
-				
+				new_bill->SetShowInputWindow(false); 			
 			}
 
 			ImGui::End(); 

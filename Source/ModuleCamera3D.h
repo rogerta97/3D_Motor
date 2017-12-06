@@ -47,6 +47,9 @@ public:
 
 	void AssignNewMainCamera(ComponentCamera* go_container); 
 
+	void LockCamera(); 
+	void UnlockCamera(); 
+
 	// Config window
 
 	void PrintConfigData();
@@ -80,5 +83,7 @@ private:
 	ComponentCamera* main_camera = nullptr; 
 
 	ComponentCamera* curr = nullptr;
+
+	bool camera_locked = false; 
 
 };
