@@ -11,6 +11,7 @@ class Component;
 enum component_type; 
 enum mesh_shape; 
 class json_file;
+class ComponentTransform; 
 
 class GameObject
 {
@@ -66,7 +67,6 @@ public:
 	void PushChild(GameObject* child);
 	GameObject* AddChild();
 
-
 	GameObject* GetParent() const;
 	void SetParent(GameObject* parent);
 	void DeleteParent();
@@ -94,6 +94,10 @@ public:
 
 	uint GetNewChildID()const;
 	void SetNewChildID(uint new_id);
+
+	//For finding methods
+	GameObject* Find(string name); 
+
 public:
 	vector<Component*> component_list;
 	vector<GameObject*> child_list;
@@ -110,6 +114,8 @@ public:
 
 	uint new_child_id = 0;
 	UID unique_id;
+
+	ComponentTransform* transform; 
 
 };
 

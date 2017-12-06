@@ -32,6 +32,7 @@ public:
 	void DeleteGameObjectsNow(); 
 
 	GameObject* Find(const int& unique_id) const; 
+	GameObject* FindByNameRecursive(string name) const;
 
 	GameObject* GetGameObject(uint position);
 	GameObject* CreateGameObject(const char* name);

@@ -355,7 +355,31 @@ void PanelInspector::PrintBillBoardingComponent(GameObject * Go_to_draw)
 	{
 		if (ImGui::Button("Set Reference"))
 		{	
-			new_bill->GetComponentParent()->SetLooking4Reference(true); 
+			new_bill->SetShowInputWindow(true);
+			//new_bill->GetComponentParent()->SetLooking4Reference(true); 
+		}
+
+		if (new_bill->GetShowInputWindow())
+		{
+			static char ref_object_name[30]; 
+
+			ImGui::Begin("Attach Reference"); 
+
+			ImGui::InputText("Referece", &ref_object_name[0], 30); 
+
+			if (ImGui::Button("Set"))
+			{
+				if (strlen(ref_object_name) != 0)
+				{
+					GameObject* new_reference = App->scene_intro->FindByNameRecursive(ref_object_name);
+					new_bill->SetReference(new_reference); 
+				}
+
+				new_bill->SetShowInputWindow(false); 
+				
+			}
+
+			ImGui::End(); 
 		}
 
 		ImGui::Text("Attached to:"); ImGui::SameLine();

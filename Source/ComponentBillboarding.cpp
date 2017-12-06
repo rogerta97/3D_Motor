@@ -44,9 +44,15 @@ bool ComponentBillboarding::Update()
 
 	if (trans != nullptr && trans->IsModified() == true)
 	{
+		//We set the Z axis at the direction of the reference
+		float3 global_reference_pos = trans->GetGlobalPosition(); 
+		float3 global_object_pos = GetComponentParent()->transform->GetGlobalPosition(); 
+
+
+		
 
 	}
-	//We equal the Z axis at the direction of the camera
+	
 
 	//From that, we calculate the X new axis
 

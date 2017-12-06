@@ -254,6 +254,21 @@ GameObject* ModuleSceneIntro::Find(const int& unique_id) const
 	return nullptr; 
 }
 
+GameObject * ModuleSceneIntro::FindByNameRecursive(string name) const
+{
+	GameObject* to_ret = nullptr; 
+
+	for (int i = 0; i < GO_list.size(); i++)
+	{
+		to_ret = GO_list[i]->Find(name);
+
+		if (to_ret != nullptr)
+			break; 
+	}
+
+	return to_ret; 
+}
+
 vector<GameObject*> ModuleSceneIntro::GetDynamicGOList()
 {
 	return GO_list;

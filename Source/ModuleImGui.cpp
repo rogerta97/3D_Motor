@@ -336,6 +336,19 @@ update_status ModuleImGui::PrintTopBar()
 				plane->PushComponent(mr); 
 
 			}
+
+			if (ImGui::MenuItem("Camera"))
+			{
+				GameObject* cam_object = App->scene_intro->CreateGameObject("Empty");
+
+				string new_name("Camera ");
+				new_name += to_string(App->scene_intro->GetGameObjectsNum());
+				cam_object->SetName(new_name.c_str());
+
+				ComponentCamera* cam = new ComponentCamera(cam_object);
+				cam_object->transform->SetLocalRotation({180,0,0});
+				cam_object->PushComponent(cam);
+			}
 				
 			ImGui::EndMenu(); 
 		}

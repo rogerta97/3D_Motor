@@ -74,6 +74,8 @@ GameObject::GameObject()
 	ComponentTransform* trans = new ComponentTransform(this);
 	PushComponent(trans);
 
+	transform = trans; 
+
 	trans->SetIdentityTransform();
 	trans->type = COMPONENT_TRANSFORM;
 
@@ -440,6 +442,27 @@ uint GameObject::GetNewChildID() const
 void GameObject::SetNewChildID(uint new_id) 
 {
 	new_child_id = new_id;
+}
+GameObject * GameObject::Find(string name)
+{
+	GameObject* to_ret = nullptr; 
+
+	if (this->name == name)
+	{
+		return this; 
+	}
+	else if (GetNumChilds() > 0)
+	{
+		for (int i = 0; i < GetNumChilds(); i++)
+		{
+			to_ret = child_list[i]->Find(name); 
+
+			if (to_ret != nullptr)
+				break; 
+		}
+	}
+
+	return to_ret; 
 }
 void GameObject::PushComponent(Component* comp)
 {
