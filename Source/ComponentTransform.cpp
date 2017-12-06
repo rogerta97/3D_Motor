@@ -174,7 +174,6 @@ void ComponentTransform::SetLocalPosition(const float3 & _position)
 	{
 		transform.position = _position;
 		UpdateTransform(GetComponentParent()); 
-		if (mr != nullptr) mr->RecalculateCenterPoints();
 		transform_modified = true; 
 	}	
 }

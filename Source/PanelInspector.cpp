@@ -230,7 +230,7 @@ void PanelInspector::PrintMaterialComponent(GameObject* GO_to_draw)
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->textures_id);
 
 		ImTextureID img = (void*)curr_cmp->textures_id;
-		ImGui::Image(img, ImVec2(100, 100));
+		ImGui::Image(img, ImVec2(100, 100),ImVec2(1,1), ImVec2(0,0));
 
 		ImGui::Text("Width: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->width);
@@ -241,26 +241,11 @@ void PanelInspector::PrintMaterialComponent(GameObject* GO_to_draw)
 		if (ImGui::Button("Select New Resource"))
 			show_resources_popup = true;
 	
-
 		ImGui::Text("Name: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", curr_cmp->path.c_str()); ImGui::SameLine();
 
 		if (show_resources_popup)
 			ShowMaterialResources(); 
-
-	/*	if (ImGui::Button("Assign Color"))
-		{
-			if (ImGui::Begin("Color Editor"))
-			{
-
-				static float* st_color;
-				ImGui::ColorPicker4("Ambient color##4", st_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_RGB | ImGuiColorEditFlags_AlphaPreview, NULL);
-
-				curr_cmp->GetColor()->Set(st_color[0], st_color[1], st_color[2], st_color[3]);
-
-				ImGui::End(); 
-			}
-		}*/
 	}
 }
 
