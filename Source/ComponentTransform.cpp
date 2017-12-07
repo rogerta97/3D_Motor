@@ -223,7 +223,7 @@ void ComponentTransform::SetLocalPosition(const float3 & _position)
 		transform.position = _position;
 		UpdateTransform(GetComponentParent()); 
 		transform_modified = true; 
-
+		position_modified = true; 
 	}	
 
 }
@@ -239,6 +239,7 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 		LOG("changing rotation %d", a);
 		a++; 
 		
+		transform_modified = true;
 		UpdateTransform(GetComponentParent());
 	
 	}
@@ -251,6 +252,7 @@ void ComponentTransform::SetLocalScale(const float3 & _scale)
 	if (GetComponentParent()->IsStatic() == false)
 	{
 		transform.scale = _scale;
+		transform_modified = true;
 		UpdateTransform(GetComponentParent());
 	}
 }

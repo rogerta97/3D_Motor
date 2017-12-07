@@ -399,6 +399,8 @@ void PanelInspector::PrintBillBoardingComponent(GameObject * Go_to_draw)
 				{
 					GameObject* new_reference = App->scene_intro->FindByNameRecursive(ref_object_name);
 					new_bill->SetReference(new_reference);
+
+					new_reference->transform->SetPositionChanged(true); 
 				}
 
 				new_bill->SetShowInputWindow(false);
