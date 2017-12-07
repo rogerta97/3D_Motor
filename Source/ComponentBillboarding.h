@@ -27,6 +27,9 @@ public:
 	void SetReference(GameObject* reference); 
 	GameObject* GetReference();
 
+	bool y_axis_locked;
+	bool x_axis_locked;
+
 private:
 
 	GameObject* reference; 
@@ -34,6 +37,7 @@ private:
 	float3 curr_relation; 
 
 	bool show_set_window; 
+
 
 };
 

@@ -6,6 +6,7 @@
 #include "ComponentCamera.h"
 #include "ComponentTransform.h"
 #include "ComponentBillboarding.h"
+#include "ComponentParticleEmmiter.h"
 
 #endif // !_COMPONENTDEFS_H_
 

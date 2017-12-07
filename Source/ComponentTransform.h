@@ -60,6 +60,10 @@ public:
 
 	bool IsModified() const; 
 	void SetModified(bool value);
+
+	bool IsPositionChanged() const;
+	void SetPositionChanged(bool new_set); 
+
 	void UpdateTransform(GameObject* curr_go); 
 
 	void Serialize(json_file* file);
@@ -72,6 +76,7 @@ private:
 	float4x4 global_transform_mat;
 
 	bool transform_modified = false; 
+	bool position_modified = false; 
 };
 
 #endif 

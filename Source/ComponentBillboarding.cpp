@@ -10,6 +10,9 @@ ComponentBillboarding::ComponentBillboarding(GameObject * parent)
 	curr_relation = {0,0,0};
 	show_set_window = false; 
 	type = COMPONENT_BILLBOARDING;
+
+	y_axis_locked = true; 
+	x_axis_locked = false; 
 }
 
 ComponentBillboarding::~ComponentBillboarding()
@@ -46,7 +49,7 @@ bool ComponentBillboarding::Update()
 	if (reference != nullptr)
 		trans = (ComponentTransform*)reference->GetComponent(COMPONENT_TRANSFORM);
 
-	if (trans != nullptr && trans->IsModified() == true)
+	if (trans != nullptr && trans->IsPositionChanged() == true)
 	{
 		float3 new_x_axis = { 0,0,0 };
 		float3 new_y_axis = { 0,0,0 };
@@ -66,22 +69,22 @@ bool ComponentBillboarding::Update()
 
 		new_z_axis = direction; 
 
-		trans->SetModified(false); 
+		trans->SetPositionChanged(false); 
 
 		//From that, we calculate the X new axis
 		new_x_axis = new_z_axis.Perpendicular(); 
+		new_x_axis *= -1; 
 
 		//Then we get the Y new axis
 		new_y_axis = new_x_axis.Cross(new_z_axis); 
 
-
 		//We make calculations to know necessary rotation
-		float3 x_rot = new_x_axis - old_x_axis; 
-		float3 y_rot = new_y_axis - old_y_axis;
-		float3 z_rot = new_z_axis - old_z_axis;
+		float cross = new_x_axis.x*old_x_axis.x + new_x_axis.y*old_x_axis.y + new_x_axis.z*old_x_axis.z;
+
+		float angle = old_z_axis.AngleBetween(new_z_axis); 
 
 		//We perfom the rotation
-		GetComponentParent()->transform->SetLocalRotation({ x_rot.Length(), y_rot.Length(), z_rot.Length() });
+		GetComponentParent()->transform->SetLocalRotation({ 0, angle, 0});
 
 	}
 

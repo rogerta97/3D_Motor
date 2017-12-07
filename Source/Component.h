@@ -9,8 +9,9 @@ enum component_type
 	COMPONENT_MESH_RENDERER,
 	COMPONENT_MATERIAL,
 	COMPONENT_TRANSFORM,
-	COMPONENT_CAMERA, 
+	COMPONENT_CAMERA,
 	COMPONENT_BILLBOARDING,
+	COMPONENT_PARTICLE_EMMITER,
 	COMPONENT_NULL
 
 };
@@ -46,8 +47,9 @@ public:
 	virtual void Serialize(json_file* file);
 	~Component() {}
 
-protected: 
 	bool active = false;
+
+protected: 
 	GameObject* parent; 
 
 };

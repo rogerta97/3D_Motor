@@ -22,6 +22,7 @@ private:
 	void PrintTransformComponent(GameObject* GO_to_draw);
 	void PrintCameraComponent(GameObject* GO_to_draw);
 	void PrintBillBoardingComponent(GameObject* Go_to_draw); 
+	void PrintComponentParticleEmmiter(GameObject* Go_to_draw);
 
 	void ShowMaterialResources(); 
 

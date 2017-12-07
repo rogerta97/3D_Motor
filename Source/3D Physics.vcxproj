@@ -304,6 +304,7 @@
     <ClInclude Include="imgui_impl_sdl.h" />
     <ClInclude Include="imgui_internal.h" />
     <ClInclude Include="PanelModalWindow.h" />
+    <ClInclude Include="ComponentParticleEmmiter.h" />
     <ClInclude Include="ResourceMaterialLoader.h" />
     <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="ModuleMaterials.h" />
@@ -412,6 +413,7 @@
     <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentMeshRenderer.cpp" />
+    <ClCompile Include="ComponentParticleEmmiter.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="DeviceId\DeviceId.cpp" />

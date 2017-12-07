@@ -112,6 +112,16 @@ void ComponentTransform::SetModified(bool modified)
 	transform_modified = modified;
 }
 
+bool ComponentTransform::IsPositionChanged() const
+{
+	return position_modified;
+}
+
+void ComponentTransform::SetPositionChanged(bool new_set)
+{
+	position_modified = new_set; 
+}
+
 void ComponentTransform::UpdateTransform(GameObject* curr_go)
 {
 		local_transform_mat.Set(float4x4::FromTRS(transform.position, transform.rotation, transform.scale));
@@ -166,11 +176,16 @@ bool ComponentTransform::Update()
 	if (IsModified())
 	{
 		GetComponentParent()->RecursiveAdaptBoundingBox(GetGlobalTransform(), GetComponentParent());		
-		
-		ComponentBillboarding* bill = (ComponentBillboarding*)GetComponentParent()->GetComponent(COMPONENT_BILLBOARDING); 
-		
-		if(bill != nullptr)
-			SetModified(false);
+		transform.UpdateAxis();
+
+		//
+		//ComponentBillboarding* bill = (ComponentBillboarding*)GetComponentParent()->GetComponent(COMPONENT_BILLBOARDING); 
+		//
+		//if(bill != nullptr)			
+		//{
+
+		//}
+		SetModified(false);
 	}
 
 	transform.DrawAxis();
@@ -208,7 +223,9 @@ void ComponentTransform::SetLocalPosition(const float3 & _position)
 		transform.position = _position;
 		UpdateTransform(GetComponentParent()); 
 		transform_modified = true; 
+
 	}	
+
 }
 
 void ComponentTransform::SetLocalRotation(const float3& _rotation)
@@ -218,13 +235,14 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
 		transform.rotation = mod;
 
-		transform.UpdateAxis();
-
-		LOG("changing rotation"); 
+		static int a = 0;
+		LOG("changing rotation %d", a);
+		a++; 
 		
 		UpdateTransform(GetComponentParent());
-		transform_modified = true;
+	
 	}
+
 }
 
 
@@ -233,8 +251,6 @@ void ComponentTransform::SetLocalScale(const float3 & _scale)
 	if (GetComponentParent()->IsStatic() == false)
 	{
 		transform.scale = _scale;
-
 		UpdateTransform(GetComponentParent());
-		transform_modified = true;
 	}
 }

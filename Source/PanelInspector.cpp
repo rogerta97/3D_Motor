@@ -90,6 +90,10 @@ bool PanelInspector::Draw()
 			case COMPONENT_BILLBOARDING:
 				PrintBillBoardingComponent(go_to_display);
 				break;
+
+			case COMPONENT_PARTICLE_EMMITER:
+				PrintComponentParticleEmmiter(go_to_display);
+				break;
 			
 
 			}
@@ -107,7 +111,7 @@ bool PanelInspector::Draw()
 		if (show_component_popup)
 		{
 			int selected_fish = -1;
-			const char* components[] = { "Mesh Renderer", "Material", "Camera", "Billboarding"};
+			const char* components[] = { "Mesh Renderer", "Material", "Camera", "Billboarding", "Particle Emmiter"};
 
 			// Simple selection popup
 			// (If you want to show the current selection inside the Button itself, you may want to build a string using the "###" operator to preserve a constant ID with a variable label)		
@@ -154,6 +158,13 @@ bool PanelInspector::Draw()
 					{
 						ComponentBillboarding* new_bill = new ComponentBillboarding(curr_go);
 						curr_go->PushComponent(new_bill);
+						break;
+					}
+
+					case 4:
+					{
+						ComponentParticleEmmiter* new_emmiter = new ComponentParticleEmmiter(curr_go);
+						curr_go->PushComponent(new_emmiter);
 						break;
 					}
 				}
@@ -298,8 +309,11 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 		float new_rot[3] = { rot[0], rot[1], rot[2] };
 		float new_scale[3] = { s[0], s[1], s[2] };
 
-		ImGui::DragFloat3("Position##transform", new_pos, 0.2f);
-		ImGui::DragFloat3("Rotation##transform", new_rot, 0.2f);
+		if(ImGui::DragFloat3("Position##transform", new_pos, 0.2f))
+			curr_cmp->SetLocalPosition(float3(new_pos[0], new_pos[1], new_pos[2]));
+
+		if(ImGui::DragFloat3("Rotation##transform", new_rot, 0.2f))
+			curr_cmp->SetLocalRotation(DegToRad(float3(new_rot[0], new_rot[1], new_rot[2])));
 
 		if (ImGui::DragFloat3("Scale##transform", new_scale, 0.2f))
 		{
@@ -311,14 +325,19 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 				new_scale[2] = 0.2f;			
 		}	
 
-		if(new_pos[0] != pos[0] || new_pos[1] != pos[1] || new_pos[2] != pos[2])
-			curr_cmp->SetLocalPosition(float3(new_pos[0], new_pos[1], new_pos[2]));
+		if (new_pos[0] != pos[0] || new_pos[1] != pos[1] || new_pos[2] != pos[2])
+		{
+			curr_cmp->SetModified(true);
+		}
+			
 
 		// HAVE TO ASK WHY ROTATION IS NOT EXACTLY 10 IS 9.9999
-
 		if (new_rot[0] != rot[0] || new_rot[1] != rot[1] || new_rot[2] != rot[2])
-			curr_cmp->SetLocalRotation(DegToRad(float3(new_rot[0], new_rot[1], new_rot[2])));
-
+		{
+			curr_cmp->SetModified(true);
+		}
+		
+			
 		if (new_scale[0] != s[0] || new_scale[1] != s[1] || new_scale[2] != s[2])
 			curr_cmp->SetLocalScale(float3(new_scale[0], new_scale[1], new_scale[2]));
 	}
@@ -379,10 +398,10 @@ void PanelInspector::PrintBillBoardingComponent(GameObject * Go_to_draw)
 				if (strlen(ref_object_name) != 0)
 				{
 					GameObject* new_reference = App->scene_intro->FindByNameRecursive(ref_object_name);
-					new_bill->SetReference(new_reference); 
+					new_bill->SetReference(new_reference);
 				}
 
-				new_bill->SetShowInputWindow(false); 			
+				new_bill->SetShowInputWindow(false);
 			}
 
 			ImGui::End(); 
@@ -394,7 +413,101 @@ void PanelInspector::PrintBillBoardingComponent(GameObject * Go_to_draw)
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", new_bill->GetReference()->GetName());
 		else
 			ImGui::TextColored(ImVec4(1, 0, 0, 1), "NONE"); 
+
+		ImGui::Separator();
+
+		if (new_bill->GetReference() != nullptr)
+		{
+			ImGui::Checkbox("Lock Y", &new_bill->y_axis_locked);
+			ImGui::Checkbox("Lock X", &new_bill->x_axis_locked);
+		}
 	}	
+}
+
+void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
+{
+	ComponentParticleEmmiter* new_emm = (ComponentParticleEmmiter*)Go_to_draw->GetComponent(COMPONENT_PARTICLE_EMMITER);
+
+	if (ImGui::CollapsingHeader("Component Particle Emmiter"))
+	{
+		bool active_bool = new_emm->IsActive();
+		bool keeper = active_bool;
+
+		ImGui::Checkbox("Active", &active_bool);
+
+		if (keeper != active_bool)
+			new_emm->SetActive(keeper);
+
+		if (new_emm->IsActive())
+		{
+			ImGui::Separator();
+
+			if (ImGui::Button("PLAY"))
+			{
+
+			}
+			ImGui::SameLine(); 
+
+			if (ImGui::Button("STOP"))
+			{
+
+			}
+
+			ImGui::Separator();
+
+			static int particle_template; 
+			ImGui::Combo("Templates", &particle_template, "Select Template\0Smoke\0Custom\0");
+		
+			switch (particle_template)
+			{
+			case 1: 
+				//Here we set properties for the particles to look like smoke 
+
+				break; 
+			}
+
+			ImGui::Separator();
+
+			if (ImGui::TreeNode("Shape"))
+			{
+				ImGui::TreePop(); 
+			}
+
+			if (ImGui::TreeNode("Color"))
+			{
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Motion"))
+			{
+	
+				static bool show = new_emm->ShowEmmisionArea();
+				ImGui::Checkbox("Show Emmiter Area", &show);
+				new_emm->SetShowEmmisionArea(show);
+
+				int emision_rate = new_emm->GetEmmisionRate(); 
+				ImGui::DragInt("Emmision Rate", &emision_rate, 1, 0, 150);
+				new_emm->SetEmmisionRate(emision_rate);
+
+				float lifetime = new_emm->GetLifetime();
+				ImGui::DragFloat("Lifetime", &lifetime, 0, 0, 20);
+				new_emm->SetLifeTime(lifetime);
+
+				ImGui::TreePop();
+			}
+
+			ImGui::Separator();
+
+			if (ImGui::Button("Save as Template"))
+			{
+
+			}
+
+	
+		
+		}
+	}
+
 }
 
 void PanelInspector::ShowMaterialResources()
