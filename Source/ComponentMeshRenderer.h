@@ -28,7 +28,7 @@ public:
 
 	void SetNewMesh(ComponentMeshRenderer* new_mesh);
 	void SetCubeVertices(float3 origin, uint edge_size);
-	void SetPlaneVertices(float3 origin, uint edge_size);
+	void SetPlaneVertices(float3 origin, uint edge_size, bool vertical = true);
 	void SetSphereVertices(float radius, uint rings, uint sectors, float3 origin);
 	void SetCylinderVertices(float r, int sides, int height);
 

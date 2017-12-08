@@ -79,7 +79,6 @@ void ComponentTransform::SetGlobalTransform(float4x4 new_transform)
 
 float4x4 ComponentTransform::GetGlobalTransform()
 {
-
 	if (GetComponentParent()->GetParent() == nullptr)
 		global_transform_mat = local_transform_mat;
 
@@ -216,16 +215,21 @@ void ComponentTransform::DeleteComponent()
 
 void ComponentTransform::SetLocalPosition(const float3 & _position)
 {
-	ComponentMeshRenderer* mr = (ComponentMeshRenderer*)GetComponentParent()->GetComponent(COMPONENT_MESH_RENDERER); 
+	ComponentMeshRenderer* mr;
 
-	if (GetComponentParent()->IsStatic() == false)
+	if (gameobject != nullptr)
 	{
-		transform.position = _position;
-		UpdateTransform(GetComponentParent()); 
-		transform_modified = true; 
-		position_modified = true; 
-	}	
+		mr = (ComponentMeshRenderer*)GetComponentParent()->GetComponent(COMPONENT_MESH_RENDERER);
 
+		if (GetComponentParent()->IsStatic() == true)
+			return; 
+	}
+		
+	transform.position = _position;
+	UpdateTransform(GetComponentParent()); 
+	transform_modified = true; 
+	position_modified = true; 
+		
 }
 
 void ComponentTransform::SetLocalRotation(const float3& _rotation)

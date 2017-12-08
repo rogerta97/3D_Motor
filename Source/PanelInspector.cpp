@@ -165,7 +165,6 @@ bool PanelInspector::Draw()
 					{
 						ComponentParticleEmmiter* new_emmiter = new ComponentParticleEmmiter(curr_go);
 						curr_go->PushComponent(new_emmiter);
-						new_emmiter->Start(); 
 						break;
 					}
 				}
@@ -445,29 +444,33 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 		{
 			ImGui::Separator();
 
-			if (ImGui::Button("PLAY"))
-			{
-				current_emmiter->SetSystemState(PARTICLE_STATE_PLAY);
-			}
-
-			ImGui::SameLine(); 
-
-			if (ImGui::Button("STOP"))
-			{
-				current_emmiter->SetSystemState(PARTICLE_STATE_PAUSE);
-			}
-
-			ImGui::Separator();
-
 			static int particle_template; 
 			ImGui::Combo("Templates", &particle_template, "Select Template\0Smoke\0Custom\0");
 		
+			if (particle_template == 0)
+				return; 
+
 			switch (particle_template)
 			{
 			case 1: 
 				//Here we set properties for the particles to look like smoke 
 
 				break; 
+			}
+
+			bool update_root = false; 
+
+			if (ImGui::Button("PLAY"))
+			{
+				current_emmiter->SetSystemState(PARTICLE_STATE_PLAY);
+				current_emmiter->Start(); 
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("STOP"))
+			{
+				current_emmiter->SetSystemState(PARTICLE_STATE_PAUSE);
 			}
 
 			ImGui::Separator();
@@ -494,14 +497,9 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 				ImGui::Checkbox("Show Emmiter Area", &show);
 				current_emmiter->SetShowEmmisionArea(show);
 
-				int emision_rate = current_emmiter->GetEmmisionRate();
-				ImGui::DragInt("Emmision Rate", &emision_rate, 1, 0, 150);
-				current_emmiter->SetEmmisionRate(emision_rate);
-
-				float lifetime = current_emmiter->GetLifetime();
-				ImGui::DragFloat("Lifetime", &lifetime, 0, 0, 20);
-				current_emmiter->SetLifeTime(lifetime);
-
+				if (ImGui::DragInt("Emmision Rate", &current_emmiter->emmision_rate, 1, 0, 150)) current_emmiter->UpdateRootParticle(); 
+				if (ImGui::DragFloat("Lifetime", &current_emmiter->max_lifetime, 0, 0, 20)) current_emmiter->UpdateRootParticle();
+				
 				ImGui::TreePop();
 			}
 
@@ -511,8 +509,6 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 			{
 
 			}
-
-	
 		
 		}
 	}

@@ -468,7 +468,7 @@ void ComponentMeshRenderer::SetCubeVertices(float3 origin, uint size)
 	LOG("Triangles: 16");
 }
 
-void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size)
+void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size, bool vertical)
 {
 	//translation = origin;
 	glGenBuffers(1, (GLuint*)&vertices_id);
@@ -478,8 +478,26 @@ void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size)
 	num_vertices = 4;
 	vertices = new vec[num_vertices];
 
+	if(vertical)
 	{
+		vertices[0].x = origin.x - edge_size / 2;
+		vertices[0].y = origin.y + edge_size / 2;
+		vertices[0].z = 0;
 
+		vertices[1].x = origin.x - edge_size / 2;
+		vertices[1].y = origin.y - edge_size / 2;
+		vertices[1].z = 0;
+
+		vertices[2].x = origin.x + edge_size / 2;
+		vertices[2].y = origin.y - edge_size / 2;
+		vertices[2].z = 0;
+		
+		vertices[3].x = origin.x + edge_size / 2;
+		vertices[3].y = origin.y + edge_size / 2;
+		vertices[3].z = 0;
+	}
+	else
+	{
 		vertices[0].x = origin.x - edge_size / 2;
 		vertices[0].y = 0;
 		vertices[0].z = origin.z - edge_size / 2;
@@ -495,8 +513,8 @@ void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size)
 		vertices[3].x = origin.x + edge_size / 2;
 		vertices[3].y = 0;
 		vertices[3].z = origin.z - edge_size / 2;
+	}
 
-	};
 
 	//memcpy(vertices, &vertices_arr[0], sizeof(float) * 8 * 3);
 
