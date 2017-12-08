@@ -165,6 +165,7 @@ bool PanelInspector::Draw()
 					{
 						ComponentParticleEmmiter* new_emmiter = new ComponentParticleEmmiter(curr_go);
 						curr_go->PushComponent(new_emmiter);
+						new_emmiter->Start(); 
 						break;
 					}
 				}
@@ -312,7 +313,7 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 		if(ImGui::DragFloat3("Position##transform", new_pos, 0.2f))
 			curr_cmp->SetLocalPosition(float3(new_pos[0], new_pos[1], new_pos[2]));
 
-		if(ImGui::DragFloat3("Rotation##transform", new_rot, 0.2f))
+		if(ImGui::DragFloat3("Rotation##transform", new_rot, 1, 0.0f, 360.0f))
 			curr_cmp->SetLocalRotation(DegToRad(float3(new_rot[0], new_rot[1], new_rot[2])));
 
 		if (ImGui::DragFloat3("Scale##transform", new_scale, 0.2f))
@@ -428,31 +429,32 @@ void PanelInspector::PrintBillBoardingComponent(GameObject * Go_to_draw)
 
 void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 {
-	ComponentParticleEmmiter* new_emm = (ComponentParticleEmmiter*)Go_to_draw->GetComponent(COMPONENT_PARTICLE_EMMITER);
+	ComponentParticleEmmiter* current_emmiter = (ComponentParticleEmmiter*)Go_to_draw->GetComponent(COMPONENT_PARTICLE_EMMITER);
 
 	if (ImGui::CollapsingHeader("Component Particle Emmiter"))
 	{
-		bool active_bool = new_emm->IsActive();
+		bool active_bool = current_emmiter->IsActive();
 		bool keeper = active_bool;
 
 		ImGui::Checkbox("Active", &active_bool);
 
 		if (keeper != active_bool)
-			new_emm->SetActive(keeper);
+			current_emmiter->SetActive(keeper);
 
-		if (new_emm->IsActive())
+		if (current_emmiter->IsActive())
 		{
 			ImGui::Separator();
 
 			if (ImGui::Button("PLAY"))
 			{
-
+				current_emmiter->SetSystemState(PARTICLE_STATE_PLAY);
 			}
+
 			ImGui::SameLine(); 
 
 			if (ImGui::Button("STOP"))
 			{
-
+				current_emmiter->SetSystemState(PARTICLE_STATE_PAUSE);
 			}
 
 			ImGui::Separator();
@@ -471,7 +473,12 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 			ImGui::Separator();
 
 			if (ImGui::TreeNode("Shape"))
-			{
+			{		
+				for (int i = 0; i < current_emmiter->GetTextureIDAmount(); i++)
+				{
+					ImGui::Image((ImTextureID)current_emmiter->GetTextureID(i), ImVec2(20, 20), ImVec2(1, 1), ImVec2(0, 0));
+				}
+				
 				ImGui::TreePop(); 
 			}
 
@@ -483,17 +490,17 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 			if (ImGui::TreeNode("Motion"))
 			{
 	
-				static bool show = new_emm->ShowEmmisionArea();
+				static bool show = current_emmiter->ShowEmmisionArea();
 				ImGui::Checkbox("Show Emmiter Area", &show);
-				new_emm->SetShowEmmisionArea(show);
+				current_emmiter->SetShowEmmisionArea(show);
 
-				int emision_rate = new_emm->GetEmmisionRate(); 
+				int emision_rate = current_emmiter->GetEmmisionRate();
 				ImGui::DragInt("Emmision Rate", &emision_rate, 1, 0, 150);
-				new_emm->SetEmmisionRate(emision_rate);
+				current_emmiter->SetEmmisionRate(emision_rate);
 
-				float lifetime = new_emm->GetLifetime();
+				float lifetime = current_emmiter->GetLifetime();
 				ImGui::DragFloat("Lifetime", &lifetime, 0, 0, 20);
-				new_emm->SetLifeTime(lifetime);
+				current_emmiter->SetLifeTime(lifetime);
 
 				ImGui::TreePop();
 			}

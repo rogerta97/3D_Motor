@@ -38,7 +38,6 @@ public:
 	void GetAllFilesInDirectory(const char* directory, vector<string>& to_fill, const char* prefix = "");
 	bool IsFolder(const char* directory);
 
-
 public: 
 
 		//Library
@@ -51,6 +50,7 @@ public:
 		string game_assets_dir; 
 		string mesh_path_game;
 		string tex_path_game;
+		string particles_path_game;
 
 };
 

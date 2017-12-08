@@ -10,6 +10,12 @@ enum particle_material_shape
 	MAT_SHAPE_NONE,
 };
 
+enum particle_system_state
+{
+	PARTICLE_STATE_PLAY,
+	PARTICLE_STATE_PAUSE,
+};
+
 struct ParticleComponents
 {
 	ComponentMeshRenderer* particle_mesh;
@@ -24,7 +30,8 @@ public:
 
 	Particle();
 
-	void Create(); 
+	void GenerateParticle();
+
 	void Update(); 
 
 	~Particle(); 
@@ -47,12 +54,13 @@ class ComponentParticleEmmiter : public Component
 public:
 	ComponentParticleEmmiter(GameObject* parent); 
 
-	void CreateSystem(float max_lifetime); 
+	void Start(); 
 
 	bool Update();
 
 	~ComponentParticleEmmiter(); 
 
+	//Getters & Setters
 	int GetEmmisionRate() const; 
 	void SetEmmisionRate(float new_emision_rate); 
 	void SetFrequencyFromRate(int rate); 
@@ -62,6 +70,14 @@ public:
 
 	float GetLifetime() const;
 	void SetLifeTime(float new_show);
+
+	particle_system_state GetSystemState() const;
+	void SetSystemState(particle_system_state new_state); 
+
+	//Draws & images
+	void DrawEmisionArea(); 
+	int GetTextureID(int pos);
+	int GetTextureIDAmount();
 
 public:
 
@@ -75,15 +91,18 @@ private:
 	//General Management
 	bool in_curse;
 	float particles_lifetime; 
+	particle_system_state system_state;  //Inner play & pause 
 
 	//Color Management
 
 	//Spawn Management
-	float emmision_frequency;	//Difference between spawn
-	int emmision_rate;			//How many spawn in a second
+	float emmision_frequency;		//Difference between spawn
+	int emmision_rate;				//How many spawn in a second
 
 	//Debug
 	bool show_emit_area; 
 
+	vector<uint> shapes_ids;			//This list will hold the id's of the textures that can give shape to the particles
+	uint shapes_amount; 
 
 };

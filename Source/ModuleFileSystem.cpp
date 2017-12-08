@@ -25,6 +25,7 @@ ModuleFileSystem::ModuleFileSystem(bool start_enabled): Module(start_enabled)
 
 	mesh_path_game = base_path + "Meshes\\"; 
 	tex_path_game = base_path + "Materials\\";
+	particles_path_game = base_path + "Materials\\Particles\\"; 
 
 }
 

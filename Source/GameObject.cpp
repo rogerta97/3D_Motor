@@ -647,7 +647,7 @@ bool Component::SetActive(bool _active)
 }
 void Component::SetComponentParent(GameObject* _parent)
 {
-	parent = _parent; 
+	gameobject = _parent; 
 }
 
 void Component::DeleteComponent()

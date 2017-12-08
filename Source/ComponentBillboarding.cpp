@@ -4,7 +4,7 @@
 
 ComponentBillboarding::ComponentBillboarding(GameObject * parent)
 {
-	this->parent = parent; 
+	gameobject = parent; 
 	active = true; 
 	reference = nullptr; 
 	curr_relation = {0,0,0};
@@ -83,6 +83,12 @@ bool ComponentBillboarding::Update()
 
 		float angle = old_z_axis.AngleBetween(new_z_axis); 
 
+		if (new_z_axis.x < old_z_axis.x)
+		{
+			angle = 360 - (angle*RADTODEG);
+			angle *= DEGTORAD; 
+		}
+					
 		//We perfom the rotation
 		GetComponentParent()->transform->SetLocalRotation({ 0, angle, 0});
 

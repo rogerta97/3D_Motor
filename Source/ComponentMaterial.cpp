@@ -6,7 +6,7 @@
 
 ComponentMaterial::ComponentMaterial(GameObject* _parent)
 {
-	parent = _parent; 
+	gameobject = _parent; 
 	type = COMPONENT_MATERIAL;
 
 

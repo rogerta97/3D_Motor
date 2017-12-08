@@ -40,7 +40,7 @@ public:
 	bool IsActive()const;
 	bool SetActive(bool _active);
 
-	GameObject* GetComponentParent() { return parent; }
+	GameObject* GetComponentParent() { return gameobject; }
 	void SetComponentParent(GameObject* parent); 
 	component_type GetComponentType() { return type; };
 	virtual void DeleteComponent(); 
@@ -50,7 +50,7 @@ public:
 	bool active = false;
 
 protected: 
-	GameObject* parent; 
+	GameObject* gameobject; 
 
 };
 

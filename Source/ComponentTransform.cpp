@@ -44,7 +44,7 @@ float3 ComponentTransform::GetGlobalScale()
 
 ComponentTransform::ComponentTransform(GameObject* _parent)
 {
-	parent = _parent; 
+	gameobject = _parent; 
 	active = true; 
 	type = COMPONENT_TRANSFORM; 
 	transform_modified = false; 

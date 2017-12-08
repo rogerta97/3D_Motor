@@ -1,4 +1,94 @@
 {
-    "GameObjects": [],
-    "Components": []
+    "GameObjects": [
+        {
+            "UID": 266300325,
+            "name": "Plane 1",
+            "is_active": true,
+            "is_static": false,
+            "parent": 0,
+            "new_child_id": 0
+        },
+        {
+            "UID": 396282732,
+            "name": "Plane 2",
+            "is_active": true,
+            "is_static": false,
+            "parent": 0,
+            "new_child_id": 0
+        },
+        {
+            "UID": 772305753,
+            "name": "Camera 3",
+            "is_active": true,
+            "is_static": false,
+            "parent": 0,
+            "new_child_id": 0
+        }
+    ],
+    "Components": [
+        {
+            "type": 1,
+            "owner": 266300325,
+            "position": [
+                0,
+                0,
+                0
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "rotation": [
+                0,
+                0.29816770553588867,
+                0,
+                -0.95451360940933228
+            ],
+            "mesh": -533937622,
+            "material": 381606992
+        },
+        {
+            "type": 1,
+            "owner": 396282732,
+            "position": [
+                -3.4000000953674316,
+                0,
+                0
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "rotation": [
+                0,
+                0.2723432183265686,
+                0,
+                0.96220016479492188
+            ],
+            "mesh": -1010352786,
+            "material": 1754570768
+        },
+        {
+            "type": 2,
+            "owner": 772305753,
+            "position": [
+                -1.8000000715255737,
+                0,
+                2.6000001430511475
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "rotation": [
+                0.89399665594100952,
+                0,
+                0,
+                -0.4480736255645752
+            ]
+        }
+    ]
 }

@@ -18,7 +18,7 @@ ComponentCamera::ComponentCamera(GameObject* _parent, float far_plane, float nea
 
 	type = COMPONENT_CAMERA; 
 	
-	parent = _parent; 
+	gameobject = _parent; 
 	active = true; 
 }
 
