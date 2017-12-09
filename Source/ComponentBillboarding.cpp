@@ -6,13 +6,16 @@ ComponentBillboarding::ComponentBillboarding(GameObject * parent)
 {
 	gameobject = parent; 
 	active = true; 
+	bill_active = false; 
 	reference = nullptr; 
-	curr_relation = {0,0,0};
-	show_set_window = false; 
 	type = COMPONENT_BILLBOARDING;
 
 	y_axis_locked = true; 
 	x_axis_locked = false; 
+
+	angle_x = 0; 
+	angle_y = 0; 
+	angle_z = 0; 
 }
 
 ComponentBillboarding::~ComponentBillboarding()
@@ -20,37 +23,36 @@ ComponentBillboarding::~ComponentBillboarding()
 }
 
 
-bool ComponentBillboarding::GetShowInputWindow() const
-{
-	return show_set_window; 
-}
 
 
-void ComponentBillboarding::SetReference(GameObject * reference)
+
+void ComponentBillboarding::SetReference(ComponentCamera * reference)
 {
 	this->reference = reference; 
 }
 
-GameObject * ComponentBillboarding::GetReference()
+ComponentCamera * ComponentBillboarding::GetReference()
 {
 	return reference;
-}
-
-void ComponentBillboarding::SetShowInputWindow(bool new_set)
-{
-	show_set_window = new_set; 
 }
 
 bool ComponentBillboarding::Update()
 {
 	//if the gameobject reference has moved, we get the transform of the element with billboarding 
-	ComponentTransform* trans = nullptr;
+	float3 reference_position;
 
 	if (reference != nullptr)
-		trans = (ComponentTransform*)reference->GetComponent(COMPONENT_TRANSFORM);
-
-	if (trans != nullptr && trans->IsPositionChanged() == true)
 	{
+		reference_position = reference->frustum.pos;
+
+		if (reference_position.x != last_ref_pos.x || reference_position.y != last_ref_pos.y || reference_position.z != last_ref_pos.z)
+			ref_position_changed = true;
+	}
+		
+	if (ref_position_changed == true)
+	{
+		last_ref_pos = reference_position; 
+
 		float3 new_x_axis = { 0,0,0 };
 		float3 new_y_axis = { 0,0,0 };
 		float3 new_z_axis = { 0,0,0 };
@@ -60,16 +62,15 @@ bool ComponentBillboarding::Update()
 		float3 old_z_axis = GetComponentParent()->transform->GetGlobalTransform().WorldZ();
 
 		//We set the Z axis at the direction of the reference
-		float3 global_reference_pos = trans->GetGlobalPosition(); 
 		float3 global_object_pos = GetComponentParent()->transform->GetGlobalPosition(); 
 
-		float3 direction = global_reference_pos - global_object_pos; 
+		float3 direction = reference_position - global_object_pos;
 
 		direction.Normalize(); 
 
 		new_z_axis = direction; 
 
-		trans->SetPositionChanged(false); 
+		ref_position_changed = false;
 
 		//From that, we calculate the X new axis
 		new_x_axis = new_z_axis.Perpendicular(); 
@@ -77,20 +78,32 @@ bool ComponentBillboarding::Update()
 
 		//Then we get the Y new axis
 		new_y_axis = new_x_axis.Cross(new_z_axis); 
+		new_y_axis *= -1;
 
 		//We make calculations to know necessary rotation
+		
 		float cross = new_x_axis.x*old_x_axis.x + new_x_axis.y*old_x_axis.y + new_x_axis.z*old_x_axis.z;
+		
+		float prev_angle_x = old_x_axis.AngleBetween(new_x_axis);
+		float prev_angle_z = old_z_axis.AngleBetween(new_z_axis);
 
-		float angle = old_z_axis.AngleBetween(new_z_axis); 
-
-		if (new_z_axis.x < old_z_axis.x)
+		if (new_z_axis.y > old_z_axis.y)
 		{
-			angle = 360 - (angle*RADTODEG);
-			angle *= DEGTORAD; 
+			prev_angle_z = 360 - (prev_angle_z*RADTODEG);
+			prev_angle_z *= DEGTORAD;
 		}
+		//if (new_z_axis.y > old_z_axis.y)
+		//{
+		//	angle_y = 360 - (angle_y*RADTODEG);
+		//	angle_y *= DEGTORAD;
+		//}
+
+		//Add it to the current angles 
+		angle_x += prev_angle_x; 
+		angle_z += prev_angle_z; 
 					
 		//We perfom the rotation
-		GetComponentParent()->transform->SetLocalRotation({ 0, angle, 0});
+		GetComponentParent()->transform->SetLocalRotation({ angle_z, 0, 0});
 
 	}
 

@@ -41,12 +41,6 @@ void RayCast::Update()
 					curr_obj->SetLooking4Parent(false);
 					LOG("%s is child of %s", curr_obj->GetName(), hited_GO->GetName());
 				}
-				else if (curr_obj != nullptr && curr_obj->IsLooking4Reference() == true)
-				{
-					ComponentBillboarding* bill = (ComponentBillboarding*)curr_obj->GetComponent(COMPONENT_BILLBOARDING); 
-					bill->SetReference(hited_GO);
-					curr_obj->SetLooking4Reference(false);
-				}
 				else 
 				{
 					App->scene_intro->SetCurrentGO(hited_GO->GetID());

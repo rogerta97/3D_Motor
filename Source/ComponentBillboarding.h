@@ -6,6 +6,7 @@
 
 class json_file; 
 class GameObject; 
+class ComponentCamera; 
 
 class ComponentBillboarding : public Component
 {
@@ -21,22 +22,24 @@ public:
 	void OnSave(json_file& config)const;
 	void Delete();
 
-	void SetShowInputWindow(bool new_set); 
-	bool GetShowInputWindow() const;
-
-	void SetReference(GameObject* reference); 
-	GameObject* GetReference();
+	void SetReference(ComponentCamera* reference);
+	ComponentCamera* GetReference();
 
 	bool y_axis_locked;
 	bool x_axis_locked;
 
+	bool bill_active;
+	bool ref_position_changed;
+
 private:
 
-	GameObject* reference; 
+	ComponentCamera* reference;			//Billboard will always be aligned to a camera
 
-	float3 curr_relation; 
+	float3 last_ref_pos;				//For optimization, knowing if the camera has moved and aply the billboarding calculations 
 
-	bool show_set_window; 
+	float angle_x; 
+	float angle_y; 
+	float angle_z; 
 
 
 };

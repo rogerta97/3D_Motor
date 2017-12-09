@@ -44,13 +44,20 @@ public:
 	//Setters & Getters
 	ParticleComponents GetAtributes();
 
+	///Lifetime
 	void SetMaxLifetime(const float& new_lifetime);
 	float GetMaxLifeTime() const;
 
+	///Velocity
 	void SetVelocity(const float& new_velocity);
 	float GetVelocity() const;
 
+	///Texture
 	void SetTextureByID(uint texture_ID);
+
+	///Color
+	void SetColor(Color new_color); 
+	Color GetColor() const; 
 
 	bool IsDead();
 
@@ -67,6 +74,7 @@ private:
 	Timer particle_timer; 
 	float max_particle_lifetime; 
 	float particle_velocity; 
+	Color particle_color;
 
 	bool kill_me;
 	int particle_texture_id; 
@@ -121,7 +129,8 @@ public:
 	float max_lifetime;						//Time that particules will be rendering
 	int emmision_rate;						//How many spawn in a second
 	float velocity;							//Velocity at what the particles are emmited
-	uint curr_texture_id;						//Hold the texture that will be drawn into the particles that we are cloning
+	uint curr_texture_id;					//Hold the texture that will be drawn into the particles that we are cloning
+	Color color; 
 
 private:
 

@@ -39,6 +39,16 @@ void Particle::SetTextureByID(uint texture_ID)
 	particle_texture_id = texture_ID;
 }
 
+void Particle::SetColor(Color new_color)
+{
+	particle_color = new_color; 
+}
+
+Color Particle::GetColor() const
+{
+	return particle_color;
+}
+
 void Particle::Update()
 {
 	float3 movement;
@@ -65,6 +75,7 @@ void Particle::Delete()
 void Particle::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
+	glColor3f(particle_color.r, particle_color.g, particle_color.b);
 
 	glPushMatrix();
 	glMultMatrixf(components.particle_transform->GetLocalTransform().Transposed().ptr());
@@ -86,11 +97,13 @@ void Particle::Draw()
 	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, components.particle_mesh->indices_id);
+
 	glDrawElements(GL_TRIANGLES, components.particle_mesh->num_indices, GL_UNSIGNED_INT, NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glColor3f(255,255,255);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -121,6 +134,7 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	max_lifetime = 1; 
 	velocity = 0.5f; 
 	curr_texture_id = -1; 
+	color = Color(255, 255, 255, 0); 
 
 	//Create the rectangle that will be the initial emmiting area (2x2 square)
 	emit_area = new ComponentMeshRenderer(gameobject);
@@ -204,6 +218,7 @@ void ComponentParticleEmmiter::UpdateRootParticle()
 	root_particle->SetMaxLifetime(max_lifetime); 
 	root_particle->SetVelocity(velocity); 
 	root_particle->SetTextureByID(curr_texture_id); 
+	root_particle->SetColor(color);
 }
 
 ComponentParticleEmmiter::~ComponentParticleEmmiter()
@@ -239,6 +254,7 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	new_particle->SetMaxLifetime(max_lifetime); 
 	new_particle->SetVelocity(velocity); 
 	new_particle->SetTextureByID(curr_texture_id);
+	new_particle->SetColor(color); 
 	
 	return new_particle; 
 }

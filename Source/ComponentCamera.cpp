@@ -219,7 +219,6 @@ void ComponentCamera::MoveForward(const float & speed)
 	if (GetComponentParent() != nullptr)
 	{
 		ComponentTransform* trans = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM);
-
 		trans->SetLocalPosition(trans->GetLocalPosition() + vec);
 	}
 

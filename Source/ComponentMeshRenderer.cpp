@@ -232,7 +232,6 @@ bool ComponentMeshRenderer::Update()
 		}
 	}
 
-
 	//INDICES
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,indices_id);
 	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, NULL);

@@ -207,6 +207,9 @@ void PanelInspector::PrintMeshComponent(GameObject* GO_to_draw)
 
 		ImGui::Checkbox("Draw AABB", &curr_cmp->show_bb); ImGui::SameLine(); 
 
+		if (curr_cmp->show_bb)
+			LOG("icanbesetxd"); 
+
 		if(curr_cmp->normals_id != 0)
 			ImGui::Checkbox("Draw Normals", &curr_cmp->show_normals);
 
@@ -373,56 +376,74 @@ void PanelInspector::PrintCameraComponent(GameObject* GO_to_draw)
 
 void PanelInspector::PrintBillBoardingComponent(GameObject * Go_to_draw)
 {
-	ComponentBillboarding* new_bill = (ComponentBillboarding*)Go_to_draw->GetComponent(COMPONENT_BILLBOARDING); 
+
+	ComponentBillboarding* curr_cmp = (ComponentBillboarding*)Go_to_draw->GetComponent(COMPONENT_BILLBOARDING);
+
+	if (curr_cmp == nullptr)
+		return;
 
 	if (ImGui::CollapsingHeader("Component Billboarding"))
 	{
-		if (ImGui::Button("Set Reference"))
-		{	
-			new_bill->SetShowInputWindow(true);
-		}
 
-		if (new_bill->GetShowInputWindow())
+		bool prev_check = curr_cmp->bill_active; 
+		ImGui::Checkbox("Billboarding Active", &curr_cmp->bill_active);
+
+		if (prev_check != curr_cmp->bill_active)
 		{
-			App->camera->LockCamera(); 
-
-			static char ref_object_name[30]; 
-
-			ImGui::Begin("Attach Reference"); 
-
-			ImGui::InputText("Referece", &ref_object_name[0], 30); 
-
-			if (ImGui::Button("Set"))
+			if(curr_cmp->bill_active == true)
 			{
-				if (strlen(ref_object_name) != 0)
-				{
-					GameObject* new_reference = App->scene_intro->FindByNameRecursive(ref_object_name);
-					new_bill->SetReference(new_reference);
-
-					new_reference->transform->SetPositionChanged(true); 
-				}
-
-				new_bill->SetShowInputWindow(false);
+				curr_cmp->SetReference(App->renderer3D->rendering_cam);
+				//curr_cmp->ref_position_changed = true;
 			}
-
-			ImGui::End(); 
+			else
+			{
+				curr_cmp->SetReference(nullptr);
+				curr_cmp->GetComponentParent()->transform->SetIdentityTransform(); 
+			}
+		
 		}
+	}
+		//if (new_bill->GetShowInputWindow())
+		//{
+		//	App->camera->LockCamera(); 
 
-		ImGui::Text("Attached to:"); ImGui::SameLine();
+		//	static char ref_object_name[30]; 
 
-		if (new_bill->GetReference() != nullptr)
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", new_bill->GetReference()->GetName());
-		else
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), "NONE"); 
+		//	ImGui::Begin("Attach Reference"); 
 
-		ImGui::Separator();
+		//	ImGui::InputText("Referece", &ref_object_name[0], 30); 
 
-		if (new_bill->GetReference() != nullptr)
-		{
-			ImGui::Checkbox("Lock Y", &new_bill->y_axis_locked);
-			ImGui::Checkbox("Lock X", &new_bill->x_axis_locked);
-		}
-	}	
+		//	if (ImGui::Button("Set"))
+		//	{
+		//		if (strlen(ref_object_name) != 0)
+		//		{
+		//			GameObject* new_reference = App->scene_intro->FindByNameRecursive(ref_object_name);
+		//			new_bill->SetReference(new_reference);
+
+		//			new_reference->transform->SetPositionChanged(true); 
+		//		}
+
+		//		new_bill->SetShowInputWindow(false);
+		//	}
+
+		//ImGui::End();
+	
+
+	//ImGui::Text("Attached to:"); ImGui::SameLine();
+
+	//if (new_bill->GetReference() != nullptr)
+	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", new_bill->GetReference()->GetName());
+	//else
+	//	ImGui::TextColored(ImVec4(1, 0, 0, 1), "NONE"); 
+//
+//		ImGui::Separator();
+//
+//		if (new_bill->GetReference() != nullptr)
+//		{
+//			ImGui::Checkbox("Lock Y", &new_bill->y_axis_locked);
+//			ImGui::Checkbox("Lock X", &new_bill->x_axis_locked);
+//		}	
+//}
 }
 
 void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
@@ -474,6 +495,16 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 
 			ImGui::Separator();
 
+			if (ImGui::TreeNode("Emit Area"))
+			{
+
+				static bool show = current_emmiter->ShowEmmisionArea();
+				ImGui::Checkbox("Show Emmiter Area", &show);
+				current_emmiter->SetShowEmmisionArea(show);
+
+				
+			}
+
 			if (ImGui::TreeNode("Shape"))
 			{		
 
@@ -501,15 +532,18 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 
 			if (ImGui::TreeNode("Color"))
 			{
+		
+				ImGui::ColorPicker4("Current Color##4", (float*)&current_emmiter->color);
+
+				current_emmiter->UpdateRootParticle(); 
+
 				ImGui::TreePop();
 			}
 
 			if (ImGui::TreeNode("Motion"))
 			{
 	
-				static bool show = current_emmiter->ShowEmmisionArea();
-				ImGui::Checkbox("Show Emmiter Area", &show);
-				current_emmiter->SetShowEmmisionArea(show);
+
 
 				if (ImGui::DragInt("Emmision Rate", &current_emmiter->emmision_rate, 1, 0, 150)) current_emmiter->UpdateRootParticle(); 
 				if (ImGui::DragFloat("Lifetime", &current_emmiter->max_lifetime, 0, 0, 20)) current_emmiter->UpdateRootParticle();
