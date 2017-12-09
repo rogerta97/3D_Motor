@@ -11,22 +11,43 @@ Particle::Particle()
 
 ParticleComponents Particle::GetAtributes()
 {
-	return atributes;
+	return components;
 }
 
-void Particle::SetMaxLifetime(float new_lifetime)
+void Particle::SetMaxLifetime(const float& new_lifetime)
 {
 	max_particle_lifetime = new_lifetime; 
 }
 
-float Particle::GetMaxLifeTime()
+float Particle::GetMaxLifeTime() const
 {
 	return max_particle_lifetime;
 }
 
+void Particle::SetVelocity(const float & new_velocity)
+{
+	particle_velocity = new_velocity; 
+}
+
+float Particle::GetVelocity() const
+{
+	return particle_velocity;
+}
+
+void Particle::SetTextureByID(uint texture_ID)
+{
+	particle_texture_id = texture_ID;
+}
+
 void Particle::Update()
 {
-	atributes.particle_transform->SetLocalPosition(atributes.particle_transform->GetLocalPosition() + float3(0,0.2f,0));
+	float3 movement;
+
+	movement.x = 0;
+	movement.y = particle_velocity; 
+	movement.z = 0; 
+
+	components.particle_transform->SetLocalPosition(components.particle_transform->GetLocalPosition() + movement);
 
 	if (particle_timer.Read() > max_particle_lifetime*1000)
 		kill_me = true; 
@@ -34,11 +55,11 @@ void Particle::Update()
 
 void Particle::Delete()
 {
-	atributes.particle_mesh->Delete(); 
-	atributes.particle_material->Delete(); 
-	atributes.particle_billboarding->Delete(); 
+	components.particle_mesh->Delete();
+	components.particle_material->Delete();
+	components.particle_billboarding->Delete();
 
-	atributes.SetToNull(); 
+	components.SetToNull();
 }
 
 void Particle::Draw()
@@ -46,28 +67,35 @@ void Particle::Draw()
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	glPushMatrix();
-	glMultMatrixf(atributes.particle_transform->GetLocalTransform().Transposed().ptr());
+	glMultMatrixf(components.particle_transform->GetLocalTransform().Transposed().ptr());
 
-	glBindBuffer(GL_ARRAY_BUFFER, atributes.particle_mesh->vertices_id);
+	glBindBuffer(GL_ARRAY_BUFFER, components.particle_mesh->vertices_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, atributes.particle_mesh->indices_id);
-	glDrawElements(GL_TRIANGLES, atributes.particle_mesh->num_indices, GL_UNSIGNED_INT, NULL);
+	if (particle_texture_id != -1)
+	{
+		glEnable(GL_BLEND);
+		glEnable(GL_ALPHA_TEST);
+
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBindTexture(GL_TEXTURE_2D, particle_texture_id); 
+
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, components.particle_mesh->uvs_id);
+		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+	}
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, components.particle_mesh->indices_id);
+	glDrawElements(GL_TRIANGLES, components.particle_mesh->num_indices, GL_UNSIGNED_INT, NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glPopMatrix();
-}
-
-void Particle::DrawMesh()
-{
-
-
-
 }
 
 Particle::~Particle()
@@ -91,6 +119,8 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	shapes_amount = 0; 
 	emmision_rate = 1; 
 	max_lifetime = 1; 
+	velocity = 0.5f; 
+	curr_texture_id = -1; 
 
 	//Create the rectangle that will be the initial emmiting area (2x2 square)
 	emit_area = new ComponentMeshRenderer(gameobject);
@@ -130,9 +160,11 @@ void ComponentParticleEmmiter::Start()
 void ComponentParticleEmmiter::CreateRootParticle()
 {
 	root_particle = new Particle(); 
-	root_particle->atributes.SetToNull();
+	root_particle->components.SetToNull();
 
 	root_particle->SetMaxLifetime(max_lifetime); 
+	root_particle->SetVelocity(velocity);
+	root_particle->SetTextureByID(-1); 
 }
 
 bool ComponentParticleEmmiter::Update()
@@ -151,7 +183,11 @@ bool ComponentParticleEmmiter::Update()
 			(*it)->Delete(); 
 			it = active_particles.erase(it); 
 			LOG("PARTICLE DELETED"); 
-			break; 
+
+			if (active_particles.size() > 0)
+				continue;
+			else
+				break; 
 		}
 
 		(*it)->Update();
@@ -164,7 +200,10 @@ bool ComponentParticleEmmiter::Update()
 void ComponentParticleEmmiter::UpdateRootParticle()
 {
 	SetEmmisionRate(emmision_rate); 
+
 	root_particle->SetMaxLifetime(max_lifetime); 
+	root_particle->SetVelocity(velocity); 
+	root_particle->SetTextureByID(curr_texture_id); 
 }
 
 ComponentParticleEmmiter::~ComponentParticleEmmiter()
@@ -191,13 +230,15 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	Particle* new_particle = new Particle(); 
 
 	//We create its transform
-	new_particle->atributes.particle_transform = new ComponentTransform(nullptr);
+	new_particle->components.particle_transform = new ComponentTransform(nullptr);
 
 	//We generate the always squared surface for the particle 
-	new_particle->atributes.particle_mesh = new ComponentMeshRenderer(nullptr);
-	new_particle->atributes.particle_mesh->SetPlaneVertices({ gameobject->transform->GetLocalPosition().x, gameobject->transform->GetLocalPosition().y, gameobject->transform->GetLocalPosition().z }, 2);
+	new_particle->components.particle_mesh = new ComponentMeshRenderer(nullptr);
+	new_particle->components.particle_mesh->SetPlaneVertices({ gameobject->transform->GetLocalPosition().x, gameobject->transform->GetLocalPosition().y, gameobject->transform->GetLocalPosition().z }, 2);
 
 	new_particle->SetMaxLifetime(max_lifetime); 
+	new_particle->SetVelocity(velocity); 
+	new_particle->SetTextureByID(curr_texture_id);
 	
 	return new_particle; 
 }
@@ -281,4 +322,14 @@ int ComponentParticleEmmiter::GetTextureID(int pos)
 int ComponentParticleEmmiter::GetTextureIDAmount()
 {
 	return shapes_amount; 
+}
+
+void ComponentParticleEmmiter::SetCurrentTextureID(uint texture_id)
+{
+	curr_texture_id = texture_id; 
+}
+
+uint ComponentParticleEmmiter::GetCurrentTextureID() const
+{
+	return curr_texture_id;
 }

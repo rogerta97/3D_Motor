@@ -40,13 +40,17 @@ public:
 
 	//Drawing
 	void Draw(); 
-	void DrawMesh(); 
 
 	//Setters & Getters
 	ParticleComponents GetAtributes();
 
-	void SetMaxLifetime(float new_lifetime);
-	float GetMaxLifeTime();
+	void SetMaxLifetime(const float& new_lifetime);
+	float GetMaxLifeTime() const;
+
+	void SetVelocity(const float& new_velocity);
+	float GetVelocity() const;
+
+	void SetTextureByID(uint texture_ID);
 
 	bool IsDead();
 
@@ -54,7 +58,7 @@ public:
 
 public: 
 
-	ParticleComponents atributes;
+	ParticleComponents components;
 
 private:
 
@@ -62,7 +66,10 @@ private:
 
 	Timer particle_timer; 
 	float max_particle_lifetime; 
+	float particle_velocity; 
+
 	bool kill_me;
+	int particle_texture_id; 
 
 };
 
@@ -101,14 +108,20 @@ public:
 
 	//Draws & images
 	void DrawEmisionArea(); 
+
 	int GetTextureID(int pos);
 	int GetTextureIDAmount();
+
+	void SetCurrentTextureID(uint texture_id); 
+	uint GetCurrentTextureID() const; 
 
 public:
 
 	//UI data
 	float max_lifetime;						//Time that particules will be rendering
 	int emmision_rate;						//How many spawn in a second
+	float velocity;							//Velocity at what the particles are emmited
+	uint curr_texture_id;						//Hold the texture that will be drawn into the particles that we are cloning
 
 private:
 

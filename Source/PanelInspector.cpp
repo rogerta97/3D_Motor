@@ -1,5 +1,4 @@
 #include "PanelInspector.h"
-
 #include "GameObject.h"
 #include "Application.h"
 #include "ComponentDefs.h"
@@ -477,11 +476,26 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 
 			if (ImGui::TreeNode("Shape"))
 			{		
+
+				//Here we get the id of the BUTTON that is pressed, the position. 
+				uint button_pressed = -1; 
 				for (int i = 0; i < current_emmiter->GetTextureIDAmount(); i++)
 				{
-					ImGui::Image((ImTextureID)current_emmiter->GetTextureID(i), ImVec2(20, 20), ImVec2(1, 1), ImVec2(0, 0));
+					if (ImGui::ImageButton((ImTextureID)current_emmiter->GetTextureID(i), ImVec2(32, 32), ImVec2(1, 1), ImVec2(0,0), 2, ImColor(0, 0, 0, 255)))
+						button_pressed = i;
+
+					if (i != current_emmiter->GetTextureIDAmount() - 1)
+						ImGui::SameLine();
 				}
-				
+
+				//Once we have the position we can get the texture id associated with it 
+				if (button_pressed != -1)
+				{
+					uint texture_to_display = current_emmiter->GetTextureID(button_pressed);
+					current_emmiter->SetCurrentTextureID(texture_to_display);
+					current_emmiter->UpdateRootParticle();
+				}
+			
 				ImGui::TreePop(); 
 			}
 
@@ -499,6 +513,7 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 
 				if (ImGui::DragInt("Emmision Rate", &current_emmiter->emmision_rate, 1, 0, 150)) current_emmiter->UpdateRootParticle(); 
 				if (ImGui::DragFloat("Lifetime", &current_emmiter->max_lifetime, 0, 0, 20)) current_emmiter->UpdateRootParticle();
+				if (ImGui::SliderFloat("Velocity", &current_emmiter->velocity, 0.1f, 5)) current_emmiter->UpdateRootParticle(); 
 				
 				ImGui::TreePop();
 			}
