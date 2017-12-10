@@ -1,5 +1,6 @@
 #include "ComponentBillboarding.h"
 #include "ComponentDefs.h"
+#include "Application.h"
 #include "GameObject.h"
 
 ComponentBillboarding::ComponentBillboarding(GameObject * parent)
@@ -15,7 +16,6 @@ ComponentBillboarding::ComponentBillboarding(GameObject * parent)
 
 	angle_x = 0; 
 	angle_y = 0; 
-	angle_z = 0; 
 }
 
 ComponentBillboarding::~ComponentBillboarding()
@@ -67,31 +67,54 @@ bool ComponentBillboarding::Update()
 		float3 direction = reference_position - global_object_pos;
 
 		direction.Normalize(); 
-
 		new_z_axis = direction; 
-
 		ref_position_changed = false;
 
 		//From that, we calculate the X new axis
-		new_x_axis = new_z_axis.Perpendicular(); 
-		new_x_axis *= -1; 
+		if (!x_axis_locked)
+		{
+			new_x_axis = new_z_axis.Perpendicular();
+
+			if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+				new_x_axis *= -1;
+		}
+		else
+			new_x_axis = old_x_axis; 
+
 
 		//Then we get the Y new axis
-		new_y_axis = new_x_axis.Cross(new_z_axis); 
-		new_y_axis *= -1;
 
-		//We make calculations to know necessary rotation
+		if (!y_axis_locked)
+		{
+			new_y_axis = new_x_axis.Cross(new_z_axis);
+			new_y_axis *= -1;
+		}
+		else
+			new_y_axis = old_y_axis; 
 		
-		float cross = new_x_axis.x*old_x_axis.x + new_x_axis.y*old_x_axis.y + new_x_axis.z*old_x_axis.z;
+
+		//We make calculations to know necessary rotation	
 		
-		float prev_angle_x = old_x_axis.AngleBetween(new_x_axis);
-		float prev_angle_z = old_z_axis.AngleBetween(new_z_axis);
+		///First we project our current axis into X and Y planes 
+		float3 old_x_projection = { old_z_axis.x, 0, old_z_axis.z }; 
+		float3 old_y_projection = { old_z_axis.z, old_z_axis.y, 0 }; 
+
+		///We project the X of the triangle formed with the angle for knowing the horizontal rotation
+		float3 new_x_projection = { new_z_axis.x, 0, new_z_axis.z };
+		float3 new_y_projection = { new_z_axis.z, new_z_axis.y, 0 };
+
+		new_y_projection.x = new_x_projection.z; 
+
+		///We project the Y of the triangle formed with the angle for knowing the vertical rotation
+		float increment_angle_x = old_x_projection.AngleBetween(new_x_projection);
+		float increment_angle_y = old_y_projection.AngleBetween(new_y_projection);
 
 		if (new_z_axis.y > old_z_axis.y)
 		{
-			prev_angle_z = 360 - (prev_angle_z*RADTODEG);
-			prev_angle_z *= DEGTORAD;
+			increment_angle_y = 360 - (increment_angle_y*RADTODEG);
+			increment_angle_y *= DEGTORAD;
 		}
+
 		//if (new_z_axis.y > old_z_axis.y)
 		//{
 		//	angle_y = 360 - (angle_y*RADTODEG);
@@ -99,11 +122,16 @@ bool ComponentBillboarding::Update()
 		//}
 
 		//Add it to the current angles 
-		angle_x += prev_angle_x; 
-		angle_z += prev_angle_z; 
+		angle_x += increment_angle_y;
+		angle_y += increment_angle_x;
 					
 		//We perfom the rotation
-		GetComponentParent()->transform->SetLocalRotation({ angle_z, 0, 0});
+
+		if(!y_axis_locked)
+			GetComponentParent()->transform->SetLocalRotation({ angle_x, 0, 0 });
+
+		if(!x_axis_locked)
+			GetComponentParent()->transform->SetLocalRotation({ 0, angle_y, 0 });
 
 	}
 

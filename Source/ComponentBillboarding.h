@@ -38,8 +38,7 @@ private:
 	float3 last_ref_pos;				//For optimization, knowing if the camera has moved and aply the billboarding calculations 
 
 	float angle_x; 
-	float angle_y; 
-	float angle_z; 
+	float angle_y;  
 
 
 };

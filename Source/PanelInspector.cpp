@@ -402,48 +402,13 @@ void PanelInspector::PrintBillBoardingComponent(GameObject * Go_to_draw)
 			}
 		
 		}
+
+		ImGui::Separator(); 
+
+		ImGui::Checkbox("Lock Y", &curr_cmp->y_axis_locked); ImGui::SameLine(); 
+		ImGui::Checkbox("Lock X", &curr_cmp->x_axis_locked);
+
 	}
-		//if (new_bill->GetShowInputWindow())
-		//{
-		//	App->camera->LockCamera(); 
-
-		//	static char ref_object_name[30]; 
-
-		//	ImGui::Begin("Attach Reference"); 
-
-		//	ImGui::InputText("Referece", &ref_object_name[0], 30); 
-
-		//	if (ImGui::Button("Set"))
-		//	{
-		//		if (strlen(ref_object_name) != 0)
-		//		{
-		//			GameObject* new_reference = App->scene_intro->FindByNameRecursive(ref_object_name);
-		//			new_bill->SetReference(new_reference);
-
-		//			new_reference->transform->SetPositionChanged(true); 
-		//		}
-
-		//		new_bill->SetShowInputWindow(false);
-		//	}
-
-		//ImGui::End();
-	
-
-	//ImGui::Text("Attached to:"); ImGui::SameLine();
-
-	//if (new_bill->GetReference() != nullptr)
-	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", new_bill->GetReference()->GetName());
-	//else
-	//	ImGui::TextColored(ImVec4(1, 0, 0, 1), "NONE"); 
-//
-//		ImGui::Separator();
-//
-//		if (new_bill->GetReference() != nullptr)
-//		{
-//			ImGui::Checkbox("Lock Y", &new_bill->y_axis_locked);
-//			ImGui::Checkbox("Lock X", &new_bill->x_axis_locked);
-//		}	
-//}
 }
 
 void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
