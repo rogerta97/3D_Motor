@@ -234,7 +234,20 @@ void ComponentTransform::SetLocalPosition(const float3 & _position)
 
 void ComponentTransform::SetLocalRotation(const float3& _rotation)
 {
-	if (GetComponentParent()->IsStatic() == false)
+	if (GetComponentParent() == nullptr) //This means it is a particle 
+	{
+		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
+		transform.rotation = mod;
+
+		static int a = 0;
+		LOG("changing rotation %d", a);
+		a++;
+
+		transform_modified = true;
+		UpdateTransform(GetComponentParent());
+	}
+
+	else if (GetComponentParent()->IsStatic() == false)
 	{
 		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
 		transform.rotation = mod;

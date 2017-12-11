@@ -376,7 +376,6 @@ void PanelInspector::PrintCameraComponent(GameObject* GO_to_draw)
 
 void PanelInspector::PrintBillBoardingComponent(GameObject * Go_to_draw)
 {
-
 	ComponentBillboarding* curr_cmp = (ComponentBillboarding*)Go_to_draw->GetComponent(COMPONENT_BILLBOARDING);
 
 	if (curr_cmp == nullptr)
@@ -507,7 +506,26 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 
 			if (ImGui::TreeNode("Motion"))
 			{
-	
+				//bool joker; //This will notice if billboard change from state active/disable 
+				//joker = current_emmiter->show_billboarding; 
+
+				ImGui::Checkbox("Billboarding", &current_emmiter->show_billboarding); 
+
+				//if (joker != current_emmiter->show_billboarding)
+				//{
+				//	if (current_emmiter->show_billboarding)
+				//		current_emmiter->SetBillboardReference(App->renderer3D->rendering_cam); 
+				//	else
+				//		current_emmiter->SetBillboardReference(nullptr);
+				//}
+
+				if (current_emmiter->show_billboarding)
+				{
+					ImGui::Separator();
+					ImGui::Checkbox("Lock axis Y", &current_emmiter->lock_billboarding_y);
+					ImGui::Checkbox("Lock axis X", &current_emmiter->lock_billboarding_x);	
+					ImGui::Separator();
+				}
 
 
 				if (ImGui::DragInt("Emmision Rate", &current_emmiter->emmision_rate, 1, 0, 150)) current_emmiter->UpdateRootParticle(); 

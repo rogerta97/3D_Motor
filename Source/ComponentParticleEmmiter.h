@@ -44,6 +44,10 @@ public:
 	//Setters & Getters
 	ParticleComponents GetAtributes();
 
+	//Billboarding
+	void SetBillboardReference(ComponentCamera* new_reference);
+	ComponentCamera* GetBillboardReference();
+
 	///Lifetime
 	void SetMaxLifetime(const float& new_lifetime);
 	float GetMaxLifeTime() const;
@@ -95,6 +99,7 @@ public:
 
 	~ComponentParticleEmmiter(); 
 
+
 	//Spawning
 	void GenerateParticles(); 
 	Particle* CreateParticle(); 
@@ -125,12 +130,26 @@ public:
 
 public:
 
-	//UI data
+	//UI data ------
+
+	//Emiter
+
+	//Shape
+	uint curr_texture_id;					//Hold the texture that will be drawn into the particles that we are cloning
+
+	//Color
+	Color color;
+
+	//Motion
+	bool show_billboarding;
+	bool lock_billboarding_y;
+	bool lock_billboarding_x;
+
 	float max_lifetime;						//Time that particules will be rendering
 	int emmision_rate;						//How many spawn in a second
 	float velocity;							//Velocity at what the particles are emmited
-	uint curr_texture_id;					//Hold the texture that will be drawn into the particles that we are cloning
-	Color color; 
+
+	// --------
 
 private:
 

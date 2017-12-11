@@ -51,14 +51,18 @@ Color Particle::GetColor() const
 
 void Particle::Update()
 {
-	float3 movement;
 
-	movement.x = 0;
-	movement.y = particle_velocity; 
-	movement.z = 0; 
-
+	//Update V position
+	float3 movement = {0, particle_velocity, 0};
 	components.particle_transform->SetLocalPosition(components.particle_transform->GetLocalPosition() + movement);
 
+	//Update Billboarding rotation
+	if (components.particle_billboarding != nullptr)
+	{
+		components.particle_billboarding->Update(); 
+	}
+
+	//Check if they have to be deleted
 	if (particle_timer.Read() > max_particle_lifetime*1000)
 		kill_me = true; 
 }
@@ -135,6 +139,7 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	velocity = 0.5f; 
 	curr_texture_id = -1; 
 	color = Color(255, 255, 255, 0); 
+	show_billboarding = false; 
 
 	//Create the rectangle that will be the initial emmiting area (2x2 square)
 	emit_area = new ComponentMeshRenderer(gameobject);
@@ -188,8 +193,10 @@ bool ComponentParticleEmmiter::Update()
 	
 	if(show_emit_area)	DrawEmisionArea();
 
+	//Create particles if needed
 	GenerateParticles(); 
 
+	//Update & Draw particles 
 	for (list<Particle*>::iterator it = active_particles.begin(); it != active_particles.end(); it++)
 	{
 		if ((*it)->IsDead())
@@ -225,6 +232,16 @@ ComponentParticleEmmiter::~ComponentParticleEmmiter()
 {
 }
 
+void Particle::SetBillboardReference(ComponentCamera* new_reference)
+{
+	components.particle_billboarding->SetReference(new_reference); 
+}
+
+ComponentCamera * Particle::GetBillboardReference()
+{
+	return components.particle_billboarding->GetReference();
+}
+
 void ComponentParticleEmmiter::GenerateParticles()
 {
 	if (system_state == PARTICLE_STATE_PAUSE)
@@ -251,6 +268,23 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	new_particle->components.particle_mesh = new ComponentMeshRenderer(nullptr);
 	new_particle->components.particle_mesh->SetPlaneVertices({ gameobject->transform->GetLocalPosition().x, gameobject->transform->GetLocalPosition().y, gameobject->transform->GetLocalPosition().z }, 2);
 
+	//Billboard the squad for always be looking at the camera, at the beggining it will be deactivated 
+	if (show_billboarding)
+	{
+		new_particle->components.particle_billboarding = new ComponentBillboarding(nullptr, new_particle);
+		new_particle->SetBillboardReference(App->renderer3D->rendering_cam);
+
+		if (lock_billboarding_y)
+			new_particle->components.particle_billboarding->LockY(); 
+		else
+			new_particle->components.particle_billboarding->UnLockY();
+
+		if (lock_billboarding_x)
+			new_particle->components.particle_billboarding->LockX(); 
+		else
+			new_particle->components.particle_billboarding->UnLockX();
+	}
+		
 	new_particle->SetMaxLifetime(max_lifetime); 
 	new_particle->SetVelocity(velocity); 
 	new_particle->SetTextureByID(curr_texture_id);
