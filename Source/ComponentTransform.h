@@ -64,10 +64,12 @@ public:
 	bool IsPositionChanged() const;
 	void SetPositionChanged(bool new_set); 
 
-	void UpdateTransform(GameObject* curr_go); 
+	void UpdateTransform(); 
 
 	void Serialize(json_file* file);
 private:
+
+	Transform prev_transform; 
 
 	Transform transform; 
 	Transform global_transform; 

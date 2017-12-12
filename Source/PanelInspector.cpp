@@ -207,8 +207,6 @@ void PanelInspector::PrintMeshComponent(GameObject* GO_to_draw)
 
 		ImGui::Checkbox("Draw AABB", &curr_cmp->show_bb); ImGui::SameLine(); 
 
-		if (curr_cmp->show_bb)
-			LOG("icanbesetxd"); 
 
 		if(curr_cmp->normals_id != 0)
 			ImGui::Checkbox("Draw Normals", &curr_cmp->show_normals);
@@ -332,8 +330,6 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 			curr_cmp->SetModified(true);
 		}
 			
-
-		// HAVE TO ASK WHY ROTATION IS NOT EXACTLY 10 IS 9.9999
 		if (new_rot[0] != rot[0] || new_rot[1] != rot[1] || new_rot[2] != rot[2])
 		{
 			curr_cmp->SetModified(true);
@@ -531,6 +527,9 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 				if (ImGui::DragInt("Emmision Rate", &current_emmiter->emmision_rate, 1, 0, 150)) current_emmiter->UpdateRootParticle(); 
 				if (ImGui::DragFloat("Lifetime", &current_emmiter->max_lifetime, 0, 0, 20)) current_emmiter->UpdateRootParticle();
 				if (ImGui::SliderFloat("Velocity", &current_emmiter->velocity, 0.1f, 5)) current_emmiter->UpdateRootParticle(); 
+				if (ImGui::SliderFloat3("Gravity", &current_emmiter->gravity[0], -5, 5)) current_emmiter->UpdateRootParticle();
+
+
 				
 				ImGui::TreePop();
 			}

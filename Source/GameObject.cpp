@@ -215,6 +215,7 @@ void GameObject::RecursiveAdaptBoundingBox(float4x4 transform, GameObject* go_to
 void GameObject::AdaptBoundingBox(GameObject* go_to_adapt)
 {
 	ComponentMeshRenderer* mr = (ComponentMeshRenderer*)go_to_adapt->GetComponent(COMPONENT_MESH_RENDERER);
+	ComponentParticleEmmiter* emiter = (ComponentParticleEmmiter*)go_to_adapt->GetComponent(COMPONENT_PARTICLE_EMMITER); 
 	ComponentTransform* trans = (ComponentTransform*)go_to_adapt->GetComponent(COMPONENT_TRANSFORM);
 
 	if (mr != nullptr)
@@ -222,6 +223,13 @@ void GameObject::AdaptBoundingBox(GameObject* go_to_adapt)
 		mr->bounding_box.SetNegativeInfinity();
 		mr->bounding_box.Enclose(mr->vertices, mr->num_vertices);
 		mr->bounding_box.TransformAsAABB(trans->GetGlobalTransform());
+	}
+
+	if (emiter != nullptr)
+	{
+		emiter->emit_area->bounding_box.SetNegativeInfinity();
+		emiter->emit_area->bounding_box.Enclose(emiter->emit_area->vertices, emiter->emit_area->num_vertices);
+		emiter->emit_area->bounding_box.TransformAsAABB(trans->GetGlobalTransform());
 	}
 }
 

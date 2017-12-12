@@ -52,8 +52,9 @@ Color Particle::GetColor() const
 void Particle::Update()
 {
 
-	//Update V position
-	float3 movement = {0, particle_velocity, 0};
+	//Update V positio
+	float3 movement = { 0,1,0 }; 
+
 	components.particle_transform->SetLocalPosition(components.particle_transform->GetLocalPosition() + movement);
 
 	//Update Billboarding rotation
@@ -140,6 +141,7 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	curr_texture_id = -1; 
 	color = Color(255, 255, 255, 0); 
 	show_billboarding = false; 
+	gravity = { 0,0,0 }; 
 
 	//Create the rectangle that will be the initial emmiting area (2x2 square)
 	emit_area = new ComponentMeshRenderer(gameobject);
@@ -191,7 +193,7 @@ bool ComponentParticleEmmiter::Update()
 	if (!active)
 		return false; 
 	
-	if(show_emit_area)	DrawEmisionArea();
+	DrawEmisionArea(show_emit_area);
 
 	//Create particles if needed
 	GenerateParticles(); 
@@ -242,6 +244,7 @@ ComponentCamera * Particle::GetBillboardReference()
 	return components.particle_billboarding->GetReference();
 }
 
+
 void ComponentParticleEmmiter::GenerateParticles()
 {
 	if (system_state == PARTICLE_STATE_PAUSE)
@@ -259,10 +262,16 @@ void ComponentParticleEmmiter::GenerateParticles()
 
 Particle * ComponentParticleEmmiter::CreateParticle()
 {
+
+	//First we get the point were the particle is gonna be instanciated
+	LCG random; 
+	float3 particle_pos = emit_area->bounding_box.RandomPointInside(random);
+
 	Particle* new_particle = new Particle(); 
 
 	//We create its transform
 	new_particle->components.particle_transform = new ComponentTransform(nullptr);
+	new_particle->components.particle_transform->SetLocalPosition(particle_pos);
 
 	//We generate the always squared surface for the particle 
 	new_particle->components.particle_mesh = new ComponentMeshRenderer(nullptr);
@@ -288,7 +297,7 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	new_particle->SetMaxLifetime(max_lifetime); 
 	new_particle->SetVelocity(velocity); 
 	new_particle->SetTextureByID(curr_texture_id);
-	new_particle->SetColor(color); 
+	new_particle->SetColor(color);   
 	
 	return new_particle; 
 }
@@ -350,18 +359,19 @@ bool Particle::IsDead()
 	return kill_me;
 }
 
-void ComponentParticleEmmiter::DrawEmisionArea()
+void ComponentParticleEmmiter::DrawEmisionArea(bool show)
 {
 	
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glLineWidth(2.0f); 
-	glColor3f( 0, 0, 255 ); 
+	glLineWidth(2.0f);
+	glColor3f(0, 0, 255);
 
 	emit_area->Update();
 
-	glColor3f( 255, 255, 255 );
+	glColor3f(255, 255, 255);
 	glLineWidth(1.0f);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 }
 
 int ComponentParticleEmmiter::GetTextureID(int pos)

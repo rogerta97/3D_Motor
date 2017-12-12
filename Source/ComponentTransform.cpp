@@ -26,7 +26,6 @@ float3 ComponentTransform::GetLocalScale()const
 
 float3 ComponentTransform::GetGlobalPosition()
 {
-
 	return global_transform.position;
 }
 
@@ -121,40 +120,40 @@ void ComponentTransform::SetPositionChanged(bool new_set)
 	position_modified = new_set; 
 }
 
-void ComponentTransform::UpdateTransform(GameObject* curr_go)
+void ComponentTransform::UpdateTransform()
 {
 		local_transform_mat.Set(float4x4::FromTRS(transform.position, transform.rotation, transform.scale));
 }
 
 void Transform::DrawAxis()
 {
-	//LineSegment axis[3]; 
+	LineSegment axis[3]; 
 
-	////X
-	//axis[0].a = position;
-	//axis[0].b = position + X_axis;
+	//X
+	axis[0].a = position;
+	axis[0].b = position + X_axis;
 
-	////Y
-	//axis[1].a = position;
-	//axis[1].b = position + Y_axis;
+	//Y
+	axis[1].a = position;
+	axis[1].b = position + Y_axis;
 
-	////Z
-	//axis[2].a = position;
-	//axis[2].b = position + Z_axis;
+	//Z
+	axis[2].a = position;
+	axis[2].b = position + Z_axis;
 
-	////Draw
-	//
-	//DebugDraw(axis[0], Red, true, float4x4::identity, 5.0f); 
-	//DebugDraw(axis[1], Green, true, float4x4::identity, 5.0f);
-	//DebugDraw(axis[2], Blue, true, float4x4::identity, 5.0f);
+	//Draw
+	
+	DebugDraw(axis[0], Red, true, float4x4::identity, 5.0f); 
+	DebugDraw(axis[1], Green, true, float4x4::identity, 5.0f);
+	DebugDraw(axis[2], Blue, true, float4x4::identity, 5.0f);
 	
 }
 
 void Transform::UpdateAxis()
 {
-	//X_axis = rotation.Transform(X_axis);
-	//Y_axis = rotation.Transform(Y_axis);
-	//Z_axis = rotation.Transform(Z_axis);
+	X_axis = rotation.Transform(X_axis);
+	Y_axis = rotation.Transform(Y_axis);
+	Z_axis = rotation.Transform(Z_axis);
 }
 
 void ComponentTransform::Serialize(json_file * file)
@@ -171,6 +170,11 @@ void ComponentTransform::Serialize(json_file * file)
 
 bool ComponentTransform::Update()
 {
+	float3 testpos[3]; 
+
+	testpos[0] = GetLocalTransform().WorldX(); 
+	testpos[1] = GetLocalTransform().WorldY();
+	testpos[2] = GetLocalTransform().WorldZ();
 
 	if (IsModified())
 	{
@@ -226,7 +230,7 @@ void ComponentTransform::SetLocalPosition(const float3 & _position)
 	}
 		
 	transform.position = _position;
-	UpdateTransform(GetComponentParent()); 
+	UpdateTransform(); 
 	transform_modified = true; 
 	position_modified = true; 
 		
@@ -234,17 +238,23 @@ void ComponentTransform::SetLocalPosition(const float3 & _position)
 
 void ComponentTransform::SetLocalRotation(const float3& _rotation)
 {
-	//if (GetComponentParent() == nullptr) //This means it is a particle 
-	//{
-	//	Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
-	//	transform.rotation = mod;
-
-	//	transform_modified = true;
-	//	UpdateTransform(GetComponentParent());
-	//}
-
-	if (GetComponentParent()->IsStatic() == false)
+	if (GetComponentParent() == nullptr) //This means it is a particle 
 	{
+		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
+		transform.rotation = mod;
+
+		transform_modified = true;
+		UpdateTransform();
+	}
+
+	else if (GetComponentParent()->IsStatic() == false)
+	{
+	
+		if(_rotation.y * RADTODEG == 90)
+		{
+			LOG("%f", _rotation.y);
+		}
+			
 		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
 		transform.rotation = mod;
 
@@ -253,7 +263,7 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 		a++; 
 		
 		transform_modified = true;
-		UpdateTransform(GetComponentParent());
+		UpdateTransform();
 	
 	}
 
@@ -266,6 +276,6 @@ void ComponentTransform::SetLocalScale(const float3 & _scale)
 	{
 		transform.scale = _scale;
 		transform_modified = true;
-		UpdateTransform(GetComponentParent());
+		UpdateTransform();
 	}
 }

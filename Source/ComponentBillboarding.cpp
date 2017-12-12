@@ -86,12 +86,17 @@ bool ComponentBillboarding::Update()
 		new_y_axis = new_x_axis.Cross(new_z_axis);
 		new_y_axis *= -1;
 
+		float increment_angle_x = 0; 
+		float increment_angle_y = 0;
+
+		float test; 
+
 		if (!x_axis_locked)  //Rotate arround X axis (vertical)
 		{
 			float3 x_proj = { new_z_axis.x, 0, new_z_axis.z };
 	
 
-			float increment_angle_y = x_proj.AngleBetween({0,0,1});
+			increment_angle_y = x_proj.AngleBetween({0,0,1});
 
 			if (new_z_axis.x < 0)
 				increment_angle_y *= -1; 
@@ -102,13 +107,15 @@ bool ComponentBillboarding::Update()
 			}
 			else
 				GetComponentParent()->transform->SetLocalRotation({ 0, increment_angle_y, 0 });
+	
+			test = increment_angle_y*RADTODEG;
 		}
 
 		if (!y_axis_locked) //Rotate arround Y axis (horizontal)
 		{
 			float3 y_proj = { 0, new_z_axis.y, new_z_axis.z };
 
-			float increment_angle_x = y_proj.AngleBetween({ 0,0,1 });
+			increment_angle_x = y_proj.AngleBetween({ 0,0,1 });
 
 			if (new_z_axis.y > 0)
 				increment_angle_x *= -1;
@@ -119,7 +126,13 @@ bool ComponentBillboarding::Update()
 			}
 			else
 				GetComponentParent()->transform->SetLocalRotation({ increment_angle_x, 0, 0 });
+
+			test = increment_angle_x*RADTODEG;
 		}
+
+		//float3 vector = GetComponentParent()->transform->GetGlobalTransform().WorldX(); 
+		
+
 		ref_position_changed = false;
 
 	}

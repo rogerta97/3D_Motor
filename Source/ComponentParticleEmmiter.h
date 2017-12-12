@@ -48,13 +48,18 @@ public:
 	void SetBillboardReference(ComponentCamera* new_reference);
 	ComponentCamera* GetBillboardReference();
 
-	///Lifetime
-	void SetMaxLifetime(const float& new_lifetime);
-	float GetMaxLifeTime() const;
+	///Force calculations
+	void SetGravity(float3 gravity_value); 
+	void SetMovement(); 
 
 	///Velocity
 	void SetVelocity(const float& new_velocity);
 	float GetVelocity() const;
+
+	///Lifetime
+	void SetMaxLifetime(const float& new_lifetime);
+	float GetMaxLifeTime() const;
+
 
 	///Texture
 	void SetTextureByID(uint texture_ID);
@@ -77,8 +82,14 @@ private:
 
 	Timer particle_timer; 
 	float max_particle_lifetime; 
-	float particle_velocity; 
+
 	Color particle_color;
+
+	//Managing movement
+	float particle_velocity;
+	float3 particle_gravity;
+
+	float3 movement;						//This vector will be added to the position every frame
 
 	bool kill_me;
 	int particle_texture_id; 
@@ -120,7 +131,7 @@ public:
 	void SetSystemState(particle_system_state new_state); 
 
 	//Draws & images
-	void DrawEmisionArea(); 
+	void DrawEmisionArea(bool show); 
 
 	int GetTextureID(int pos);
 	int GetTextureIDAmount();
@@ -149,14 +160,19 @@ public:
 	int emmision_rate;						//How many spawn in a second
 	float velocity;							//Velocity at what the particles are emmited
 
+	float3 gravity;							//Gravity
+
+
 	// --------
+
+	//Emmiter surface 
+	ComponentMeshRenderer* emit_area;
 
 private:
 
 private: 
 
-	//Emmiter surface 
-	ComponentMeshRenderer* emit_area; 
+ 
 
 	//General Management
 	float particles_lifetime;				 //Lifetime of the particules spawned
