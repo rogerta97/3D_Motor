@@ -49,8 +49,8 @@ public:
 	ComponentCamera* GetBillboardReference();
 
 	///Force calculations
-	void SetGravity(float3 gravity_value); 
-	void SetMovement(); 
+	void SetMovement(float3 mov); 
+	void SetGravity(float3 grav);
 
 	///Velocity
 	void SetVelocity(const float& new_velocity);

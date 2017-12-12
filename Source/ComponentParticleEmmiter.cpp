@@ -51,17 +51,9 @@ Color Particle::GetColor() const
 
 void Particle::Update()
 {
-
-	//Update V positio
-	float3 movement = { 0,1,0 }; 
+	movement += particle_gravity*0.01f; 
 
 	components.particle_transform->SetLocalPosition(components.particle_transform->GetLocalPosition() + movement);
-
-	//Update Billboarding rotation
-	//if (components.particle_billboarding != nullptr)
-	//{
-	//	components.particle_billboarding->Update(); 
-	//}
 
 	//Check if they have to be deleted
 	if (particle_timer.Read() > max_particle_lifetime*1000)
@@ -244,6 +236,16 @@ ComponentCamera * Particle::GetBillboardReference()
 	return components.particle_billboarding->GetReference();
 }
 
+void Particle::SetMovement(float3 mov)
+{
+	movement = mov; 
+}
+
+void Particle::SetGravity(float3 grav)
+{
+	particle_gravity = grav; 
+}
+
 
 void ComponentParticleEmmiter::GenerateParticles()
 {
@@ -297,7 +299,10 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	new_particle->SetMaxLifetime(max_lifetime); 
 	new_particle->SetVelocity(velocity); 
 	new_particle->SetTextureByID(curr_texture_id);
-	new_particle->SetColor(color);   
+	new_particle->SetColor(color);  
+	new_particle->SetGravity(gravity); 
+
+	new_particle->SetMovement(emit_area->GetComponentParent()->transform->GetLocalTransform().WorldY()*velocity);
 	
 	return new_particle; 
 }
