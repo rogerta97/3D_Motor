@@ -143,7 +143,7 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 
 	//Create the rectangle that will be the initial emmiting area (2x2 square)
 	emit_area = new ComponentMeshRenderer(gameobject);
-	emit_area->SetPlaneVertices({ 0,0,0 }, 2, false);
+	emit_area->SetCubeVertices({ 0,0,0 }, 2);
 
 	//Getting the default shapes 
 	string particles_folder_path = App->file_system->particles_path_game;

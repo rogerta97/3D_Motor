@@ -166,7 +166,6 @@ private:
 
 	//Spawn Management
 	float emmision_frequency;				//Difference between spawn
-
 	Timer spawn_timer; 
 
 	//Debug
