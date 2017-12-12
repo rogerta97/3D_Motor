@@ -59,8 +59,6 @@ bool PanelInspector::Draw()
 			}
 		}
 	
-		
-
 		ImGui::Separator();
 
 		go_to_display->SetActive(active_bool);
@@ -169,6 +167,7 @@ bool PanelInspector::Draw()
 				}
 		}
 	}
+
 	ImGui::End();
 
 	return true; 
@@ -198,6 +197,7 @@ void PanelInspector::PrintMeshComponent(GameObject* GO_to_draw)
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumTriangles());
 
 		ImGui::Text("Normals: "); ImGui::SameLine();
+
 		if(curr_cmp->normals_id != 0)
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumNormals());
 		else
@@ -466,7 +466,7 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 				ImGui::Checkbox("Show Emmiter Area", &show);
 				current_emmiter->SetShowEmmisionArea(show);
 
-				
+				ImGui::TreePop(); 
 			}
 
 			if (ImGui::TreeNode("Shape"))

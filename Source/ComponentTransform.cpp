@@ -128,33 +128,33 @@ void ComponentTransform::UpdateTransform(GameObject* curr_go)
 
 void Transform::DrawAxis()
 {
-	LineSegment axis[3]; 
+	//LineSegment axis[3]; 
 
-	//X
-	axis[0].a = position;
-	axis[0].b = position + X_axis;
+	////X
+	//axis[0].a = position;
+	//axis[0].b = position + X_axis;
 
-	//Y
-	axis[1].a = position;
-	axis[1].b = position + Y_axis;
+	////Y
+	//axis[1].a = position;
+	//axis[1].b = position + Y_axis;
 
-	//Z
-	axis[2].a = position;
-	axis[2].b = position + Z_axis;
+	////Z
+	//axis[2].a = position;
+	//axis[2].b = position + Z_axis;
 
-	//Draw
-	
-	DebugDraw(axis[0], Red, true, float4x4::identity, 5.0f); 
-	DebugDraw(axis[1], Green, true, float4x4::identity, 5.0f);
-	DebugDraw(axis[2], Blue, true, float4x4::identity, 5.0f);
+	////Draw
+	//
+	//DebugDraw(axis[0], Red, true, float4x4::identity, 5.0f); 
+	//DebugDraw(axis[1], Green, true, float4x4::identity, 5.0f);
+	//DebugDraw(axis[2], Blue, true, float4x4::identity, 5.0f);
 	
 }
 
 void Transform::UpdateAxis()
 {
-	X_axis = rotation.Transform(X_axis);
-	Y_axis = rotation.Transform(Y_axis);
-	Z_axis = rotation.Transform(Z_axis);
+	//X_axis = rotation.Transform(X_axis);
+	//Y_axis = rotation.Transform(Y_axis);
+	//Z_axis = rotation.Transform(Z_axis);
 }
 
 void ComponentTransform::Serialize(json_file * file)
@@ -234,20 +234,16 @@ void ComponentTransform::SetLocalPosition(const float3 & _position)
 
 void ComponentTransform::SetLocalRotation(const float3& _rotation)
 {
-	if (GetComponentParent() == nullptr) //This means it is a particle 
-	{
-		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
-		transform.rotation = mod;
+	//if (GetComponentParent() == nullptr) //This means it is a particle 
+	//{
+	//	Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
+	//	transform.rotation = mod;
 
-		static int a = 0;
-		LOG("changing rotation %d", a);
-		a++;
+	//	transform_modified = true;
+	//	UpdateTransform(GetComponentParent());
+	//}
 
-		transform_modified = true;
-		UpdateTransform(GetComponentParent());
-	}
-
-	else if (GetComponentParent()->IsStatic() == false)
+	if (GetComponentParent()->IsStatic() == false)
 	{
 		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
 		transform.rotation = mod;

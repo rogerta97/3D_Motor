@@ -20,8 +20,10 @@ void PanelConsole::PrintConsole()
 	if (!show_console)
 		return; 
 
-	ImGui::Begin("Console", &show_console);
-	
+	ImGuiWindowFlags console_flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+	ImGui::Begin("Console", &show_console, console_flags);
+
 	for (int i = 0; i < console_buffer.size(); i++)
 	{
 		ImGui::Text(console_buffer[i].c_str());
@@ -29,5 +31,17 @@ void PanelConsole::PrintConsole()
 
 	ImGui::SetScrollY(ImGui::GetScrollMaxY());
 	ImGui::End();
+
+	ImGuiWindowFlags clear_flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
+
+	bool opened = true; 
+	ImGui::Begin("Clear", NULL, clear_flags);
+
+	if (ImGui::Button("Clear Console"))
+	{
+		ClearConsole(); 
+	}
+
+	ImGui::End(); 
 	
 }

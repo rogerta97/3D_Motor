@@ -94,7 +94,6 @@ update_status ModuleImGui::PostUpdate(float dt)
 	
 	UpdateConfigPanel();
 	// TODO draw all the other things before
-
 	App->renderer3D->UI_attributes();
 
 	inspector.Draw();
@@ -230,6 +229,11 @@ void ModuleImGui::PrintStyleEditor()
 void ModuleImGui::AddInConsole(const std::string new_str)
 {
 	console.AddToConsole(new_str); 
+}
+
+void ModuleImGui::ClearConsole()
+{
+	console.ClearConsole(); 
 }
 
 update_status ModuleImGui::PrintTopBar()

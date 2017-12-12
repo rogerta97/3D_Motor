@@ -18,6 +18,8 @@ void log(const char file[], int line, const char* format, ...)
 
 	if (App != nullptr)
 		App->imgui->AddInConsole(tmp_string);
+	
+		
 
 }
 

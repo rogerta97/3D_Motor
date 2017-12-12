@@ -26,6 +26,7 @@ public:
 	bool CleanUp(); 
 
 	void AddInConsole(const std::string);
+	void ClearConsole(); 
 	void ImGuiInput(SDL_Event* e)const; 
 	void SetInitColors();
 	void StartModalWindow(const char * text, const char* OK_button, const char* NO_button, const char* window_title);
