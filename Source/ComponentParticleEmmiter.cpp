@@ -301,8 +301,9 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	new_particle->SetTextureByID(curr_texture_id);
 	new_particle->SetColor(color);  
 	new_particle->SetGravity(gravity); 
-
-	new_particle->SetMovement(emit_area->GetComponentParent()->transform->GetLocalTransform().WorldY()*velocity);
+	
+	float3 dds = emit_area->GetComponentParent()->transform->LocalY(); 
+	new_particle->SetMovement(emit_area->GetComponentParent()->transform->LocalY()*velocity);
 	
 	return new_particle; 
 }

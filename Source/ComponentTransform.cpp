@@ -125,21 +125,49 @@ void ComponentTransform::UpdateTransform()
 		local_transform_mat.Set(float4x4::FromTRS(transform.position, transform.rotation, transform.scale));
 }
 
-void Transform::DrawAxis()
+float3 ComponentTransform::LocalX()
+{
+	float3 ret = local_transform_mat.WorldX(); 
+
+	local_transform_mat.TransformPos(ret); 
+
+	return ret;
+}
+
+float3 ComponentTransform::LocalY()
+{
+	float3 ret = local_transform_mat.WorldY();
+
+	local_transform_mat.TransformPos(ret);
+
+	return ret;
+}
+
+float3 ComponentTransform::LocalZ()
+{
+
+	float3 ret = local_transform_mat.WorldZ();
+
+	local_transform_mat.TransformPos(ret);
+
+	return ret;
+}
+
+void ComponentTransform::DrawAxis()
 {
 	LineSegment axis[3]; 
 
 	//X
-	axis[0].a = position;
-	axis[0].b = position + X_axis;
+	axis[0].a = transform.position;
+	axis[0].b = transform.position + LocalX();
 
 	//Y
-	axis[1].a = position;
-	axis[1].b = position + Y_axis;
+	axis[1].a = transform.position;
+	axis[1].b = transform.position + LocalY();
 
 	//Z
-	axis[2].a = position;
-	axis[2].b = position + Z_axis;
+	axis[2].a = transform.position;
+	axis[2].b = transform.position + LocalZ();
 
 	//Draw
 	
@@ -149,12 +177,6 @@ void Transform::DrawAxis()
 	
 }
 
-void Transform::UpdateAxis()
-{
-	X_axis = rotation.Transform(X_axis);
-	Y_axis = rotation.Transform(Y_axis);
-	Z_axis = rotation.Transform(Z_axis);
-}
 
 void ComponentTransform::Serialize(json_file * file)
 {
@@ -179,7 +201,6 @@ bool ComponentTransform::Update()
 	if (IsModified())
 	{
 		GetComponentParent()->RecursiveAdaptBoundingBox(GetGlobalTransform(), GetComponentParent());		
-		transform.UpdateAxis();
 
 		//
 		//ComponentBillboarding* bill = (ComponentBillboarding*)GetComponentParent()->GetComponent(COMPONENT_BILLBOARDING); 
@@ -191,7 +212,7 @@ bool ComponentTransform::Update()
 		SetModified(false);
 	}
 
-	transform.DrawAxis();
+	DrawAxis();
 
 	return true;
 }

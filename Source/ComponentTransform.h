@@ -6,17 +6,10 @@
 
 struct Transform
 {
-
-	float3 X_axis = {1,0,0};
-	float3 Y_axis = {0,1,0};
-	float3 Z_axis = {0,0,1};
-
 	float3 position = float3::zero;
 	Quat rotation = Quat::identity;
 	float3 scale = float3::one;
 
-	void DrawAxis(); 
-	void UpdateAxis(); 
 };
 
 class ComponentTransform : public Component
@@ -57,16 +50,20 @@ public:
 	float4x4 GetGlobalTransform();
 
 	// Utility
+	float3 LocalX();
+	float3 LocalY();
+	float3 LocalZ();
+
+	void DrawAxis();
+	
 
 	bool IsModified() const; 
 	void SetModified(bool value);
-
 	bool IsPositionChanged() const;
 	void SetPositionChanged(bool new_set); 
-
 	void UpdateTransform(); 
-
 	void Serialize(json_file* file);
+
 private:
 
 	Transform prev_transform; 
