@@ -57,10 +57,10 @@ void Particle::Update()
 	components.particle_transform->SetLocalPosition(components.particle_transform->GetLocalPosition() + movement);
 
 	//Update Billboarding rotation
-	if (components.particle_billboarding != nullptr)
-	{
-		components.particle_billboarding->Update(); 
-	}
+	//if (components.particle_billboarding != nullptr)
+	//{
+	//	components.particle_billboarding->Update(); 
+	//}
 
 	//Check if they have to be deleted
 	if (particle_timer.Read() > max_particle_lifetime*1000)
