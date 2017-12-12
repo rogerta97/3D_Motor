@@ -497,6 +497,17 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 
 				current_emmiter->UpdateRootParticle(); 
 
+				if (ImGui::TreeNode("Color Interpolation"))
+				{
+					static char initial_color[30];
+					ImGui::InputText("Initial Color", initial_color, IM_ARRAYSIZE(initial_color));
+
+					static char final_color[30];
+					ImGui::InputText("Final Color", final_color, IM_ARRAYSIZE(final_color));
+
+					ImGui::TreePop(); 
+				}
+
 				ImGui::TreePop();
 			}
 
