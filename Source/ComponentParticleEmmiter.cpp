@@ -7,6 +7,8 @@
 Particle::Particle()
 {
 	kill_me = false;
+	interpolation_timer.Start(); 
+	particle_color = initial_particle_color; 
 }
 
 ParticleComponents Particle::GetAtributes()
@@ -49,11 +51,81 @@ Color Particle::GetColor() const
 	return particle_color;
 }
 
+Color Particle::GetInitialColor() const
+{
+	return initial_particle_color; 
+}
+
+Color Particle::GetFinalColor() const
+{
+	return final_particle_color;
+}
+
+void Particle::UpdateColor()
+{
+	if (!interpolate_colors)
+		return; 
+
+	//We get the number that we have to increment 
+	float time_ex = interpolation_timer.Read() / 1000;
+	float time_dec = interpolation_timer.Read() % 1000;
+	float time = time_ex + time_dec / 1000;
+
+	LOG("time %f", time);
+
+	float percentage = (time / (max_particle_lifetime));
+
+	if (percentage == 1)
+		return;
+
+	LOG("percentage %f", percentage); 
+
+	float increment_r = color_difference[0]*percentage;
+	float increment_g = color_difference[1]*percentage;
+	float increment_b = color_difference[2]*percentage;
+	float increment_a = color_difference[3]*percentage;
+	
+	particle_color.r = initial_particle_color.r + increment_r;
+	particle_color.g = initial_particle_color.g + increment_g;
+	particle_color.b = initial_particle_color.b + increment_b;
+	particle_color.a = initial_particle_color.a + increment_a;
+
+	//LOG("R: %f G: %f B: %f", particle_color.r, particle_color.g, particle_color.b); 
+
+}
+
+bool Particle::IsInterpolatingColor() const
+{
+	return interpolate_colors;
+}
+
+void Particle::SetInterpolatingColor(bool interpolate, Color initial_color, Color final_color)
+{
+	interpolate_colors = interpolate;
+
+	if (!interpolate)
+		return; 
+
+	initial_particle_color = initial_color; 
+	final_particle_color = final_color; 
+
+	color_difference[0] = (final_particle_color.r - initial_particle_color.r); 
+	color_difference[1] = (final_particle_color.g - initial_particle_color.g);
+	color_difference[2] = (final_particle_color.b - initial_particle_color.b);
+	color_difference[3] = (final_particle_color.a - initial_particle_color.a);
+}
+
 void Particle::Update()
 {
+	//Translate the particles in the necessary direction
 	movement += particle_gravity*0.01f; 
-
 	components.particle_transform->SetLocalPosition(components.particle_transform->GetLocalPosition() + movement);
+
+	//Update the particle color in case of interpolation
+	if(interpolate_colors)
+	{
+		UpdateColor();
+	}
 
 	//Check if they have to be deleted
 	if (particle_timer.Read() > max_particle_lifetime*1000)
@@ -73,6 +145,8 @@ void Particle::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glColor3f(particle_color.r, particle_color.g, particle_color.b);
+
+	LOG("R: %f G: %f B: %f", particle_color.r, particle_color.g, particle_color.b);
 
 	glPushMatrix();
 	glMultMatrixf(components.particle_transform->GetLocalTransform().Transposed().ptr());
@@ -134,6 +208,10 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	color = Color(255, 255, 255, 0); 
 	show_billboarding = false; 
 	gravity = { 0,0,0 }; 
+	apply_color_interpolation = false; 
+
+	initial_color[0] = initial_color[1] = initial_color[2] = initial_color[3] = 0; 
+	final_color[0] = final_color[1] = final_color[2] = final_color[3] = 0;
 
 	//Create the rectangle that will be the initial emmiting area (2x2 square)
 	emit_area = new ComponentMeshRenderer(gameobject);
@@ -220,6 +298,7 @@ void ComponentParticleEmmiter::UpdateRootParticle()
 	root_particle->SetVelocity(velocity); 
 	root_particle->SetTextureByID(curr_texture_id); 
 	root_particle->SetColor(color);
+	root_particle->SetInterpolatingColor(apply_color_interpolation, Color(initial_color[0], initial_color[1], initial_color[2], initial_color[3]), Color(final_color[0], final_color[1], final_color[2], final_color[3]));
 }
 
 ComponentParticleEmmiter::~ComponentParticleEmmiter()
@@ -258,6 +337,7 @@ void ComponentParticleEmmiter::GenerateParticles()
 		active_particles.push_back(new_particle);
 		LOG("Particles ammount: %d", GetParticlesNum()); 
 		spawn_timer.Start(); 
+		system_state = PARTICLE_STATE_PAUSE;
 	}
 
 }
@@ -301,7 +381,9 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	new_particle->SetTextureByID(curr_texture_id);
 	new_particle->SetColor(color);  
 	new_particle->SetGravity(gravity); 
-	
+
+	new_particle->SetInterpolatingColor(apply_color_interpolation, root_particle->GetInitialColor(), root_particle->GetFinalColor()); 
+
 	float3 dds = emit_area->GetComponentParent()->transform->LocalY(); 
 	new_particle->SetMovement(emit_area->GetComponentParent()->transform->LocalY()*velocity);
 	

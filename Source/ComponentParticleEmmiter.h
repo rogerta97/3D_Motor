@@ -60,13 +60,20 @@ public:
 	void SetMaxLifetime(const float& new_lifetime);
 	float GetMaxLifeTime() const;
 
-
 	///Texture
 	void SetTextureByID(uint texture_ID);
 
 	///Color
 	void SetColor(Color new_color); 
 	Color GetColor() const; 
+
+	Color GetInitialColor() const; 
+	Color GetFinalColor() const; 
+
+	void UpdateColor(); 
+
+	bool IsInterpolatingColor() const; 
+	void SetInterpolatingColor(bool interpolate, Color initial_color, Color final_color);
 
 	bool IsDead();
 
@@ -83,7 +90,16 @@ private:
 	Timer particle_timer; 
 	float max_particle_lifetime; 
 
+	//Color
 	Color particle_color;
+	bool interpolate_colors; 
+
+	Color initial_particle_color; 
+	Color final_particle_color;
+
+	int color_difference[4]; 
+
+	Timer interpolation_timer; 
 
 	//Managing movement
 	float particle_velocity;
@@ -151,6 +167,11 @@ public:
 	//Color
 	Color color;
 
+	int initial_color[4];
+	int final_color[4];
+
+	bool apply_color_interpolation;			//If true, the particles instanciated will be given 2 colors and they will interpolate between them
+
 	//Motion
 	bool show_billboarding;
 	bool lock_billboarding_y;
@@ -172,7 +193,6 @@ private:
 
 private: 
 
- 
 
 	//General Management
 	float particles_lifetime;				 //Lifetime of the particules spawned

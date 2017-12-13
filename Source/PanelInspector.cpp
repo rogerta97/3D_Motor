@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ComponentDefs.h"
+#include <math.h>
 
 bool PanelInspector::Start()
 {
@@ -493,17 +494,49 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 			if (ImGui::TreeNode("Color"))
 			{
 		
-				ImGui::ColorPicker4("Current Color##4", (float*)&current_emmiter->color);
+				static bool alpha_preview = true;
+				ImGui::Checkbox("Alpha", &alpha_preview); 
 
-				current_emmiter->UpdateRootParticle(); 
+				int misc_flags = (alpha_preview ? ImGuiColorEditFlags_AlphaPreview : 0);
+
+				ImGuiColorEditFlags flags = ImGuiColorEditFlags_AlphaBar;
+				flags |= misc_flags; 
+				flags |= ImGuiColorEditFlags_RGB; 
+
+				ImGui::ColorPicker4("Current Color##4", (float*)&current_emmiter->color, flags);
 
 				if (ImGui::TreeNode("Color Interpolation"))
 				{
-					static char initial_color[30];
-					ImGui::InputText("Initial Color", initial_color, IM_ARRAYSIZE(initial_color));
+					current_emmiter->UpdateRootParticle();
 
-					static char final_color[30];
-					ImGui::InputText("Final Color", final_color, IM_ARRAYSIZE(final_color));
+					ImGui::DragInt4("Initial Color", &current_emmiter->initial_color[0], 1, 0, 255);
+
+					if (ImGui::Button("Set Selected as Initial"))
+					{
+						current_emmiter->initial_color[0] = current_emmiter->color.r * 255;
+						current_emmiter->initial_color[1] = current_emmiter->color.g * 255;
+						current_emmiter->initial_color[2] = current_emmiter->color.b * 255;
+						current_emmiter->initial_color[3] = current_emmiter->color.a * 255;
+					}
+
+					ImGui::DragInt4("Final Color", &current_emmiter->final_color[0], 1, 0, 255);
+
+					if (ImGui::Button("Set Selected as Final"))
+					{
+						
+						current_emmiter->final_color[0] = current_emmiter->color.r * 255;
+						current_emmiter->final_color[1] = current_emmiter->color.g * 255;
+						current_emmiter->final_color[2] = current_emmiter->color.b * 255;
+						current_emmiter->final_color[3] = current_emmiter->color.a * 255;
+					}
+
+					ImGui::Separator(); 
+
+					if (ImGui::Button("Apply"))
+					{
+						current_emmiter->apply_color_interpolation = true; 
+						current_emmiter->UpdateRootParticle(); 
+					}
 
 					ImGui::TreePop(); 
 				}
@@ -540,8 +573,6 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 				if (ImGui::SliderFloat("Velocity", &current_emmiter->velocity, 0.1f, 5)) current_emmiter->UpdateRootParticle(); 
 				if (ImGui::SliderFloat3("Gravity", &current_emmiter->gravity[0], -5, 5)) current_emmiter->UpdateRootParticle();
 
-
-				
 				ImGui::TreePop();
 			}
 

@@ -19,6 +19,8 @@ struct Color
 		this->a = a;
 	}
 
+
+
 	float* operator & ()
 	{
 		return (float*)this;

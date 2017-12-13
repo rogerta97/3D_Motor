@@ -52,6 +52,8 @@ typedef unsigned int uint;
 typedef long long UID;
 using namespace std; 
 
+
+
 enum modal_state
 {
 	MODAL_KEEP,
