@@ -61,6 +61,16 @@ Color Particle::GetFinalColor() const
 	return final_particle_color;
 }
 
+void Particle::SetInitialColor(Color color)
+{
+	initial_particle_color = color; 
+}
+
+void Particle::SetFinalColor(Color color)
+{
+	final_particle_color = color; 
+}
+
 void Particle::UpdateColor()
 {
 	if (!interpolate_colors)
@@ -71,24 +81,17 @@ void Particle::UpdateColor()
 	float time_dec = interpolation_timer.Read() % 1000;
 	float time = time_ex + time_dec / 1000;
 
-	LOG("time %f", time);
-
 	float percentage = (time / (max_particle_lifetime));
-
-	if (percentage == 1)
-		return;
-
-	LOG("percentage %f", percentage); 
 
 	float increment_r = color_difference[0]*percentage;
 	float increment_g = color_difference[1]*percentage;
 	float increment_b = color_difference[2]*percentage;
 	float increment_a = color_difference[3]*percentage;
 	
-	particle_color.r = initial_particle_color.r + increment_r;
-	particle_color.g = initial_particle_color.g + increment_g;
-	particle_color.b = initial_particle_color.b + increment_b;
-	particle_color.a = initial_particle_color.a + increment_a;
+	particle_color.r = (initial_particle_color.r + increment_r) / 255;
+	particle_color.g = (initial_particle_color.g + increment_g) / 255;
+	particle_color.b = (initial_particle_color.b + increment_b) / 255;
+	particle_color.a = (initial_particle_color.a + increment_a) / 255;
 
 	//LOG("R: %f G: %f B: %f", particle_color.r, particle_color.g, particle_color.b); 
 
@@ -144,9 +147,8 @@ void Particle::Delete()
 void Particle::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glColor3f(particle_color.r, particle_color.g, particle_color.b);
 
-	LOG("R: %f G: %f B: %f", particle_color.r, particle_color.g, particle_color.b);
+	glColor3f(particle_color.r, particle_color.g, particle_color.b);
 
 	glPushMatrix();
 	glMultMatrixf(components.particle_transform->GetLocalTransform().Transposed().ptr());
@@ -263,7 +265,7 @@ bool ComponentParticleEmmiter::Update()
 	if (!active)
 		return false; 
 	
-	DrawEmisionArea(show_emit_area);
+
 
 	//Create particles if needed
 	GenerateParticles(); 
@@ -287,6 +289,8 @@ bool ComponentParticleEmmiter::Update()
 		(*it)->Draw();
 	}
 
+	DrawEmisionArea(show_emit_area);
+
 	return true;
 }
 
@@ -298,6 +302,7 @@ void ComponentParticleEmmiter::UpdateRootParticle()
 	root_particle->SetVelocity(velocity); 
 	root_particle->SetTextureByID(curr_texture_id); 
 	root_particle->SetColor(color);
+
 	root_particle->SetInterpolatingColor(apply_color_interpolation, Color(initial_color[0], initial_color[1], initial_color[2], initial_color[3]), Color(final_color[0], final_color[1], final_color[2], final_color[3]));
 }
 
@@ -337,7 +342,6 @@ void ComponentParticleEmmiter::GenerateParticles()
 		active_particles.push_back(new_particle);
 		LOG("Particles ammount: %d", GetParticlesNum()); 
 		spawn_timer.Start(); 
-		system_state = PARTICLE_STATE_PAUSE;
 	}
 
 }
@@ -480,4 +484,9 @@ void ComponentParticleEmmiter::SetCurrentTextureID(uint texture_id)
 uint ComponentParticleEmmiter::GetCurrentTextureID() const
 {
 	return curr_texture_id;
+}
+
+Particle * ComponentParticleEmmiter::GetRootParticle() const
+{
+	return root_particle;
 }

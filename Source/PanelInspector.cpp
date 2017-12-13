@@ -535,6 +535,13 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 					if (ImGui::Button("Apply"))
 					{
 						current_emmiter->apply_color_interpolation = true; 
+
+						Color initial(current_emmiter->initial_color[0], current_emmiter->initial_color[1], current_emmiter->initial_color[2], current_emmiter->initial_color[3]);
+						Color final(current_emmiter->final_color[0], current_emmiter->final_color[1], current_emmiter->final_color[2], current_emmiter->final_color[3]); 
+
+						current_emmiter->GetRootParticle()->SetInitialColor(initial);
+						current_emmiter->GetRootParticle()->SetFinalColor(final);
+
 						current_emmiter->UpdateRootParticle(); 
 					}
 

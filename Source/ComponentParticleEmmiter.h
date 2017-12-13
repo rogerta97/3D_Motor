@@ -70,6 +70,9 @@ public:
 	Color GetInitialColor() const; 
 	Color GetFinalColor() const; 
 
+	void SetInitialColor(Color color);
+	void SetFinalColor(Color color);
+
 	void UpdateColor(); 
 
 	bool IsInterpolatingColor() const; 
@@ -154,6 +157,8 @@ public:
 
 	void SetCurrentTextureID(uint texture_id); 
 	uint GetCurrentTextureID() const; 
+
+	Particle* GetRootParticle() const;
 
 public:
 
