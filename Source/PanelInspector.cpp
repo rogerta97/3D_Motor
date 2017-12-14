@@ -593,6 +593,7 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 
 				if (ImGui::Button("Apply Scale"))
 				{
+					current_emmiter->apply_size_interpolation = true; 
 					current_emmiter->UpdateRootParticle();
 				}
 		
@@ -609,6 +610,13 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 				if (ImGui::Button("Apply Rotation"))
 				{
 					current_emmiter->apply_rotation_interpolation = true; 
+					current_emmiter->UpdateRootParticle();
+				}
+				ImGui::SameLine(); 
+
+				if (ImGui::Button("Stop Applying"))
+				{
+					current_emmiter->apply_rotation_interpolation = false;
 					current_emmiter->UpdateRootParticle();
 				}
 

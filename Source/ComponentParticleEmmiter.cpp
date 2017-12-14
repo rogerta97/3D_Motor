@@ -10,8 +10,10 @@ Particle::Particle()
 	interpolation_timer.Start(); 
 	particle_color = initial_particle_color; 
 	particle_angular_v = 0; 
+	curr_rot = 0; 
 	interpolate_size = false; 
 	interpolate_rotation = false; 
+	twister.Start(); 
 }
 
 ParticleComponents Particle::GetAtributes()
@@ -155,9 +157,9 @@ void Particle::UpdateSize()
 
 }
 
-void Particle::SetInterpolationSize(float3 initial_scale, float3 final_scale)
+void Particle::SetInterpolationSize(bool interpolate, float3 initial_scale, float3 final_scale)
 {
-	interpolate_size = true; 
+	interpolate_size = interpolate;
 
 	initial_particle_size = initial_scale;
 	final_particle_size = final_scale;
@@ -363,16 +365,12 @@ void ComponentParticleEmmiter::UpdateRootParticle()
 	root_particle->SetColor(color);
 
 	root_particle->SetInterpolatingColor(apply_color_interpolation, Color(initial_color[0], initial_color[1], initial_color[2], initial_color[3]), Color(final_color[0], final_color[1], final_color[2], final_color[3]));
-	root_particle->SetInterpolationSize(initial_scale, final_scale);
+	root_particle->SetInterpolationSize(apply_size_interpolation, initial_scale, final_scale);
 
-	if (apply_rotation_interpolation)
-	{
-		root_particle->SetInterpolationRotation(true, initial_angular_v, final_angular_v);
-		root_particle->SetAngular(initial_angular_v); 
-	}
-		
-	else
-		root_particle->SetAngular(angular_v); 
+	if (apply_rotation_interpolation) root_particle->SetInterpolationRotation(true, initial_angular_v, final_angular_v);		
+	else root_particle->SetAngular(angular_v);
+
+	if(apply_size_interpolation) root_particle->SetInterpolationSize(true, initial_scale, final_scale);
 }
 
 ComponentParticleEmmiter::~ComponentParticleEmmiter()
@@ -391,12 +389,19 @@ ComponentCamera * Particle::GetBillboardReference()
 
 void Particle::UpdateRotation()
 {
-	static float curr_rot = 0;
 
-	if (!interpolate_rotation)
+	if (!interpolate_rotation && particle_angular_v)
 	{
-		curr_rot += particle_angular_v; 
-		components.particle_transform->SetLocalRotation({ 0,0,curr_rot });
+		if (twister.Read() > 10)
+		{
+			curr_rot += particle_angular_v;
+			components.particle_transform->SetLocalRotation({ 0,0,curr_rot });
+
+			if(curr_rot > 360)
+				curr_rot = 0;
+
+			twister.Start(); 
+		}
 
 		return; 
 	}
@@ -410,9 +415,13 @@ void Particle::UpdateRotation()
 
 	float increment_v = final_particle_angular_v - initial_particle_angular_v; 
 
-	curr_rot = initial_particle_angular_v + (increment_v*percentage);
+	curr_rot += initial_particle_angular_v + (increment_v*percentage);
+
+	if (curr_rot > 360)
+		curr_rot = 0;
 
 	components.particle_transform->SetLocalRotation({ 0,0,curr_rot });
+
 
 }
 
@@ -491,12 +500,17 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	new_particle->SetGravity(gravity); 
 
 	new_particle->SetInterpolatingColor(apply_color_interpolation, root_particle->GetInitialColor(), root_particle->GetFinalColor()); 
-	new_particle->SetInterpolationSize(initial_scale, final_scale);
+
+	if(apply_size_interpolation)
+		new_particle->SetInterpolationSize(apply_size_interpolation, initial_scale, final_scale);
+	else
+		new_particle->SetInterpolationSize(apply_size_interpolation, { 1,1,1 }, {1,1,1});
 
 	if(apply_rotation_interpolation)
 		new_particle->SetInterpolationRotation(true, initial_angular_v, final_angular_v);
 	else
 	{
+		new_particle->SetInterpolationRotation(false, 0, 0);
 		new_particle->SetAngular(angular_v);
 	}
 	

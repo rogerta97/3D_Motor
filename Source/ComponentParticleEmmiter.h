@@ -56,7 +56,7 @@ public:
 
 	///Scale
 	void UpdateSize(); 
-	void SetInterpolationSize(float3 initial_scale, float3 final_scale);
+	void SetInterpolationSize(bool interpolate, float3 initial_scale, float3 final_scale);
 
 	///Rotation
 	void UpdateRotation();
@@ -120,8 +120,10 @@ private:
 	float3 final_particle_size;
 
 	bool interpolate_rotation;
+	Timer twister; 
 	float initial_particle_angular_v;
 	float final_particle_angular_v;
+	float curr_rot; 
 
 	int color_difference[4]; 
 
