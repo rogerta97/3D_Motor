@@ -302,12 +302,15 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 
 		radians_angle = curr_cmp->GetLocalRotation().ToEulerXYZ();
 
+		rot[0] = radians_angle.x*RADTODEG; 
+		rot[1] = radians_angle.y*RADTODEG;
+		rot[2] = radians_angle.z*RADTODEG;
+
 		if(ImGui::DragFloat3("Position##transform", (float*)pos, 0.2f))
 			curr_cmp->SetLocalPosition(float3(pos[0], pos[1], pos[2]));
 
-		if(ImGui::DragFloat3("Rotation##transform", (float*)rot, 1, 0.0f, 360.0f))
-			curr_cmp->SetLocalRotation(float3(rot[0], rot[1], rot[2]));
-
+		ImGui::DragFloat3("Rotation##transform", (float*)rot,1, -180.0f, 180.0f); 
+	
 		if (ImGui::DragFloat3("Scale##transform", (float*)s, 0.2f))
 		{
 			if (s[0] < 0.2f)
@@ -317,6 +320,23 @@ void PanelInspector::PrintTransformComponent(GameObject* GO_to_draw)
 			if (s[2] < 0.2f)
 				s[2] = 0.2f;
 		}	
+
+		Quat new_rot = Quat::FromEulerXYZ(rot[0], rot[1], rot[2]); 
+
+		if (rot[0] != radians_angle.x*RADTODEG)
+			LOG("0"); 
+
+		if (rot[1] != radians_angle.y*RADTODEG)
+			LOG("0");
+
+		if (rot[2] != radians_angle.z*RADTODEG)
+			LOG("0");
+
+		if (curr_cmp->transform.rotation.Equals(new_rot) == false)
+		{
+			float3 increment = { rot[0] - radians_angle.x*RADTODEG, rot[1] - radians_angle.y*RADTODEG , rot[2] - radians_angle.z*RADTODEG };
+			curr_cmp->SetLocalRotation(increment);
+		}
 	}
 }
 

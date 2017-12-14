@@ -64,12 +64,12 @@ public:
 	void UpdateTransform(); 
 	void Serialize(json_file* file);
 
+	Transform transform;
+	Transform global_transform;
+
 private:
 
 	Transform prev_transform; 
-
-	Transform transform; 
-	Transform global_transform; 
 
 	float4x4 local_transform_mat; 
 	float4x4 global_transform_mat;
