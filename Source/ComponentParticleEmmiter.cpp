@@ -9,7 +9,9 @@ Particle::Particle()
 	kill_me = false;
 	interpolation_timer.Start(); 
 	particle_color = initial_particle_color; 
+	particle_angular_v = 0; 
 	interpolate_size = false; 
+	interpolate_rotation = false; 
 }
 
 ParticleComponents Particle::GetAtributes()
@@ -35,6 +37,16 @@ void Particle::SetVelocity(const float & new_velocity)
 float Particle::GetVelocity() const
 {
 	return particle_velocity;
+}
+
+void Particle::SetAngular(const float & new_velocity)
+{
+	particle_angular_v = new_velocity; 
+}
+
+float Particle::GetAngular() const
+{
+	return particle_angular_v;
 }
 
 void Particle::SetTextureByID(uint texture_ID)
@@ -163,6 +175,9 @@ void Particle::Update()
 	//Update scale
 	if (interpolate_size)
 		UpdateSize(); 
+
+	//Update Rotation	
+	UpdateRotation();
 	
 	//Check if they have to be deleted
 	if (particle_timer.Read() > max_particle_lifetime*1000)
@@ -244,10 +259,17 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	color = Color(255, 255, 255, 0); 
 	show_billboarding = false; 
 	gravity = { 0,0,0 }; 
+	angular_v = 0; 
+
+	apply_rotation_interpolation = false; 
+	apply_size_interpolation = false; 
 	apply_color_interpolation = false; 
 
 	initial_scale = { 1,1,1 }; 
 	final_scale = { 1,1,1 };
+
+	initial_angular_v = 0; 
+	final_angular_v = 0; 
 
 	initial_color[0] = initial_color[1] = initial_color[2] = initial_color[3] = 0; 
 	final_color[0] = final_color[1] = final_color[2] = final_color[3] = 0;
@@ -341,7 +363,16 @@ void ComponentParticleEmmiter::UpdateRootParticle()
 	root_particle->SetColor(color);
 
 	root_particle->SetInterpolatingColor(apply_color_interpolation, Color(initial_color[0], initial_color[1], initial_color[2], initial_color[3]), Color(final_color[0], final_color[1], final_color[2], final_color[3]));
-	root_particle->SetInterpolationSize(initial_scale, final_scale); 
+	root_particle->SetInterpolationSize(initial_scale, final_scale);
+
+	if (apply_rotation_interpolation)
+	{
+		root_particle->SetInterpolationRotation(true, initial_angular_v, final_angular_v);
+		root_particle->SetAngular(initial_angular_v); 
+	}
+		
+	else
+		root_particle->SetAngular(angular_v); 
 }
 
 ComponentParticleEmmiter::~ComponentParticleEmmiter()
@@ -358,9 +389,44 @@ ComponentCamera * Particle::GetBillboardReference()
 	return components.particle_billboarding->GetReference();
 }
 
+void Particle::UpdateRotation()
+{
+	static float curr_rot = 0;
+
+	if (!interpolate_rotation)
+	{
+		curr_rot += particle_angular_v; 
+		components.particle_transform->SetLocalRotation({ 0,0,curr_rot });
+
+		return; 
+	}
+		
+	//We get the number that we have to increment 
+	float time_ex = interpolation_timer.Read() / 1000;
+	float time_dec = interpolation_timer.Read() % 1000;
+	float time = time_ex + time_dec / 1000;
+
+	float percentage = (time / (max_particle_lifetime));
+
+	float increment_v = final_particle_angular_v - initial_particle_angular_v; 
+
+	curr_rot = initial_particle_angular_v + (increment_v*percentage);
+
+	components.particle_transform->SetLocalRotation({ 0,0,curr_rot });
+
+}
+
+void Particle::SetInterpolationRotation(bool interpolate_rot, float initial_v, float final_v)
+{
+	interpolate_rotation = interpolate_rot;
+
+	initial_particle_angular_v = initial_v; 
+	final_particle_angular_v = final_v;
+}
+
 void Particle::SetMovement(float3 mov)
 {
-	movement = mov; 
+	movement = mov / 5; 
 }
 
 void Particle::SetGravity(float3 grav)
@@ -425,7 +491,15 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	new_particle->SetGravity(gravity); 
 
 	new_particle->SetInterpolatingColor(apply_color_interpolation, root_particle->GetInitialColor(), root_particle->GetFinalColor()); 
-	new_particle->SetInterpolationSize(initial_scale, final_scale); 
+	new_particle->SetInterpolationSize(initial_scale, final_scale);
+
+	if(apply_rotation_interpolation)
+		new_particle->SetInterpolationRotation(true, initial_angular_v, final_angular_v);
+	else
+	{
+		new_particle->SetAngular(angular_v);
+	}
+	
 
 	float3 dds = emit_area->GetComponentParent()->transform->LocalY(); 
 	new_particle->SetMovement(emit_area->GetComponentParent()->transform->LocalY()*velocity);

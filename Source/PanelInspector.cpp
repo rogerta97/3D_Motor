@@ -579,6 +579,7 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 				if (ImGui::DragFloat("Lifetime", &current_emmiter->max_lifetime, 0, 0, 20)) current_emmiter->UpdateRootParticle();
 				if (ImGui::SliderFloat("Velocity", &current_emmiter->velocity, 0.1f, 5)) current_emmiter->UpdateRootParticle();
 				if (ImGui::SliderFloat3("Gravity", &current_emmiter->gravity[0], -5, 5)) current_emmiter->UpdateRootParticle();
+				if (ImGui::DragFloat("Angular Velocity", &current_emmiter->angular_v, 1, 0, 200)) current_emmiter->UpdateRootParticle();
 
 				ImGui::Separator();
 
@@ -590,12 +591,28 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 				ImGui::InputFloat("Final", &current_emmiter->final_scale.x);
 				current_emmiter->final_scale.y = current_emmiter->final_scale.x;
 
-				if (ImGui::Button("Apply"))
+				if (ImGui::Button("Apply Scale"))
 				{
 					current_emmiter->UpdateRootParticle();
 				}
 		
 				ImGui::Separator();
+
+				ImGui::Text("Rotation Interpolation");
+
+				ImGui::Text("Initial Spins/sec"); 
+				ImGui::DragFloat("  ", &current_emmiter->initial_angular_v, 0.5, 0, 5);
+
+				ImGui::Text("Final Spins/sec");
+				ImGui::DragFloat(" ", &current_emmiter->final_angular_v);
+
+				if (ImGui::Button("Apply Rotation"))
+				{
+					current_emmiter->apply_rotation_interpolation = true; 
+					current_emmiter->UpdateRootParticle();
+				}
+
+				ImGui::Separator(); 
 
 				if (ImGui::Button("Save as Template"))
 				{

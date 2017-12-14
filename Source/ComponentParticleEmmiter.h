@@ -58,6 +58,10 @@ public:
 	void UpdateSize(); 
 	void SetInterpolationSize(float3 initial_scale, float3 final_scale);
 
+	///Rotation
+	void UpdateRotation();
+	void SetInterpolationRotation(bool active, float initial_v, float final_v);
+
 	///Force calculations
 	void SetMovement(float3 mov); 
 	void SetGravity(float3 grav);
@@ -65,6 +69,10 @@ public:
 	///Velocity
 	void SetVelocity(const float& new_velocity);
 	float GetVelocity() const;
+
+	///Rotation
+	void SetAngular(const float& new_velocity);
+	float GetAngular() const;
 
 	///Lifetime
 	void SetMaxLifetime(const float& new_lifetime);
@@ -111,6 +119,10 @@ private:
 	float3 initial_particle_size;
 	float3 final_particle_size;
 
+	bool interpolate_rotation;
+	float initial_particle_angular_v;
+	float final_particle_angular_v;
+
 	int color_difference[4]; 
 
 	Timer interpolation_timer; 
@@ -118,6 +130,7 @@ private:
 	//Managing movement
 	float particle_velocity;
 	float3 particle_gravity;
+	float particle_angular_v;
 
 	float3 movement;						//This vector will be added to the position every frame
 
@@ -181,6 +194,7 @@ public:
 
 	//Color
 	Color color;
+	float angular_v; 
 
 	//Interpolations
 	int initial_color[4];
@@ -189,9 +203,12 @@ public:
 	float3 initial_scale; 
 	float3 final_scale; 
 
-
+	float initial_angular_v;
+	float final_angular_v;
 
 	bool apply_color_interpolation;			//If true, the particles instanciated will be given 2 colors and they will interpolate between them
+	bool apply_size_interpolation; 
+	bool apply_rotation_interpolation;
 
 	//Motion
 	bool show_billboarding;
