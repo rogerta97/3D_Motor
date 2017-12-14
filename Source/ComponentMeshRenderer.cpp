@@ -201,6 +201,10 @@ bool ComponentMeshRenderer::Update()
 	glPushMatrix(); 
 	glMultMatrixf(ctransform->GetGlobalTransform().Transposed().ptr());	
 
+
+	glRotatef(ctransform->GetLocalRotation().x, ctransform->LocalX().x, ctransform->LocalX().y, ctransform->LocalX().z); 
+
+
 	//VERTICES
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_id);

@@ -271,12 +271,12 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 	else if (GetComponentParent()->IsStatic() == false)
 	{
 	
-		if(_rotation.y * RADTODEG == 90)
+		if(_rotation.y  >= 90)
 		{
 			LOG("%f", _rotation.y);
 		}
 			
-		Quat mod = Quat::FromEulerXYZ(_rotation.x, _rotation.y, _rotation.z);
+		Quat mod = Quat::FromEulerXYZ(_rotation.x * DEGTORAD, _rotation.y * DEGTORAD, _rotation.z*DEGTORAD);
 		transform.rotation = mod;
 		
 		transform_modified = true;
