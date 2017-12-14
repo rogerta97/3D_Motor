@@ -48,6 +48,16 @@ public:
 	void SetBillboardReference(ComponentCamera* new_reference);
 	ComponentCamera* GetBillboardReference();
 
+	//Interpolation
+	///Color
+	void UpdateColor();
+	bool IsInterpolatingColor() const;
+	void SetInterpolatingColor(bool interpolate, Color initial_color, Color final_color);
+
+	///Scale
+	void UpdateSize(); 
+	void SetInterpolationSize(float3 initial_scale, float3 final_scale);
+
 	///Force calculations
 	void SetMovement(float3 mov); 
 	void SetGravity(float3 grav);
@@ -73,11 +83,6 @@ public:
 	void SetInitialColor(Color color);
 	void SetFinalColor(Color color);
 
-	void UpdateColor(); 
-
-	bool IsInterpolatingColor() const; 
-	void SetInterpolatingColor(bool interpolate, Color initial_color, Color final_color);
-
 	bool IsDead();
 
 	~Particle(); 
@@ -95,10 +100,16 @@ private:
 
 	//Color
 	Color particle_color;
-	bool interpolate_colors; 
 
-	Color initial_particle_color; 
+
+	//Interpolations
+	bool interpolate_colors;
+	Color initial_particle_color;
 	Color final_particle_color;
+
+	bool interpolate_size; 
+	float3 initial_particle_size;
+	float3 final_particle_size;
 
 	int color_difference[4]; 
 
@@ -128,7 +139,6 @@ public:
 	void UpdateRootParticle(); 
 
 	~ComponentParticleEmmiter(); 
-
 
 	//Spawning
 	void GenerateParticles(); 
@@ -172,8 +182,14 @@ public:
 	//Color
 	Color color;
 
+	//Interpolations
 	int initial_color[4];
 	int final_color[4];
+
+	float3 initial_scale; 
+	float3 final_scale; 
+
+
 
 	bool apply_color_interpolation;			//If true, the particles instanciated will be given 2 colors and they will interpolate between them
 

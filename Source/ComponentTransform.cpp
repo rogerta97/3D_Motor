@@ -269,11 +269,6 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 
 	else if (GetComponentParent()->IsStatic() == false)
 	{
-	
-		if(_rotation.y  >= 90)
-		{
-			LOG("%f", _rotation.y);
-		}
 			
 		Quat mod = Quat::FromEulerXYZ(_rotation.x * DEGTORAD, _rotation.y * DEGTORAD, _rotation.z*DEGTORAD);
 		transform.rotation = transform.rotation*mod;
@@ -288,7 +283,13 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 
 void ComponentTransform::SetLocalScale(const float3 & _scale)
 {
-	if (GetComponentParent()->IsStatic() == false)
+	if (GetComponentParent() == nullptr)
+	{
+		transform.scale = _scale;
+		transform_modified = true;
+		UpdateTransform();
+	}
+	else if (GetComponentParent()->IsStatic() == false)
 	{
 		transform.scale = _scale;
 		transform_modified = true;

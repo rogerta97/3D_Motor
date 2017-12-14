@@ -9,6 +9,7 @@ Particle::Particle()
 	kill_me = false;
 	interpolation_timer.Start(); 
 	particle_color = initial_particle_color; 
+	interpolate_size = false; 
 }
 
 ParticleComponents Particle::GetAtributes()
@@ -118,6 +119,38 @@ void Particle::SetInterpolatingColor(bool interpolate, Color initial_color, Colo
 	color_difference[3] = (final_particle_color.a - initial_particle_color.a);
 }
 
+void Particle::UpdateSize()
+{
+	if (!interpolate_size)
+		return;
+
+	//We get the number that we have to increment 
+	float time_ex = interpolation_timer.Read() / 1000;
+	float time_dec = interpolation_timer.Read() % 1000;
+	float time = time_ex + time_dec / 1000;
+
+	float percentage = (time / (max_particle_lifetime));
+
+	float3 total_increment((final_particle_size.x - initial_particle_size.x), (final_particle_size.y - initial_particle_size.y), 1);
+
+	float increment_x = total_increment.x * percentage;
+	float increment_y = total_increment.y * percentage;
+	float increment_z = 1;
+
+	float3 new_scale = { initial_particle_size.x + increment_x, initial_particle_size.y + increment_y, 1 };
+
+	components.particle_transform->SetLocalScale(new_scale);
+
+}
+
+void Particle::SetInterpolationSize(float3 initial_scale, float3 final_scale)
+{
+	interpolate_size = true; 
+
+	initial_particle_size = initial_scale;
+	final_particle_size = final_scale;
+}
+
 void Particle::Update()
 {
 	//Translate the particles in the necessary direction
@@ -125,11 +158,12 @@ void Particle::Update()
 	components.particle_transform->SetLocalPosition(components.particle_transform->GetLocalPosition() + movement);
 
 	//Update the particle color in case of interpolation
-	if(interpolate_colors)
-	{
-		UpdateColor();
-	}
-
+	if(interpolate_colors) UpdateColor();
+	
+	//Update scale
+	if (interpolate_size)
+		UpdateSize(); 
+	
 	//Check if they have to be deleted
 	if (particle_timer.Read() > max_particle_lifetime*1000)
 		kill_me = true; 
@@ -211,6 +245,9 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	show_billboarding = false; 
 	gravity = { 0,0,0 }; 
 	apply_color_interpolation = false; 
+
+	initial_scale = { 1,1,1 }; 
+	final_scale = { 1,1,1 };
 
 	initial_color[0] = initial_color[1] = initial_color[2] = initial_color[3] = 0; 
 	final_color[0] = final_color[1] = final_color[2] = final_color[3] = 0;
@@ -304,6 +341,7 @@ void ComponentParticleEmmiter::UpdateRootParticle()
 	root_particle->SetColor(color);
 
 	root_particle->SetInterpolatingColor(apply_color_interpolation, Color(initial_color[0], initial_color[1], initial_color[2], initial_color[3]), Color(final_color[0], final_color[1], final_color[2], final_color[3]));
+	root_particle->SetInterpolationSize(initial_scale, final_scale); 
 }
 
 ComponentParticleEmmiter::~ComponentParticleEmmiter()
@@ -387,6 +425,7 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	new_particle->SetGravity(gravity); 
 
 	new_particle->SetInterpolatingColor(apply_color_interpolation, root_particle->GetInitialColor(), root_particle->GetFinalColor()); 
+	new_particle->SetInterpolationSize(initial_scale, final_scale); 
 
 	float3 dds = emit_area->GetComponentParent()->transform->LocalY(); 
 	new_particle->SetMovement(emit_area->GetComponentParent()->transform->LocalY()*velocity);

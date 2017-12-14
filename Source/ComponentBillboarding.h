@@ -45,7 +45,8 @@ private:
 	Particle* particle_parent;			//As particles are not GO, we need the parent particle in order to modify the proper transform
 
 	float3 last_ref_pos;				//For optimization, knowing if the camera has moved and aply the billboarding calculations 
-	
+	float3 prev_rot; 
+
 	float angle_x; 
 	float angle_y;  
 

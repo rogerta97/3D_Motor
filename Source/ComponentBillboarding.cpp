@@ -95,8 +95,7 @@ bool ComponentBillboarding::Update()
 		{
 			float3 x_proj = { new_z_axis.x, 0, new_z_axis.z };
 	
-
-			increment_angle_y = x_proj.AngleBetween({0,0,1});
+			increment_angle_y = x_proj.AngleBetween(GetComponentParent()->transform->transform.rotation.WorldZ()); 
 
 			if (new_z_axis.x < 0)
 				increment_angle_y *= -1; 
@@ -106,7 +105,7 @@ bool ComponentBillboarding::Update()
 				particle_parent->components.particle_transform->SetLocalRotation({ 0, increment_angle_y, 0 }); 
 			}
 			else
-				GetComponentParent()->transform->SetLocalRotation({ 0, increment_angle_y, 0 });
+				GetComponentParent()->transform->SetLocalRotation({ 0, increment_angle_y*RADTODEG, 0 });
 	
 			test = increment_angle_y*RADTODEG;
 		}
