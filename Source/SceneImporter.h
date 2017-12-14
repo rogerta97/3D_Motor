@@ -1,5 +1,6 @@
 #ifndef _SCENE_IMPORTER_H_
 #define _SCENE_IMPORTER_H_
+
 class Module;
 class json_file;
 class SceneImporter : public Module
@@ -8,8 +9,9 @@ public:
 	SceneImporter(bool start_enabled = true);
 	~SceneImporter();
 
+	bool Start();
 	//call this one when click play
-	void SaveScene(json_file*file);
+	void SaveScene(json_file* file);
 	void SaveScene(const char * path);
 	void SaveSceneToBuffer();
 

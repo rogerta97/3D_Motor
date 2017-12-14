@@ -1,7 +1,7 @@
 {
     "GameObjects": [
         {
-            "UID": 473701284,
+            "UID": 1920610625,
             "name": "BakerHouse",
             "is_active": true,
             "is_static": false,
@@ -9,42 +9,42 @@
             "new_child_id": 0
         },
         {
-            "UID": 473701284,
+            "UID": 1920680246,
             "name": "Chimney",
             "is_active": true,
             "is_static": false,
-            "parent": 473701284,
+            "parent": 1920610625,
             "new_child_id": 0
         },
         {
-            "UID": 495910383,
+            "UID": 1944838733,
             "name": "Baker_house",
             "is_active": true,
             "is_static": false,
-            "parent": 473701284,
+            "parent": 1920610625,
             "new_child_id": 0
         },
         {
-            "UID": 473701284,
+            "UID": 1920680246,
             "name": "Chimney",
             "is_active": true,
             "is_static": false,
-            "parent": 473701284,
+            "parent": 1920610625,
             "new_child_id": 0
         },
         {
-            "UID": 495910383,
+            "UID": 1944838733,
             "name": "Baker_house",
             "is_active": true,
             "is_static": false,
-            "parent": 473701284,
+            "parent": 1920610625,
             "new_child_id": 0
         }
     ],
     "Components": [
         {
             "type": 2,
-            "owner": 473701284,
+            "owner": 1920610625,
             "position": [
                 0,
                 0,
@@ -64,7 +64,7 @@
         },
         {
             "type": 1,
-            "owner": 473701284,
+            "owner": 1920680246,
             "position": [
                 0,
                 0,
@@ -81,14 +81,14 @@
                 0,
                 1
             ],
-            "mesh": -2020773819,
-            "material": 981536766
+            "mesh": 658235747,
+            "material": 512094705
         },
         {
             "type": 1,
-            "owner": 495910383,
+            "owner": 1944838733,
             "position": [
-                -2,
+                0,
                 0,
                 0
             ],
@@ -103,12 +103,12 @@
                 0,
                 1
             ],
-            "mesh": -857165740,
-            "material": -857422693
+            "mesh": -1247841509,
+            "material": 812581930
         },
         {
             "type": 1,
-            "owner": 473701284,
+            "owner": 1920680246,
             "position": [
                 0,
                 0,
@@ -125,14 +125,14 @@
                 0,
                 1
             ],
-            "mesh": -2020773819,
-            "material": 981536766
+            "mesh": 658235747,
+            "material": 512094705
         },
         {
             "type": 1,
-            "owner": 495910383,
+            "owner": 1944838733,
             "position": [
-                -2,
+                0,
                 0,
                 0
             ],
@@ -147,8 +147,8 @@
                 0,
                 1
             ],
-            "mesh": -857165740,
-            "material": -857422693
+            "mesh": -1247841509,
+            "material": 812581930
         }
     ]
 }

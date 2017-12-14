@@ -170,7 +170,6 @@ void ComponentTransform::DrawAxis()
 	axis[2].b = transform.position + LocalZ();
 
 	//Draw
-	
 	DebugDraw(axis[0], Red, true, float4x4::identity, 5.0f); 
 	DebugDraw(axis[1], Green, true, float4x4::identity, 5.0f);
 	DebugDraw(axis[2], Blue, true, float4x4::identity, 5.0f);

@@ -666,3 +666,20 @@ void Component::Serialize(json_file * file)
 {
 }
 
+void GameObject::GetChildByUID(uint UID, GameObject *& go) const
+{
+	for (int i = 0; i < child_list.size(); ++i)
+	{
+		if (child_list[i]->GetID() == UID)
+		{
+			go = child_list[i];
+			break;
+		}
+		else
+		{
+			child_list[i]->GetChildByUID(UID, go);
+			if (go != nullptr)
+				break;
+		}
+	}
+}

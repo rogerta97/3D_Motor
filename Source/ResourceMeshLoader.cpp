@@ -34,6 +34,7 @@ bool ResourceMeshLoader::Start()
 
 	App->CreateFolder("Assets\\Meshes");
 	App->CreateFolder("Library\\Meshes");
+
 	return true;
 }
 
@@ -99,7 +100,7 @@ void ResourceMeshLoader::GetInnerTransform(aiNode & node, aiVector3D & pos, aiQu
 
 }
 
-void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene* scene, GameObject* parent)
+bool ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiScene* scene, GameObject* parent)
 {
 	bool ret = true; 
 
@@ -201,6 +202,7 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 						{
 							if (m->mFaces[i].mNumIndices != 3) {
 								LOG("WARNING, geometry face with != 3 indices!");
+								ret = false;
 							}
 							else
 							{
@@ -256,6 +258,7 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 					else
 					{
 						LOG("No Texture Coords found");
+						ret = false;
 					}
 
 					AABB bbox;
@@ -359,6 +362,7 @@ void ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 	}
 
 	App->scene_intro->SetCurrentGO(new_go->GetID()); 
+	return ret;
 }
 
 

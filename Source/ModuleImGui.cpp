@@ -250,7 +250,7 @@ update_status ModuleImGui::PrintTopBar()
 		if (ImGui::MenuItem("Load...", "CNTRL + L"))
 		{
 			//Code to load from config & scene File
-			//App->scene_importer->LoadSceneFromBuffer();//importing problems
+			App->scene_importer->LoadSceneFromBuffer();
 
 		}	
 		if (ImGui::MenuItem("Save...", "CNTRL + S"))

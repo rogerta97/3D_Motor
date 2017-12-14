@@ -1,5 +1,6 @@
 #ifndef _RESOURCE_LOADER_H_
 #define _RESOURCE_LOADER_H_
+
 #include "Module.h"
 #include <map>
 #include <list>
@@ -36,10 +37,17 @@ public:
 
 	int id;
 
-private: 
+public: 
 	std::string name; 
-	resource_t type;
+	std::string extension;
+	std::string rel_path;
+	std::string lib_name;
+	std::string lib_path;
 
+	resource_t type;
+	uint file_id = 0; // if the file contain more than 1 resource (ex: fbx) the index on file
+	uint manager_id; // index on the respective manager vector
+	uint UID = 0;
 	Component* resource_data; 
 };
 

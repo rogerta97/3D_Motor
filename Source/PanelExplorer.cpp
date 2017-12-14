@@ -111,7 +111,12 @@ void ExplorerNode::DrawNode()
 		if (App->imgui->GetModalState() == MODAL_YES && name == App->imgui->panel_explorer.GetPending())
 		{
 			DeleteEndBars(path);
-			App->resource_manager->Load(path.c_str());
+			
+			if (App->file_system->GetFileName(path.c_str()) != "scene.json")
+				App->resource_manager->Load(path.c_str());
+			else
+				App->scene_importer->LoadSceneFromBuffer();
+
 			App->imgui->SetModalState(MODAL_NULL); 
 		}
 		

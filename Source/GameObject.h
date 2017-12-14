@@ -53,6 +53,8 @@ public:
 	uint GetNumComponents()const;
 	void DeleteComponents(); 
 
+	void GetChildByUID(uint UID, GameObject *& go) const;
+
 	// Bounding Box 
 
 	AABB GetBoundingBox(); 
