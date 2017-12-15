@@ -200,7 +200,9 @@ void Particle::Update()
 	//Update Rotation	
 	UpdateRotation();
 
-	UpdateAnimation(); 
+	//Animations
+	if(animated_particle)
+		UpdateAnimation(); 
 	
 	//Check if they have to be deleted
 	if (particle_timer.Read() > max_particle_lifetime*1000)
@@ -430,8 +432,8 @@ ComponentCamera * Particle::GetBillboardReference()
 void Particle::UpdateAnimation()
 {
 	if (animation_timer.Read() > components.particle_animation.timeStep * 1000)
-	{
-		components.particle_animation.Update(animation_timer);
+	{		
+		SetTextureByID(components.particle_animation.buffer_ids[components.particle_animation.Update(animation_timer)]);
 		animation_timer.Start(); 
 	}
 }
@@ -570,6 +572,7 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 		new_particle->animated_particle = true; 
 		new_particle->components.particle_animation = root_particle->components.particle_animation; 
 		new_particle->components.particle_animation.timeStep = time_step; 
+		new_particle->SetTextureByID(new_particle->components.particle_animation.buffer_ids[0]);
 	}
 	
 	float3 dds = emit_area->GetComponentParent()->transform->LocalY(); 

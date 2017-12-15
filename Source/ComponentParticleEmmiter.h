@@ -26,7 +26,7 @@ struct ParticleAnimation
 	
 	}
 
-	void Update(Timer animation_timer)
+	int Update(Timer animation_timer)
 	{
 		if (rendering_frame < 2)
 			rendering_frame++; 
@@ -35,7 +35,7 @@ struct ParticleAnimation
 			rendering_frame = 0; 
 		}
 
-		LOG("RFRAME: %d", rendering_frame); 
+		return rendering_frame; 
 	}
 
 	string name;
