@@ -188,7 +188,8 @@ void Particle::Update()
 	components.particle_transform->SetLocalPosition(components.particle_transform->GetLocalPosition() + movement);
 
 	//Update the particle color in case of interpolation
-	if(interpolate_colors) UpdateColor();
+	if(interpolate_colors) 
+		UpdateColor();
 	
 	//Update scale
 	if (interpolate_size)
@@ -278,6 +279,7 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	show_billboarding = false; 
 	gravity = { 0,0,0 }; 
 	angular_v = 0; 
+	emision_angle = 0; 
 	reorder_time.Start(); 
 
 	apply_rotation_interpolation = false; 
@@ -367,9 +369,9 @@ bool ComponentParticleEmmiter::Update()
 	}
 
 	////We first order the particles based on the dist to camera
-
 	for (auto it = particles_sorted.rbegin(); it != particles_sorted.rend(); ++it)
 	{	
+
 		it->second->Draw();
 	}
 	
@@ -544,9 +546,33 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 		new_particle->SetAngular(angular_v);
 	}
 	
-
 	float3 dds = emit_area->GetComponentParent()->transform->LocalY(); 
-	new_particle->SetMovement(emit_area->GetComponentParent()->transform->LocalY()*velocity);
+
+
+	if (emision_angle > 0)
+	{
+		//First we generate a random number between 0 and 360 that will be the X direction
+		int emision_x = random.Int(1, 180);
+
+		//This will be the angle that the particle will have, random between 0 & max angle 
+		int emision_y = random.Int(1, emision_angle);
+
+		////From those 2, we get the final direction 
+		float3 final_direction = emit_area->GetComponentParent()->transform->LocalY();
+
+		//First we rotate around x
+		float3x3 y_rot_mat  = float3x3::FromEulerXYZ(emision_y, 0, 0);
+		final_direction = y_rot_mat.Transform(final_direction);
+
+		//Then we rotate around y
+		float3x3 x_rot_mat = float3x3::FromEulerXYZ(0, emision_x, 0);
+		final_direction = x_rot_mat.Transform(final_direction);
+
+		new_particle->SetMovement(final_direction); 
+
+	}
+	else
+		new_particle->SetMovement(emit_area->GetComponentParent()->transform->LocalY()*velocity);
 	
 	return new_particle; 
 }

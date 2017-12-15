@@ -112,7 +112,6 @@ private:
 	//Color
 	Color particle_color;
 
-
 	//Interpolations
 	bool interpolate_colors;
 	Color initial_particle_color;
@@ -226,7 +225,7 @@ public:
 	float velocity;							//Velocity at what the particles are emmited
 
 	float3 gravity;							//Gravity
-
+	float emision_angle;					//This is the max angle thet will be given to the particle
 
 	// --------
 
