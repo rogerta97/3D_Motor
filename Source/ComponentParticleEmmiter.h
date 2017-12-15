@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "Timer.h"
 #include "ComponentDefs.h"
-
+#include <map>
 
 
 enum particle_system_state
@@ -91,6 +91,9 @@ public:
 	void SetInitialColor(Color color);
 	void SetFinalColor(Color color);
 
+	void SetDistanceToCamera(float new_dist); 
+	float GetDistanceToCamera(); 
+
 	bool IsDead();
 
 	~Particle(); 
@@ -138,6 +141,7 @@ private:
 
 	bool kill_me;
 	int particle_texture_id; 
+	float distance_to_camera; 
 
 };
 
@@ -233,12 +237,13 @@ private:
 
 private: 
 
-
 	//General Management
 	float particles_lifetime;				 //Lifetime of the particules spawned
 	particle_system_state system_state;		 //Inner play & pause 
 	Particle* root_particle;				 //This will be the particle that will be cloned over time
 	list<Particle*> active_particles;		 //Particles that are currently beeing rendered
+	multimap<float, Particle*> particles_sorted;
+	Timer reorder_time;
 
 	//Spawn Management
 	float emmision_frequency;				//Difference between spawn

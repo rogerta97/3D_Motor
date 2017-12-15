@@ -1,8 +1,10 @@
 #include "ComponentParticleEmmiter.h"
 #include "ModuleFileSystem.h"
 #include "Application.h"
+#include "Functions.h"
 #include "GameObject.h"
 #include "OpenGL.h"
+#include <map>
 
 Particle::Particle()
 {
@@ -86,6 +88,19 @@ void Particle::SetFinalColor(Color color)
 	final_particle_color = color; 
 }
 
+void Particle::SetDistanceToCamera(float new_dist)
+{
+	distance_to_camera = new_dist; 
+}
+
+float Particle::GetDistanceToCamera()
+{
+	float distance = (App->renderer3D->rendering_cam->frustum.pos - components.particle_transform->GetLocalPosition()).Length(); 
+	distance_to_camera = distance; 
+
+	return distance_to_camera;
+}
+
 void Particle::UpdateColor()
 {
 	if (!interpolate_colors)
@@ -167,6 +182,7 @@ void Particle::SetInterpolationSize(bool interpolate, float3 initial_scale, floa
 
 void Particle::Update()
 {
+
 	//Translate the particles in the necessary direction
 	movement += particle_gravity*0.01f; 
 	components.particle_transform->SetLocalPosition(components.particle_transform->GetLocalPosition() + movement);
@@ -262,6 +278,7 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	show_billboarding = false; 
 	gravity = { 0,0,0 }; 
 	angular_v = 0; 
+	reorder_time.Start(); 
 
 	apply_rotation_interpolation = false; 
 	apply_size_interpolation = false; 
@@ -325,8 +342,6 @@ bool ComponentParticleEmmiter::Update()
 {
 	if (!active)
 		return false; 
-	
-
 
 	//Create particles if needed
 	GenerateParticles(); 
@@ -347,8 +362,19 @@ bool ComponentParticleEmmiter::Update()
 		}
 
 		(*it)->Update();
-		(*it)->Draw();
+		particles_sorted.insert(pair<float, Particle*>((*it)->GetDistanceToCamera(),(*it)));
+		
 	}
+
+	////We first order the particles based on the dist to camera
+
+	for (auto it = particles_sorted.rbegin(); it != particles_sorted.rend(); ++it)
+	{	
+		it->second->Draw();
+	}
+	
+	particles_sorted.clear(); 
+
 
 	DrawEmisionArea(show_emit_area);
 
@@ -452,6 +478,9 @@ void ComponentParticleEmmiter::GenerateParticles()
 	if (spawn_timer.Read() > emmision_frequency)
 	{		
 		Particle* new_particle = CreateParticle(); 
+
+
+		new_particle->SetDistanceToCamera(0);
 		active_particles.push_back(new_particle);
 		LOG("Particles ammount: %d", GetParticlesNum()); 
 		spawn_timer.Start(); 
@@ -498,6 +527,7 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	new_particle->SetTextureByID(curr_texture_id);
 	new_particle->SetColor(color);  
 	new_particle->SetGravity(gravity); 
+	new_particle->SetDistanceToCamera(0); 
 
 	new_particle->SetInterpolatingColor(apply_color_interpolation, root_particle->GetInitialColor(), root_particle->GetFinalColor()); 
 
