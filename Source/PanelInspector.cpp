@@ -488,6 +488,48 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 					current_emmiter->UpdateRootParticle();
 				}
 
+				ImGui::Separator(); 
+
+				ImGui::Text("Animated particles"); 
+
+				//Load the animated particles of the engine by default
+				vector<ParticleAnimation> particle_anims = current_emmiter->GetAllParticleAnimations(); 
+
+				for (int i = 0; i < particle_anims.size(); i++)
+				{
+					if (ImGui::TreeNode(particle_anims[i].name.c_str()))
+					{
+						for (int j = 0; j < particle_anims[i].buffer_ids.size(); j++)
+						{
+							ImTextureID id = (ImTextureID)particle_anims[i].buffer_ids[j];
+
+							ImGui::ImageButton(id, ImVec2(32, 32), ImVec2(1, 1), ImVec2(0, 0), 2, ImColor(0, 0, 0, 255));
+							ImGui::SameLine(); 
+						}
+						ImGui::NewLine();
+
+						ImGui::DragFloat("Time Step", &current_emmiter->time_step, 0.05, 0.05f, 1.0f); 
+
+						if (ImGui::Button("Set"))
+						{
+							current_emmiter->is_animated = true; 
+							current_emmiter->GetRootParticle()->components.particle_animation = particle_anims[i]; 
+							current_emmiter->GetRootParticle()->components.particle_animation.timeStep = current_emmiter->time_step; 
+
+						} ImGui::SameLine(); 
+
+						if (ImGui::Button("Stop"))
+						{
+							current_emmiter->is_animated = false;
+
+						}
+
+						ImGui::TreePop(); 
+					}
+
+				
+				}
+				ImGui::Separator(); 
 				ImGui::TreePop();
 			}
 

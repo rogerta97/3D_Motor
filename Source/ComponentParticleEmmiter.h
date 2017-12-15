@@ -12,12 +12,46 @@ enum particle_system_state
 	PARTICLE_STATE_PAUSE,
 };
 
+struct ParticleAnimation
+{
+	ParticleAnimation()
+	{
+		name = ""; 
+		timeStep = 0;
+		rendering_frame = 0; 
+	}
+
+	~ParticleAnimation() 
+	{
+	
+	}
+
+	void Update(Timer animation_timer)
+	{
+		if (rendering_frame < 2)
+			rendering_frame++; 
+		else
+		{
+			rendering_frame = 0; 
+		}
+
+		LOG("RFRAME: %d", rendering_frame); 
+	}
+
+	string name;
+	vector<int> buffer_ids; 
+	int rendering_frame; 
+	float timeStep; 
+
+};
+
 struct ParticleComponents
 {
 	ComponentMeshRenderer* particle_mesh;
 	ComponentTransform* particle_transform;
 	ComponentMaterial* particle_material; 
 	ComponentBillboarding* particle_billboarding;
+	ParticleAnimation particle_animation; 
 
 	void SetToNull()
 	{
@@ -47,6 +81,9 @@ public:
 	//Billboarding
 	void SetBillboardReference(ComponentCamera* new_reference);
 	ComponentCamera* GetBillboardReference();
+
+	//Animation
+	void UpdateAnimation(); 
 
 	//Interpolation
 	///Color
@@ -100,14 +137,16 @@ public:
 
 public: 
 
-	ParticleComponents components;
+	ParticleComponents components;			//Components of the particle
+	bool animated_particle; 			
 
 private:
 
-private:
-
+	//Timers
 	Timer particle_timer; 
-	float max_particle_lifetime; 
+	Timer twister;
+	Timer interpolation_timer;
+	Timer animation_timer; 
 
 	//Color
 	Color particle_color;
@@ -122,25 +161,22 @@ private:
 	float3 final_particle_size;
 
 	bool interpolate_rotation;
-	Timer twister; 
 	float initial_particle_angular_v;
 	float final_particle_angular_v;
 	float curr_rot; 
-
 	int color_difference[4]; 
-
-	Timer interpolation_timer; 
 
 	//Managing movement
 	float particle_velocity;
 	float3 particle_gravity;
 	float particle_angular_v;
-
+	float max_particle_lifetime;
 	float3 movement;						//This vector will be added to the position every frame
 
 	bool kill_me;
 	int particle_texture_id; 
 	float distance_to_camera; 
+
 
 };
 
@@ -186,6 +222,9 @@ public:
 	void SetCurrentTextureID(uint texture_id); 
 	uint GetCurrentTextureID() const; 
 
+	void LoadParticleAnimations(); 
+
+	vector<ParticleAnimation> GetAllParticleAnimations();
 	Particle* GetRootParticle() const;
 
 public:
@@ -215,6 +254,10 @@ public:
 	bool apply_size_interpolation; 
 	bool apply_rotation_interpolation;
 
+	//Animated particle 
+	bool is_animated; 
+	float time_step; 
+
 	//Motion
 	bool show_billboarding;
 	bool lock_billboarding_y;
@@ -237,10 +280,14 @@ private:
 private: 
 
 	//General Management
-	float particles_lifetime;				 //Lifetime of the particules spawned
-	particle_system_state system_state;		 //Inner play & pause 
 	Particle* root_particle;				 //This will be the particle that will be cloned over time
 	list<Particle*> active_particles;		 //Particles that are currently beeing rendered
+
+	vector<ParticleAnimation> particle_animations; 
+
+	float particles_lifetime;				 //Lifetime of the particules spawned
+	particle_system_state system_state;		 //Inner play & pause 
+		 
 	multimap<float, Particle*> particles_sorted;
 	Timer reorder_time;
 
@@ -252,7 +299,4 @@ private:
 	bool show_emit_area;					//boolean for showing the emmiter area
 	vector<uint> shapes_ids;				//This list will hold the id's of the textures that can give shape to the particles
 	uint shapes_amount; 
-
-
-
 };

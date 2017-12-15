@@ -277,6 +277,42 @@ void ModuleFileSystem::GetAllFilesInDirectory(const char * directory, vector<str
 	}
 }
 
+vector<string> ModuleFileSystem::GetFoldersInDirectory(const char * directory)
+{
+	vector<string> to_ret;
+
+	string path(directory);
+
+	WIN32_FIND_DATA directory_data;
+	HANDLE handle;
+
+	path += "*.*";
+
+	handle = FindFirstFile(path.c_str(), &directory_data);
+
+	if (handle != INVALID_HANDLE_VALUE)
+	{
+		do
+		{
+			string name(directory_data.cFileName);
+
+			if (name == "." || name == "..")
+				continue;
+
+			string new_str(directory + name);
+			new_str += '\\'; 
+
+			if (IsFolder(new_str.c_str()))
+				to_ret.push_back(name);
+		
+		} while (FindNextFile(handle, &directory_data) != FALSE);
+
+		FindClose(handle);
+	}
+
+	return to_ret;
+}
+
 bool ModuleFileSystem::IsFolder(const char * directory)
 {
 	vector<string> files_inside = GetFilesInDirectory(directory);

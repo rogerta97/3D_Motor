@@ -13,8 +13,10 @@ Particle::Particle()
 	particle_color = initial_particle_color; 
 	particle_angular_v = 0; 
 	curr_rot = 0; 
+	animated_particle = false; 
 	interpolate_size = false; 
 	interpolate_rotation = false; 
+	animation_timer.Start(); 
 	twister.Start(); 
 }
 
@@ -197,6 +199,8 @@ void Particle::Update()
 
 	//Update Rotation	
 	UpdateRotation();
+
+	UpdateAnimation(); 
 	
 	//Check if they have to be deleted
 	if (particle_timer.Read() > max_particle_lifetime*1000)
@@ -263,7 +267,8 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	active = true;
 	type = COMPONENT_PARTICLE_EMMITER;
 
-	//Emmiter properties
+	//Emmiter properties -------
+
 	emmision_frequency = 1000; 
 	emmision_rate = 1; 
 
@@ -281,6 +286,8 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	angular_v = 0; 
 	emision_angle = 0; 
 	reorder_time.Start(); 
+	is_animated = false; 
+	time_step = 0.2; 
 
 	apply_rotation_interpolation = false; 
 	apply_size_interpolation = false; 
@@ -294,6 +301,8 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 
 	initial_color[0] = initial_color[1] = initial_color[2] = initial_color[3] = 0; 
 	final_color[0] = final_color[1] = final_color[2] = final_color[3] = 0;
+
+	// ------
 
 	//Create the rectangle that will be the initial emmiting area (2x2 square)
 	emit_area = new ComponentMeshRenderer(gameobject);
@@ -321,7 +330,8 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	}
 
 	//This is the root particle that we are going to clone
-	CreateRootParticle(); 
+	CreateRootParticle();
+	LoadParticleAnimations(); 
 
 }
 
@@ -399,6 +409,8 @@ void ComponentParticleEmmiter::UpdateRootParticle()
 	else root_particle->SetAngular(angular_v);
 
 	if(apply_size_interpolation) root_particle->SetInterpolationSize(true, initial_scale, final_scale);
+
+
 }
 
 ComponentParticleEmmiter::~ComponentParticleEmmiter()
@@ -413,6 +425,15 @@ void Particle::SetBillboardReference(ComponentCamera* new_reference)
 ComponentCamera * Particle::GetBillboardReference()
 {
 	return components.particle_billboarding->GetReference();
+}
+
+void Particle::UpdateAnimation()
+{
+	if (animation_timer.Read() > components.particle_animation.timeStep * 1000)
+	{
+		components.particle_animation.Update(animation_timer);
+		animation_timer.Start(); 
+	}
 }
 
 void Particle::UpdateRotation()
@@ -480,8 +501,6 @@ void ComponentParticleEmmiter::GenerateParticles()
 	if (spawn_timer.Read() > emmision_frequency)
 	{		
 		Particle* new_particle = CreateParticle(); 
-
-
 		new_particle->SetDistanceToCamera(0);
 		active_particles.push_back(new_particle);
 		LOG("Particles ammount: %d", GetParticlesNum()); 
@@ -545,9 +564,15 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 		new_particle->SetInterpolationRotation(false, 0, 0);
 		new_particle->SetAngular(angular_v);
 	}
+
+	if (is_animated)
+	{
+		new_particle->animated_particle = true; 
+		new_particle->components.particle_animation = root_particle->components.particle_animation; 
+		new_particle->components.particle_animation.timeStep = time_step; 
+	}
 	
 	float3 dds = emit_area->GetComponentParent()->transform->LocalY(); 
-
 
 	if (emision_angle > 0)
 	{
@@ -573,7 +598,7 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	}
 	else
 		new_particle->SetMovement(emit_area->GetComponentParent()->transform->LocalY()*velocity);
-	
+
 	return new_particle; 
 }
 
@@ -667,6 +692,41 @@ void ComponentParticleEmmiter::SetCurrentTextureID(uint texture_id)
 uint ComponentParticleEmmiter::GetCurrentTextureID() const
 {
 	return curr_texture_id;
+}
+
+void ComponentParticleEmmiter::LoadParticleAnimations()
+{
+	//Load the animated particles of the engine by default
+
+	std::string path(App->file_system->particles_path_game);
+
+	vector<string> animation_folders = App->file_system->GetFoldersInDirectory(path.c_str());
+
+	for (int i = 0; i < animation_folders.size(); i++)
+	{
+		ParticleAnimation new_particle_anim;
+		new_particle_anim.name = animation_folders[i];
+
+		string folder_path(path + new_particle_anim.name + '\\'); 
+	
+		vector<string> anim_set = App->file_system->GetFilesInDirectory(folder_path.c_str(), "png");
+
+		//Load the images and add it to the buffer 
+		for (int j = 0; j < anim_set.size(); j++)
+		{
+			string image_path(folder_path + anim_set[j]);
+			ComponentMaterial* image_cmp = App->resource_manager->material_loader->ImportImage(image_path.c_str());
+			new_particle_anim.buffer_ids.push_back(image_cmp->textures_id);
+		}	
+
+		particle_animations.push_back(new_particle_anim); 
+	}
+}
+
+
+vector<ParticleAnimation> ComponentParticleEmmiter::GetAllParticleAnimations()
+{
+	return particle_animations;
 }
 
 Particle * ComponentParticleEmmiter::GetRootParticle() const

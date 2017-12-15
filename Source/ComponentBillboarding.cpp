@@ -143,34 +143,8 @@ bool ComponentBillboarding::Update()
 			else
 				GetComponentParent()->transform->SetLocalRotation({ -increment_angle_x*RADTODEG, 0, 0 });
 		}
-
-		//float3 vector = GetComponentParent()->transform->GetGlobalTransform().WorldX(); 
-
-
 		ref_position_changed = false;
-
-
-		//float3 prev_angle = GetComponentParent()->transform->GetGlobalTransform().ToEulerXYZ(); 
-
-		//float3 vector = (reference_position - GetComponentParent()->transform->GetGlobalPosition());
-		//vector.Normalize();
-
-		//float3 forward = { 0,0,1 };
-
-		//float angle_y = forward.AngleBetween({ vector.x, 0, vector.z })*RADTODEG;
-
-		//if (vector.x < 0)
-		//	GetComponentParent()->transform->SetLocalRotation({ 0, -(angle_y - prev_angle.y*RADTODEG), 0 });
-		//else
-		//	GetComponentParent()->transform->SetLocalRotation({ 0, (angle_y - prev_angle.y*RADTODEG), 0 });
-		//
-		//last_ref_pos = reference_position;
-		//ref_position_changed = false;
-	}
-		
-
-
-	
+	}	
 	return false;
 }
 
