@@ -435,6 +435,9 @@ void ModuleCamera3D::AdaptToState(app_state curr_state)
 			{
 				GameObject* new_cam = App->scene_intro->CreateGameObject("Camera");
 				ComponentCamera* cam = new ComponentCamera(new_cam);
+				new_cam->transform->SetLocalPosition({ 0, 25, 0 });
+				new_cam->transform->SetLocalRotation({ 90, 0, 0 });
+
 				new_cam->PushComponent(cam);
 				main_camera = cam; 
 			}

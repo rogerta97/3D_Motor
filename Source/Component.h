@@ -45,6 +45,8 @@ public:
 	component_type GetComponentType() { return type; };
 	virtual void DeleteComponent(); 
 	virtual void Serialize(json_file* file);
+	virtual void Serialize(json_file file);
+
 	~Component() {}
 
 	bool active = false;

@@ -50,7 +50,7 @@ void SceneImporter::SaveScene(const char * path)
 void SceneImporter::SaveSceneToBuffer()
 {
 	if (scene_file == nullptr)
-		scene_file = App->json->CreateNewJSON("scene.json");
+		scene_file = App->json->CreateNewJSON("Library//Scenes//std_scene.json");
 	else
 		scene_file->Delete();
 
@@ -162,4 +162,139 @@ void SceneImporter::LoadSceneFromBuffer()
 	}
 }
 
+bool SceneImporter::SavePrefab(const char* name, const char* extension, const char* path, GameObject* go)
+{
+	bool ret = false;
 
+	LOG("Saving prefab with name: %s", name);
+
+
+	string filepath = path;
+	filepath += name;
+	filepath += ".";
+	filepath += extension;
+
+	json_file* prefab = App->json->LoadJSONFile(filepath.c_str());
+
+	if (prefab == nullptr)
+		prefab = App->json->CreateNewJSON(filepath.c_str());
+
+	if (prefab != nullptr)
+	{
+		prefab->Delete();
+
+		vector<GameObject*> game_objects;
+		App->scene_intro->RecursiveGetGameObjectTree(go, game_objects);
+
+		for (vector<GameObject*>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
+		{
+			App->scene_intro->AddRelationGo((*it));
+		}
+
+		// Store GameObjects
+		prefab->SetArray("GameObjects");
+
+		for (vector<GameObject*>::iterator it = game_objects.begin(); it != game_objects.end(); it++)
+		{
+			prefab->MoveToRoot();
+
+			if ((*it) != App->scene_intro->GetRoot())
+			{
+				json_file go_node = prefab->GetNode();
+
+				// Add and move to a new secion on the gameobjects array
+				go_node.AddSectionToArray("GameObjects");
+				go_node.MoveToSectionFromArray("GameObjects", go_node.GetArraySize("GameObjects") - 1);
+
+				// Set relation id
+				go_node.SetInt("id", App->scene_intro->GetRelationGo((*it)));
+
+				// Set parent relation id
+				if ((*it)->GetParent() != nullptr && (*it)->GetParent() != App->scene_intro->GetRoot())
+					go_node.SetInt("parent_id", App->scene_intro->GetRelationGo((*it)->GetParent()));
+				else
+					go_node.SetInt("parent_id", -1);
+
+				(*it)->Serialize(go_node);
+			}
+		}
+		prefab->Save();
+
+		ret = true;
+	}
+
+	App->scene_intro->ClearRelations();
+
+	return ret;
+}
+void SceneImporter::SaveNewScene(const char * scene_name)
+{
+	const char* a = App->file_system->GetScenePath().c_str();
+	SavePrefab(scene_name, "json", App->file_system->GetScenePath().c_str(), App->scene_intro->GetRoot());
+}
+
+void SceneImporter::LoadScene(const char * scene_name, bool set_scene_title)
+{
+	DestroyScene();
+	string filepath = App->file_system->GetScenePath();
+	filepath += scene_name;
+	filepath += ".scene";
+
+	GameObject* go = nullptr;
+	LoadPrefab(filepath.c_str(), go);
+}
+void SceneImporter::DestroyScene()
+{
+	App->scene_intro->DestroyAllGameObjectsNow();
+}
+bool SceneImporter::LoadPrefab(const char * file_path, GameObject *& loaded_go)
+{
+	bool ret = false;
+
+	string file_name = App->file_system->GetFileName(file_path);
+
+	LOG("Loading prefab with name: %s", file_name.c_str());
+
+	App->scene_intro->ClearRelations();
+
+	json_file* prefab = App->json->LoadJSONFile(file_path);
+
+	if (prefab != nullptr)
+	{
+		ret = true;
+
+		// Load GameObjects
+		int game_objects_count = prefab->GetArraySize("GameObjects");
+		for (int i = 0; i < game_objects_count; i++)
+		{
+			json_file go_node = prefab->GetNode();
+			go_node.MoveToSectionFromArray("GameObjects", i);
+
+			int id = go_node.GetInt("id", -1);
+			int parent_id = go_node.GetInt("parent_id", -1);
+			GameObject* go = App->scene_intro->CreateNewGO();
+
+			App->scene_intro->AddRleationIdGo(id, go, parent_id);
+
+			if (go != nullptr)
+				go->Serialize(go_node);
+
+			if (i == 0)
+				loaded_go = go;
+		}
+
+		for (vector<Relation>::iterator it = App->scene_intro->relations.begin(); it != App->scene_intro->relations.end(); ++it)
+		{
+			GameObject* parent = App->scene_intro->GetRelationId((*it).id_parent);
+
+			if (parent != nullptr)
+				parent->PushChild((*it).go);
+		}
+
+		prefab->MoveToRoot();
+	}
+
+	App->scene_intro->ClearRelations();
+
+	return ret;
+}

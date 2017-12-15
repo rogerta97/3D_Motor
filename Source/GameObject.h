@@ -20,7 +20,7 @@ public:
 
 	GameObject();
 	virtual ~GameObject() {}
-
+	void Start();
 	bool Save(json_file& config) const;
 	void Load(json_file* config);
 	void Draw(); 
@@ -54,6 +54,7 @@ public:
 	void DeleteComponents(); 
 
 	void GetChildByUID(uint UID, GameObject *& go) const;
+	void EraseChild(GameObject * child, bool send_child_to_root);
 
 	// Bounding Box 
 
@@ -68,6 +69,7 @@ public:
 	uint GetNumChilds() const;
 	void PushChild(GameObject* child);
 	GameObject* AddChild();
+	const std::vector<GameObject*> GetChilds() const;
 
 	GameObject* GetParent() const;
 	void SetParent(GameObject* parent);
@@ -92,6 +94,8 @@ public:
 	void ShowBB(bool show_it);
 
 	void Serialize(json_file* file);
+	void Serialize(json_file file);
+
 	void GetChildWithUID(uint UID, GameObject * go) const;
 
 	uint GetNewChildID()const;
@@ -99,6 +103,8 @@ public:
 
 	//For finding methods
 	GameObject* Find(string name); 
+	GameObject * CreateNewGO(std::string force_id);
+
 
 public:
 	vector<Component*> component_list;

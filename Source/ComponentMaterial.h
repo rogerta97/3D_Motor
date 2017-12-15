@@ -29,6 +29,8 @@ public:
 	void SetTextureID(uint tex);
 	uint GetTexSize()const;
 	void Serialize(json_file* file);
+	void Serialize(json_file file);
+
 	//Color* GetColor();
 public:
 	uint unique_id = 0;

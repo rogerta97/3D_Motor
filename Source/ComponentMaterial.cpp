@@ -118,6 +118,15 @@ void ComponentMaterial::Serialize(json_file * file)
 	file->SetInt("owner", GetComponentParent()->unique_id);
 	file->SetInt("material", unique_id);
 }
+void ComponentMaterial::Serialize(json_file file)
+{
+	file.AddSectionToArray("Components");
+	file.MoveToSectionFromArray("Components", file.GetArraySize("Components") - 1);
+		
+	file.SetInt("type", GetComponentType());
+	file.SetInt("owner", GetComponentParent()->unique_id);
+	file.SetInt("material", unique_id);
+}
 //
 //Color* ComponentMaterial::GetColor()
 //{

@@ -13,6 +13,7 @@ ModuleFileSystem::ModuleFileSystem(bool start_enabled): Module(start_enabled)
 	lib_path = CreateFolder(root, "Library");
 	mesh_path = CreateFolder(lib_path.c_str(), "Meshes");
 	tex_path = CreateFolder(lib_path.c_str(), "Textures");
+	scenes_path = CreateFolder(lib_path.c_str(), "Scenes");
 
 	//Game
 	string base_path(SDL_GetBasePath()); 
@@ -206,6 +207,11 @@ string ModuleFileSystem::GetAssetsPath() const
 string ModuleFileSystem::GetLibraryPath() const
 {
 	return lib_path;
+}
+
+string ModuleFileSystem::GetScenePath() const
+{
+	return scenes_path;
 }
 
 vector<string> ModuleFileSystem::GetFilesInDirectory(const char* directory, const char* extension)

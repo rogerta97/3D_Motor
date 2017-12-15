@@ -1,0 +1,37 @@
+{
+    "GameObjects": [],
+    "Components": [
+        {
+            "type": 2,
+            "owner": 204383354,
+            "position": [
+                0,
+                0,
+                0
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "rotation": [
+                -0.013707355596125126,
+                0,
+                0,
+                0.99990606307983398
+            ]
+        },
+        {
+            "type": 0,
+            "owner": 204383354,
+            "mesh": 321085985
+        },
+        {
+            "type": 1,
+            "owner": 204383354,
+            "material": 87097477
+        }
+    ],
+    "name": "Baker_house",
+    "static": false
+}
