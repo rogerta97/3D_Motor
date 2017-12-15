@@ -11,6 +11,7 @@
 #include "ResourceMeshLoader.h"
 #include "ModuleCamera3D.h"
 #include "ModuleRenderer3D.h"
+#include "UID.h"
 #include "SceneImporter.h"
 #include "Functions.h"
 
@@ -39,6 +40,9 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	root = new GameObject();
+	root->Start();
+	root->SetName("Root");
 	srand(time(NULL));
 
 	float3 initial_pos(0.f, 10.f, 10.f);
@@ -313,11 +317,104 @@ GameObject * ModuleSceneIntro::GetFarestObjectFrom(float3 origin)
 	return to_ret;
 }
 
+void ModuleSceneIntro::RecursiveGetGameObjectTree(GameObject * go, vector<GameObject*>& fill)
+{
+	fill.push_back(go);
+
+	vector<GameObject*> childs = go->child_list;
+	for (vector<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
+	{
+		RecursiveGetGameObjectTree(*it, fill);
+	}
+}
+
+GameObject * ModuleSceneIntro::GetRoot() const
+{
+	if (root == nullptr)
+
+		LOG("root is Null");
+
+
+	return root;
+}
+
 void ModuleSceneIntro::Serialize(json_file * file)
 {
 	for (std::vector<GameObject*>::iterator go = GO_list.begin(); go != GO_list.end(); ++go)
 	{
 		(*go)->Serialize(file);
+	}
+}
+void ModuleSceneIntro::Serialize(json_file  file)
+{
+	for (std::vector<GameObject*>::iterator go = GO_list.begin(); go != GO_list.end(); ++go)
+	{
+		(*go)->Serialize(file);
+	}
+}
+
+void ModuleSceneIntro::ClearSelection()
+{
+
+}
+
+void ModuleSceneIntro::DestroyAllGameObjectsNow()
+{
+	for (vector<GameObject*>::iterator it = GO_list.begin(); it != GO_list.end(); ++it)
+	{
+		Destroy((*it));
+	}
+
+		for (vector<GameObject*>::iterator to_del = to_delete.begin(); to_del != to_delete.end();)
+		{
+			// Add childs to delete
+			vector<GameObject*> childs = (*to_del)->GetChilds();
+			for (vector<GameObject*>::iterator ch = childs.begin(); ch != childs.end(); ++ch)
+			{
+				(*ch)->parent = nullptr;
+				Destroy(*ch);
+			}
+
+			// Reset parent
+			if ((*to_del)->GetParent() != nullptr)
+			{
+				(*to_del)->GetParent()->EraseChild(*to_del, false);
+			}
+
+			// Delete from list
+			for (vector<GameObject*>::iterator it = GO_list.begin(); it != GO_list.end();)
+			{
+				if ((*to_del) == (*it))
+				{
+					it = GO_list.erase(it);
+					break;
+				}
+				else
+					++it;
+			}
+
+
+
+			// Free
+			(*to_del)->Delete();
+			delete (*to_del);
+
+			to_del = to_delete.erase(to_del);
+		}
+	}
+
+
+
+void ModuleSceneIntro::Destroy(GameObject * go)
+{
+	{
+		for (vector<GameObject*>::iterator it = to_delete.begin(); it != to_delete.end(); ++it)
+		{
+			if (go == (*it))
+				return;
+		}
+
+		to_delete.push_back(go);
 	}
 }
 
@@ -482,8 +579,85 @@ GameObject* ModuleSceneIntro::GetCurrentGO()
 	return ret; 
 }
 
+void ModuleSceneIntro::ClearRelations()
+{
+	relations.clear();
+}
+
+void ModuleSceneIntro::AddRelationGo(GameObject * go)
+{
+	int id = relations.size();
+	Relation rel(id, go);
+	relations.push_back(rel);
+}
+
+void ModuleSceneIntro::AddRleationIdGo(int id, GameObject * go, int parent_id)
+{
+	if (parent_id == -1)
+	{
+		Relation rel(id, go);
+		relations.push_back(rel);
+	}
+	else
+	{
+		Relation rel(id, go, parent_id);
+		relations.push_back(rel);
+	}
+}
+
+int ModuleSceneIntro::GetRelationGo(GameObject * go)
+{
+	for (vector<Relation>::iterator it = relations.begin(); it != relations.end(); ++it)
+	{
+		if ((*it).go == go)
+		{
+			return (*it).id;
+		}
+	}
+
+	return -1;
+}
+
+GameObject * ModuleSceneIntro::GetRelationId(int id)
+{
+	for (vector<Relation>::iterator it = relations.begin(); it != relations.end(); ++it)
+	{
+		if ((*it).id == id)
+		{
+			return (*it).go;
+		}
+	}
+
+	return nullptr;
+}
 
 
+GameObject * ModuleSceneIntro::CreateNewGO(std::string force_id)
+{
+	string new_id;
+
+	if (force_id == "")
+	{
+		void* a = this;
+		void** a_ptr = &a;
+		uint size = sizeof(this);
+		char* data = new char[size];
+		memcpy(data, a_ptr, size);
+
+		uint* uid = md5(data, size);
+		new_id = *uid;
+	}
+	else
+		new_id = force_id;
+
+	GameObject* game_object = new GameObject();
+
+	GO_list.push_back(game_object);
+	root->PushChild(game_object);
+	game_object->Start();
+
+	return game_object;
+}
 
 
 

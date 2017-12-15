@@ -32,6 +32,8 @@ public:
 	//Gets
 	string GetAssetsPath()const;
 	string GetLibraryPath()const;
+	string GetScenePath()const;
+
 
 	// UTILITY
 	vector<string> GetFilesInDirectory(const char* directory, const char* extension = "");
@@ -45,6 +47,8 @@ public:
 		string lib_path;
 		string mesh_path;
 		string tex_path;
+		string scenes_path;
+
 
 		//Assets in Game
 		string game_assets_dir; 

@@ -1,7 +1,7 @@
 {
     "GameObjects": [
         {
-            "UID": 473701284,
+            "UID": 791519064,
             "name": "BakerHouse",
             "is_active": true,
             "is_static": false,
@@ -9,42 +9,42 @@
             "new_child_id": 0
         },
         {
-            "UID": 473701284,
+            "UID": 791588685,
             "name": "Chimney",
             "is_active": true,
             "is_static": false,
-            "parent": 473701284,
+            "parent": 791519064,
             "new_child_id": 0
         },
         {
-            "UID": 495910383,
+            "UID": 808436967,
             "name": "Baker_house",
             "is_active": true,
             "is_static": false,
-            "parent": 473701284,
+            "parent": 791519064,
             "new_child_id": 0
         },
         {
-            "UID": 473701284,
+            "UID": 791588685,
             "name": "Chimney",
             "is_active": true,
             "is_static": false,
-            "parent": 473701284,
+            "parent": 791519064,
             "new_child_id": 0
         },
         {
-            "UID": 495910383,
+            "UID": 808436967,
             "name": "Baker_house",
             "is_active": true,
             "is_static": false,
-            "parent": 473701284,
+            "parent": 791519064,
             "new_child_id": 0
         }
     ],
     "Components": [
         {
             "type": 2,
-            "owner": 473701284,
+            "owner": 791519064,
             "position": [
                 0,
                 0,
@@ -63,92 +63,124 @@
             ]
         },
         {
-            "type": 1,
-            "owner": 473701284,
+            "type": 2,
+            "owner": 791588685,
             "position": [
                 0,
                 0,
                 0
             ],
             "scale": [
-                1,
-                1,
-                1
+                100,
+                100,
+                100
             ],
             "rotation": [
+                -0.013707355596125126,
                 0,
                 0,
-                0,
-                1
-            ],
-            "mesh": -2020773819,
-            "material": 981536766
+                0.99990606307983398
+            ]
+        },
+        {
+            "type": 0,
+            "owner": 791588685,
+            "mesh": 351431469
         },
         {
             "type": 1,
-            "owner": 495910383,
+            "owner": 791588685,
+            "material": -573487882
+        },
+        {
+            "type": 2,
+            "owner": 808436967,
             "position": [
-                -2,
+                0,
                 0,
                 0
             ],
             "scale": [
-                1,
-                1,
-                1
+                100,
+                100,
+                100
             ],
             "rotation": [
+                -0.013707355596125126,
                 0,
                 0,
-                0,
-                1
-            ],
-            "mesh": -857165740,
-            "material": -857422693
+                0.99990606307983398
+            ]
+        },
+        {
+            "type": 0,
+            "owner": 808436967,
+            "mesh": 1033467989
         },
         {
             "type": 1,
-            "owner": 473701284,
+            "owner": 808436967,
+            "material": -428837947
+        },
+        {
+            "type": 2,
+            "owner": 791588685,
             "position": [
                 0,
                 0,
                 0
             ],
             "scale": [
-                1,
-                1,
-                1
+                100,
+                100,
+                100
             ],
             "rotation": [
+                -0.013707355596125126,
                 0,
                 0,
-                0,
-                1
-            ],
-            "mesh": -2020773819,
-            "material": 981536766
+                0.99990606307983398
+            ]
+        },
+        {
+            "type": 0,
+            "owner": 791588685,
+            "mesh": 351431469
         },
         {
             "type": 1,
-            "owner": 495910383,
+            "owner": 791588685,
+            "material": -573487882
+        },
+        {
+            "type": 2,
+            "owner": 808436967,
             "position": [
-                -2,
+                0,
                 0,
                 0
             ],
             "scale": [
-                1,
-                1,
-                1
+                100,
+                100,
+                100
             ],
             "rotation": [
+                -0.013707355596125126,
                 0,
                 0,
-                0,
-                1
-            ],
-            "mesh": -857165740,
-            "material": -857422693
+                0.99990606307983398
+            ]
+        },
+        {
+            "type": 0,
+            "owner": 808436967,
+            "mesh": 1033467989
+        },
+        {
+            "type": 1,
+            "owner": 808436967,
+            "material": -428837947
         }
     ]
 }

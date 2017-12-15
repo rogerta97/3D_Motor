@@ -143,6 +143,10 @@ json_file::json_file()
 json_file::~json_file()
 {
 }
+json_file json_file::GetNode() const
+{
+	return json_file(*this);
+}
 int json_file::GetFileSize() const
 {
 	if (object != nullptr)

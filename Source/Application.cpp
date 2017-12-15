@@ -17,7 +17,6 @@ Application::Application()
 	fps_counter = 0;
 
 	//file_system = new ModuleFileSystem(true);
-
 	scene_importer = new SceneImporter(true);
 	json = new JSON(true);
 	window = new ModuleWindow(true);

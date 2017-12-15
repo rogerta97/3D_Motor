@@ -14,6 +14,7 @@ class json_file
 		 json_file();
 		 ~json_file();
 
+		 json_file GetNode()const;
 		 int GetFileSize()const;
 		 void SetString(const char* set, const char* data);
 		 void SetBool(const char* set, bool data);

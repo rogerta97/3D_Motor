@@ -63,6 +63,8 @@ public:
 	void SetPositionChanged(bool new_set); 
 	void UpdateTransform(); 
 	void Serialize(json_file* file);
+	void Serialize(json_file file);
+
 
 	Transform transform;
 	Transform global_transform;

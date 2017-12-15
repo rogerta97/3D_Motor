@@ -61,9 +61,6 @@
     <Filter Include="Helpers\ImGui">
       <UniqueIdentifier>{f7bcb8fa-80b6-4c5b-bd4f-0fbca43849ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\OwnFileFormat">
-      <UniqueIdentifier>{26c33934-171b-4306-bf5b-85f69ecb1562}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Modules\Importers">
       <UniqueIdentifier>{fba3da68-1837-4f96-b283-885e5b760fae}</UniqueIdentifier>
     </Filter>
@@ -81,6 +78,9 @@
     </Filter>
     <Filter Include="Modules\Importers\Resource">
       <UniqueIdentifier>{ae820c79-c7d1-40cb-839f-7387664e4e41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\JSON">
+      <UniqueIdentifier>{26c33934-171b-4306-bf5b-85f69ecb1562}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1219,7 +1219,7 @@
       <Filter>Helpers\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="JSON.h">
-      <Filter>Tools\OwnFileFormat</Filter>
+      <Filter>Tools\JSON</Filter>
     </ClInclude>
     <ClInclude Include="AssimpLogger.h">
       <Filter>Modules\Importers\Mesh</Filter>
@@ -1494,7 +1494,7 @@
       <Filter>Helpers\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="JSON.cpp">
-      <Filter>Tools\OwnFileFormat</Filter>
+      <Filter>Tools\JSON</Filter>
     </ClCompile>
     <ClCompile Include="Functions.cpp">
       <Filter>Main</Filter>

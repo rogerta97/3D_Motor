@@ -79,6 +79,8 @@ public:
 	void SetShowingNormals(bool show);
 
 	void Serialize(json_file* file);
+	void Serialize(json_file file);
+
 
 public: 
 

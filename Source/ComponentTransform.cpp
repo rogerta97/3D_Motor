@@ -189,6 +189,18 @@ void ComponentTransform::Serialize(json_file * file)
 	file->SetQuaternion("rotation", transform.rotation);
 }
 
+void ComponentTransform::Serialize(json_file file)
+{
+	file.AddSectionToArray("Components");
+	file.MoveToSectionFromArray("Components", file.GetArraySize("Components") - 1);
+		
+	file.SetInt("type", GetComponentType());
+	file.SetInt("owner", GetComponentParent()->unique_id);
+	file.SetFloat3("position", transform.position);
+	file.SetFloat3("scale", transform.scale);
+	file.SetQuaternion("rotation", transform.rotation);
+}
+
 bool ComponentTransform::Update()
 {
 	float3 testpos[3]; 

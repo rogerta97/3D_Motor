@@ -12,6 +12,25 @@ class Cube1;
 enum mesh_shape; 
 class Octree; 
 class OctreeNode; 
+struct Relation
+{
+	Relation(int _id, GameObject* _go)
+	{
+		id = _id;
+		go = _go;
+		id_parent = -1;
+	}
+	Relation(int _id, GameObject* _go, int _id_parent)
+	{
+		id = _id;
+		go = _go;
+		id_parent = _id_parent;
+	}
+
+	int id = 0;
+	GameObject* go = nullptr;
+	int id_parent = 0;
+};
 
 class ModuleSceneIntro : public Module
 {
@@ -70,27 +89,43 @@ public:
 	// Scene Management
 	bool IsSceneEmpty(); 
 	GameObject* GetFarestObjectFrom(float3 origin);
-
+	void RecursiveGetGameObjectTree(GameObject * go, vector<GameObject*>& fill);
 	//Serialization
 	//void LoadScene(aiScene* scene);
 	//void SaveScene(aiScene& scene)const;
+	GameObject* GetRoot()const;
+	void ClearRelations();
+	void AddRelationGo(GameObject * go);
+	void AddRleationIdGo(int id, GameObject * go, int parent_id);
+	int GetRelationGo(GameObject * go);
+	GameObject * GetRelationId(int id);
+	GameObject * CreateNewGO(std::string force_id = "");
 
 	void Serialize(json_file* file);
+	void Serialize(json_file  file);
+
+	void ClearSelection();
+	void DestroyAllGameObjectsNow();
+	void Destroy(GameObject * go);
+
 public:
 
 	vector<ComponentCamera*> cameras_list;
+	std::vector<Relation> relations;
 	Octree* octree = nullptr;
 
 private:
 
 	PPlane main_plane; 
-
+	GameObject* root = nullptr;
 	vector<GameObject*> GO_list;
 	vector<GameObject*> static_GO_list;
 
 	vector<GameObject*> to_delete; 
 
 	uint current_gameobject_id = 0;
+
+
 
 	
 };
