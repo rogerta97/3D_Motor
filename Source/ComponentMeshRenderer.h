@@ -48,10 +48,6 @@ public:
 	uint GetIndicesID()const;
 	uint* GetIndices()const;
 
-	int GetNumNormals()const;
-	uint GetNormalsID()const;
-	float3* GetNormals()const;
-
 	int GetNumUVS()const;
 	uint GetUVSID()const;
 	float* GetUVS()const;
@@ -91,12 +87,6 @@ public:
 	uint* indices;
 	int num_indices = 0;
 	uint indices_id = 0;
-	
-	float3* normals;
-	float3* center_points; 
-
-	int num_normals = 0;
-	uint normals_id = 0;
 
 	float* uvs;
 	int num_uvs = 0;

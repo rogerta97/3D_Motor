@@ -62,7 +62,7 @@ bool ComponentBillboarding::Update()
 	{
 		reference_position = reference->frustum.pos;
 
-		if (reference_position.x != last_ref_pos.x || reference_position.y != last_ref_pos.y || reference_position.z != last_ref_pos.z)
+		if ((reference_position.x != last_ref_pos.x || reference_position.y != last_ref_pos.y || reference_position.z != last_ref_pos.z) || GetComponentParent() == nullptr)
 			ref_position_changed = true;
 	}
 		
@@ -93,8 +93,17 @@ bool ComponentBillboarding::Update()
 		if (!x_axis_locked)  //Rotate arround X axis (vertical)
 		{
 			float3 next_projection_x = { new_z_axis.x, 0, new_z_axis.z };
-			float3 curr_projection_x = { GetComponentParent()->transform->transform.rotation.WorldZ().x, 0, GetComponentParent()->transform->transform.rotation.WorldZ().z };
-	
+			float3 curr_projection_x;
+
+			if (GetComponentParent() == nullptr)
+			{
+				curr_projection_x = { 0,0,1 }; 
+			}
+			else
+			{
+				curr_projection_x = { GetComponentParent()->transform->transform.rotation.WorldZ().x, 0, GetComponentParent()->transform->transform.rotation.WorldZ().z };
+			}
+				
 			float3 z_axis = { 0,0,1 }; 
 
 			float curr_angle = z_axis.AngleBetween(curr_projection_x)*RADTODEG;
@@ -111,7 +120,7 @@ bool ComponentBillboarding::Update()
 			
 			if (particle_parent != nullptr)
 			{
-				particle_parent->components.particle_transform->SetLocalRotation({ 0, increment_angle_y, 0 });
+				particle_parent->components.particle_transform->SetLocalRotation({ 0, increment_angle_y*RADTODEG, 0 });
 			}
 			else
 				GetComponentParent()->transform->SetLocalRotation({ 0, increment_angle_y*RADTODEG, 0 });

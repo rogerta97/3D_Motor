@@ -76,8 +76,6 @@ private:
 
 	Transform prev_transform; 
 
-
-
 	bool transform_modified = false; 
 	bool position_modified = false; 
 };

@@ -131,6 +131,9 @@ public:
 	void SetDistanceToCamera(float new_dist); 
 	float GetDistanceToCamera(); 
 
+	void SetBillboarding(float new_dist);
+	float IsBillboarding() const;
+
 	bool IsDead();
 
 	~Particle(); 
@@ -176,7 +179,7 @@ private:
 	bool kill_me;
 	int particle_texture_id; 
 	float distance_to_camera; 
-
+	bool billboarding; 
 
 };
 
@@ -259,7 +262,7 @@ public:
 	float time_step; 
 
 	//Motion
-	bool show_billboarding;
+	bool billboarding;
 	bool lock_billboarding_y;
 	bool lock_billboarding_x;
 

@@ -103,6 +103,16 @@ float Particle::GetDistanceToCamera()
 	return distance_to_camera;
 }
 
+void Particle::SetBillboarding(float new_dist)
+{
+	billboarding = new_dist;
+}
+
+float Particle::IsBillboarding() const
+{
+	return billboarding;
+}
+
 void Particle::UpdateColor()
 {
 	if (!interpolate_colors)
@@ -124,8 +134,6 @@ void Particle::UpdateColor()
 	particle_color.g = (initial_particle_color.g + increment_g) / 255;
 	particle_color.b = (initial_particle_color.b + increment_b) / 255;
 	particle_color.a = (initial_particle_color.a + increment_a) / 255;
-
-	//LOG("R: %f G: %f B: %f", particle_color.r, particle_color.g, particle_color.b); 
 
 }
 
@@ -199,6 +207,10 @@ void Particle::Update()
 
 	//Update Rotation	
 	UpdateRotation();
+
+	//Update Billboarding
+	if(IsBillboarding() == true)
+		components.particle_billboarding->Update(); 
 
 	//Animations
 	if(animated_particle)
@@ -283,7 +295,7 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	velocity = 0.5f; 
 	curr_texture_id = -1; 
 	color = Color(255, 255, 255, 0); 
-	show_billboarding = false; 
+	billboarding = false; 
 	gravity = { 0,0,0 }; 
 	angular_v = 0; 
 	emision_angle = 0; 
@@ -367,7 +379,6 @@ bool ComponentParticleEmmiter::Update()
 		{
 			(*it)->Delete(); 
 			it = active_particles.erase(it); 
-			LOG("PARTICLE DELETED"); 
 
 			if (active_particles.size() > 0)
 				continue;
@@ -383,7 +394,6 @@ bool ComponentParticleEmmiter::Update()
 	////We first order the particles based on the dist to camera
 	for (auto it = particles_sorted.rbegin(); it != particles_sorted.rend(); ++it)
 	{	
-
 		it->second->Draw();
 	}
 	
@@ -406,13 +416,12 @@ void ComponentParticleEmmiter::UpdateRootParticle()
 
 	root_particle->SetInterpolatingColor(apply_color_interpolation, Color(initial_color[0], initial_color[1], initial_color[2], initial_color[3]), Color(final_color[0], final_color[1], final_color[2], final_color[3]));
 	root_particle->SetInterpolationSize(apply_size_interpolation, initial_scale, final_scale);
+	root_particle->SetBillboarding(true); 
 
 	if (apply_rotation_interpolation) root_particle->SetInterpolationRotation(true, initial_angular_v, final_angular_v);		
 	else root_particle->SetAngular(angular_v);
 
 	if(apply_size_interpolation) root_particle->SetInterpolationSize(true, initial_scale, final_scale);
-
-
 }
 
 ComponentParticleEmmiter::~ComponentParticleEmmiter()
@@ -505,7 +514,6 @@ void ComponentParticleEmmiter::GenerateParticles()
 		Particle* new_particle = CreateParticle(); 
 		new_particle->SetDistanceToCamera(0);
 		active_particles.push_back(new_particle);
-		LOG("Particles ammount: %d", GetParticlesNum()); 
 		spawn_timer.Start(); 
 	}
 
@@ -529,20 +537,12 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	new_particle->components.particle_mesh->SetPlaneVertices({ gameobject->transform->GetLocalPosition().x, gameobject->transform->GetLocalPosition().y, gameobject->transform->GetLocalPosition().z }, 2);
 
 	//Billboard the squad for always be looking at the camera, at the beggining it will be deactivated 
-	if (show_billboarding)
+	if (billboarding)
 	{
+		new_particle->SetBillboarding(true); 
 		new_particle->components.particle_billboarding = new ComponentBillboarding(nullptr, new_particle);
 		new_particle->SetBillboardReference(App->renderer3D->rendering_cam);
-
-		if (lock_billboarding_y)
-			new_particle->components.particle_billboarding->LockY(); 
-		else
-			new_particle->components.particle_billboarding->UnLockY();
-
-		if (lock_billboarding_x)
-			new_particle->components.particle_billboarding->LockX(); 
-		else
-			new_particle->components.particle_billboarding->UnLockX();
+		new_particle->components.particle_billboarding->LockY(); 
 	}
 		
 	new_particle->SetMaxLifetime(max_lifetime); 

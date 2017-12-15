@@ -197,30 +197,16 @@ void PanelInspector::PrintMeshComponent(GameObject* GO_to_draw)
 		ImGui::Text("Triangles: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumTriangles());
 
-		ImGui::Text("Normals: "); ImGui::SameLine();
-
-		if(curr_cmp->normals_id != 0)
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", curr_cmp->GetNumNormals());
-		else
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), "NONE");
-
 		ImGui::Separator();
 
 		ImGui::Checkbox("Draw AABB", &curr_cmp->show_bb); ImGui::SameLine(); 
 
-
-		if(curr_cmp->normals_id != 0)
-			ImGui::Checkbox("Draw Normals", &curr_cmp->show_normals);
 
 	}
 
 	if (curr_cmp->IsBBoxShowing())
 		DebugDraw(curr_cmp->GetBBox(), Red);
 	
-	if (curr_cmp->AreNormalsShowing())
-	{
-		App->renderer3D->DrawNormals(curr_cmp->normals, curr_cmp->center_points, curr_cmp->num_normals);
-	}
 }
 
 void PanelInspector::PrintMaterialComponent(GameObject* GO_to_draw)
@@ -595,27 +581,7 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 
 			if (ImGui::TreeNode("Motion"))
 			{
-				//bool joker; //This will notice if billboard change from state active/disable 
-				//joker = current_emmiter->show_billboarding; 
-
-				ImGui::Checkbox("Billboarding", &current_emmiter->show_billboarding);
-
-				//if (joker != current_emmiter->show_billboarding)
-				//{
-				//	if (current_emmiter->show_billboarding)
-				//		current_emmiter->SetBillboardReference(App->renderer3D->rendering_cam); 
-				//	else
-				//		current_emmiter->SetBillboardReference(nullptr);
-				//}
-
-				if (current_emmiter->show_billboarding)
-				{
-					ImGui::Separator();
-					ImGui::Checkbox("Lock axis Y", &current_emmiter->lock_billboarding_y);
-					ImGui::Checkbox("Lock axis X", &current_emmiter->lock_billboarding_x);
-					ImGui::Separator();
-				}
-
+				ImGui::Checkbox("Billboarding", &current_emmiter->billboarding);
 
 				if (ImGui::DragInt("Emmision Rate", &current_emmiter->emmision_rate, 1, 0, 150)) current_emmiter->UpdateRootParticle();
 				if (ImGui::DragFloat("Lifetime", &current_emmiter->max_lifetime, 0, 0, 20)) current_emmiter->UpdateRootParticle();

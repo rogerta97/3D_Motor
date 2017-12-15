@@ -56,20 +56,6 @@ uint * ComponentMeshRenderer::GetIndices() const
 	return indices;
 }
 
-int ComponentMeshRenderer::GetNumNormals() const
-{
-	return num_normals;
-}
-
-uint ComponentMeshRenderer::GetNormalsID() const
-{
-	return normals_id;
-}
-
-float3 * ComponentMeshRenderer::GetNormals() const
-{
-	return normals;
-}
 
 int ComponentMeshRenderer::GetNumUVS() const
 {
@@ -116,20 +102,6 @@ void ComponentMeshRenderer::SetIndices(uint * ind)
 	indices = ind;
 }
 
-void ComponentMeshRenderer::SetNumNormals(int num)
-{
-	num_normals = num;
-}
-
-void ComponentMeshRenderer::SetNormalsId(uint id)
-{
-	normals_id = id; 
-}
-
-void ComponentMeshRenderer::SetNormals(float3 * ind)
-{
-	normals = ind;
-}
 
 void ComponentMeshRenderer::SetNumUVS(int num)
 {
@@ -295,10 +267,6 @@ void ComponentMeshRenderer::Delete()
 	glDeleteBuffers(1, &indices_id);
 	delete(indices); 
 
-	normals = nullptr;
-	glDeleteBuffers(1, &normals_id);
-	delete (normals);
-
 	uvs = nullptr;
 	glDeleteBuffers(1, &uvs_id);
 	delete (uvs); 
@@ -368,22 +336,6 @@ uint ComponentMeshRenderer::GetNumTriangles() const
 	return num_triangles;
 }
 
-void ComponentMeshRenderer::RecalculateCenterPoints()
-{
-	ComponentTransform* trans = (ComponentTransform*)GetComponentParent()->GetComponent(COMPONENT_TRANSFORM); 
-
-
-
-	for (int i = 0; i < GetNumTriangles(); i++)
-	{
-		LineSegment segment(center_points[i], center_points[i] + normals[i]);
-		segment.Transform(trans->GetGlobalTransform()); 
-
-		center_points[i] = segment.a; 
-		//normals[i] = segment.b; 
-		//center_points[i] = trans->GetGlobalTransform(); 
-	}
-}
 
 void ComponentMeshRenderer::SetNewMesh(ComponentMeshRenderer * new_mesh)
 {
@@ -547,10 +499,6 @@ void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size, bool
 	num_triangles = num_indices / 3;
 
 	indices = new uint[num_indices];
-	center_points = new float3[num_triangles];
-
-	num_normals = 2;
-	normals = new float3[num_normals];
 
 	indices[0] = 0;	
 	indices[1] = 1;	
@@ -560,23 +508,6 @@ void ComponentMeshRenderer::SetPlaneVertices(float3 origin, uint edge_size, bool
 	indices[5] = 3;
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * num_indices, indices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	//Normals 
-	for (int i = 0; i < num_normals; i++)
-	{
-		Triangle current;
-		current.a = vertices[indices[i * 3]];
-		current.b = vertices[indices[i * 3 + 1]];
-		current.c = vertices[indices[i * 3 + 2]];
-
-		center_points[i] = current.CenterPoint();
-		normals[i] = current.NormalCCW();
-	}
-
-	glGenBuffers(1, (GLuint*)&normals_id);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, normals_id);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float3) * num_normals, normals, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	//Set UVs

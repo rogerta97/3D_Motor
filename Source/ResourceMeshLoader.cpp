@@ -195,26 +195,24 @@ bool ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 					if (m->HasFaces()) {
 						tmp_mr->num_indices = m->mNumFaces * 3;
 						tmp_mr->indices = new uint[tmp_mr->num_indices];
-						tmp_mr->center_points = new float3[m->mNumFaces];
 
 						int placer = 0; 
+						bool invalid_mesh = false; 
 						for (uint i = 0; i < m->mNumFaces; ++i)
 						{
 							if (m->mFaces[i].mNumIndices != 3) {
 								LOG("WARNING, geometry face with != 3 indices!");
-								ret = false;
+								invalid_mesh = true;
 							}
 							else
 							{
 								memcpy(&tmp_mr->indices[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
-
-								//We create a triangle for getting the center point and drawing the normals
-								Triangle tri(tmp_mr->vertices[i*3], tmp_mr->vertices[i*3 + 1], tmp_mr->vertices[i*3 + 2]);
-								tmp_mr->center_points[placer++] = tri.CenterPoint(); 
-
 							}
 								
 						}
+
+						if (invalid_mesh)
+							continue; 
 
 					}
 
@@ -224,23 +222,6 @@ bool ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 					LOG("%d indices", tmp_mr->GetNumIndices());
-
-					//Normals
-
-					if (m->HasNormals())
-					{
-						tmp_mr->num_normals = m->mNumVertices;
-						tmp_mr->normals = new float3[tmp_mr->num_normals];
-						memcpy(tmp_mr->normals, m->mNormals, sizeof(float3) * tmp_mr->num_vertices);
-
-						glGenBuffers(1, &tmp_mr->normals_id);
-						glBindBuffer(GL_ARRAY_BUFFER, tmp_mr->normals_id);
-						glBufferData(GL_ARRAY_BUFFER, sizeof(float)* tmp_mr->num_normals, tmp_mr->normals, GL_STATIC_DRAW);
-			
-						LOG("%d normals", tmp_mr->num_normals); 
-
-						glBindBuffer(GL_ARRAY_BUFFER, 0);
-					}
 
 					if (m->HasTextureCoords(0))
 					{

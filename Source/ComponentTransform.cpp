@@ -159,15 +159,15 @@ void ComponentTransform::DrawAxis()
 
 	//X
 	axis[0].a = transform.position;
-	axis[0].b = transform.position + LocalX();
+	axis[0].b = transform.position + LocalX().Normalized();
 
 	//Y
 	axis[1].a = transform.position;
-	axis[1].b = transform.position + LocalY();
+	axis[1].b = transform.position + LocalY().Normalized();
 
 	//Z
 	axis[2].a = transform.position;
-	axis[2].b = transform.position + LocalZ();
+	axis[2].b = transform.position + LocalZ().Normalized();
 
 	//Draw
 	DebugDraw(axis[0], Red, true, float4x4::identity, 5.0f); 
@@ -212,14 +212,6 @@ bool ComponentTransform::Update()
 	if (IsModified())
 	{
 		GetComponentParent()->RecursiveAdaptBoundingBox(GetGlobalTransform(), GetComponentParent());		
-
-		//
-		//ComponentBillboarding* bill = (ComponentBillboarding*)GetComponentParent()->GetComponent(COMPONENT_BILLBOARDING); 
-		//
-		//if(bill != nullptr)			
-		//{
-
-		//}
 		SetModified(false);
 	}
 
