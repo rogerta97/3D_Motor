@@ -68,6 +68,7 @@ bool ComponentBillboarding::Update()
 		
 	if (ref_position_changed == true)
 	{
+
 		//We equal the position of the reference
 		last_ref_pos = reference_position;
 
@@ -80,62 +81,96 @@ bool ComponentBillboarding::Update()
 
 		//From there we calculate the X axis 
 		new_x_axis = new_z_axis.Perpendicular();
-		new_x_axis *= -1;	
+		new_x_axis *= -1;
 
 		//From those we get the Y axis
 		new_y_axis = new_x_axis.Cross(new_z_axis);
 		new_y_axis *= -1;
 
+		float increment_angle_y = 0; 
 		float increment_angle_x = 0; 
-		float increment_angle_y = 0;
-
-		float test; 
 
 		if (!x_axis_locked)  //Rotate arround X axis (vertical)
 		{
-			float3 x_proj = { new_z_axis.x, 0, new_z_axis.z };
+			float3 next_projection_x = { new_z_axis.x, 0, new_z_axis.z };
+			float3 curr_projection_x = { GetComponentParent()->transform->transform.rotation.WorldZ().x, 0, GetComponentParent()->transform->transform.rotation.WorldZ().z };
 	
-			increment_angle_y = x_proj.AngleBetween(GetComponentParent()->transform->transform.rotation.WorldZ()); 
+			float3 z_axis = { 0,0,1 }; 
 
-			if (new_z_axis.x < 0)
+			float curr_angle = z_axis.AngleBetween(curr_projection_x)*RADTODEG;
+			float next_angle = z_axis.AngleBetween(next_projection_x)*RADTODEG;
+
+			increment_angle_y = next_angle - curr_angle;
+
+			if(next_projection_x.x < 0)
+			{						
 				increment_angle_y *= -1; 
+			}
 
+			increment_angle_y *= DEGTORAD; 
+			
 			if (particle_parent != nullptr)
 			{
-				particle_parent->components.particle_transform->SetLocalRotation({ 0, increment_angle_y, 0 }); 
+				particle_parent->components.particle_transform->SetLocalRotation({ 0, increment_angle_y, 0 });
 			}
 			else
 				GetComponentParent()->transform->SetLocalRotation({ 0, increment_angle_y*RADTODEG, 0 });
-	
-			test = increment_angle_y*RADTODEG;
 		}
 
 		if (!y_axis_locked) //Rotate arround Y axis (horizontal)
 		{
-			float3 y_proj = { 0, new_z_axis.y, new_z_axis.z };
+			float3 next_projection_y = { 0, new_z_axis.y, new_z_axis.z };
+			float3 curr_projection_y = { 0, GetComponentParent()->transform->transform.rotation.WorldZ().y, GetComponentParent()->transform->transform.rotation.WorldZ().z };
 
-			increment_angle_x = y_proj.AngleBetween({ 0,0,1 });
+			float3 z_axis = { 0,0,1 };
 
-			if (new_z_axis.y > 0)
+			float curr_angle = z_axis.AngleBetween(curr_projection_y)*RADTODEG;
+			float next_angle = z_axis.AngleBetween(next_projection_y)*RADTODEG;
+
+			increment_angle_x = next_angle - curr_angle;
+
+			if (next_projection_y.y < 0)
+			{
 				increment_angle_x *= -1;
+			}
+
+			increment_angle_x *= DEGTORAD;
 
 			if (particle_parent != nullptr)
 			{
-				particle_parent->components.particle_transform->SetLocalRotation({ increment_angle_x, 0, 0 });
+				particle_parent->components.particle_transform->SetLocalRotation({ -increment_angle_x*RADTODEG, 0, 0 });
 			}
 			else
-				GetComponentParent()->transform->SetLocalRotation({ increment_angle_x, 0, 0 });
-
-			test = increment_angle_x*RADTODEG;
+				GetComponentParent()->transform->SetLocalRotation({ -increment_angle_x*RADTODEG, 0, 0 });
 		}
 
 		//float3 vector = GetComponentParent()->transform->GetGlobalTransform().WorldX(); 
-		
+
 
 		ref_position_changed = false;
 
-	}
 
+		//float3 prev_angle = GetComponentParent()->transform->GetGlobalTransform().ToEulerXYZ(); 
+
+		//float3 vector = (reference_position - GetComponentParent()->transform->GetGlobalPosition());
+		//vector.Normalize();
+
+		//float3 forward = { 0,0,1 };
+
+		//float angle_y = forward.AngleBetween({ vector.x, 0, vector.z })*RADTODEG;
+
+		//if (vector.x < 0)
+		//	GetComponentParent()->transform->SetLocalRotation({ 0, -(angle_y - prev_angle.y*RADTODEG), 0 });
+		//else
+		//	GetComponentParent()->transform->SetLocalRotation({ 0, (angle_y - prev_angle.y*RADTODEG), 0 });
+		//
+		//last_ref_pos = reference_position;
+		//ref_position_changed = false;
+	}
+		
+
+
+	
 	return false;
 }
 

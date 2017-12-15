@@ -67,12 +67,14 @@ public:
 	Transform transform;
 	Transform global_transform;
 
+	float4x4 local_transform_mat;
+	float4x4 global_transform_mat;
+
 private:
 
 	Transform prev_transform; 
 
-	float4x4 local_transform_mat; 
-	float4x4 global_transform_mat;
+
 
 	bool transform_modified = false; 
 	bool position_modified = false; 
