@@ -8,9 +8,7 @@ build:
   project: 3DEngine.sln
   verbosity: normal
 before_package:
-- ps: >-
-    Copy-Item C:\projects\3d-motor\$env:CONFIGURATION\3DEngine.exe C:\projects\3d-motor\Game\.
-    Copy-Item C:\projects\3d-motor\Source\README.md C:\projects\3d-motor\Game\.
+- ps: Copy-Item C:\projects\3d-motor\$env:CONFIGURATION\3DEngine.exe C:\projects\3d-motor\Game\.
 artifacts:
 - path: Game
   name: Release
