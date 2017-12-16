@@ -547,6 +547,11 @@ void Particle::SetMovement(float3 mov)
 	movement = mov / 7; 
 }
 
+float3 Particle::GetMovement()
+{
+	return movement;
+}
+
 void Particle::SetGravity(float3 grav)
 {
 	particle_gravity = grav / 5; 
@@ -656,6 +661,21 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 		new_particle->SetMovement(emit_area->GetComponentParent()->transform->LocalY()*velocity);
 
 	return new_particle; 
+}
+
+void ComponentParticleEmmiter::BumbParticle()
+{
+	if (system_state == PARTICLE_STATE_PAUSE)
+		return;
+
+	if (spawn_timer.Read() > emmision_frequency)
+	{
+		Particle* new_particle = CreateParticle();
+		new_particle->SetDistanceToCamera(0);
+		active_particles.push_back(new_particle);
+		spawn_timer.Start();
+		system_state = PARTICLE_STATE_PAUSE;
+	}
 }
 
 int ComponentParticleEmmiter::GetParticlesNum()

@@ -101,6 +101,7 @@ public:
 
 	///Force calculations
 	void SetMovement(float3 mov); 
+	float3 GetMovement(); 
 	void SetGravity(float3 grav);
 
 	///Velocity
@@ -205,6 +206,7 @@ public:
 	//Spawning
 	void GenerateParticles(); 
 	Particle* CreateParticle(); 
+	void BumbParticle(); 
 	int GetParticlesNum(); 
 
 	//Getters & Setters
