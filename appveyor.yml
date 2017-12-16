@@ -4,7 +4,7 @@ configuration:
 - Debug
 - Release
 build:
-  project: Source\3DEngine.sln
+  project: 3DEngine.sln
   verbosity: normal
 before_package:
 - ps: Copy-Item C:\projects\3d-motor\Source\$env:CONFIGURATION\3DEngine.exe C:\projects\3d-motor\Game\.
