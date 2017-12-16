@@ -447,14 +447,28 @@ void ComponentParticleEmmiter::SetSmokeRoot()
 	root_particle = new Particle();
 	root_particle->components.SetToNull();
 
-	root_particle->SetMaxLifetime(3.60f);
-	root_particle->SetVelocity(0.164);
+	SetEmmisionRate(20); 
+	max_lifetime = 3.60f;
+	velocity = 0.164;
+	billboarding = true; 
 
+	LoadParticleImages(); 
+	curr_texture_id = particle_images_bffs[0];
+	gravity = { 0.1f, 0.1f, 0 };
 
+	apply_color_interpolation = true;
 
-	root_particle->SetTextureByID(-1);
+	Color initial(255, 255, 0, 0);
+	Color final(255, 0, 0, 0);
 
-	root_particle->SetBillboarding(true); 
+	GetRootParticle()->SetInitialColor(initial);
+	GetRootParticle()->SetFinalColor(final);
+
+	apply_size_interpolation = true;
+
+	initial_scale = { 1,1,1 };
+	final_scale = { 5,5,5 };
+	
 }
 
 ComponentParticleEmmiter::~ComponentParticleEmmiter()
@@ -768,6 +782,8 @@ void ComponentParticleEmmiter::LoadParticleAnimations()
 void ComponentParticleEmmiter::LoadParticleImages()
 {
 	//Load the animated particles of the engine by default
+
+	particle_images_bffs.clear(); 
 
 	std::string path(App->file_system->particles_path_game);
 
