@@ -22,7 +22,7 @@ ModuleFileSystem::ModuleFileSystem(bool start_enabled): Module(start_enabled)
 
 	DeleteLastPathCommand(base_path); 
 
-	base_path += "Game\\Assets\\"; 
+	base_path += "Assets\\"; 
 	game_assets_dir = base_path; 
 
 	mesh_path_game = base_path + "Meshes\\"; 
