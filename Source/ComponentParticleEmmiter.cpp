@@ -13,6 +13,7 @@ Particle::Particle()
 	particle_color = initial_particle_color; 
 	particle_angular_v = 0; 
 	curr_rot = 0; 
+	angular_v_increment = 0; 
 	animated_particle = false; 
 	interpolate_size = false; 
 	interpolate_rotation = false; 
@@ -53,6 +54,16 @@ void Particle::SetAngular(const float & new_velocity)
 float Particle::GetAngular() const
 {
 	return particle_angular_v;
+}
+
+void Particle::SetRotationIncrement(float increment)
+{
+	angular_v_increment = increment; 
+}
+
+float Particle::GetRotationIncrement()
+{
+	return angular_v_increment;
 }
 
 void Particle::SetTextureByID(uint texture_ID)
@@ -327,26 +338,27 @@ ComponentParticleEmmiter::ComponentParticleEmmiter(GameObject* parent)
 	vector<string> images = App->file_system->GetFilesInDirectory(particles_folder_path.c_str(), "png");
 
 	//Setting the id's of the images into the list, if there are
-	for (int i = 0; i < images.size(); i++)
-	{
-		string path_to_load = particles_folder_path + images[i];
+	//for (int i = 0; i < images.size(); i++)
+	//{
+	//	string path_to_load = particles_folder_path + images[i];
 
-		ComponentMaterial* current_image = App->resource_manager->material_loader->ImportImage(path_to_load.c_str());
+	//	ComponentMaterial* current_image = App->resource_manager->material_loader->ImportImage(path_to_load.c_str());
 
-		if (current_image != nullptr)
-		{
-			shapes_ids.push_back(current_image->textures_id);
-			shapes_amount++;
-		}
+	//	if (current_image != nullptr)
+	//	{
+	//		shapes_ids.push_back(current_image->textures_id);
+	//		shapes_amount++;
+	//	}
 
-		delete(current_image);
-		current_image = nullptr;
-	}
+	//	delete(current_image);
+	//	current_image = nullptr;
+	//}
 
 	//This is the root particle that we are going to clone
-	CreateRootParticle();
-	LoadParticleAnimations(); 
+	LoadParticleImages();
+	LoadParticleAnimations();
 
+	CreateRootParticle();
 }
 
 void ComponentParticleEmmiter::Start()
@@ -418,10 +430,31 @@ void ComponentParticleEmmiter::UpdateRootParticle()
 	root_particle->SetInterpolationSize(apply_size_interpolation, initial_scale, final_scale);
 	root_particle->SetBillboarding(true); 
 
-	if (apply_rotation_interpolation) root_particle->SetInterpolationRotation(true, initial_angular_v, final_angular_v);		
-	else root_particle->SetAngular(angular_v);
+	if (apply_rotation_interpolation)
+	{
+		root_particle->SetInterpolationRotation(true, initial_angular_v, final_angular_v);
+		root_particle->SetRotationIncrement((final_angular_v - initial_angular_v));
+	}
+				
+	else
+		root_particle->SetAngular(angular_v);
 
 	if(apply_size_interpolation) root_particle->SetInterpolationSize(true, initial_scale, final_scale);
+}
+
+void ComponentParticleEmmiter::SetSmokeRoot()
+{
+	root_particle = new Particle();
+	root_particle->components.SetToNull();
+
+	root_particle->SetMaxLifetime(3.60f);
+	root_particle->SetVelocity(0.164);
+
+
+
+	root_particle->SetTextureByID(-1);
+
+	root_particle->SetBillboarding(true); 
 }
 
 ComponentParticleEmmiter::~ComponentParticleEmmiter()
@@ -450,22 +483,6 @@ void Particle::UpdateAnimation()
 void Particle::UpdateRotation()
 {
 
-	if (!interpolate_rotation && particle_angular_v)
-	{
-		if (twister.Read() > 10)
-		{
-			curr_rot += particle_angular_v;
-			components.particle_transform->SetLocalRotation({ 0,0,curr_rot });
-
-			if(curr_rot > 360)
-				curr_rot = 0;
-
-			twister.Start(); 
-		}
-
-		return; 
-	}
-		
 	//We get the number that we have to increment 
 	float time_ex = interpolation_timer.Read() / 1000;
 	float time_dec = interpolation_timer.Read() % 1000;
@@ -473,14 +490,32 @@ void Particle::UpdateRotation()
 
 	float percentage = (time / (max_particle_lifetime));
 
-	float increment_v = final_particle_angular_v - initial_particle_angular_v; 
+	//if (twister.Read() > 10)
+	//{
+		if (interpolate_rotation)
+		{
+			float curr_angular_v = initial_particle_angular_v + (angular_v_increment*percentage);
+			components.particle_transform->SetLocalRotation({ 0,0, curr_angular_v });
 
-	curr_rot += initial_particle_angular_v + (increment_v*percentage);
+			if (curr_rot > 360)
+				curr_rot = 0;
 
-	if (curr_rot > 360)
-		curr_rot = 0;
+			return;
+		}
+		else if(particle_angular_v)
+			components.particle_transform->SetLocalRotation({ 0,0, particle_angular_v });
 
-	components.particle_transform->SetLocalRotation({ 0,0,curr_rot });
+		twister.Start();
+	//}
+
+	//float increment_v = final_particle_angular_v - initial_particle_angular_v; 
+
+	//curr_rot += initial_particle_angular_v + (increment_v*percentage);
+
+	//if (curr_rot > 360)
+	//	curr_rot = 0;
+
+	//components.particle_transform->SetLocalRotation({ 0,0,curr_rot });
 
 
 }
@@ -495,12 +530,12 @@ void Particle::SetInterpolationRotation(bool interpolate_rot, float initial_v, f
 
 void Particle::SetMovement(float3 mov)
 {
-	movement = mov / 5; 
+	movement = mov / 7; 
 }
 
 void Particle::SetGravity(float3 grav)
 {
-	particle_gravity = grav; 
+	particle_gravity = grav / 5; 
 }
 
 
@@ -559,8 +594,12 @@ Particle * ComponentParticleEmmiter::CreateParticle()
 	else
 		new_particle->SetInterpolationSize(apply_size_interpolation, { 1,1,1 }, {1,1,1});
 
-	if(apply_rotation_interpolation)
+	if (apply_rotation_interpolation)
+	{
 		new_particle->SetInterpolationRotation(true, initial_angular_v, final_angular_v);
+		new_particle->SetRotationIncrement(root_particle->GetRotationIncrement()); 
+	}
+		
 	else
 	{
 		new_particle->SetInterpolationRotation(false, 0, 0);
@@ -679,12 +718,12 @@ void ComponentParticleEmmiter::DrawEmisionArea(bool show)
 
 int ComponentParticleEmmiter::GetTextureID(int pos)
 {
-	return shapes_ids[pos];
+	return particle_images_bffs[pos];
 }
 
 int ComponentParticleEmmiter::GetTextureIDAmount()
 {
-	return shapes_amount; 
+	return particle_images_bffs.size();
 }
 
 void ComponentParticleEmmiter::SetCurrentTextureID(uint texture_id)
@@ -723,6 +762,23 @@ void ComponentParticleEmmiter::LoadParticleAnimations()
 		}	
 
 		particle_animations.push_back(new_particle_anim); 
+	}
+}
+
+void ComponentParticleEmmiter::LoadParticleImages()
+{
+	//Load the animated particles of the engine by default
+
+	std::string path(App->file_system->particles_path_game);
+
+	vector<string> particle_images = App->file_system->GetFilesInDirectory(path.c_str(), "png");
+
+	for (int i = 0; i < particle_images.size(); i++)
+	{
+		string image_path(path + particle_images[i]); 
+
+		ComponentMaterial* image_cmp = App->resource_manager->material_loader->ImportImage(image_path.c_str());
+		particle_images_bffs.push_back(image_cmp->textures_id);
 	}
 }
 

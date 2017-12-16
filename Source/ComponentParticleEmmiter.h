@@ -110,6 +110,8 @@ public:
 	///Rotation
 	void SetAngular(const float& new_velocity);
 	float GetAngular() const;
+	void SetRotationIncrement(float increment);
+	float GetRotationIncrement();
 
 	///Lifetime
 	void SetMaxLifetime(const float& new_lifetime);
@@ -166,6 +168,8 @@ private:
 	bool interpolate_rotation;
 	float initial_particle_angular_v;
 	float final_particle_angular_v;
+	float angular_v_increment; 
+
 	float curr_rot; 
 	int color_difference[4]; 
 
@@ -194,6 +198,7 @@ public:
 
 	bool Update();
 	void UpdateRootParticle(); 
+	void SetSmokeRoot(); 
 
 	~ComponentParticleEmmiter(); 
 
@@ -226,6 +231,7 @@ public:
 	uint GetCurrentTextureID() const; 
 
 	void LoadParticleAnimations(); 
+	void LoadParticleImages(); 
 
 	vector<ParticleAnimation> GetAllParticleAnimations();
 	Particle* GetRootParticle() const;
@@ -287,7 +293,9 @@ private:
 	list<Particle*> active_particles;		 //Particles that are currently beeing rendered
 
 	vector<ParticleAnimation> particle_animations; 
+	vector<int> particle_images_bffs; 
 
+	//Textures
 	float particles_lifetime;				 //Lifetime of the particules spawned
 	particle_system_state system_state;		 //Inner play & pause 
 		 
@@ -299,7 +307,6 @@ private:
 	Timer spawn_timer; 
 
 	//Debug
-	bool show_emit_area;					//boolean for showing the emmiter area
-	vector<uint> shapes_ids;				//This list will hold the id's of the textures that can give shape to the particles
+	bool show_emit_area;					//boolean for showing the emmiter area			//This list will hold the id's of the textures that can give shape to the particles
 	uint shapes_amount; 
 };

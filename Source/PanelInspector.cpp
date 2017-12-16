@@ -420,7 +420,7 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 			switch (particle_template)
 			{
 			case 1:
-				//Here we set properties for the particles to look like smoke 
+				
 
 				break;
 			}
@@ -452,7 +452,7 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 				ImGui::TreePop();
 			}
 
-			if (ImGui::TreeNode("Shape"))
+			if (ImGui::TreeNode("Textures"))
 			{
 
 				//Here we get the id of the BUTTON that is pressed, the position. 
@@ -586,8 +586,9 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 				if (ImGui::DragInt("Emmision Rate", &current_emmiter->emmision_rate, 1, 0, 150)) current_emmiter->UpdateRootParticle();
 				if (ImGui::DragFloat("Lifetime", &current_emmiter->max_lifetime, 0, 0, 20)) current_emmiter->UpdateRootParticle();
 				if (ImGui::SliderFloat("Velocity", &current_emmiter->velocity, 0.1f, 5)) current_emmiter->UpdateRootParticle();
-				if (ImGui::SliderFloat3("Gravity", &current_emmiter->gravity[0], -5, 5)) current_emmiter->UpdateRootParticle();
+				if (ImGui::DragFloat3("Gravity", &current_emmiter->gravity[0], 0.1f, -10, 10)) current_emmiter->UpdateRootParticle();
 				if (ImGui::DragFloat("Angular Velocity", &current_emmiter->angular_v, 1, 0, 200)) current_emmiter->UpdateRootParticle();
+
 				ImGui::DragFloat("Emision Angle", &current_emmiter->emision_angle, 1, 0, 360); 
 
 				ImGui::Separator();
