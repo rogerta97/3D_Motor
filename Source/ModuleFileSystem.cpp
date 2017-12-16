@@ -21,7 +21,6 @@ ModuleFileSystem::ModuleFileSystem(bool start_enabled): Module(start_enabled)
 	string base_path(SDL_GetBasePath()); 
 
 	DeleteLastPathCommand(base_path); 
-	DeleteLastPathCommand(base_path);
 
 	base_path += "Game\\Assets\\"; 
 	game_assets_dir = base_path; 
