@@ -293,7 +293,6 @@
     <ClInclude Include="DevIL_Windows_SDK\include\IL\ilut_config.h" />
     <ClInclude Include="DevIL_Windows_SDK\include\IL\ilu_region.h" />
     <ClInclude Include="DevIL_Windows_SDK\include\IL\il_wrap.h" />
-    <ClInclude Include="Firework.h" />
     <ClInclude Include="PanelExplorer.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="GameObject.h" />
@@ -418,7 +417,6 @@
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="DeviceId\DeviceId.cpp" />
-    <ClCompile Include="Firework.cpp" />
     <ClCompile Include="PanelExplorer.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="GameObject.cpp" />

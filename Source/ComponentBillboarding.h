@@ -38,6 +38,7 @@ public:
 	bool bill_active;
 	bool ref_position_changed;
 
+
 private:
 
 	ComponentCamera* reference;			//Billboard will always be aligned to a camera

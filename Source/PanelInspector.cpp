@@ -414,8 +414,18 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 			static int particle_template;
 			ImGui::Combo("Templates", &particle_template, "Select Template\0Smoke\0Custom\0");
 
+			if (particle_template == 0)
+				return;
+
+			switch (particle_template)
+			{
+			case 1:
+				//Here we set properties for the particles to look like smoke 
+
+				break;
+			}
+
 			bool update_root = false;
-			static int sample_load = 0;
 
 			if (ImGui::Button("PLAY"))
 			{
@@ -432,221 +442,202 @@ void PanelInspector::PrintComponentParticleEmmiter(GameObject * Go_to_draw)
 
 			ImGui::Separator();
 
-			if (particle_template == 0)
-				return;
-
-			switch (particle_template)
-			{
-			case 1:
-				if (sample_load != particle_template)
-				{
-					current_emmiter->SetSmokeRoot();
-					sample_load = particle_template; 
-				}						
-				break;
-
-			case 2:
+			if (ImGui::TreeNode("Emit Area"))
 			{
 
-				if (ImGui::TreeNode("Emit Area"))
-				{
+				static bool show = current_emmiter->ShowEmmisionArea();
+				ImGui::Checkbox("Show Emmiter Area", &show);
+				current_emmiter->SetShowEmmisionArea(show);
 
-					static bool show = current_emmiter->ShowEmmisionArea();
-					ImGui::Checkbox("Show Emmiter Area", &show);
-					current_emmiter->SetShowEmmisionArea(show);
-
-					ImGui::TreePop();
-				}
-
-				if (ImGui::TreeNode("Textures"))
-				{
-
-					//Here we get the id of the BUTTON that is pressed, the position. 
-					uint button_pressed = -1;
-					for (int i = 0; i < current_emmiter->GetTextureIDAmount(); i++)
-					{
-						if (ImGui::ImageButton((ImTextureID)current_emmiter->GetTextureID(i), ImVec2(32, 32), ImVec2(1, 1), ImVec2(0, 0), 2, ImColor(0, 0, 0, 255)))
-							button_pressed = i;
-
-						if (i != current_emmiter->GetTextureIDAmount() - 1)
-							ImGui::SameLine();
-					}
-
-					//Once we have the position we can get the texture id associated with it 
-					if (button_pressed != -1)
-					{
-						uint texture_to_display = current_emmiter->GetTextureID(button_pressed);
-						current_emmiter->SetCurrentTextureID(texture_to_display);
-						current_emmiter->UpdateRootParticle();
-					}
-
-					ImGui::Separator();
-
-					ImGui::Text("Animated particles");
-
-					//Load the animated particles of the engine by default
-					vector<ParticleAnimation> particle_anims = current_emmiter->GetAllParticleAnimations();
-
-					for (int i = 0; i < particle_anims.size(); i++)
-					{
-						if (ImGui::TreeNode(particle_anims[i].name.c_str()))
-						{
-							for (int j = 0; j < particle_anims[i].buffer_ids.size(); j++)
-							{
-								ImTextureID id = (ImTextureID)particle_anims[i].buffer_ids[j];
-
-								ImGui::ImageButton(id, ImVec2(32, 32), ImVec2(1, 1), ImVec2(0, 0), 2, ImColor(0, 0, 0, 255));
-								ImGui::SameLine();
-							}
-							ImGui::NewLine();
-
-							ImGui::DragFloat("Time Step", &current_emmiter->time_step, 0.05, 0.05f, 1.0f);
-
-							if (ImGui::Button("Set"))
-							{
-								current_emmiter->is_animated = true;
-								current_emmiter->GetRootParticle()->components.particle_animation = particle_anims[i];
-								current_emmiter->GetRootParticle()->components.particle_animation.timeStep = current_emmiter->time_step;
-
-							} ImGui::SameLine();
-
-							if (ImGui::Button("Stop"))
-							{
-								current_emmiter->is_animated = false;
-
-							}
-
-							ImGui::TreePop();
-						}
-
-
-					}
-					ImGui::Separator();
-					ImGui::TreePop();
-				}
-
-				if (ImGui::TreeNode("Color"))
-				{
-
-					static bool alpha_preview = true;
-					ImGui::Checkbox("Alpha", &alpha_preview);
-
-					int misc_flags = (alpha_preview ? ImGuiColorEditFlags_AlphaPreview : 0);
-
-					ImGuiColorEditFlags flags = ImGuiColorEditFlags_AlphaBar;
-					flags |= misc_flags;
-					flags |= ImGuiColorEditFlags_RGB;
-
-					ImGui::ColorPicker4("Current Color##4", (float*)&current_emmiter->color, flags);
-
-					if (ImGui::TreeNode("Color Interpolation"))
-					{
-						current_emmiter->UpdateRootParticle();
-
-						ImGui::DragInt4("Initial Color", &current_emmiter->initial_color[0], 1, 0, 255);
-
-						if (ImGui::Button("Set Selected as Initial"))
-						{
-							current_emmiter->initial_color[0] = current_emmiter->color.r * 255;
-							current_emmiter->initial_color[1] = current_emmiter->color.g * 255;
-							current_emmiter->initial_color[2] = current_emmiter->color.b * 255;
-							current_emmiter->initial_color[3] = current_emmiter->color.a * 255;
-						}
-
-						ImGui::DragInt4("Final Color", &current_emmiter->final_color[0], 1, 0, 255);
-
-						if (ImGui::Button("Set Selected as Final"))
-						{
-
-							current_emmiter->final_color[0] = current_emmiter->color.r * 255;
-							current_emmiter->final_color[1] = current_emmiter->color.g * 255;
-							current_emmiter->final_color[2] = current_emmiter->color.b * 255;
-							current_emmiter->final_color[3] = current_emmiter->color.a * 255;
-						}
-
-						ImGui::Separator();
-
-						if (ImGui::Button("Apply"))
-						{
-							current_emmiter->apply_color_interpolation = true;
-
-							Color initial(current_emmiter->initial_color[0], current_emmiter->initial_color[1], current_emmiter->initial_color[2], current_emmiter->initial_color[3]);
-							Color final(current_emmiter->final_color[0], current_emmiter->final_color[1], current_emmiter->final_color[2], current_emmiter->final_color[3]);
-
-							current_emmiter->GetRootParticle()->SetInitialColor(initial);
-							current_emmiter->GetRootParticle()->SetFinalColor(final);
-
-							current_emmiter->UpdateRootParticle();
-						}
-
-						ImGui::TreePop();
-					}
-
-					ImGui::TreePop();
-				}
-
-				if (ImGui::TreeNode("Motion"))
-				{
-					ImGui::Checkbox("Billboarding", &current_emmiter->billboarding);
-
-					if (ImGui::DragInt("Emmision Rate", &current_emmiter->emmision_rate, 1, 0, 150)) current_emmiter->UpdateRootParticle();
-					if (ImGui::DragFloat("Lifetime", &current_emmiter->max_lifetime, 0, 0, 20)) current_emmiter->UpdateRootParticle();
-					if (ImGui::SliderFloat("Velocity", &current_emmiter->velocity, 0.1f, 5)) current_emmiter->UpdateRootParticle();
-					if (ImGui::DragFloat3("Gravity", &current_emmiter->gravity[0], 0.1f, -10, 10)) current_emmiter->UpdateRootParticle();
-					if (ImGui::DragFloat("Angular Velocity", &current_emmiter->angular_v, 1, 0, 200)) current_emmiter->UpdateRootParticle();
-
-					ImGui::DragFloat("Emision Angle", &current_emmiter->emision_angle, 1, 0, 360);
-
-					ImGui::Separator();
-
-					ImGui::Text("Size Interpolation");
-
-					ImGui::InputFloat("Initial", &current_emmiter->initial_scale.x);
-					current_emmiter->initial_scale.y = current_emmiter->initial_scale.x;
-
-					ImGui::InputFloat("Final", &current_emmiter->final_scale.x);
-					current_emmiter->final_scale.y = current_emmiter->final_scale.x;
-
-					if (ImGui::Button("Apply Scale"))
-					{
-						current_emmiter->apply_size_interpolation = true;
-						current_emmiter->UpdateRootParticle();
-					}
-
-					ImGui::Separator();
-
-					ImGui::Text("Rotation Interpolation");
-
-					ImGui::Text("Initial Spins/sec");
-					ImGui::DragFloat("  ", &current_emmiter->initial_angular_v, 0.5, 0, 5);
-
-					ImGui::Text("Final Spins/sec");
-					ImGui::DragFloat(" ", &current_emmiter->final_angular_v);
-
-					if (ImGui::Button("Apply Rotation"))
-					{
-						current_emmiter->apply_rotation_interpolation = true;
-						current_emmiter->UpdateRootParticle();
-					}
-					ImGui::SameLine();
-
-					if (ImGui::Button("Stop Applying"))
-					{
-						current_emmiter->apply_rotation_interpolation = false;
-						current_emmiter->UpdateRootParticle();
-					}
-
-					ImGui::Separator();
-
-					if (ImGui::Button("Save as Template"))
-					{
-
-					}
-					ImGui::TreePop();
-				}
+				ImGui::TreePop();
 			}
-			break;
+
+			if (ImGui::TreeNode("Shape"))
+			{
+
+				//Here we get the id of the BUTTON that is pressed, the position. 
+				uint button_pressed = -1;
+				for (int i = 0; i < current_emmiter->GetTextureIDAmount(); i++)
+				{
+					if (ImGui::ImageButton((ImTextureID)current_emmiter->GetTextureID(i), ImVec2(32, 32), ImVec2(1, 1), ImVec2(0, 0), 2, ImColor(0, 0, 0, 255)))
+						button_pressed = i;
+
+					if (i != current_emmiter->GetTextureIDAmount() - 1)
+						ImGui::SameLine();
+				}
+
+				//Once we have the position we can get the texture id associated with it 
+				if (button_pressed != -1)
+				{
+					uint texture_to_display = current_emmiter->GetTextureID(button_pressed);
+					current_emmiter->SetCurrentTextureID(texture_to_display);
+					current_emmiter->UpdateRootParticle();
+				}
+
+				ImGui::Separator(); 
+
+				ImGui::Text("Animated particles"); 
+
+				//Load the animated particles of the engine by default
+				vector<ParticleAnimation> particle_anims = current_emmiter->GetAllParticleAnimations(); 
+
+				for (int i = 0; i < particle_anims.size(); i++)
+				{
+					if (ImGui::TreeNode(particle_anims[i].name.c_str()))
+					{
+						for (int j = 0; j < particle_anims[i].buffer_ids.size(); j++)
+						{
+							ImTextureID id = (ImTextureID)particle_anims[i].buffer_ids[j];
+
+							ImGui::ImageButton(id, ImVec2(32, 32), ImVec2(1, 1), ImVec2(0, 0), 2, ImColor(0, 0, 0, 255));
+							ImGui::SameLine(); 
+						}
+						ImGui::NewLine();
+
+						ImGui::DragFloat("Time Step", &current_emmiter->time_step, 0.05, 0.05f, 1.0f); 
+
+						if (ImGui::Button("Set"))
+						{
+							current_emmiter->is_animated = true; 
+							current_emmiter->GetRootParticle()->components.particle_animation = particle_anims[i]; 
+							current_emmiter->GetRootParticle()->components.particle_animation.timeStep = current_emmiter->time_step; 
+
+						} ImGui::SameLine(); 
+
+						if (ImGui::Button("Stop"))
+						{
+							current_emmiter->is_animated = false;
+
+						}
+
+						ImGui::TreePop(); 
+					}
+
+				
+				}
+				ImGui::Separator(); 
+				ImGui::TreePop();
 			}
+
+			if (ImGui::TreeNode("Color"))
+			{
+
+				static bool alpha_preview = true;
+				ImGui::Checkbox("Alpha", &alpha_preview);
+
+				int misc_flags = (alpha_preview ? ImGuiColorEditFlags_AlphaPreview : 0);
+
+				ImGuiColorEditFlags flags = ImGuiColorEditFlags_AlphaBar;
+				flags |= misc_flags;
+				flags |= ImGuiColorEditFlags_RGB;
+
+				ImGui::ColorPicker4("Current Color##4", (float*)&current_emmiter->color, flags);
+
+				if (ImGui::TreeNode("Color Interpolation"))
+				{
+					current_emmiter->UpdateRootParticle();
+
+					ImGui::DragInt4("Initial Color", &current_emmiter->initial_color[0], 1, 0, 255);
+
+					if (ImGui::Button("Set Selected as Initial"))
+					{
+						current_emmiter->initial_color[0] = current_emmiter->color.r * 255;
+						current_emmiter->initial_color[1] = current_emmiter->color.g * 255;
+						current_emmiter->initial_color[2] = current_emmiter->color.b * 255;
+						current_emmiter->initial_color[3] = current_emmiter->color.a * 255;
+					}
+
+					ImGui::DragInt4("Final Color", &current_emmiter->final_color[0], 1, 0, 255);
+
+					if (ImGui::Button("Set Selected as Final"))
+					{
+
+						current_emmiter->final_color[0] = current_emmiter->color.r * 255;
+						current_emmiter->final_color[1] = current_emmiter->color.g * 255;
+						current_emmiter->final_color[2] = current_emmiter->color.b * 255;
+						current_emmiter->final_color[3] = current_emmiter->color.a * 255;
+					}
+
+					ImGui::Separator();
+
+					if (ImGui::Button("Apply"))
+					{
+						current_emmiter->apply_color_interpolation = true;
+
+						Color initial(current_emmiter->initial_color[0], current_emmiter->initial_color[1], current_emmiter->initial_color[2], current_emmiter->initial_color[3]);
+						Color final(current_emmiter->final_color[0], current_emmiter->final_color[1], current_emmiter->final_color[2], current_emmiter->final_color[3]);
+
+						current_emmiter->GetRootParticle()->SetInitialColor(initial);
+						current_emmiter->GetRootParticle()->SetFinalColor(final);
+
+						current_emmiter->UpdateRootParticle();
+					}
+
+					ImGui::TreePop();
+				}
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Motion"))
+			{
+				ImGui::Checkbox("Billboarding", &current_emmiter->billboarding);
+
+				if (ImGui::DragInt("Emmision Rate", &current_emmiter->emmision_rate, 1, 0, 150)) current_emmiter->UpdateRootParticle();
+				if (ImGui::DragFloat("Lifetime", &current_emmiter->max_lifetime, 0, 0, 20)) current_emmiter->UpdateRootParticle();
+				if (ImGui::SliderFloat("Velocity", &current_emmiter->velocity, 0.1f, 5)) current_emmiter->UpdateRootParticle();
+				if (ImGui::SliderFloat3("Gravity", &current_emmiter->gravity[0], -5, 5)) current_emmiter->UpdateRootParticle();
+				if (ImGui::DragFloat("Angular Velocity", &current_emmiter->angular_v, 1, 0, 200)) current_emmiter->UpdateRootParticle();
+				ImGui::DragFloat("Emision Angle", &current_emmiter->emision_angle, 1, 0, 360); 
+
+				ImGui::Separator();
+
+				ImGui::Text("Size Interpolation");
+
+				ImGui::InputFloat("Initial", &current_emmiter->initial_scale.x);
+				current_emmiter->initial_scale.y = current_emmiter->initial_scale.x;
+
+				ImGui::InputFloat("Final", &current_emmiter->final_scale.x);
+				current_emmiter->final_scale.y = current_emmiter->final_scale.x;
+
+				if (ImGui::Button("Apply Scale"))
+				{
+					current_emmiter->apply_size_interpolation = true; 
+					current_emmiter->UpdateRootParticle();
+				}
+		
+				ImGui::Separator();
+
+				ImGui::Text("Rotation Interpolation");
+
+				ImGui::Text("Initial Spins/sec"); 
+				ImGui::DragFloat("  ", &current_emmiter->initial_angular_v, 0.5, 0, 5);
+
+				ImGui::Text("Final Spins/sec");
+				ImGui::DragFloat(" ", &current_emmiter->final_angular_v);
+
+				if (ImGui::Button("Apply Rotation"))
+				{
+					current_emmiter->apply_rotation_interpolation = true; 
+					current_emmiter->UpdateRootParticle();
+				}
+				ImGui::SameLine(); 
+
+				if (ImGui::Button("Stop Applying"))
+				{
+					current_emmiter->apply_rotation_interpolation = false;
+					current_emmiter->UpdateRootParticle();
+				}
+
+				ImGui::Separator(); 
+
+				if (ImGui::Button("Save as Template"))
+				{
+
+				}
+				ImGui::TreePop();
+			}
+	
 		}
 
 	}
