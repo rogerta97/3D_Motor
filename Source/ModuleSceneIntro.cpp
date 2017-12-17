@@ -127,6 +127,19 @@ GameObject * ModuleSceneIntro::GetGameObjectWithUID(uint unique_id)
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
+
+	//Fireworks 
+	Firework new_firework;
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+		new_firework.ShootFireWork(); 
+		fireworks_active.push_back(new_firework); 
+	}
+
+	if (fireworks_active.empty() == false)
+		new_firework.UpdateFireWork(); 
+		
 	vector<GameObject*> to_draw; 
 
 	bool culling = false; 

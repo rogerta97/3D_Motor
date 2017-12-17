@@ -280,8 +280,9 @@ void ComponentTransform::SetLocalRotation(const float3& _rotation)
 {
 	if (GetComponentParent() == nullptr) //This means it is a particle 
 	{
+	
 		Quat mod = Quat::FromEulerXYZ(_rotation.x  * DEGTORAD, _rotation.y  * DEGTORAD, _rotation.z  * DEGTORAD);
-		transform.rotation = mod;
+		transform.rotation = transform.rotation*mod;
 
 		transform_modified = true;
 		UpdateTransform();

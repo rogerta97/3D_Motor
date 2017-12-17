@@ -82,6 +82,9 @@
     <Filter Include="Tools\JSON">
       <UniqueIdentifier>{26c33934-171b-4306-bf5b-85f69ecb1562}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Components\Firework">
+      <UniqueIdentifier>{a90155ea-8d40-4416-bf0d-5890746c60af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -1266,6 +1269,9 @@
     <ClInclude Include="ComponentParticleEmmiter.h">
       <Filter>GameObject\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Firework.h">
+      <Filter>GameObject\Components\Firework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -1537,6 +1543,9 @@
     </ClCompile>
     <ClCompile Include="ComponentParticleEmmiter.cpp">
       <Filter>GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Firework.cpp">
+      <Filter>GameObject\Components\Firework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

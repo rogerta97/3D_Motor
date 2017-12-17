@@ -95,9 +95,9 @@ bool ComponentBillboarding::Update()
 			float3 next_projection_x = { new_z_axis.x, 0, new_z_axis.z };
 			float3 curr_projection_x;
 
-			if (GetComponentParent() == nullptr)
+			if (particle_parent != nullptr)
 			{
-				curr_projection_x = { 0,0,1 }; 
+				curr_projection_x = { particle_parent->components.particle_transform->transform.rotation.WorldZ().x, 0,particle_parent->components.particle_transform->transform.rotation.WorldZ().z };
 			}
 			else
 			{
@@ -108,7 +108,7 @@ bool ComponentBillboarding::Update()
 
 			float curr_angle = z_axis.AngleBetween(curr_projection_x)*RADTODEG;
 			float next_angle = z_axis.AngleBetween(next_projection_x)*RADTODEG;
-
+			
 			increment_angle_y = next_angle - curr_angle;
 
 			if(next_projection_x.x < 0)
@@ -129,7 +129,14 @@ bool ComponentBillboarding::Update()
 		if (!y_axis_locked) //Rotate arround Y axis (horizontal)
 		{
 			float3 next_projection_y = { 0, new_z_axis.y, new_z_axis.z };
-			float3 curr_projection_y = { 0, GetComponentParent()->transform->transform.rotation.WorldZ().y, GetComponentParent()->transform->transform.rotation.WorldZ().z };
+			float3 curr_projection_y;
+
+			if (particle_parent != nullptr)
+			{
+				curr_projection_y = { particle_parent->components.particle_transform->transform.rotation.WorldZ().x, 0,particle_parent->components.particle_transform->transform.rotation.WorldZ().z };
+			}
+			else
+				curr_projection_y = { 0, GetComponentParent()->transform->transform.rotation.WorldZ().y, GetComponentParent()->transform->transform.rotation.WorldZ().z };
 
 			float3 z_axis = { 0,0,1 };
 

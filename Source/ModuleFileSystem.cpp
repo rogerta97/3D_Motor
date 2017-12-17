@@ -3,6 +3,8 @@
 #include "Functions.h"
 #include <Windows.h>
 
+
+
 ModuleFileSystem::ModuleFileSystem(bool start_enabled): Module(start_enabled)
 {
 	//init physfs
@@ -19,9 +21,8 @@ ModuleFileSystem::ModuleFileSystem(bool start_enabled): Module(start_enabled)
 	string base_path(SDL_GetBasePath()); 
 
 	DeleteLastPathCommand(base_path); 
-	DeleteLastPathCommand(base_path);
 
-	base_path += "Game\\Assets\\"; 
+	base_path += "Assets\\"; 
 	game_assets_dir = base_path; 
 
 	mesh_path_game = base_path + "Meshes\\"; 

@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Component.h"
+#include "Firework.h"
 #include "Primitive.h"
 
 class GameObject; 
@@ -86,7 +87,6 @@ public:
 	void PrintConfigData();
 	void PrintInspectorData();
 
-
 	// Scene Management
 	bool IsSceneEmpty(); 
 	GameObject* GetFarestObjectFrom(float3 origin);
@@ -112,6 +112,9 @@ public:
 	void ClearSelection();
 	void DestroyAllGameObjectsNow();
 	void Destroy(GameObject * go);
+
+	//Firework
+	vector<Firework> fireworks_active; 
 
 public:
 
