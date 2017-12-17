@@ -60,7 +60,7 @@ void ResourceMeshLoader::LoadFileScene(const char * path)
 	{
 		aiNode* root_node = scene->mRootNode;
 
-		LoadFBX(path, root_node, scene, nullptr);
+		LoadFBX(path, root_node, scene, App->scene_intro->GetRoot());
 
 		aiReleaseImport(scene);
 	}
@@ -134,7 +134,12 @@ bool ResourceMeshLoader::LoadFBX(const char* full_path, aiNode* node, const aiSc
 			new_go->SetRoot(true); 
 			node_name = GetLastPathCommand(full_path, false); 
 		}
+		else
+		{
+			new_go->SetParent(App->scene_intro->GetRoot());
+		}
 			new_go->SetName(node_name.c_str());
+			
 
 		if (parent != nullptr) 
 			parent->PushChild(new_go);

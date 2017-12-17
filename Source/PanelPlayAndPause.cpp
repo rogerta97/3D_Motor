@@ -14,7 +14,7 @@ void PanelPlayAndPause::Draw()
 	if (ImGui::Button("PLAY") && App->GetState() != APP_STATE_PLAY)
 	{
 		play_presed = !play_presed; 
-		App->scene_importer->SaveNewScene("std_scene");
+		App->scene_importer->SaveNewScene("tmp_scene");
 		state_modified = true; 
 		App->SetState(APP_STATE_PLAY);
 		LOG("App State: PLAY");
@@ -36,7 +36,7 @@ void PanelPlayAndPause::Draw()
 		stop_presed = !stop_presed; 
 		state_modified = true;
 		App->SetState(APP_STATE_STOP); 
-		App->scene_importer->LoadScene("std_scene",false);
+		App->scene_importer->LoadScene("tmp_scene",false);
 		LOG("App State: STOP"); 
 	}
 

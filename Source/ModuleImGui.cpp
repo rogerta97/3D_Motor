@@ -250,7 +250,7 @@ update_status ModuleImGui::PrintTopBar()
 		if (ImGui::MenuItem("Save...", "CNTRL + S"))
 		{
 			//Code to Save from config & scene File
-			App->scene_importer->SaveSceneToBuffer();
+			App->scene_importer->SavePrefab("tmp_scene", "json", App->file_system->GetScenePath().c_str(), App->scene_intro->GetRoot());
 		}
 
 		ImGui::EndMenu();

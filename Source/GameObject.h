@@ -95,6 +95,9 @@ public:
 
 	void Serialize(json_file* file);
 	void Serialize(json_file file);
+	
+	void SerializeLoad(json_file* file);
+	void SerializeSave(json_file* file);
 
 	void GetChildWithUID(uint UID, GameObject * go) const;
 

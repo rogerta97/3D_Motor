@@ -112,10 +112,10 @@ void ExplorerNode::DrawNode()
 		{
 			DeleteEndBars(path);
 			
-			if (App->file_system->GetFileName(path.c_str()) != "scene.json")
+			if (App->file_system->GetFileName(path.c_str()) != "tmp_scene.json")
 				App->resource_manager->Load(path.c_str());
 			else
-				App->scene_importer->LoadSceneFromBuffer();
+				App->scene_importer->LoadScene("tmp_scene",false);
 
 			App->imgui->SetModalState(MODAL_NULL); 
 		}

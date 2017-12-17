@@ -358,3 +358,19 @@ float * ComponentCamera::GetOpenGLProjectionMatrix()const
 	matrix.Transpose();
 	return (float*)matrix.v;
 }
+
+void ComponentCamera::SerializeLoad(json_file * file)
+{
+	SetNearPlaneDist(file->GetInt("NearPlaneDistance", 0.1));
+	SetFarPlaneDist(file->GetInt("FarPlaneDistance", 500));
+	SetFOV(file->GetInt("FOV", 60));
+
+}
+
+void ComponentCamera::SerializeSave(json_file * file)
+{
+	file->SetFloat("NearPlaneDistance",frustum.nearPlaneDistance );
+	file->SetFloat("FarPlaneDistance", frustum.farPlaneDistance);
+	file->SetFloat("FOV", fov );
+
+}

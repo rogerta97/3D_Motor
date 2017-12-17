@@ -84,13 +84,8 @@ GameObject::GameObject()
 
 void GameObject::Start()
 {
-	
 		LOG("Game Object Created");
-
-		SetName("GameObject");
-
-		AddEmptyComponent(COMPONENT_TRANSFORM);
-		transform = (ComponentTransform*)GetComponent(COMPONENT_TRANSFORM);
+		SetName("Root");
 	
 }
 
@@ -356,11 +351,11 @@ void GameObject::Serialize(json_file * file)
 	for (vector<Component*>::iterator it = component_list.begin(); it != component_list.end(); it++)
 	{
 		// Add and move to a new section on the components array
-		json_file comp_doc = file->GetNode();
-		comp_doc.AddSectionToArray("Components");
-		comp_doc.MoveToSectionFromArray("Components",file->GetArraySize("Components") - 1);
+		json_file* comp_doc = file->GetNode();
+		comp_doc->AddSectionToArray("Components");
+		comp_doc->MoveToSectionFromArray("Components",file->GetArraySize("Components") - 1);
 
-		comp_doc.SetInt("type", (*it)->GetComponentType());
+		comp_doc->SetInt("type", (*it)->GetComponentType());
 		(*it)->Serialize(comp_doc);
 	}
 
@@ -368,31 +363,85 @@ void GameObject::Serialize(json_file * file)
 
 void GameObject::Serialize(json_file file)
 {
-	file.AddSectionToArray("GameObjects");
-	file.MoveToSectionFromArray("GameObjects", file.GetArraySize("GameObjects") - 1);
-	file.SetInt("UID", unique_id);
-	file.SetString("name", name.c_str());
-	file.SetBool("is_active", active);
-	file.SetBool("is_static", is_static);
-	if (parent != nullptr)
-		file.SetInt("parent", parent->GetID());
-	else
-		file.SetInt("parent", 0);
-	file.SetInt("new_child_id", new_child_id);
+	////file.AddSectionToArray("GameObjects");
+	////file.MoveToSectionFromArray("GameObjects", file.GetArraySize("GameObjects") - 1);
+	//file.SetInt("UID", unique_id);
+	//file.SetString("name", name.c_str());
+	//file.SetBool("is_active", active);
+	//file.SetBool("is_static", is_static);
+	///*if (parent != nullptr)
+	//	file.SetInt("parent", parent->GetID());
+	//else
+	//	file.SetInt("parent", 0);*/
+	////file.SetInt("new_child_id", new_child_id);
 
 
-	file.MoveToRoot();
-	//Save components 
-	for (std::vector<Component*>::iterator c = component_list.begin(); c != component_list.end(); ++c)
+	////file.MoveToRoot();
+	////Save components 
+	//for (std::vector<Component*>::iterator c = component_list.begin(); c != component_list.end(); ++c)
+	//{
+	//	json_file* comp_doc = file.GetNode();
+	//	file.AddSectionToArray("Components");
+	//	file.MoveToSectionFromArray("Components", file.GetArraySize("Components") - 1);
+
+	//	comp_doc.SetInt("type", (*c)->type);
+	//	(*c)->Serialize(file);
+	//	//file.MoveToRoot();
+	//}
+	////Save childs
+	///*for (std::vector<GameObject*>::iterator go = child_list.begin(); go != child_list.end(); ++go)
+	//{
+	//	(*go)->Serialize(file);
+	//	file.MoveToRoot();
+	//}*/
+}
+
+void GameObject::SerializeLoad(json_file* file)
+{
+	name = file->GetString("name");
+
+	bool stat = file->GetBool("static");
+	if (stat)
+		App->scene_intro->AddToStatic(this);
+
+	int components_count = file->GetArraySize("Components");
+
+	for (int i = 0; i < components_count; i++)
 	{
-		(*c)->Serialize(file);
-		file.MoveToRoot();
+		json_file* comp_node = file->GetNode();
+		comp_node->MoveToSectionFromArray("Components", i);
+
+		component_type type = static_cast<component_type>((int)comp_node->GetInt("type", 0));
+
+		if (type != COMPONENT_TRANSFORM)
+		{
+			Component* c = AddEmptyComponent(type);
+			c->SerializeLoad(comp_node);
+		}
+		else
+			transform->SerializeLoad(comp_node);
 	}
-	//Save childs
-	for (std::vector<GameObject*>::iterator go = child_list.begin(); go != child_list.end(); ++go)
+}
+
+void GameObject::SerializeSave(json_file* file)
+{
+	// Set the name
+	file->SetString("name", name.c_str());
+
+	file->SetBool("static", is_static);
+
+	file->SetArray("Components");
+
+	// Save components
+	for (vector<Component*>::iterator it = component_list.begin(); it != component_list.end(); it++)
 	{
-		(*go)->Serialize(file);
-		file.MoveToRoot();
+		// Add and move to a new section on the components array
+		json_file* comp_doc = file->GetNode();
+		comp_doc->AddSectionToArray("Components");
+		comp_doc->MoveToSectionFromArray("Components", file->GetArraySize("Components") - 1);
+
+		comp_doc->SetInt("type", (*it)->type);
+		(*it)->SerializeSave(comp_doc);
 	}
 }
 

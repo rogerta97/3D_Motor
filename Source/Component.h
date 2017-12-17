@@ -47,6 +47,9 @@ public:
 	virtual void Serialize(json_file* file);
 	virtual void Serialize(json_file file);
 
+	virtual void SerializeLoad(json_file* file) {};
+	virtual void SerializeSave(json_file* file) {};
+
 	~Component() {}
 
 	bool active = false;

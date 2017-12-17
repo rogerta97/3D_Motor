@@ -160,9 +160,19 @@ void ComponentMeshRenderer::Serialize(json_file file)
 	file.SetInt("mesh", unique_id);
 }
 
+void ComponentMeshRenderer::SerializeLoad(json_file* file)
+{
+	unique_id = file->GetUInt("UID", 0);
+}
+
+void ComponentMeshRenderer::SerializeSave(json_file* file)
+{
+	file->SetUInt("UID", unique_id);
+}
+
 ComponentMeshRenderer::~ComponentMeshRenderer()
 {
-
+	
 }
 
 bool ComponentMeshRenderer::Enable()

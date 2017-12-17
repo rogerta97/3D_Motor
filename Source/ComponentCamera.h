@@ -59,6 +59,8 @@ public:
 	float* GetOpenGLViewMatrix()const;
 	float* GetOpenGLProjectionMatrix()const;
 
+	void SerializeLoad(json_file* file);
+	void SerializeSave(json_file* file);
 public:
 
 	Frustum frustum;

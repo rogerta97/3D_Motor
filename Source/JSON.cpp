@@ -143,9 +143,9 @@ json_file::json_file()
 json_file::~json_file()
 {
 }
-json_file json_file::GetNode() const
+json_file* json_file::GetNode() 
 {
-	return json_file(*this);
+	return this;
 }
 int json_file::GetFileSize() const
 {
@@ -393,10 +393,10 @@ UID json_file::GetUID(const char * set, UID defaul, int id) const
 }
 int json_file::GetArraySize(const char * field) const
 {
-	int ret = -1;
-	JSON_Array* array = json_object_get_array(object, field);
-	if (array != nullptr)
-		ret = json_array_get_count(array);
+	int ret = 0;
+	JSON_Array* array_ = json_object_get_array(object, field);
+	if (array_ != nullptr)
+		ret = json_array_get_count(array_);
 	return ret;
 }
 float3 json_file::GetFloat3(const char * field, const float3 & default)

@@ -65,6 +65,8 @@ public:
 	void Serialize(json_file* file);
 	void Serialize(json_file file);
 
+	void SerializeLoad(json_file* file);
+	void SerializeSave(json_file* file);
 
 	Transform transform;
 	Transform global_transform;

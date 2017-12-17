@@ -120,12 +120,22 @@ void ComponentMaterial::Serialize(json_file * file)
 }
 void ComponentMaterial::Serialize(json_file file)
 {
-	file.AddSectionToArray("Components");
-	file.MoveToSectionFromArray("Components", file.GetArraySize("Components") - 1);
-		
 	file.SetInt("type", GetComponentType());
 	file.SetInt("owner", GetComponentParent()->unique_id);
 	file.SetInt("material", unique_id);
+}
+void ComponentMaterial::SerializeLoad(json_file* file)
+{
+
+	textures_id = file->GetInt("texture_id", 0);
+	
+}
+void ComponentMaterial::SerializeSave(json_file* file)
+{
+	file->AddSectionToArray("Components");
+	file->MoveToSectionFromArray("Components", file->GetArraySize("Components") - 1);
+
+	file->SetInt("texture_id", textures_id);
 }
 //
 //Color* ComponentMaterial::GetColor()

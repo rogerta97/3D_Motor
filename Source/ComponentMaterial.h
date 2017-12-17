@@ -30,6 +30,8 @@ public:
 	uint GetTexSize()const;
 	void Serialize(json_file* file);
 	void Serialize(json_file file);
+	void SerializeLoad(json_file* file);
+	void SerializeSave(json_file* file);
 
 	//Color* GetColor();
 public:

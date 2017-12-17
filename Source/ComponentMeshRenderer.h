@@ -9,7 +9,7 @@
 
 #define M_PI 3.14
 #define M_PI_2 M_PI/2
-
+class json_file;
 class ComponentMeshRenderer : public Component
 {
 public: 
@@ -77,7 +77,8 @@ public:
 	void Serialize(json_file* file);
 	void Serialize(json_file file);
 
-
+	void SerializeLoad(json_file* file);
+	void SerializeSave(json_file* file);
 public: 
 
 	vec* vertices;

@@ -52,6 +52,7 @@ public:
 
 	GameObject* Find(const int& unique_id) const; 
 	GameObject* FindByNameRecursive(string name) const;
+	string GetNameFromPath(const char* path);	
 
 	GameObject* GetGameObject(uint position);
 	GameObject* CreateGameObject(const char* name);
@@ -103,6 +104,10 @@ public:
 
 	void Serialize(json_file* file);
 	void Serialize(json_file  file);
+
+
+
+
 
 	void ClearSelection();
 	void DestroyAllGameObjectsNow();

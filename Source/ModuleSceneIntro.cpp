@@ -44,6 +44,7 @@ bool ModuleSceneIntro::Start()
 	root->Start();
 	root->SetName("Root");
 	srand(time(NULL));
+	GO_list.push_back(root);
 
 	float3 initial_pos(0.f, 10.f, 10.f);
 	App->camera->SetCamPosition(initial_pos);
@@ -269,6 +270,24 @@ GameObject * ModuleSceneIntro::FindByNameRecursive(string name) const
 	}
 
 	return to_ret; 
+}
+
+string ModuleSceneIntro::GetNameFromPath(const char * path)
+{
+	string ret;
+
+	for (int i = 0; path[i] != '\0'; i++)
+	{
+		if (path[i] == '\\' || path[i] == '/')
+		{
+			ret.clear();
+			continue;
+		}
+
+		ret += path[i];
+	}
+
+	return ret;
 }
 
 vector<GameObject*> ModuleSceneIntro::GetDynamicGOList()
